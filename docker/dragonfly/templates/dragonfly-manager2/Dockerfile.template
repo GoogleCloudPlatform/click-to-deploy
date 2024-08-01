@@ -1,0 +1,105 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+{{ $dragonfly2_github := index .Packages "dragonfly2_github" -}}
+{{- $manager_console := index .Packages "manager_console" -}}
+{{- $golang := index .Packages "golang" -}}
+{{- $grpc_health_probe := index .Packages "grpc_health_probe" -}}
+
+FROM {{ .From }} as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
+FROM node:20-alpine as console-builder
+
+ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
+ARG MANAGER_CONSOLE_TAR=v{{ $manager_console.Version }}
+ARG CONSOLE_DIST=https://github.com/dragonflyoss/console/archive/refs/tags/${MANAGER_CONSOLE_TAR}.tar.gz
+
+ADD ${CONSOLE_DIST} .
+
+RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
+    cd console-{{ $manager_console.Version }} && \
+    npm install -g npm@10.5.0 && \
+    npm install --legacy-peer-deps --loglevel warn --progress false && \
+    npm run build
+
+
+FROM golang:{{ $golang.Version }}-alpine as server-builder
+
+ARG GOPROXY
+ARG GOTAGS
+ARG GOGCFLAGS
+ARG DRAGONFLY2_GITHUB_BRANCH=v{{ $dragonfly2_github.Version }}
+ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
+
+WORKDIR /go/src/d7y.io/dragonfly/v2
+
+RUN apk --no-cache add bash make gcc libc-dev git && \
+    git clone -b ${DRAGONFLY2_GITHUB_BRANCH} --recurse-submodules https://github.com/dragonflyoss/Dragonfly2.git /go/src/d7y.io/dragonfly/v2
+
+COPY --from=console-builder /console-{{ $manager_console.Version }}/dist /go/src/d7y.io/dragonfly/v2/manager/dist
+
+RUN make build-manager-server && make install-manager
+
+FROM {{ .From }} as health
+
+ARG GRPC_HEALTH_PROBE_VERSION=v{{ $grpc_health_probe.Version }}
+
+RUN apt update && apt install -y wget && \
+    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
+    chmod +x /bin/grpc_health_probe
+
+FROM {{ .From }}
+
+WORKDIR /opt/dragonfly
+ENV C2D_RELEASE {{ $dragonfly2_github.Version }}
+ENV PATH=/opt/dragonfly/bin:$PATH
+ENV DRAGONFLY_MANAGER_ADDR localhost
+ENV DRAGONFLY_MYSQL_USER dragonfly
+ENV DRAGONFLY_MYSQL_PW dragonfly
+ENV DRAGONFLY_MYSQL_DBNAME manager
+ENV DRAGONFLY_MYSQL_HOST localhost
+ENV DRAGONFLY_REDIS_PW dragonfly
+ENV DRAGONFLY_REDIS_HOST localhost
+
+
+RUN mkdir -p /opt/dragonfly/bin/manager/console &&\
+    echo "hosts: files dns" > /etc/nsswitch.conf
+
+COPY --from=server-builder /opt/dragonfly/bin/manager /opt/dragonfly/bin/server
+COPY --from=health /bin/grpc_health_probe /bin/grpc_health_probe
+COPY config/manager.yaml /etc/dragonfly/manager.yaml
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN apt update && apt install -y curl gettext-base && \
+    chmod +x /docker-entrypoint.sh
+
+COPY --from=ospo /usr/src /usr/src
+
+EXPOSE 8080 65003
+
+ENTRYPOINT ["/docker-entrypoint.sh"]

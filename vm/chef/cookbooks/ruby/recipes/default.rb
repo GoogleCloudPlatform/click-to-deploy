@@ -22,15 +22,18 @@ package 'install packages' do
 end
 
 remote_file '/tmp/ruby.tar.gz' do
-  source 'https://cache.ruby-lang.org/pub/ruby/snapshot/snapshot-ruby_3_0.tar.gz'
+  source "https://cache.ruby-lang.org/pub/ruby/#{node['ruby']['major']}.#{node['ruby']['minor']}/ruby-#{node['ruby']['version']}.tar.gz"
   action :create
 end
 
 bash 'unpackage ruby, compile ruby, and install ruby' do
   user 'root'
+  environment({
+    'version' => node['ruby']['version'],
+  })
   code <<-EOH
     tar -xzf /tmp/ruby.tar.gz -C /tmp/
-    cd /tmp/snapshot-ruby_3_0
+    cd "/tmp/ruby-${version}"
     ./configure
     make
     make install

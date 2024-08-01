@@ -12,5 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['concretecms']['version'] = '9.1.1'
+default['concretecms']['version'] = '9.1.3'
 default['concretecms']['db']['name'] = 'concretedb'
+
+default['php81']['distribution'] = 'bullseye'

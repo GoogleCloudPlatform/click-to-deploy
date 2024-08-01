@@ -4,13 +4,11 @@ actions:
     script: |
           timeout 180 bash -c '
             until (curl -s "http://${APP_INSTANCE_NAME}-kafka-exporter.${NAMESPACE}.svc.cluster.local:9308/metrics" 2> /dev/null \
-              | grep "kafka_brokers" \
-              | grep -v "^#" \
-              | awk "{print $2}");
+              | grep "kafka_brokers 3");
               do sleep 10;
             done'
     expect:
       stdout:
-        matches: "3"
+        matches: "kafka_brokers 3"
       exitCode:
         equals: 0

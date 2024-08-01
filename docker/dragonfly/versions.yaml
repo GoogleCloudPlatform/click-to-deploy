@@ -1,0 +1,103 @@
+cloudbuild:
+  enable_parallel: false
+versions:
+- dir: 2/debian11/2.1/dragonfly-manager2
+  excludeTests:
+  - tests/functional_tests/scheduler_test.yaml
+  - tests/functional_tests/seed-peer_test.yaml
+  - tests/functional_tests/dfget_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dragonfly2_github:
+      version: 2.1.34
+    golang:
+      version: 1.21
+    grpc_health_probe:
+      version: 0.4.24
+    manager_console:
+      version: 1.0.24
+  repo: dragonfly-manager2
+  tags:
+  - 2.1.34-debian11
+  - 2.1.34
+  - 2.1-debian11
+  - '2.1'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-manager2
+- dir: 2/debian11/2.1/dragonfly-scheduler2
+  excludeTests:
+  - tests/functional_tests/manager_test.yaml
+  - tests/functional_tests/seed-peer_test.yaml
+  - tests/functional_tests/dfget_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dragonfly2_github:
+      version: 2.1.34
+    golang:
+      version: 1.21
+    grpc_health_probe:
+      version: 0.4.24
+    manager_console:
+      version: 1.0.24
+  repo: dragonfly-scheduler2
+  tags:
+  - 2.1.34-debian11
+  - 2.1.34
+  - 2.1-debian11
+  - '2.1'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-scheduler2
+- dir: 2/debian11/2.1/dragonfly-seed-peer2
+  excludeTests:
+  - tests/functional_tests/manager_test.yaml
+  - tests/functional_tests/scheduler_test.yaml
+  - tests/functional_tests/dfget_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dragonfly2_github:
+      version: 2.1.34
+    golang:
+      version: 1.21
+    grpc_health_probe:
+      version: 0.4.24
+    manager_console:
+      version: 1.0.24
+  repo: dragonfly-seed-peer2
+  tags:
+  - 2.1.34-debian11
+  - 2.1.34
+  - 2.1-debian11
+  - '2.1'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-seed-peer2
+- dir: 2/debian11/2.1/dragonfly-dfget2
+  excludeTests:
+  - tests/functional_tests/manager_test.yaml
+  - tests/functional_tests/scheduler_test.yaml
+  - tests/functional_tests/seed-peer_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dragonfly2_github:
+      version: 2.1.34
+    golang:
+      version: 1.21
+    grpc_health_probe:
+      version: 0.4.24
+    manager_console:
+      version: 1.0.24
+  repo: dragonfly-dfget2
+  tags:
+  - 2.1.34-debian11
+  - 2.1.34
+  - 2.1-debian11
+  - '2.1'
+  - 2-debian11
+  - '2'
+  - latest
+  templateSubDir: dragonfly-dfget2

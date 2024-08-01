@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-server"
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}-server"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-server"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-server"
+    spec:
+      initContainers:
+        {{- include "argoworkflows.wait_for_db" . | indent 8 }}
+      containers:
+      - name: argo-server
+        image: "{{ .Values.argo_workflows.image.repo }}:{{ .Values.argo_workflows.image.tag }}"
+        args:
+        - server
+        - --namespaced
+        - --auth-mode
+        - server
+        - --auth-mode
+        - client
+        env:
+        - name: MODE
+          value: "cli"
+        ports:
+        - containerPort: 2746
+          name: web
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 2746
+            scheme: HTTPS
+          initialDelaySeconds: 10
+          periodSeconds: 20
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccountName: "{{ .Values.argo_workflows.sa.server }}"
+      volumes:
+      - emptyDir: {}
+        name: tmp

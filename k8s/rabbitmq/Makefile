@@ -6,13 +6,13 @@ include ../images.Makefile
 CHART_NAME := rabbitmq
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 3.9
+TRACK ?= 3.11
 
 METRICS_EXPORTER_TAG ?= v0.9.0
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_RABBITMQ ?= $(SOURCE_REGISTRY)/rabbitmq3:$(TRACK)
-IMAGE_DEBIAN9 ?= $(SOURCE_REGISTRY)/debian9:latest
+IMAGE_DEBIAN11 ?= $(SOURCE_REGISTRY)/c2d-debian11:latest
 IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
@@ -20,10 +20,10 @@ IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_RABBITMQ))
 
 # List of images used in application
-ADDITIONAL_IMAGES := debian9 prometheus-to-sd
+ADDITIONAL_IMAGES := debian11 prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
-image-debian9 := $(call get_sha256,$(IMAGE_DEBIAN9))
+image-debian11 := $(call get_sha256,$(IMAGE_DEBIAN11))
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))

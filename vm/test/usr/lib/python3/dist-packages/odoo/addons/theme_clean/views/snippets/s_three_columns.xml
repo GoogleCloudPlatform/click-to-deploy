@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_three_columns" inherit_id="website.s_three_columns">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc1" remove="o_cc2" separator=" "/>
+    </xpath>
+    <!-- Column #1 -->
+    <xpath expr="//div[hasclass('card')]" position="attributes">
+        <attribute name="style">border-width: 0px !important;</attribute>
+    </xpath>
+    <xpath expr="//h3[hasclass('card-title')]" position="replace" mode="inner">
+        Our mission
+    </xpath>
+    <xpath expr="//p[hasclass('card-text')]" position="replace" mode="inner">
+        Provide clear and concise financial advices to make your financial wealth grow. And this, completely free of charge.
+    </xpath>
+    <!-- Column #2 -->
+    <xpath expr="(//div[hasclass('card')])[2]" position="attributes">
+        <attribute name="style">border-width: 0px !important;</attribute>
+    </xpath>
+    <xpath expr="(//h3[hasclass('card-title')])[2]" position="replace" mode="inner">
+        Our values
+    </xpath>
+    <xpath expr="(//p[hasclass('card-text')])[2]" position="replace" mode="inner">
+        We created our company to improve the work-life balance. We believe that we need to focus on our family more than our work and finances.
+    </xpath>
+    <!-- Column #3 -->
+    <xpath expr="(//div[hasclass('card')])[3]" position="attributes">
+        <attribute name="style">border-width: 0px !important;</attribute>
+    </xpath>
+    <xpath expr="(//h3[hasclass('card-title')])[3]" position="replace" mode="inner">
+        Our team
+    </xpath>
+    <xpath expr="(//p[hasclass('card-text')])[3]" position="replace" mode="inner">
+        Composed of 25 people from 25 to 66 years, we’re a young and dynamic company. We have open positions, do not hesitate to contact us.
+    </xpath>
+</template>
+
+<template id="configurator_s_three_columns" inherit_id="website.configurator_s_three_columns">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/04_001","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_04_001"/>
+    </xpath>
+</template>
+
+</odoo>

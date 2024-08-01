@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_image_text" inherit_id="website.s_image_text">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc1 pb48 pt48" remove="pb32 pt32" separator=" "/>
+    </xpath>
+
+    <!-- Title -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        Bored with your interior?
+    </xpath>
+
+    <!-- Paragraph -->
+    <xpath expr="//p[1]" position="replace" mode="inner">
+        Our decoration experts are at your disposal to guide you step by step in the design of your interior and will give you the best advice for your interior design.
+    </xpath>
+    <xpath expr="//p[2]" position="replace" mode="inner">
+        Discover our tailor-made services to embellish the decoration of your home.
+    </xpath>
+    <xpath expr="//p[3]" position="replace">
+        <p><a href="#" class="btn btn-primary">Explore our services</a></p>
+    </xpath>
+
+    <!-- Image -->
+    <xpath expr="//img" position="attributes">
+        <attribute name="src">/web_editor/image_shape/website.s_image_text_default_image/web_editor/solid/solid_square_2.svg?c1=o-color-3</attribute>
+        <attribute name="data-shape">web_editor/solid/solid_square_2</attribute>
+        <attribute name="data-original-mimetype">image/jpeg</attribute>
+        <attribute name="data-file-name">s_image_text.svg</attribute>
+        <attribute name="data-shape-colors">o-color-3;;;;</attribute>
+    </xpath>
+</template>
+
+</odoo>

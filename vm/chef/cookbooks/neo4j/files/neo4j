@@ -54,10 +54,10 @@ echo "dbms.jvm.additional=-Dlog4j2.formatMsgNoLookups=true" >> "${neo4j_config}"
 # and requires user to change it, otherwise, use the provided one.
 if [[ ! -z "${metadata_admin_password}" ]]; then
   echo "Using password provided by metadata."
-  neo4j-admin set-initial-password "${metadata_admin_password}"
+  neo4j-admin dbms set-initial-password "${metadata_admin_password}"
 else
   echo "Using default password."
-  neo4j-admin set-initial-password "${default_password}" --require-password-change
+  neo4j-admin dbms set-initial-password "${default_password}" --require-password-change
 fi
 
 echo "Starting service..."

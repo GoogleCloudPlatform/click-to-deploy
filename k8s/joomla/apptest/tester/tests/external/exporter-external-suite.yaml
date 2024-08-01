@@ -1,12 +1,9 @@
 actions:
 
-- name: Can not access Apache /server-status externally
-  httpTest:
-    url: http://{{ .Env.EXTERNAL_IP }}/server-status
+- name: Check server status
+  bashTest:
+    script: curl -L "http://${EXTERNAL_IP}/server-status"
     expect:
-      statusCode:
-        equals: 403
-      bodyText:
-        html:
-          title:
-            equals: '403 Forbidden'
+      stdout:
+        contains: '403 Forbidden''
+

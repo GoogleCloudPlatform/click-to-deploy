@@ -1,0 +1,77 @@
+{{- $conjur := index .Packages "conjur" -}}
+{{- $ruby := index .Packages "ruby" -}}
+
+FROM {{ .From }}
+
+SHELL ["/bin/bash", "-c", "-l"]
+
+COPY sample_policy.yaml /opt/conjur-server/
+COPY entrypoint.sh run_test.sh /usr/local/bin/
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PORT=80 \
+    LOG_DIR=/opt/conjur-server/log \
+    TMP_DIR=/opt/conjur-server/tmp \
+    SSL_CERT_DIRECTORY=/opt/conjur/etc/ssl
+
+ENV CONJUR_APP_VERSION={{ $conjur.Version }}
+ENV RUBY_VERSION={{ $ruby.Version }}
+ENV OPENSSL_FIPS_ENABLED "false"
+
+EXPOSE 80
+
+RUN apt-get update \
+    && apt-get install \
+    libz-dev \
+    build-essential \
+    ldap-utils \
+    apt-transport-https \
+    ca-certificates \
+    gnupg2 \
+    procps \
+    libpq-dev \
+    jq \
+    -y --no-install-recommends \
+    && apt-get autoremove -yqq --purge \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/conjur-server
+
+RUN mkdir -p $TMP_DIR \
+             $LOG_DIR \
+             $SSL_CERT_DIRECTORY/ca \
+             $SSL_CERT_DIRECTORY/cert \
+             /run/authn-local
+
+RUN curl -L https://github.com/cyberark/conjur/archive/refs/tags/v${CONJUR_APP_VERSION}.tar.gz -o ./conjur.tar.gz \
+    && tar -xzf ./conjur.tar.gz \
+    && mv ./conjur-*/* ./ \
+    && rm -f ./conjur.tar.gz
+
+#install ruby3
+RUN curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import - \
+    && curl -sSL https://get.rvm.io | bash -s stable --ruby \
+    && source /usr/local/rvm/scripts/rvm \
+    && rvm install ${RUBY_VERSION} \
+    && gem install bundler
+
+RUN bundle --without test development
+
+# removing CA bundle of httpclient gem
+RUN find / -name httpclient -type d -exec find {} -name *.pem -type f -delete \;
+
+RUN ln -sf /opt/conjur-server/bin/conjurctl /usr/local/bin/ \
+    && echo ${CONJUR_APP_VERSION} > ./VERSION
+
+# remove dev packages to avoid security issues
+RUN apt-get purge -yqq libz-dev build-essential linux-libc-dev
+
+ENV RAILS_ENV production
+
+EXPOSE 80
+
+ENV C2D_RELEASE {{ $conjur.Version }}
+
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+CMD ["conjurctl", "server"]

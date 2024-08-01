@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'mysql'
+include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'git'
+include_recipe 'mattermost::ospo'
+
+# https://docs.mattermost.com/install/software-hardware-requirements.html#database-software
+mysql_enable_native_password 'Enable mysql_native_password config'
 
 apt_update do
   action :update

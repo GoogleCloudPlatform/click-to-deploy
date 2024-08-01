@@ -1,4 +1,5 @@
-# Copyright 2022 Google LLC
+---
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +19,9 @@ metadata:
   name: pingsource-mt-adapter
   namespace: "{{ .Release.Namespace }}"
   labels:
-    eventing.knative.dev/release: "v1.2.0"
+    eventing.knative.dev/release: "v1.9.0"
     app.kubernetes.io/component: pingsource-mt-adapter
-    app.kubernetes.io/version: "1.2.0"
+    app.kubernetes.io/version: "1.9.0"
     app.kubernetes.io/name: knative-eventing
 spec:
   # when set to 0 (and only 0) will be set to 1 when the first PingSource is created.
@@ -33,9 +34,9 @@ spec:
     metadata:
       labels:
         !!merge <<: *labels
-        eventing.knative.dev/release: "v1.2.0"
+        eventing.knative.dev/release: "v1.9.0"
         app.kubernetes.io/component: pingsource-mt-adapter
-        app.kubernetes.io/version: "1.2.0"
+        app.kubernetes.io/version: "1.9.0"
         app.kubernetes.io/name: knative-eventing
     spec:
       affinity:
@@ -52,6 +53,12 @@ spec:
           image: {{ .Values.knative.eventing.mtping.image.repo }}:{{ .Values.knative.eventing.mtping.image.tag }}
           env:
             - name: SYSTEM_NAMESPACE
+              value: ''
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: NAMESPACE
               value: ''
               valueFrom:
                 fieldRef:
@@ -90,5 +97,7 @@ spec:
             runAsNonRoot: true
             capabilities:
               drop:
-                - all
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
       serviceAccountName: pingsource-mt-adapter

@@ -1,4 +1,4 @@
-# Source: cert-manager/templates/webhook-serviceaccount.yaml
+---
 apiVersion: v1
 kind: ServiceAccount
 automountServiceAccountToken: true
@@ -8,10 +8,9 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 ---
-# Source: cert-manager/templates/webhook-config.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -20,11 +19,10 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 data:
 ---
-# Source: cert-manager/templates/webhook-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -32,14 +30,13 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 rules:
 - apiGroups: ["authorization.k8s.io"]
   resources: ["subjectaccessreviews"]
   verbs: ["create"]
 ---
-# Source: cert-manager/templates/webhook-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -47,7 +44,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -59,7 +56,6 @@ subjects:
   name: cert-manager-webhook
   namespace: "{{ .Release.Namespace }}"
 ---
-# Source: cert-manager/templates/webhook-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -68,7 +64,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 rules:
 - apiGroups: [""]
@@ -81,7 +77,6 @@ rules:
   resources: ["secrets"]
   verbs: ["create"]
 ---
-# Source: cert-manager/templates/webhook-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -90,7 +85,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -102,7 +97,6 @@ subjects:
   name: cert-manager-webhook
   namespace: "{{ .Release.Namespace }}"
 ---
-# Source: cert-manager/templates/webhook-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -111,7 +105,7 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 spec:
   type: ClusterIP
@@ -122,10 +116,9 @@ spec:
     targetPort: "https"
   selector:
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
 ---
-# Source: cert-manager/templates/webhook-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -180,7 +173,7 @@ spec:
               path: /healthz
               port: 6080
               scheme: HTTP
-            initialDelaySeconds: 20 
+            initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 1
             successThreshold: 1
@@ -191,7 +184,6 @@ spec:
               fieldRef:
                 fieldPath: metadata.namespace
 ---
-# Source: cert-manager/templates/webhook-mutating-webhook.yaml
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
@@ -199,8 +191,9 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
+
   annotations:
     cert-manager.io/inject-ca-from-secret: "{{ .Release.Namespace }}/cert-manager-webhook-ca"
 webhooks:
@@ -231,7 +224,6 @@ webhooks:
         namespace: "{{ .Release.Namespace }}"
         path: /mutate
 ---
-# Source: cert-manager/templates/webhook-validating-webhook.yaml
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
@@ -239,8 +231,9 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: cert-manager
+    app.kubernetes.io/instance: "cert-manager"
     app.kubernetes.io/component: "webhook"
+
   annotations:
     cert-manager.io/inject-ca-from-secret: "{{ .Release.Namespace }}/cert-manager-webhook-ca"
 webhooks:

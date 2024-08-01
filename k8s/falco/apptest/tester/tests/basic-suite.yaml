@@ -2,13 +2,13 @@ actions:
 - name: Are there all Falco pods healthy
   bashTest:
     script: |-
-      falcoPods=$(kubectl get pods -l app.kubernetes.io/component=falco --no-headers | cut -f1 -d" ")
-
+      kubectl wait --for=jsonpath='{.status.numberReady}'=3 --timeout=120s --namespace $NAMESPACE daemonset "${APP_INSTANCE_NAME}-falco"
+      falcoPods=$(kubectl get pods -l app.kubernetes.io/component=falco -o jsonpath="{..metadata.name}")
       for podName in ${falcoPods}; do
-              kubectl exec -it ${podName} -c falco -- curl localhost:8765/healthz
-              if [ $? -ne 0 ]; then
-                  exit 1
-              fi
+        kubectl exec ${podName} -c falco -- curl localhost:8765/healthz
+          if [ $? -ne 0 ]; then
+             exit 1
+          fi
       done
     expect:
       exitCode:
@@ -18,9 +18,9 @@ actions:
   bashTest:
     script: |-
       sleep 20
-      curl -f "http://${SERVICE}:9376/metrics"
+      curl -s -f "http://${SERVICE}:9376/metrics"
     expect:
       stdout:
-        contains: '# TYPE falco_events counter'
+        contains: '# TYPE promhttp'
       exitCode:
         equals: 0

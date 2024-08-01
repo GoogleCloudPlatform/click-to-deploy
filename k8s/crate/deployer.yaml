@@ -1,0 +1,44 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app.kubernetes.io/component: deployer.marketplace.cloud.google.com
+    app.kubernetes.io/name: crate-1
+    marketplace.cloud.google.com/deployer: Main
+  name: crate-1-deployer
+  namespace: default
+  ownerReferences:
+  - apiVersion: app.k8s.io/v1beta1
+    blockOwnerDeletion: true
+    kind: Application
+    name: crate-1
+    uid: 0595926e-3af8-4042-abf7-bc9308bc7daf
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'false'
+    spec:
+      containers:
+      - command:
+        - /bin/deploy.sh
+        image: gcr.io/ccm-ops-test-adhoc/crate/deployer:5.1.1-20221122-102959
+        imagePullPolicy: Always
+        name: deployer
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - mountPath: /data/values.yaml
+          name: config-volume
+          readOnly: true
+          subPath: values.yaml
+      restartPolicy: Never
+      serviceAccountName: crate-1-deployer-sa
+      volumes:
+      - name: config-volume
+        secret:
+          secretName: crate-1-deployer-config

@@ -1,17 +1,37 @@
 {{- $kafka := index .Packages "kafka" -}}
 {{- $scala := index .Packages "scala" -}}
 
+
+FROM {{ .From }} as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
+
 FROM {{ .From }}
+
+COPY --from=ospo /usr/src /usr/src
 
 ARG KAFKA_VERSION={{ $kafka.Version }}
 ARG SCALA_VERSION={{ $scala.Version }}
-ARG KAFKA_SHA512={{ $kafka.Sha512 }}
 
 ENV C2D_RELEASE {{ $kafka.Version }}
 
 RUN set -ex \
   && apt-get update \
-  && apt-get -y install default-jdk curl ca-certificates jq net-tools openssl \
+  && apt-get -y install default-jdk ca-certificates jq net-tools \
   && rm -rf /var/lib/apt/lists/*
 
 ENV KAFKA_USER="kafka" \
@@ -38,7 +58,6 @@ COPY --chown=$KAFKA_USER:$KAFKA_GROUP scripts ${KAFKA_DOCKER_SCRIPTS}
 RUN chmod a+x ${KAFKA_DOCKER_SCRIPTS}/*.sh \
   && ln -s ${KAFKA_DOCKER_SCRIPTS}/*.sh /usr/bin \
   && curl -sSL ${KAFKA_DIST_URL} -o "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
-  && echo "${KAFKA_SHA512} /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" | sha512sum -c - \
   && tar -xzf /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt \
   && mv /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} ${KAFKA_HOME} \
   && chown -R ${KAFKA_USER}:${KAFKA_GROUP} ${KAFKA_HOME} \

@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['cassandra']['version'] = '4.0'
+default['cassandra']['version'] = '4.1.4'
 default['cassandra']['apt_version'] = "#{default['cassandra']['version']}.*"
 
-default['cassandra']['repo']['uri'] = 'http://www.apache.org/dist/cassandra/debian'
+default['cassandra']['repo']['uri'] = 'https://debian.cassandra.apache.org'
 default['cassandra']['repo']['components'] = ['main']
-default['cassandra']['repo']['distribution'] = '40x'
+default['cassandra']['repo']['distribution'] = '41x'
 default['cassandra']['repo']['keyserver'] = 'https://www.apache.org/dist/cassandra/KEYS'

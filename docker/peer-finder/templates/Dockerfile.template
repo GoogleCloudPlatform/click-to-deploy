@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{{- $apimachinery := index .Packages "apimachinery" }}
+{{- $golang := index .Packages "golang" }}
+
 FROM {{ .From }}
 
 {{- $template := index .TemplateArgs }}
 
 ENV GOPATH /usr/local
-
-ENV NOTICES_SHA256 {{ $template.peer_finder_notices_check_sum }}
 
 RUN set -eux \
     && apt-get update \
@@ -26,20 +27,25 @@ RUN set -eux \
         wget \
         bash \
         dnsutils \
-        git \
-        golang \
-        govendor
+        git
+
+ENV GOLANG_VERSION {{ $golang.Version }}
+
+# Download and Extract go binaries
+RUN curl -o go.tar.gz https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz \
+    && set -eux \
+    && tar -C /usr/local -zxvf go.tar.gz
 
 ADD peer-finder.go ${GOPATH}/src/peer-finder/peer-finder.go
 ADD LICENSE ${GOPATH}/src/peer-finder/LICENSE
 
 RUN set -eux \
     && cd "${GOPATH}/src/peer-finder" \
-    && go get ./... \
-    && CGO_ENABLED=0 go build -o /peer-finder -a -installsuffix cgo --ldflags '-w' ./peer-finder.go \
-    && mkdir -p "/usr/share/peer-finder/" \
-    && govendor license > /usr/share/peer-finder/NOTICES \
-    && echo "${NOTICES_SHA256} /usr/share/peer-finder/NOTICES" | sha256sum -c
+    && export GO111MODULE=on \
+    && export PATH=$PATH:/usr/local/go/bin \
+    && go mod init \
+    && go get k8s.io/apimachinery/pkg/util/sets@v{{ $apimachinery.Version }} \
+    && CGO_ENABLED=0 go build -o /peer-finder -a -installsuffix cgo --ldflags '-w' ./peer-finder.go
 
 EXPOSE 9376
 CMD ["/peer-finder"]

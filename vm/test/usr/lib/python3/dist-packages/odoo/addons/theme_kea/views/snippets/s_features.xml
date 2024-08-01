@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_features" inherit_id="website.s_features">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc2 pt48 pb64" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <!-- Column #01 -->
+    <xpath expr="//div[hasclass('row')]/div[1]" position="attributes">
+        <attribute name="class" add="o_cc o_cc1 pt48 pb48" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[1]/i" position="replace">
+        <i class="fa fa-2x fa-image bg-o-color-1 m-3 rounded-circle"/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[1]/h3" position="replace" mode="inner">
+        <b>Stunning visuals</b>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[1]/p" position="replace" mode="inner">
+        Tell what's the value for the customer for this feature.
+    </xpath>
+    <!-- Column #02 -->
+    <xpath expr="//div[hasclass('row')]/div[2]" position="attributes">
+        <attribute name="class" add="o_cc o_cc1 pt48 pb48" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[2]/i" position="replace">
+        <i class="fa fa-2x fa-eye bg-o-color-5 m-3 rounded-circle"/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[2]/h3" position="replace" mode="inner">
+        <b>360-degree vision</b>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[2]/p" position="replace" mode="inner">
+        Write what the customer would like to know, not what you want to show.
+    </xpath>
+    <!-- Column #03 -->
+    <xpath expr="//div[hasclass('row')]/div[3]" position="attributes">
+        <attribute name="class" add="o_cc o_cc1 pt48 pb48" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[3]/i" position="attributes">
+        <attribute name="class" add="fa-2x fa-microphone rounded-circle" remove="fa-3x fa-leaf rounded" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[3]/h3" position="replace" mode="inner">
+        <b>Built in mic</b>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[3]/p" position="replace" mode="inner">
+        A small explanation of this great feature, in clear words.
+    </xpath>
+</template>
+
+</odoo>

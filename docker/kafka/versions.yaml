@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,40 +16,52 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian11/3.2
-  templateSubDir: debian11
+- dir: 3/debian11/3.6
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     kafka:
-      sha512: 736a129823b058dc10788d0893bde47b6f39b9e4972f9eac2d5c9e85e51e477344c6f1e1ebd126ce34d5fd430eb07e55fdd60d60cb541f1d48655c0ebc0a4778
-      version: 3.2.0
+      version: 3.6.1
     scala:
       version: '2.13'
   repo: kafka3
   tags:
-  - 3.2.0-debian11
-  - 3.2-debian11
+  - 3.6.1-debian11
+  - 3.6-debian11
   - 3-debian11
-  - 3.2.0
-  - '3.2'
+  - 3.6.1
+  - '3.6'
   - '3'
   - latest
+  templateSubDir: debian11
+- dir: 3/debian11/3.4
+  excludeTests:
+  - tests/functional_tests/exporter_test.yaml
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    kafka:
+      version: 3.4.1
+    scala:
+      version: '2.13'
+  repo: kafka3
+  tags:
+  - 3.4.1-debian11
+  - 3.4-debian11
+  - 3.4.1
+  - '3.4'
+  templateSubDir: debian11
 - dir: exporter
-  templateSubDir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     kafka_exporter:
-      sha512: 42fcd2b303e82e3ea518cffe7c528c2c35f9ecace8427d68f556c8a91894056f9d8a84fb5bdac2c447b91870909f0dbcce5548a061149da4ffbf33e16545d488
-      version: 1.4.2
+      version: 1.6.0
   repo: kafka-exporter1
   tags:
-  - 1.4.2
-  - '1.4'
+  - 1.6.0
+  - '1.6'
   - '1'
   - latest
   templateSubDir: exporter
-

@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11:latest
+FROM marketplace.gcr.io/google/c2d-debian11
 
 ARG STORM_VERSION="2.4.0"
 ENV C2D_RELEASE "2.4.0"

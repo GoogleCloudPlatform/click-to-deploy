@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_call_to_action" inherit_id="website.s_call_to_action">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt80 o_cc2" remove="pt48 o_cc3" separator=" "/>
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//div[hasclass('col-lg-9')]" position="attributes">
+        <attribute name="class" add="pt16" remove="pb16" separator=" "/>
+    </xpath>
+    <xpath expr="//h3" position="replace" mode="inner">
+        <b>50,000 people</b>, run Clean to grow their financial wealth.
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        Join them and make the right money move.
+    </xpath>
+</template>
+
+<template id="configurator_s_call_to_action" inherit_id="website.configurator_s_call_to_action">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/14_001", "flip":["y"]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_14_001" style="background-image: url('/web_editor/shape/web_editor/Origins/14_001.svg?c3=o-color-4&amp;c4=o-color-3&amp;flip=y'); background-position: 50% 0%;"/>
+    </xpath>
+</template>
+
+</odoo>

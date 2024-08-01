@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="theme_treehouse.s_images_row_000_scss" model="theme.ir.asset">
+    <field name="key">theme_treehouse.s_images_row_000_scss</field>
+    <field name="name">Images row 000 SCSS</field>
+    <field name="bundle">web.assets_frontend</field>
+    <field name="path">theme_treehouse/static/src/old_snippets/s_images_row/000.scss</field>
+    <field name="active" eval="False"/>
+</record>
+
+<record id="theme_treehouse.s_images_carousel_000_scss" model="theme.ir.asset">
+    <field name="key">theme_treehouse.s_images_carousel_000_scss</field>
+    <field name="name">Images carousel 000 SCSS</field>
+    <field name="bundle">web.assets_frontend</field>
+    <field name="path">theme_treehouse/static/src/old_snippets/s_images_carousel/000.scss</field>
+    <field name="active" eval="False"/>
+</record>
+
+<record id="theme_treehouse.primary_variables_scss" model="theme.ir.asset">
+    <field name="key">theme_treehouse.primary_variables_scss</field>
+    <field name="name">Primary variables SCSS</field>
+    <field name="bundle">web._assets_primary_variables</field>
+    <field name="path">theme_treehouse/static/src/scss/primary_variables.scss</field>
+</record>
+
+<record id="theme_treehouse.bootstrap_overridden_scss" model="theme.ir.asset">
+    <field name="key">theme_treehouse.bootstrap_overridden_scss</field>
+    <field name="name">Bootstrap overridden SCSS</field>
+    <field name="bundle">web._assets_frontend_helpers</field>
+    <field name="directive">prepend</field>
+    <field name="path">theme_treehouse/static/src/scss/bootstrap_overridden.scss</field>
+</record>
+
+</odoo>

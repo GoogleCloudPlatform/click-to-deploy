@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_masonry_block" inherit_id="website.s_masonry_block" name="Masonry">
+    <xpath expr="//section/div" position="attributes">
+        <attribute name="class" add="container" remove="container-fluid" />
+    </xpath>
+</template>
+
+<template id="s_masonry_block_default_template" inherit_id="website.s_masonry_block_default_template">
+    <!-- Little block #1 -->
+    <!-- Main div -->
+    <xpath expr="//div[hasclass('col-lg-3')]" position="attributes">
+        <attribute name="class" add="o_cc1" remove="o_cc2" />
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')]/h3" position="before">
+        <span class="fa fa-star fa-2x mb-4"></span>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//div[hasclass('col-lg-3')]/h3" position="replace" mode="inner">
+        Increased Visibility
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//div[hasclass('col-lg-3')]/p" position="replace" mode="inner">
+        Increase Visitor retention. Customer engagement on a website with virtual tour is 5 times longer compared to a site without it.
+    </xpath>
+
+    <!-- Little block #2 -->
+    <!-- Main div -->
+    <xpath expr="//div[hasclass('col-lg-3')][2]" position="attributes">
+        <attribute name="class" add="o_cc1" remove="o_cc3" />
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')][2]/h3" position="before">
+        <span class="fa fa-tag fa-2x mb-4"></span>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//div[hasclass('col-lg-3')][2]/h3" position="replace" mode="inner">
+        No fixed fees
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//div[hasclass('col-lg-3')][2]/p" position="replace" mode="inner">
+        At Real Estate Agency we have fixed price fees. This means we only charge when your home sale is confirmed.
+    </xpath>
+
+    <!-- Little block #3 -->
+    <!-- Main div -->
+    <xpath expr="//div[hasclass('col-lg-3')][3]" position="attributes">
+        <attribute name="class" add="o_cc1" remove="o_cc4" />
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')][3]/h3" position="before">
+        <span class="fa fa-camera fa-2x mb-4"></span>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//div[hasclass('col-lg-3')][3]/h3" position="replace" mode="inner">
+        Pro Photo Shoot
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//div[hasclass('col-lg-3')][3]/p" position="replace" mode="inner">
+        They say an image is worth a thousand words and we know you know how important it is to have the best photography.
+    </xpath>
+
+    <!-- Little block #4 -->
+    <!-- Main div -->
+    <xpath expr="//div[hasclass('col-lg-3')][4]" position="attributes">
+        <attribute name="class" add="o_cc1" remove="o_cc2" />
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-3')][4]/h3" position="before">
+        <span class="fa fa-check fa-2x mb-4"></span>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//div[hasclass('col-lg-3')][4]/h3" position="replace" mode="inner">
+        Premium Quality
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//div[hasclass('col-lg-3')][4]/p" position="replace" mode="inner">
+        We are committed to delivering high quality services that enhance your brand by allowing visitors to interact virtually.
+    </xpath>
+</template>
+
+</odoo>

@@ -1,7 +1,7 @@
 {
   "license": "c2d-piwik",
-  "source_image_family": "debian-10",
+  "source_image_family": "debian-11",
   "chef": {
-    "run_list": [ "c2d-config", "piwik", "stackdriver" ]
+    "run_list": [ "c2d-config", "piwik", "google-cloud-ops-agent" ]
   }
 }

@@ -1,0 +1,173 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_monglia
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Language-Team: Latvian (https://app.transifex.com/odoo/teams/41243/lv/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: lv\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "21/22 December"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_call_to_action
+msgid "<b>APPLY FOR OUR V.I.P. CARD</b>"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_image_text
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">Mixology</font>"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) "
+"25%, var(--o-color-2) 100%);\" class=\"text-gradient\">Music is magic</font>"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_title
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-4) "
+"25%, var(--o-color-1) 100%);\" class=\"text-gradient\">MAIN LINE UP</font>"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "After a year's absence, the free and independent festival is back."
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Bruce Porter"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid "Discover"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Dj's and electro artists meet every year for the electro dance festival in "
+"the largest concert venue in Europe. Book your tickets now, there won't be "
+"room for everybody."
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_image_text
+msgid ""
+"Every evening, renowned mixologists take turns preparing the best cocktails "
+"for you. Drink responsibly."
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Everyone knows The States is the home of country music, and they have the "
+"festivals to prove it. Grab your cowboy hat and boots because we've put "
+"together the best country bands in the USA."
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_block
+msgid ""
+"Kori Thill ■ Chana Smithwick ■ Cira Sherard ■ Elfriede Ogan ■ Mariko Yonker "
+"■ Bella Maday ■ Shaneka Wilkerson ■ Raina Planck ■ Micaela Labonte ■ "
+"Chadwick Cottman ■ Emile Hornung ■ Genevie Mehaffey ■ Dottie Hinkson ■ "
+"Mariah Nurse ■ Velda Caster ■ Rossie Cranfield ■ Iva Madrid ■ Flossie "
+"Freitas ■ Tina Gregerson ■ Quiana Tassin"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid "Learn more"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid "Martina Clarck"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid ""
+"More than ever young talents are honoured on the big stage with more famous "
+"artists."
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Old Town Road"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_text_image
+msgid ""
+"Open 24/7, the club welcomes you and your friends in a relaxed and friendly "
+"atmosphere."
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Smack My Band Up"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid "Sodade Club"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_media_list
+msgid ""
+"Sodade is a beautiful concept that is difficult to put into words, but can "
+"be experienced by enjoying the diverse range of music on offer."
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_call_to_action
+msgid "The vip card allows you to benefit from tickets before everyone else."
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Theia Hayward"
+msgstr ""
+
+#. module: theme_monglia
+#: model:ir.model,name:theme_monglia.model_theme_utils
+msgid "Theme Utils"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_carousel
+msgid ""
+"This is the first full-length studio release in seven years for the British "
+"singer-songwriter."
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_three_columns
+msgid "Wilson Holt"
+msgstr ""
+
+#. module: theme_monglia
+#: model_terms:theme.ir.ui.view,arch:theme_monglia.s_cover
+msgid "X²O Festival"
+msgstr ""

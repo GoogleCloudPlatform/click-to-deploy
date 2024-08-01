@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,41 +19,28 @@ versions:
 - dir: 3/debian11/3.8
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     zookeeper:
-      gpg: BBE7232D7991050B54C8EA0ADC08637CA615D22C
-      version: 3.8.0
+      gpg: 3F7A1D16FA4217B1DC75E1C9FFE35B7F15DFA1BA
+      version: 3.8.3
+    gosu:
+      version: '1.17'
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
   repo: zookeeper3
   tags:
-  - 3.8.0-debian11
+  - 3.8.3-debian11
   - 3.8-debian11
   - 3-debian11
-  - 3.8.0
+  - 3.8.3
   - '3.8'
   - '3'
   - latest
   templateSubDir: debian11
-- dir: 3/debian11/3.7
-  excludeTests:
-  - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/debian11
-  packages:
-    zookeeper:
-      gpg: DFF24FB8323ADAC90E3CF36F729E61230EA917E9
-      version: 3.7.1
-  repo: zookeeper3
-  tags:
-  - 3.7.1-debian11
-  - 3.7-debian11
-  - 3.7.1
-  - '3.7'
-  templateSubDir: debian11
-
 - dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     zookeeper_exporter:
       sha256: c7446aa33d3505fc8b4a92327c89a543f217ebb246c76880ea796f2893d40418
@@ -65,4 +52,3 @@ versions:
   - exporter-1
   - exporter
   templateSubDir: exporter
-

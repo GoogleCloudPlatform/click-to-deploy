@@ -1,7 +1,7 @@
 drupal-docker
 ============
 
-Dockerfile source for Drupal [docker](https://docker.io) image.
+Dockerfile source for Drupal [docker](https://docker.io) image
 
 # Upstream
 

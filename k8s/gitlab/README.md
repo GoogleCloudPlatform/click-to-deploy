@@ -157,7 +157,7 @@ in the
 Example:
 
 ```shell
-export TAG="13.12.11-<BUILD_ID>"
+export TAG="14.8.2-<BUILD_ID>"
 ```
 
 Alternatively, you can use a short tag to point to the latest
@@ -167,7 +167,7 @@ image for your selected version.
 > might change over time.
 
 ```shell
-export TAG="13.12"
+export TAG="14.8"
 ```
 
 Configure the container images:

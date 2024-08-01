@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_three_columns" inherit_id="website.s_three_columns">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc5" remove="o_cc2" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/18"}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//*[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_18"/>
+    </xpath>
+    <!-- Column 1 -->
+    <xpath expr="//*[hasclass('card-title')]" position="replace" mode="inner">
+        Accomodations
+    </xpath>
+    <!-- Column 2 -->
+    <xpath expr="(//*[hasclass('card-title')])[2]" position="replace" mode="inner">
+        Car Rental
+    </xpath>
+    <!-- Column 3 -->
+    <xpath expr="(//*[hasclass('card-title')])[3]" position="replace" mode="inner">
+        Make up &amp;amp; Hair
+    </xpath>
+</template>
+
+</odoo>

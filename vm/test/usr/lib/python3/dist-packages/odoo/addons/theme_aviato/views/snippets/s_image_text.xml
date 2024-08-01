@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_image_text" inherit_id="website.s_image_text">
+    <!-- Section -->
+    <xpath  expr="//div[hasclass('container')]" position="attributes">
+        <attribute name="class" add="container-fluid" remove="container" separator=" "/>
+    </xpath>
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pb72" remove="pb32" separator=" "/>
+    </xpath>
+    <!-- Image -->
+    <xpath expr="//img" position="attributes">
+        <attribute name="class" add="w-75" separator=" "/>
+        <attribute name="src">/web_editor/shape/theme_aviato/s_image_text.svg?c1=o-color-1</attribute>
+    </xpath>
+    <!-- layout -->
+    <xpath  expr="//div[hasclass('row')]/div[2]" position="attributes">
+        <attribute name="class" add="col-lg-4" remove="col-lg-6" separator=" "/>
+    </xpath>    
+    <!-- Title -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        Itinerary Planning
+    </xpath>
+    <!-- Paragraph -->
+    <xpath expr="//p[1]" position="replace" mode="inner">
+        Our vision is to make travel planning stress free and make travel more fun. No matter the type of trip you have in mind, we have the resources and expertise necessary to create the perfect trip
+    </xpath>
+    <xpath expr="//p[2]" position="replace">
+        <p><br/></p>
+    </xpath>
+    <xpath expr="//p[3]" position="replace"/>
+</template>
+
+</odoo>

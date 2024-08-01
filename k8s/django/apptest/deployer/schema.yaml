@@ -1,0 +1,21 @@
+properties:
+  testerImage:
+    type: string
+    default: $REGISTRY/tester:$TAG
+    x-google-property:
+      type: IMAGE
+
+x-google-marketplace:
+  deployerServiceAccount:
+    description:
+      Creates app resources including persistentvolumes.
+    roles:
+      - type: ClusterRole  # For getting persistentvolumes
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - '*'
+            resources:
+            - 'persistentvolumes'
+            verbs:
+            - '*'

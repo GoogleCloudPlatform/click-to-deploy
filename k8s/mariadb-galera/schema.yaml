@@ -26,10 +26,6 @@ x-google-marketplace:
       properties:
         metrics.image:
           type: FULL
-    peer-finder:
-      properties:
-        peerFinder.image:
-          type: FULL
 
   clusterConstraints:
     resources:

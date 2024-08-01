@@ -1,6 +1,26 @@
+{{- $gosu := index .Packages "gosu" -}}
 {{- $zookeeper := index .Packages "zookeeper" -}}
 
+FROM {{ .From }} as ospo
+
+# Download Licenses and restricted source-code
+COPY components.csv /components.csv
+COPY source_code.txt /source_code.txt
+
+RUN apt update && apt -y install ca-certificates
+
+RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& chmod +x /download-licenses.sh \
+		&& chmod +x /download-ref-repos.sh
+
+RUN mkdir -p /usr/src/licenses \
+		&& /download-licenses.sh /components.csv /usr/src/licenses \
+		&& /download-ref-repos.sh /source_code.txt /usr/src
+
 FROM {{ .From }}
+
+COPY --from=ospo /usr/src /usr/src
 
 ARG ZK_VERSION={{ $zookeeper.Version }}
 
@@ -24,6 +44,42 @@ RUN set -eux; \
     mkdir -p "${ZOO_DATA_LOG_DIR}" "${ZOO_DATA_DIR}" "${ZOO_CONF_DIR}" "${ZOO_LOG_DIR}"; \
     chown zookeeper:zookeeper "${ZOO_DATA_LOG_DIR}" "${ZOO_DATA_DIR}" "${ZOO_CONF_DIR}" "${ZOO_LOG_DIR}"
 
+# Install Gosu from official repository
+# /usr/sbin/gosu
+ENV GOSU_VERSION {{ $gosu.Version }}
+RUN set -eux; \
+	apt-get update; \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		ca-certificates \
+		gpg \
+		gpgv \
+		libjemalloc2 \
+		pwgen \
+		tzdata \
+		xz-utils \
+		zstd ; \
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get install -y --no-install-recommends \
+		dirmngr \
+		gpg-agent \
+		wget; \
+	rm -rf /var/lib/apt/lists/*; \
+	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+	wget -q -O /usr/sbin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
+	GNUPGHOME="$(mktemp -d)"; \
+	export GNUPGHOME; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys {{ $gosu.Gpg }}; \
+	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
+	gpgconf --kill all; \
+	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$savedAptMark" ] ||	apt-mark manual $savedAptMark >/dev/null; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	chmod +x /usr/sbin/gosu; \
+	gosu --version; \
+	gosu nobody true
+
 # Install required packages.
 RUN set -eux; \
     apt-get update; \
@@ -32,14 +88,14 @@ RUN set -eux; \
         default-jdk \
         ca-certificates \
         dirmngr \
-        gosu \
         gnupg \
         netcat \
         openssl \
         wget; \
-    rm -rf /var/lib/apt/lists/*; \
+    rm -rf /var/lib/apt/lists/*
+
     # Verify that gosu binary works
-    gosu nobody true
+    # gosu nobody true
 
 ENV GPG_KEYS {{ $zookeeper.Gpg }}
 

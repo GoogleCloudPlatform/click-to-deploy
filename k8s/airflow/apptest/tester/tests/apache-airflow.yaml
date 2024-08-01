@@ -9,12 +9,23 @@ actions:
   bashTest:
     script: |
       cat > /tmp/testdag.py <<'EOF'
+      from __future__ import annotations
+      import datetime
+      import pendulum
       from airflow import DAG
       from airflow.operators.bash import BashOperator
-      from datetime import datetime, timedelta
-      with DAG('testdag', schedule_interval=None, start_date=datetime(2031, 1, 1), catchup=False) as dag:
-        testtask = BashOperator(task_id='print_test', bash_command='echo test passed')
-        testtask
+      with DAG(
+          dag_id="testdag",
+          schedule=None,
+          start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
+          catchup=False,
+          dagrun_timeout=datetime.timedelta(minutes=60),
+      ) as dag:
+          print_task = BashOperator(
+              task_id="print_task",
+              bash_command="echo test passed",
+          )
+          print_task
       EOF
     expect:
       exitCode:
@@ -30,10 +41,10 @@ actions:
     script: |
       export AIRFLOW_PODNAME=$(kubectl get pod --namespace $NAMESPACE -l component=web -o jsonpath={..metadata.name})
       kubectl cp /tmp/testdag.py ${AIRFLOW_PODNAME}:/opt/airflow/dags/testdag.py -c airflow-web --namespace $NAMESPACE
-      kubectl exec ${AIRFLOW_PODNAME} -c airflow-web --namespace $NAMESPACE -- airflow dags test testdag 2022-01-01| grep -c "test passed"
+      kubectl exec ${AIRFLOW_PODNAME} -c airflow-web --namespace $NAMESPACE -- airflow dags test testdag | grep -c -P "^(.*) INFO - test passed$"
     expect:
       stdout:
-        matches: "2"
+        matches: "1"
 - name: Scale down airflow
   bashTest:
     script: |

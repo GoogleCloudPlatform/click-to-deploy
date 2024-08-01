@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_quotes_carousel" inherit_id="website.s_quotes_carousel">
+    <!-- Quote 1 -->
+    <xpath expr="(//div[hasclass('s_blockquote_content')])[1]/p" position="replace" mode="inner">
+        Amazing team! smiling, always nice to talk with, they always have the best advices for you, adapted to your needs!
+    </xpath>
+    <xpath expr="(//span[hasclass('s_blockquote_author')])[1]" position="replace" mode="inner">
+        <b>Jane Doe</b> • Customer, bought a house
+    </xpath>
+    <!-- Quote 2 -->
+    <xpath expr="(//div[hasclass('s_blockquote_content')])[2]/p" position="replace" mode="inner">
+        From start to finish, they were extremely professional, friendly, helpful and easy to do business with. Very happy with the experience and the company.
+    </xpath>
+    <xpath expr="(//span[hasclass('s_blockquote_author')])[2]" position="replace" mode="inner">
+        <b>John Doe</b> • Customer, bought an appartement
+    </xpath>
+    <!-- Quote 3 -->
+    <xpath expr="(//div[hasclass('s_blockquote_content')])[3]/p" position="replace" mode="inner">
+        Positive energy, great team spirit, hard workers and awesome people! I warmly recommend them!
+    </xpath>
+    <xpath expr="(//span[hasclass('s_blockquote_author')])[3]" position="replace" mode="inner">
+        <b>Iris Doe</b> • Customer, sold an appartement
+    </xpath>
+</template>
+
+</odoo>

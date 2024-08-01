@@ -1,0 +1,199 @@
+x-google-marketplace:
+  schemaVersion: v2
+
+  applicationApiVersion: v1beta1
+
+  publishedVersion: "$TAG"
+  publishedVersionMetadata:
+    releaseNote: >-
+      A regular update.
+    releaseTypes:
+      - Feature
+    recommended: false
+
+  clusterConstraints:
+    resources:
+    - replicas: 1
+      requests:
+        cpu: 100m
+        memory: 100Mi
+
+  deployerServiceAccount:
+    description:
+      Creates app resources including persistentvolumes.
+    roles:
+      - type: ClusterRole  # For getting persistentvolumes
+        rulesType: CUSTOM
+        rules:
+          - apiGroups:
+            - '*'
+            resources:
+            - 'persistentvolumes'
+            verbs:
+            - '*'
+
+  images:
+    '':
+      properties:
+        django.image.repo:
+          type: REPO_WITH_REGISTRY
+        django.image.tag:
+          type: TAG
+    uwsgi-exporter:
+      properties:
+        django.exporter.image:
+          type: FULL
+    debian:
+      properties:
+        nginx.initImage:
+          type: FULL
+    nfs:
+      properties:
+        nfs.image.repo:
+          type: REPO_WITH_REGISTRY
+        nfs.image.tag:
+          type: TAG
+    nginx:
+      properties:
+        nginx.image.repo:
+          type: REPO_WITH_REGISTRY
+        nginx.image.tag:
+          type: TAG
+    nginx-exporter:
+      properties:
+        nginx.exporter.image:
+          type: FULL
+    postgresql:
+      properties:
+        postgresql.image:
+          type: FULL
+    postgresql-exporter:
+      properties:
+        postgresql.exporter.image:
+          type: FULL
+    prometheus-to-sd:
+      properties:
+        metrics.image:
+          type: FULL
+
+properties:
+  name:
+    type: string
+    x-google-marketplace:
+      type: NAME
+  namespace:
+    type: string
+    x-google-marketplace:
+      type: NAMESPACE
+  # User-defined settings
+  django.site_name:
+    type: string
+    title: Django Project Name
+    description: Name of the Django project folder
+    default: my_site
+    placeholder: my_site
+    pattern: ^\S*$
+  django.replicas:
+    type: integer
+    title: Replicas
+    description: The number of Pods run within Django solution
+    default: 3
+    minimum: 1
+  nginx.replicas:
+    type: integer
+    title: Replicas
+    description: The number of Pods run within NGINX solution
+    default: 3
+    minimum: 1
+  publicIp.available:
+    type: boolean
+    default: true
+    x-google-marketplace:
+      type: INGRESS_AVAILABLE
+  metrics.exporter.enabled:
+    type: boolean
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project should have Stackdriver enabled. For non-GCP clusters,
+      export of metrics to Stackdriver is not supported yet
+    default: false
+
+  # Storage Settings
+  django.persistence.storageClass:
+    type: string
+    title: StorageClass for Django
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  django.persistence.size:
+    type: string
+    title: Storage size for persistent volumes for Django
+    default: "5Gi"
+    description: NGINX storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  nfs.persistence.storageClass:
+    type: string
+    title: StorageClass for NFS
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  nfs.persistence.size:
+    type: string
+    title: Storage size for persistent volume for NFS
+    default: "5Gi"
+    description: NFS storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  nginx.persistence.storageClass:
+    type: string
+    title: StorageClass for NGINX
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+  nginx.persistence.size:
+    type: string
+    title: Storage size for persistent volumes for NGINX
+    default: "5Gi"
+    description: NGINX storage size
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  postgresql.persistence.size:
+    type: string
+    title: PostgreSQL storage size
+    description: Storage size for PostgreSQL persistent volume
+    default: '8Gi'
+    pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
+  postgresql.persistence.storageClass:
+    type: string
+    title: StorageClass for PostgreSQL
+    description: You can choose an existing StorageClass or create a new one.
+    x-google-marketplace:
+      type: STORAGE_CLASS
+      storageClass:
+        type: SSD
+
+  # Generated settings
+  postgresql.password:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 32
+  certificate:
+    type: string
+    x-google-marketplace:
+      type: TLS_CERTIFICATE
+      tlsCertificate:
+        generatedProperties:
+          base64EncodedPrivateKey: nginx.tls.base64EncodedPrivateKey
+          base64EncodedCertificate: nginx.tls.base64EncodedCertificate
+
+
+required:
+- name
+- namespace
+- nginx.replicas
+- metrics.exporter.enabled

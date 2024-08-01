@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2021 Google Inc.
+# Copyright 2023 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,10 +48,11 @@ function setup_mysql_user() {
   local -r db_user="$1"
   local -r db_password="$2"
   local -r db_name="$3"
+  local -r root_db_password="$4"
 
-  mysql -u root -e "CREATE USER '${db_user}'@'localhost' IDENTIFIED BY '${db_password}';"
-  mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON ${db_name}.* TO '${db_user}'@'localhost' IDENTIFIED BY '${db_password}';";
-  mysql -u root -e "FLUSH PRIVILEGES"
+  mysql -u root -p"${root_db_password}" -e "CREATE USER '${db_user}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${db_password}';"
+  mysql -u root -p"${root_db_password}" -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON ${db_name}.* TO '${db_user}'@'localhost';";
+  mysql -u root -p"${root_db_password}" -e "FLUSH PRIVILEGES"
 }
 
 #######################################
@@ -60,13 +61,13 @@ function setup_mysql_user() {
 function setup_opencart_installer() {
   local -r src_installer_folder="/usr/src/opencart"
 
+  # Copy public website
   cp -rf "${src_installer_folder}/upload" "${opencart_folder}"
-  cp -f "${src_installer_folder}/composer.json" "${opencart_folder}/composer.json"
 
+  # Move default configs
   cd "${opencart_folder}"
-  composer install --no-interaction
-  rm -rf system/storage/vendor
-  composer update --no-interaction
+  mv config-dist.php config.php
+  mv admin/config-dist.php admin/config.php
 }
 
 #######################################
@@ -89,7 +90,6 @@ function install_opencart_db() {
   local -r email="$6"
   local -r url="$7"
 
-  cd "${opencart_folder}"
   php install/cli_install.php install \
     --db_hostname localhost \
     --db_username "${db_user}" \
@@ -110,13 +110,15 @@ function prepare_apache_and_php() {
   cd "${opencart_folder}"
 
   # Enable OpenCart specific php configs
-  mv php.ini /etc/php/7.4/apache2/conf.d/opencart.ini
+  php_version="$(find /etc/php/8* -maxdepth 0 -type d \
+                  | grep -o -P "\d+\.\d+")"
+  mv php.ini "/etc/php/${php_version}/apache2/conf.d/opencart.ini"
 
   # Enable store htaccess
   mv -f .htaccess.txt .htaccess
 
   # Create apache root htaccess
-  echo "RedirectMatch 302 ^\/(?!.*store).* /store/" > ../.htaccess
+  echo 'RedirectMatch 302 ^\/(?!.*store).* /store/' > ../.htaccess
 
   # Disable default apache website
   a2dissite 000-default
@@ -130,20 +132,4 @@ function fix_storage_location() {
   mv /var/www/html/store/system/storage /var/www/storage
   sed -i "s/DIR_SYSTEM \. 'storage\//'\/var\/www\/storage\//g" config.php
   sed -i "s/DIR_SYSTEM \. 'storage\//'\/var\/www\/storage\//g" admin/config.php
-}
-
-#######################################
-# Fix OpenCart PHP dependencies folder.
-#######################################
-function fix_vendor_modules() {
-  cd "${opencart_folder}"
-
-  local -r vendor_dir="/var/www/storage/vendor"
-  local config_contents="$(jq -r \
-    --arg vendorDir "${vendor_dir}" \
-    '.config."vendor-dir" = $vendorDir' "composer.json")"
-
-  echo "${config_contents}" > "composer.json"
-  mkdir -p "${vendor_dir}"
-  composer install --no-interaction
 }

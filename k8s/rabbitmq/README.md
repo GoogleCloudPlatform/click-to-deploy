@@ -198,21 +198,21 @@ It is advised to use stable image reference which you can find on
 Example:
 
 ```shell
-export TAG="3.8.11-20210211-092515"
+export TAG="3.11.23-<BUILD_ID>"
 ```
 
 Alternatively you can use short tag which points to the latest image for selected version.
 > Warning: this tag is not stable and referenced image might change over time.
 
 ```shell
-export TAG="3.8"
+export TAG="3.11"
 ```
 
 Configure the container images:
 
 ```shell
 export IMAGE_RABBITMQ=marketplace.gcr.io/google/rabbitmq
-export IMAGE_RABBITMQ_INIT=marketplace.gcr.io/google/rabbitmq/debian9:${TAG}
+export IMAGE_RABBITMQ_INIT=marketplace.gcr.io/google/rabbitmq/c2d-debian11:${TAG}
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/rabbitmq/prometheus-to-sd:${TAG}"
 ```
 

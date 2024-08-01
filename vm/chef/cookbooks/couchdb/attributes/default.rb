@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['couchdb']['debian']['codename'] = 'buster'
+default['couchdb']['debian']['codename'] = 'bullseye'
 default['couchdb']['password'] = 'admTmpP@ssw0rd'
 default['couchdb']['cookie'] = `openssl rand -hex 12`

@@ -142,13 +142,13 @@ export METRICS_EXPORTER_ENABLED=false
 Configure the image tag:
 
 ```shell
-export TAG=8.9
+export TAG=9.1
 export ZK_TAG=3.6
 ```
 Configure the container images:
 
 ```shell
-export IMAGE_SOLR="marketplace.gcr.io/google/solr"
+export IMAGE_SOLR="marketplace.gcr.io/google/solr9"
 export IMAGE_ZOOKEEPER="marketplace.gcr.io/google/solr/zookeeper:${TAG}"
 export IMAGE_DEPLOYER="marketplace.gcr.io/google/solr/deployer:${TAG}"
 ```
@@ -389,8 +389,8 @@ To deploy Solr in standalone mode, run the following commands:
 APP_INSTANCE_NAME=solr-standalone
 NAMESPACE=default
 STANDALONE_MODE_ENABLED=true
-TAG="8.9"
-IMAGE_SOLR="marketplace.gcr.io/google/solr8"
+TAG="9.1"
+IMAGE_SOLR="marketplace.gcr.io/google/solr9"
 IMAGE_DEPLOYER="marketplace.gcr.io/google/solr/deployer:${TAG}"
 STORAGE_CLASS="standard" # provide your StorageClass name if not "standard"
 PERSISTENT_SOLR_SIZE="2Gi"

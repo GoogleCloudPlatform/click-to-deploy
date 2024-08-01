@@ -1,0 +1,41 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-redis-$UNIQUE-id, -d, -p, '6379:6379', marketplace.gcr.io/google/redis6, --requirepass, dragonfly]
+- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-mysql-$UNIQUE-id, -d, -p, '3306:3306', -e, MARIADB_USER=dragonfly, -e, MARIADB_PASSWORD=dragonfly, -e, MARIADB_DATABASE=manager, -e, MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes, marketplace.gcr.io/google/mariadb10]
+- command: [sleep, 30s]
+- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-dragonfly-manager-$UNIQUE-id, -d, -p, '8080:8080',-p, '65003:65003', -e, DRAGONFLY_MYSQL_HOST=some-mysql-$UNIQUE-id, -e, DRAGONFLY_REDIS_HOST=some-redis-$UNIQUE-id, $IMAGE]
+- command: [sleep, 30s]
+
+teardown:
+- command: [docker, stop, some-redis-$UNIQUE-id, some-mysql-$UNIQUE-id, some-dragonfly-manager-$UNIQUE-id]
+- command: [docker, rm, some-redis-$UNIQUE-id, some-mysql-$UNIQUE-id, some-dragonfly-manager-$UNIQUE-id]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
+
+target: some-dragonfly-manager-$UNIQUE-id
+tests:
+- name: Test manager console page
+  command: [curl, -L, 'http://localhost:8080/']
+  expect:
+    stdout:
+      matches: 'dragonfly'
+- name: Manager health check
+  command: [/bin/grpc_health_probe, '-addr=localhost:65003']
+  expect:
+    stderr:
+      matches: 'SERVING'
+
+

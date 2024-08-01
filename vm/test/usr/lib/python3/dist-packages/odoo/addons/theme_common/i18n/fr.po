@@ -1,0 +1,2143 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * theme_common
+# 
+# Translators:
+# Christophe CHAUVET <christophe.chauvet@gmail.com>, 2019
+# Jean-Marc Dupont <jmd@6it.fr>, 2019
+# Kévin R., 2019
+# Lucas Deliege <lud@openerp.com>, 2019
+# 6534c450c77b2549e41c52e2051f5839, 2019
+# Martin Trigaux, 2019
+# Frédéric LIETART <stuff@tifred.fr>, 2019
+# Vincent Hammadache <vhammadache@gmail.com>, 2019
+# Melanie Bernard <mbe@odoo.com>, 2019
+# Eloïse Stilmant <est@odoo.com>, 2019
+# Nathan Grognet <ngr@odoo.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-24 09:00+0000\n"
+"PO-Revision-Date: 2019-04-24 11:21+0000\n"
+"Last-Translator: Nathan Grognet <ngr@odoo.com>, 2019\n"
+"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "$15/mo"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "$29/mo"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "$69/mo"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "$99/mo"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_team_profiles
+msgid "- ART DIRECTOR -"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_team_profiles
+msgid "- PARTNER -"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_team_profiles
+msgid "- TRAINEE -"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "-50% OFF"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_timeline
+msgid "...and switch the timeline contents to fit your needs."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid "/// 03-11-2014 ///"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid "/// 08-11-2014 ///"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid "/// 22-10-2014 ///"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid "/// 28-10-2014 ///"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "02"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "05"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_big_icons
+msgid "1000 Apps"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "12:00 AM"
+msgstr "12:00"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "18"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_big_icons
+msgid "20.000 Users"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "2014"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "21"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_big_icons
+msgid "234 Clients"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "25%"
+msgstr "25%"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_big_icons
+msgid "30 Countries"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "30%"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "50$"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_big_icons
+msgid "75 Partners"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_page_header
+msgid "<font style=\"font-size: 62px;\">Page Title</font>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_google_map
+msgid ""
+"<font>Visit us:</font>\n"
+"                <span>Our office is located in the northeast of Brussels. TEL (555) 432 2365</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid ""
+"<i class=\"fa fa-1x fa-calendar fa-fw mr-1 text-gamma\"/>\n"
+"                                <small>Date</small>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_row
+msgid "<i class=\"fa fa-1x fa-camera text-alpha mr-2\"/><b>Images</b>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid ""
+"<i class=\"fa fa-1x fa-clock-o fa-fw mr-1 text-gamma\"/>\n"
+"                                <small>Time</small>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_2
+msgid "<i class=\"fa fa-1x fa-cog\"/> More Details"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_row
+msgid "<i class=\"fa fa-1x fa-file-o text-alpha mr-2\"/><b>Notes</b>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid ""
+"<i class=\"fa fa-1x fa-map-marker fa-fw mr-1 text-gamma\"/>\n"
+"                                <small>Location</small>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid ""
+"<i class=\"fa fa-1x fa-microphone fa-fw mr-1 text-gamma\"/>\n"
+"                                <small>100+ conferences</small>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_row
+msgid "<i class=\"fa fa-1x fa-newspaper-o text-alpha mr-2\"/><b>News</b>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_row
+msgid "<i class=\"fa fa-1x fa-pencil-square-o text-alpha mr-2\"/><b>Edit</b>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid ""
+"<i class=\"fa fa-1x fa-users fa-fw mr-1 text-gamma\"/>\n"
+"                                <small>2,000+ attendees</small>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.options_s_timeline
+msgid "<i class=\"fa fa-align-left\"/>Position"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_css_slider_options
+msgid "<i class=\"fa fa-bolt\"/> Autoplay"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image-opt
+msgid "<i class=\"fa fa-exchange\"/>Image position"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_masonry_block-opt
+msgid "<i class=\"fa fa-expand\"/>Inner Spacing"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_team_profiles_options
+msgid "<i class=\"fa fa-eyedropper\"/>Color"
+msgstr "<i class=\"fa fa-eyedropper\"/>Couleur"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_options_progress_bar
+msgid "<i class=\"fa fa-eyedropper\"/>Colors"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<i class=\"fa fa-facebook-square\"/> Facebook"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_google_map_option
+msgid "<i class=\"fa fa-fw fa-cog\"/>Map Options"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_block_option
+msgid "<i class=\"fa fa-fw fa-cog\"/>Video Options"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_google_map_option
+msgid "<i class=\"fa fa-fw fa-road\"/>Type"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_google_map_option
+msgid "<i class=\"fa fa-fw fa-search\"/>Zoom"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<i class=\"fa fa-git-square\"/> GitHub"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_carousel
+msgid ""
+"<i class=\"fa fa-info-circle fa-1x text-primary\"/> - <b>An additional "
+"information</b>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_timeline
+msgid ""
+"<i class=\"fa fa-info-circle mr-1\"/> <small>An additional "
+"information</small>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<i class=\"fa fa-linkedin-square\"/> Linkedin"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_options_progress_bar
+msgid "<i class=\"fa fa-magic\"/>Styles"
+msgstr "<i class=\"fa fa-magic\"/>Styles"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_animated_boxes_options
+msgid "<i class=\"fa fa-plus-circle\"/>Add Slide"
+msgstr "<i class=\"fa fa-plus-circle\"/>Ajouter une diapositive"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_css_slider_options
+msgid "<i class=\"fa fa-plus-circle\"/>Add a new Slide"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image-opt
+msgid "<i class=\"fa fa-tag\"/>Caption position"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_animated_boxes_options
+msgid "<i class=\"fa fa-trash-o\"/>Delete Slide"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_css_slider_options
+msgid "<i class=\"fa fa-trash-o\"/>Remove current slide"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "<small>* Conditions and restrictions apply.</small>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<small>Clients</small>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<small>Followers</small>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<small>Projects</small>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_timeline
+msgid "<span class=\"bg-white\"><b>2015</b></span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_timeline
+msgid "<span class=\"bg-white\"><b>2018</b></span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_timeline
+msgid "<span class=\"bg-white\"><b>2019</b></span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid ""
+"<span class=\"carousel-control-next-icon\"/>\n"
+"                            <span class=\"sr-only\">Next</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_features_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_products_carousel
+msgid ""
+"<span class=\"carousel-control-next-icon\"/>\n"
+"                <span class=\"sr-only\">Next</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid ""
+"<span class=\"carousel-control-prev-icon\"/>\n"
+"                            <span class=\"sr-only\">Previous</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_features_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_products_carousel
+msgid ""
+"<span class=\"carousel-control-prev-icon\"/>\n"
+"                <span class=\"sr-only\">Previous</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase
+msgid "<span class=\"fa fa-2x fa-fw fa-desktop\"/>First feature"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase
+msgid "<span class=\"fa fa-2x fa-heart\"/>Another feature"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase
+msgid "<span class=\"fa fa-2x fa-paint-brush \"/>Second feature"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase
+msgid "<span class=\"fa fa-2x fa-sliders \"/>Last Feature"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "<span class=\"fa fa-globe\"/> Link"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "<span class=\"fa fa-info-circle\"/> Info"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"<span class=\"menu-item\">Chardonnay</span>\n"
+"                                    <span class=\"menu-item\">Sonoma Coast, 2012</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"<span class=\"menu-item\">Malbec</span>\n"
+"                                    <span class=\"menu-item\">Mendoza, 2012</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"<span class=\"menu-item\">Pinot Noir</span>\n"
+"                                    <span class=\"menu-item\">California, 2012</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"<span class=\"menu-item\">Rose</span>\n"
+"                                    <span class=\"menu-item\">Napa, 2012</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"<span class=\"menu-item\">rum, lime, juice cane sugar</span>\n"
+"                                    <span class=\"menu-item\">fresh mint, soda, ice</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"<span class=\"menu-item\">whiskey, vermouth, angostura,</span>\n"
+"                                    <span class=\"menu-item\">maraschino cherry</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"<span class=\"menu-item\">white tequila, frenadine,</span>\n"
+"                                    <span class=\"menu-item\">orange juice, soda, ice</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"<span class=\"menu-item\">white tequila, triple sec,</span>\n"
+"                                    <span class=\"menu-item\">lime juice, ice</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_page_header
+msgid ""
+"<span class=\"s_badge badge bg-alpha\">\n"
+"                            <i class=\"fa fa-1x fa-fw fa-tag\"/>Tag\n"
+"                        </span>\n"
+"                        <span class=\"s_badge badge bg-gamma\">\n"
+"                            <i class=\"fa fa-1x fa-fw fa-folder\"/>Category\n"
+"                        </span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid ""
+"<span class=\"s_badge badge bg-gamma\" data-name=\"Badge\">\n"
+"                            <i class=\"fa fa-1x fa-fw fa-clock-o\"/>3 months ago\n"
+"                        </span>\n"
+"                        <span class=\"s_badge badge bg-gamma\" data-name=\"Badge\">\n"
+"                            <i class=\"fa fa-1x fa-fw fa-user\"/>by John DOE\n"
+"                        </span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_badge
+msgid ""
+"<span class=\"s_badge badge bg-gamma\" data-name=\"Badge\">\n"
+"            <i class=\"fa fa-1x fa-fw fa-folder\"/>Category\n"
+"        </span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid ""
+"<span class=\"s_badge badge bg-secondary pull-right\">\n"
+"                                          <i class=\"fa fa-1x fa-fw fa-exclamation-circle\"/>New\n"
+"                                        </span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid ""
+"<span class=\"s_news_carousel_day\" style=\"font-size: 62px;\">18</span>\n"
+"                                        <span class=\"s_news_carousel_month\">December</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid ""
+"<span class=\"s_news_carousel_day\" style=\"font-size: 62px;\">3</span>\n"
+"                                        <span class=\"s_news_carousel_month\">January</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_numbers
+msgid "<span class=\"s_number display-4 text-alpha\">12</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_numbers
+msgid "<span class=\"s_number display-4 text-alpha\">45</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_numbers
+msgid "<span class=\"s_number display-4 text-gamma\">37</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_features_carousel
+msgid "<span class=\"text-center\">01.</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_features_carousel
+msgid "<span class=\"text-center\">02.</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_slider
+msgid "<span href=\"#0\" class=\"s_ss_close fa fa-times\">Close</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_progress_bar
+msgid "<span>80% Development</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<span>80% Html5/CSS3</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<span>85% Bootstrap</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<span>99% COMPLETE</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_carousel
+msgid "<span>A <b>caption</b> for this image</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<strong> 20,7K </strong>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "<strong>120GB</strong> Disk Space"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<strong>143</strong>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<strong>245</strong>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "<strong>50GB</strong> Disk Space"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "<strong>80GB</strong> Disk Space"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<strong>COMPANY: </strong> Odoo"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "<strong>FUNCTION: </strong> Web Designer / UI."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "<strong>Free</strong> Billing Systems"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid ""
+"<strong>Increase the amount of your visitors by offering them great discount.</strong>\n"
+"                                <br/>Let them find the coupon code."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_animated_boxes
+msgid "<strong>My great button</strong>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid ""
+"<strong>Skills: </strong><span class=\"tags\">html5, css3, jquery, "
+"bootstrap3</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "<strong>Unlimited </strong> Email Addresses"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "<strong>Unlimited</strong> Domains"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "<strong>Unlimited</strong> Email Addresses"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "<strong>Unlimited</strong> MySQL Databases"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid ""
+"<strong>Write something about you.</strong>This is a good way to briefly "
+"tell your visitors who you are and what you do. Link Clean Flat Profile to "
+"your social networks and use the customizable progress bars to show your "
+"skills."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_column
+msgid "A Big Image and a Paragraph"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_big_image_parallax
+msgid "A Business Theme For Odoo CMS"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_4
+msgid "A COLOR BLOCK"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "A Great Way to Present Your Team"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_big_icons
+msgid "A Great Way to Show Your Numbers"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "A Great way to show your range"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_masonry_block
+msgid "A great title"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_slider
+msgid ""
+"A great way to catch your reader's attention is to tell a story. Everything "
+"you consider writing can be told as a story."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_three_columns_circle
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_two_columns
+msgid ""
+"A great way to catch your reader's attention is to tell a story. Everything "
+"you consider writing can be told as a story. Write one or two paragraphs "
+"describing your product or services. To be successful your content needs to "
+"be useful to your readers. Start with the customer. Find out what they want "
+"and give it to them."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_column
+msgid ""
+"A great way to catch your reader's attention is to tell a story. Everything "
+"you consider writing can be told as a story. Write one or two paragraphs "
+"describing your product or services. To be successful your content needs to "
+"be useful to your readers. Start with the customer. Find out what they want "
+"and give it to them. A great way to catch your reader's attention is to tell"
+" a story. Everything you consider writing can be told as a story. Write one "
+"or two paragraphs describing your product or services. To be successful your"
+" content needs to be useful to your readers. Start with the customer. Find "
+"out what they want and give it to them."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_timeline
+msgid ""
+"A timeline is a graphical representation on which important events are "
+"marked."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "ALL DAY"
+msgstr "TOUTE LA JOURNEE"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "About Me"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_slider_options
+msgid "Add Slide"
+msgstr "Ajouter un diaporama"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_process_steps
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_slider
+msgid "Add to cart"
+msgstr "Ajouter au panier"
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:31
+#, python-format
+msgid ""
+"Add videos, playlists or other contents pasting the iframe code or video url"
+" into the box."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "Add your co-Workers and a link to their profiles."
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_google_map_modal.xml:5
+#, python-format
+msgid "Address"
+msgstr "Adresse"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_numbers
+msgid "Amazing pages"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_2
+msgid "An Other Color Block"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_masonry_block
+msgid "And a great subtitle"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid "Animal Cannibals"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_options_progress_bar
+msgid "Animated"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:109
+#, python-format
+msgid "Apply"
+msgstr "Appliquer"
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:81
+#, python-format
+msgid "Autoplay"
+msgstr "Lecture automatique"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"BLACKBIRD VINEYARDS<span class=\"slash\"><span class=\"price\"> | €</span> "
+"11.00</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid "Basement Jaxx"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_numbers
+msgid "Beautiful snippets"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_big_icons
+msgid "Big Icons"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_masonry_block-opt
+msgid "Bigger"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image-opt
+msgid "Bottom Left"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image-opt
+msgid "Bottom Right"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_animated_boxes
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_clonable_boxes
+msgid "Box Description"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_animated_boxes
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_clonable_boxes
+msgid "Box title"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid ""
+"Build relationships and recognition by staying in touch with your customers."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"COLORES DEL SOL <span class=\"slash\"><span class=\"price\"> | €</span> "
+"12.00</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "COUPON"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/js/s_google_map_editor.js:53
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:108
+#, python-format
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/js/s_google_map_frontend.js:51
+#, python-format
+msgid "Cannot load google map, check your configuration !"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_text_highlight
+msgid "Change the color of this box"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image
+msgid "Click here"
+msgstr "Cliquez ici"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_process_steps
+msgid "Click on the icon to adapt it <br/>to your purpose."
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:34
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:35
+#, python-format
+msgid "Click the"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:8
+#, python-format
+msgid "Close"
+msgstr "Fermer"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid "Cocktails"
+msgstr "Cocktails"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "Collapsable Tab Code"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_2
+msgid ""
+"Color blocks are a simple and effective way to <strong>present and highlight"
+" your content</strong>. Choose an image or a color for the background. You "
+"can even resize and duplicate the blocks to create your own layout. Add "
+"images or icons to customize the blocks."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_icon_box
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_options_pricing
+msgid "Colors"
+msgstr "Couleurs"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid "Continue reading <i class=\"fa fa-long-arrow-right align-middle ml-1\"/>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_products_carousel
+msgid "Convert your visitors to customers."
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:36
+#, python-format
+msgid "Copy the code provided in the expanded box."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid "Create an irresistible website."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_2
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_4
+msgid "Customize Backgrounds"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/js/s_google_map_editor.js:37
+#, python-format
+msgid "Customize your map"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_carousel
+msgid "Cycling through elements"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_features_carousel
+msgid "DECISIONS, DECISIONS, AND EVEN MORE DECISIONS"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_features_carousel
+msgid "DESIGN, DESIGN, AND EVEN MORE DESIGN"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_text_picture_text
+msgid "DISCOVER THE PRODUCT"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_progress
+msgid "Deciding the features"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_google_map_modal.xml:24
+#, python-format
+msgid "Default"
+msgstr "Par défaut"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_header_text_big_picture
+msgid ""
+"Design expression comes from the combined effect of all elements in a "
+"product. Colour tone, shape and size should direct a person's thoughts "
+"towards buying the product. Therefore it is in the product designer's best "
+"interest to consider the audiences who are most likely to be the product's "
+"end consumers. Keeping in mind how consumers will perceive the product "
+"during the design process will direct towards the product’s success in the "
+"market. However, even within a specific audience, it is challenging to cater"
+" to each possible personality within that group."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid "Discover"
+msgstr "Découvrir"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase
+msgid "Discover all the features"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "Display Your Last Activities"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_timeline
+msgid "Double-click an icon to change it."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid "Drink menu"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_process_steps
+msgid "Duplicate blocks <br/>to add more steps."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_timeline
+msgid "Edit this text and change it with your content."
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:35
+#, python-format
+msgid "Embed"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid "Event Heading"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"FRANCIS FORD COPPOLA <span class=\"slash\"><span class=\"price\"> | €</span>"
+" 9.00</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_css_slider_options
+msgid "False"
+msgstr "Faux"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_features_carousel
+msgid "Features"
+msgstr "Fonctionnalités"
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:92
+#, python-format
+msgid "Fill container with video"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_google_map_modal.xml:23
+#, python-format
+msgid "Flat"
+msgstr "Plat"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid "Fleetwood Mac"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase
+msgid ""
+"Focus on what the customer would like to know, not what you want to show. "
+"Write a small explanation of this great feature"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_icon_box
+msgid "Fonts"
+msgstr "Polices de caractères"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid "Freak!"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "Full Detailed Price List"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "GIFT"
+msgstr "CADEAU"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_process_steps
+msgid "Get Delivered"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "Get a code"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_progress
+msgid "Getting feedback"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:22
+#, python-format
+msgid "HTML5 Video - Youtube - Vimeo - Dailymotion"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_full_menu
+msgid "Hamburgers"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:32
+#, python-format
+msgid "Here’s how to embed a Youtube video:"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_2
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_4
+msgid "Highlight Your Content"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_full_menu
+msgid ""
+"Honey Dijon Chicken Burger<span class=\"slash\"><span class=\"price\"> | "
+"€</span> 12.00</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_google_map_option
+msgid "Hybrid"
+msgstr "Hybride"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_icon_box
+msgid "Icon Box / Features List"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_carousel
+msgid "Images Carousel"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_text_picture_text
+msgid ""
+"In a systematic approach, product designers conceptualize and evaluate "
+"ideas, turning them into tangible inventions and products. The product "
+"designer's role is to combine art, science, and technology to create new "
+"products that other people can use."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_page_header
+msgid "Introduce your content in few lines."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_icon_box
+msgid "It is super easy to resize and/or duplicate each box."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_team_profiles
+msgid "John DOE"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_blockquote
+msgid "John DOE • CEO of MyCompany"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "John Doe"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "Jul"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "LV5MAY14"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_icon_box
+msgid "Layout"
+msgstr "Agencement"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.options_s_timeline
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image-opt
+msgid "Left"
+msgstr "Gauche"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_process_steps
+msgid "Let your customers follow <br/>and understand your process."
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:74
+#, python-format
+msgid "Loop video"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste eius, nam "
+"optio dolor mollitia, consectetur asperiores libero illum. Repellendus, "
+"molestias consequatur rem ipsa. Tempora omnis eius, ipsam quaerat optio "
+"suscipit necessitatibus aliquam obcaecati. Vero quia mollitia repellendus "
+"maxime, alias. Harum!"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam "
+"repellendus sunt nobis libero delectus aperiam animi porro, optio expedita "
+"odio impedit quae praesentium fugit consequuntur vero architecto, excepturi,"
+" maiores aliquid."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_progress
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis "
+"nobis, tempore voluptatem qui dolorum quae."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus ullam "
+"minus qui aliquid optio, animi nam odio iste quisquam voluptas laudantium, "
+"magni recusandae nemo eligendi!"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_full_menu
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum incidunt, "
+"eum quae neque officiis dignissimos, veritatis amet, dolorum aperiam tempore"
+" sed. Modi rerum velit itaque ex nobis vero necessitatibus adipisci eaque "
+"cum iste nisi molestias quibusdam, voluptate odit deserunt, beatae."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae, inventore "
+"accusantium dolores. Ad non necessitatibus recusandae cupiditate animi "
+"quibusdam enim earum, nulla, qui. Dolorem sunt impedit similique a quia "
+"earum fuga unde, repellendus omnis iure."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid "MANHATTAN <span class=\"slash\"><span class=\"price\"> | €</span> 12.50</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid "MARGARITA <span class=\"slash\"><span class=\"price\"> | €</span> 9.00</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid "MOJITO <span class=\"slash\"><span class=\"price\"> | €</span> 12.00</span>"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_google_map_modal.xml:20
+#, python-format
+msgid "Marker Style"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid "Media heading"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "Medium"
+msgstr "Moyen"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_full_menu
+msgid "Menu A'la carte"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "More Features"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:60
+#, python-format
+msgid "Muted"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_slider
+msgid "My Title"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_features_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_products_carousel
+msgid "Next"
+msgstr "Suivant"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "Nice % Discount Tables"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "Nice and Efficient Events List"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_masonry_block-opt
+msgid "Normal"
+msgstr "Normale"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "OLV4SY3R"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_big_image
+msgid "OUR CATALOG"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:54
+#, python-format
+msgid "Options"
+msgstr "Options"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_img
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_three_columns_circle
+msgid "Organize Your Content with These Three Columns"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_two_columns
+msgid "Organize Your Content with These Two Columns"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_numbers
+msgid "Outstanding images"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"PATZ AND HALL<span class=\"slash\"><span class=\"price\"> | €</span> "
+"12.50</span>"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:37
+#, python-format
+msgid "Paste the code into the box."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_process_steps
+msgid "Pay"
+msgstr "Payer"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_progress
+msgid "Planning"
+msgstr "Planning"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid "Post heading"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid "Prepare for the future of eCommerce."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_progress
+msgid "Preparing"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_banner_parallax
+msgid "Present your products"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_products_carousel
+msgid "Present your products online!"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_features_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_products_carousel
+msgid "Previous"
+msgstr "Précedent"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "Pro"
+msgstr "Pro"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_progress
+msgid "Producing"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_text_picture_text
+msgid ""
+"Product design is the process of creating a new product to be sold by a "
+"business to its customers. A very broad concept, it is essentially the "
+"efficient and effective generation and development of ideas through a "
+"process that leads to new products."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "Project 01"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "Project 02"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_profile
+msgid "Project 03"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_text_highlight
+msgid "Put the focus on what you have to say!"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:98
+#, python-format
+msgid "Put video in container"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid "REGISTER <i class=\"fa fa-1x fa-caret-right ml-2\"/>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_team_profiles
+msgid "Read more"
+msgstr "En savoir plus"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid "Register"
+msgstr "S'inscrire"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_slider_options
+msgid "Remove current slide"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_4
+msgid "Resize and Duplicate"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_column
+msgid "Resume with A Nice Subtitle"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_img
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_three_columns_circle
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_two_columns
+msgid "Resume with a Subtitle"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.options_s_timeline
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image-opt
+msgid "Right"
+msgstr "Droit"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_google_map_option
+msgid "RoadMap"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image
+msgid "Sample Title"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image
+msgid "Sample description"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_full_menu
+msgid ""
+"Sandwich with Ham and Cheese<span class=\"slash\"><span class=\"price\"> | "
+"€</span> 9.00</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_google_map_option
+msgid "Satellite"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/js/s_google_map_editor.js:39
+#, python-format
+msgid "Save"
+msgstr "Sauvegarder"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_mini_nav_bar
+msgid "Section 1"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_mini_nav_bar
+msgid "Section 2"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_mini_nav_bar
+msgid "Section 3"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_mini_nav_bar
+msgid "Section 4"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_mini_nav_bar
+msgid "Section 5"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_mini_nav_bar
+msgid "Section 6"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:9
+#, python-format
+msgid "Select a video"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_process_steps
+msgid "Select and delete blocks <br/>to remove some steps."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_4
+msgid "Select the Colors"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_icon_box
+msgid "Select your favorite font combination to emphase your texts."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "Sep"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_block
+msgid "Set a catchy headline"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:34
+#, python-format
+msgid "Share"
+msgstr "Partager"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "Shipping"
+msgstr "Expédition"
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:67
+#, python-format
+msgid "Show controls"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_icon_box
+msgid "Showcase Your Services and Features"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_process_steps
+msgid "Sign in"
+msgstr "Pointer l'entrée"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_animated_boxes
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_css_slider
+msgid "Slide Description"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_css_slider
+msgid "Slide Title"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_animated_boxes
+msgid "Slide title"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "Small"
+msgstr "Petit"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid ""
+"Speakers from all over the world will join our experts to give inspiring "
+"talks on various topics."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_options_progress_bar
+msgid "Striped"
+msgstr "Rayé"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_icon_box
+msgid "Style"
+msgstr "Style"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid ""
+"TEQUILA SUNRISE <span class=\"slash\"><span class=\"price\"> | €</span> "
+"11.00</span>"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_menu_three_columns
+msgid "Take a tour"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_google_map_option
+msgid "Terrain"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_progress
+msgid "Testing"
+msgstr "En test"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_text_highlight
+msgid "Text Highlight"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_text_picture_text
+msgid "The best approach"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid "The famous band comes last time in this year, don't miss it!"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_text_picture_text
+msgid "The latest technology"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_progress
+msgid "The process from paper version"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_header_text_big_picture
+msgid "The product which fits your needs"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_header_text_big_picture
+msgid ""
+"The solution to that is to create a product that, in its designed appearance"
+" and function, expresses a personality or tells a story. Products that carry"
+" such attributes are more likely to give off a stronger expression that will"
+" attract more consumers. On that note it is important to keep in mind that "
+"design expression does not only concern the appearance of a product, but "
+"also its function. For example, as humans our appearance as well as our "
+"actions are subject to people's judgment when they are making a first "
+"impression of us."
+msgstr ""
+
+#. module: theme_common
+#: model:ir.model,name:theme_common.model_theme_utils
+msgid "Theme Utils"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_2
+msgid "This Is a Color Block"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_img
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_three_columns_circle
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_two_columns
+msgid "This Is a Column"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_features_carousel
+msgid ""
+"This theme does not limit you to one setup, we prefer to give you options. "
+"From boxed layout to wide, left sidebars to right and multiple headers; we "
+"let you decide. That’s right, you can have your cake and eat some too."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_pricing
+msgid "Tiny"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_separator_nav
+msgid "Top"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image-opt
+msgid "Top Left"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image-opt
+msgid "Top Right"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_css_slider_options
+msgid "True"
+msgstr "Vrai"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid "Upcoming Events"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid "Use newsletters to increase your popularity"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:14
+#, python-format
+msgid ""
+"Use the 'Customize 'menu to define a fallback background image for not "
+"compatible devices"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_images_carousel
+msgid ""
+"Use this building block to showcase your content with an images carousel. "
+"You can edit, add or remove images using the customize options."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid ""
+"Use this component for creating a list of featured elements to which you "
+"want to bring attention."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_team_profiles
+msgid ""
+"Use this paragraph to write a short, sweet and successful resume about this "
+"member of your team."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_media_list
+msgid ""
+"Use this snippet to build various types of components that feature a left- "
+"or right-aligned image alongside textual content. Duplicate the element to "
+"create a list that fit your needs."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_timeline
+msgid ""
+"Use this timeline as a part of your resume, to show your visitors what "
+"you've done in the past."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_numbers
+msgid "Useful options"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:17
+#, python-format
+msgid "Video"
+msgstr "Vidéo"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_product_list
+msgid "View item"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_big_image
+msgid "We have Awesome Products"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid ""
+"Which trends to follow? Which ideas will work? <br/>Opening Keynote - "
+"Presented by John DOE."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_compact_menu
+msgid "Wine"
+msgstr "Vin"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid ""
+"With Theme Clean you get a list of your events with date, time, description, etc. Select the simple or image mode and edit your content.\n"
+"                        <br/>You can link your events to your favorite social network."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image
+msgid "With a great subtitle"
+msgstr "Avec un super sous-titre"
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_progress
+msgid "With the most effective technique"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_color_blocks_img
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_three_columns_circle
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_two_columns
+msgid "Write Something Nice for Your Users"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "Write a description of your event here."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_blockquote
+msgid ""
+"Write a quote here from one of your customers. Quotes are a great way to "
+"build confidence in your products or services."
+msgstr ""
+"Ecrivez une citation d'un de vos clients ici. Les citations sont une superbe"
+" manière de construire la confiance dans vos produits ou services."
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image
+msgid "Write one or two paragraphs describing your product"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_showcase_image
+msgid ""
+"Write one or two paragraphs describing your product, services or a specific "
+"feature. To be successful your content needs to be useful to your readers."
+msgstr ""
+"Ecrivez un ou deux paragraphes décrivant votre produit, vos services ou une "
+"fonctionnalité spécifique. Votre contenu doit être utile pour l'utilisateur "
+"afin d'être efficace.  "
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_icon_box
+msgid "You can change the box color by using the customize option."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_timeline
+msgid "You can edit, duplicate..."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_icon_box
+msgid "You can even replace the icon by one of your choice."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_slide
+msgid "You get a free drink with your entrance!"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_event_list
+msgid "Your Event Name"
+msgstr "Le nom de votre événement"
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_google_map_modal.xml:11
+#, python-format
+msgid "Your address"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_timeline
+msgid "Your title"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_news_carousel
+msgid ""
+"Your website is where almost all of your customers will end up first. "
+"<br/>Let's clear up what it takes to give them the best experience with it."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "ZUY4OPLQ"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "card"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_google_map_modal.xml:16
+#, python-format
+msgid "e.g. De Brouckere, Brussels, Belgium"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:44
+#, python-format
+msgid "iframe"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:34
+#, python-format
+msgid "link under the video."
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:35
+#, python-format
+msgid "link."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "off"
+msgstr ""
+
+#. module: theme_common
+#. openerp-web
+#: code:addons/theme_common/static/src/xml/s_media_block_modal.xml:41
+#, python-format
+msgid "share"
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_banner_parallax
+msgid "with this theme."
+msgstr ""
+
+#. module: theme_common
+#: model_terms:theme.ir.ui.view,arch:theme_common.s_discount
+msgid "worldwilde"
+msgstr ""

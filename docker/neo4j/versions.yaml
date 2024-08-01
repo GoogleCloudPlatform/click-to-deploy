@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,25 +16,38 @@
 cloudbuild:
   enable_parallel: true
 versions:
-- dir: 4/debian11/4.4
-  from: marketplace.gcr.io/google/debian11
+- dir: 5/debian11/5.5
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     dockerneo4j:
-      sha256: 40cde651c97b354f6dc6d84863d7d4dca301742bd2d92445a961e84ff85350a5
-      version: 4.4.10
+      version: 5.5.0
     neo4j:
-      sha256: 869ecb89ce36fe457b4d4c4fcaa48fdf2f2d739c45323bd2c8ccdf09aa11abbf
-      version: 4.4.10
+      version: 5.5.0
     tini:
-      sha256: 93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c
       version: 0.19.0
-  repo: neo4j4
+  repo: neo4j5
   tags:
-  - 4.4.9-debian11
-  - 4.4-debian11
-  - 4-debian11
-  - 4.4.9
-  - '4.4'
-  - '4'
+  - 5.5.0-debian11
+  - 5.5-debian11
+  - 5.5.0
+  - '5.5'
+  templateSubDir: neo4j5
+- dir: 5/debian11/5.8
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    dockerneo4j:
+      version: 5.8.0
+    neo4j:
+      version: 5.8.0
+    tini:
+      version: 0.19.0
+  repo: neo4j5
+  tags:
+  - 5.8.0-debian11
+  - 5.8-debian11
+  - 5-debian11
+  - 5.8.0
+  - '5.8'
+  - '5'
   - latest
-
+  templateSubDir: neo4j5

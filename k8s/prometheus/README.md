@@ -37,9 +37,6 @@ application consists of the following components:
     server and handles them accordingly to its configuration, specified in a
     ConfigMap.
 
-*   **Grafana StatefulSet** - provides a user interface for querying Prometheus
-    about the metrics and visualizes the metrics in pre-configured dashboards.
-
 ### Configuration
 
 *   Prometheus server is deployed to a StatefulSet, and you can configure the
@@ -56,10 +53,6 @@ application consists of the following components:
     StatefulSet is configured to spin up 2 replicas - if you need to change the
     number of replicas, edit the `--mesh.peer` arguments of Alert Manager
     containers.
-
-*   In the Grafana StatefulSet, the pre-configured dashboards of Grafana are
-    stored in a ConfigMap. The StatefulSet is currently configured to have one
-    replica, and does not scale up.
 
 *   Each StatefulSet, Deployment and DaemonSet uses its own dedicated Service
     Account with permissions appropriate for its functionality.
@@ -167,8 +160,6 @@ export IMAGE_PROMETHEUS="marketplace.gcr.io/google/prometheus:${TAG}"
 export IMAGE_ALERTMANAGER="marketplace.gcr.io/google/prometheus/alertmanager:${TAG}"
 export IMAGE_KUBE_STATE_METRICS="marketplace.gcr.io/google/prometheus/kubestatemetrics:${TAG}"
 export IMAGE_NODE_EXPORTER="marketplace.gcr.io/google/prometheus/nodeexporter:${TAG}"
-export IMAGE_GRAFANA="marketplace.gcr.io/google/prometheus/grafana:${TAG}"
-export IMAGE_PROMETHEUS_INIT="marketplace.gcr.io/google/prometheus/debian9:${TAG}"
 ```
 
 The images above are referenced by
@@ -183,24 +174,12 @@ script:
 for i in "IMAGE_PROMETHEUS" \
          "IMAGE_ALERTMANAGER" \
          "IMAGE_KUBE_STATE_METRICS" \
-         "IMAGE_NODE_EXPORTER" \
-         "IMAGE_GRAFANA" \
-         "IMAGE_PROMETHEUS_INIT"; do
+         "IMAGE_NODE_EXPORTER"; do
   repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
   env | grep $i;
 done
-```
-
-Generate a random password for Grafana:
-
-```shell
-# Install pwgen and base64
-sudo apt-get install -y pwgen base64
-
-# Set the Grafana password
-export GRAFANA_GENERATED_PASSWORD="$(pwgen 12 1 | tr -d '\n' | base64)"
 ```
 
 Define the size of the Prometheus StatefulSet:
@@ -248,7 +227,6 @@ Define the environment variables:
 export PROMETHEUS_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-prometheus"
 export KUBE_STATE_METRICS_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-kube-state-metrics"
 export ALERTMANAGER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-alertmanager"
-export GRAFANA_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-grafana"
 export NODE_EXPORTER_SERVICE_ACCOUNT="${APP_INSTANCE_NAME}-node-exporter"
 ```
 
@@ -256,7 +234,7 @@ Expand the manifest to create Service Accounts:
 
 ```shell
 cat resources/service-accounts.yaml \
-  | envsubst '$NAMESPACE $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
+  | envsubst '$NAMESPACE $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
   > "${APP_INSTANCE_NAME}_sa_manifest.yaml"
 ```
 
@@ -274,7 +252,7 @@ manifest file for future updates to the application.
 
 ```shell
 awk 'FNR==1 {print "---"}{print}' manifest/* \
-  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $STORAGE_CLASS $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $IMAGE_GRAFANA $IMAGE_PROMETHEUS_INIT $NAMESPACE $GRAFANA_GENERATED_PASSWORD $PROMETHEUS_REPLICAS $PROMETHEUS_REPLICAS $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $GRAFANA_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
+  | envsubst '$APP_INSTANCE_NAME $NAMESPACE $STORAGE_CLASS $IMAGE_PROMETHEUS $IMAGE_ALERTMANAGER $IMAGE_KUBE_STATE_METRICS $IMAGE_NODE_EXPORTER $NAMESPACE $PROMETHEUS_REPLICAS $PROMETHEUS_REPLICAS $PROMETHEUS_SERVICE_ACCOUNT $KUBE_STATE_METRICS_SERVICE_ACCOUNT $ALERTMANAGER_SERVICE_ACCOUNT $NODE_EXPORTER_SERVICE_ACCOUNT' \
   > "${APP_INSTANCE_NAME}_manifest.yaml"
 ```
 
@@ -296,19 +274,19 @@ echo "https://console.cloud.google.com/kubernetes/application/${ZONE}/${CLUSTER}
 
 To view your app, open the URL in your browser.
 
-# Access the Grafana UI
+# Access the Prometheus UI
 
-Grafana is exposed as a ClusterIP-only Service, `$APP_INSTANCE_NAME-grafana`. To
-connect to the Grafana UI, you can either expose a public Service endpoint, or
+Prometheus is exposed as a ClusterIP-only Service, `$APP_INSTANCE_NAME-prometheus`. To
+connect to the Prometheus UI, you can either expose a public Service endpoint, or
 keep it private and connect from your local environment using `kubectl
 port-forward`.
 
-## Expose the Grafana service externally
+## Expose the Prometheus service externally
 
-To create an external IP address for Grafana, run the following command:
+To create an external IP address for Prometheus, run the following command:
 
 ```shell
-kubectl patch svc "$APP_INSTANCE_NAME-grafana" \
+kubectl patch svc "$APP_INSTANCE_NAME-prometheus" \
   --namespace "$NAMESPACE" \
   -p '{"spec": {"type": "LoadBalancer"}}'
 ```
@@ -318,36 +296,20 @@ It might take a while for the external IP address to be created.
 Get the public IP address with the following command:
 
 ```shell
-SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-grafana \
+SERVICE_IP=$(kubectl get svc $APP_INSTANCE_NAME-prometheus \
   --namespace $NAMESPACE \
   --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
 echo "http://${SERVICE_IP}/"
 ```
 
-## Using local port forwarding for Grafana
+## Using local port forwarding for Prometheus
 
-As an alternative to exposing Grafana publicly, use local port forwarding. In a
+As an alternative to exposing Prometheus publicly, use local port forwarding. In a
 terminal, run the following command:
 
 ```shell
-kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-grafana-0 3000
+kubectl port-forward --namespace ${NAMESPACE} ${APP_INSTANCE_NAME}-prometheus-0 9090
 ```
 
-You can access the Grafana UI at `http://localhost:3000/`.
+You can access the Prometheus UI at `http://localhost:9090/`.
 
-## Sign in to Grafana
-
-Grafana requires authentication. To check your username and password, run the
-following commands:
-
-```shell
-GRAFANA_USERNAME="$(kubectl get secret $APP_INSTANCE_NAME-grafana \
-                      --namespace $NAMESPACE \
-                      --output=jsonpath='{.data.admin-user}' | base64 --decode)"
-GRAFANA_PASSWORD="$(kubectl get secret $APP_INSTANCE_NAME-grafana \
-                      --namespace $NAMESPACE \
-                      --output=jsonpath='{.data.admin-password}' | base64 --decode)"
-echo "Grafana credentials:"
-echo "- user: ${GRAFANA_USERNAME}"
-echo "- pass: ${GRAFANA_PASSWORD}"
-```

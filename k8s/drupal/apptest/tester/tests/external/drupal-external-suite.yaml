@@ -9,7 +9,7 @@ actions:
       bodyText:
         html:
           title:
-            equals: 'Welcome to Drupal_Site | Drupal_Site'
+            equals: 'Welcome! | Drupal_Site'
 
 - name: Site address should be 200 OK (external IP) (TLS)
   bashTest:

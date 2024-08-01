@@ -1,5 +1,5 @@
 ARG MARKETPLACE_TOOLS_TAG
-FROM marketplace.gcr.io/google/debian9 AS build
+FROM marketplace.gcr.io/google/c2d-debian11 AS build
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends gettext

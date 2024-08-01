@@ -467,8 +467,8 @@ rules:
     resourceNames: ["cert-manager-controller"]
     verbs: ["get", "update", "patch"]
   - apiGroups: [""]
-    resources: ["configmaps"]
-    verbs: ["create"]
+    resources: ["configmaps", "secrets"]
+    verbs: ["create", "get"]
   - apiGroups: ["coordination.k8s.io"]
     resources: ["leases"]
     resourceNames: ["cert-manager-controller"]
@@ -476,7 +476,6 @@ rules:
   - apiGroups: ["coordination.k8s.io"]
     resources: ["leases"]
     verbs: ["create"]
-
 ---
 # grant cert-manager permission to manage the leaderelection configmap in the
 # leader election namespace

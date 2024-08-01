@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['influxdb']['repo']['uri'] = 'https://repos.influxdata.com/debian'
-default['influxdb']['repo']['components'] = ['stable']
-default['influxdb']['repo']['key'] = 'https://repos.influxdata.com/influxdb.key'
+default['influxdb']['version'] = '2.7.5'
+default['influxdb']['sha256'] = '79f286dfaeedb02b545449674c2621d1c1a0e019cd9ed3ffd0bbdf06b22d42f1'

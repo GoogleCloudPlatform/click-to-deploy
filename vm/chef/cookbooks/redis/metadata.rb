@@ -13,4 +13,5 @@
 # limitations under the License.
 
 name 'redis'
+depends 'google-cloud-ops-agent'
 supports 'debian'

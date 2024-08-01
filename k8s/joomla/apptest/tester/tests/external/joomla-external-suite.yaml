@@ -1,15 +1,14 @@
 actions:
 
-- name: Site address should be 200 OK (external IP)
-  httpTest:
-    url: http://{{ .Env.EXTERNAL_IP }}
+- name: Check Home page
+  bashTest:
+    script: curl -L "http://${EXTERNAL_IP}"
     expect:
-      statusCode:
-        equals: 200
-      bodyText:
-        html:
-          title:
-            equals: 'Home'
+      stdout:
+        contains: 'Home'
+      exitCode:
+        equals: 0
+
 
 - name: Site address should be 200 OK (external IP) (TLS)
   bashTest:

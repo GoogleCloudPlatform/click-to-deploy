@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe 'percona::ospo'
+
 bash 'Download Percona repo package' do
   code <<-EOH
-    wget -P /tmp/ https://repo.percona.com/apt/percona-release_#{node['percona']['version']}.#{node['percona']['debian']['codename']}_all.deb
+    apt-get install wget -y
+    wget -P /tmp/ https://repo.percona.com/percona/apt/percona-release_#{node['percona']['version']}.#{node['percona']['debian']['codename']}_all.deb
 EOH
 end
 
