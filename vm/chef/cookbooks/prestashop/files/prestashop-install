@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 #
-# Copyright 2017 Google Inc.
+# Copyright 2024 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,24 +16,37 @@
 
 source /opt/c2d/c2d-utils || exit 1
 
+declare prestashop_db_password="$(get_attribute_value "prestashop-db-password")"
+declare prestashop_admin_password="$(get_attribute_value "prestashop-admin-password")"
+declare prestashop_admin_email="$(get_attribute_value "prestashop-admin-email")"
+declare use_external_ip="$(get_attribute_value "prestashop-use-external-ip")"
+
+declare prestashop_domain="$(get_internal_ip)"
+if [[ has_external_ip && "${use_external_ip}" == "1" ]]; then
+  prestashop_domain="$(get_external_ip)"
+fi
+
 # Run the CLI installer for PrestaShop
-php /var/www/html/install/index_cli.php \
+cd /var/www/html
+
+php install/index_cli.php \
   --timezone="UTC" \
   --language="en" \
-  --domain="$(get_external_ip)" \
+  --domain="${prestashop_domain}" \
   --db_server="localhost" \
   --db_user="prestashop" \
-  --db_password="$(get_metadata_value "instance/attributes/prestashop-db-password")" \
+  --db_password="${prestashop_db_password}" \
   --db_name="prestashop" \
   --db_create=1 \
   --name="PrestaShop" \
   --country="us" \
   --firstname="John" \
   --lastname="Doe" \
-  --password="$(get_metadata_value "instance/attributes/prestashop-admin-password")" \
-  --email="$(get_metadata_value "instance/attributes/prestashop-admin-email")" \
+  --password="${prestashop_admin_password}" \
+  --email="${prestashop_admin_email}" \
   --newsletter=0 \
-  --send_email=0
+  --send_email=0 \
+  --theme=classic
 
 # Change ownership for dirs that PrestaShop needs access to
 chown -R www-data:www-data /var/www/html/
@@ -43,3 +56,6 @@ rm -rf /var/www/html/install
 
 # Rename the admin directory
 mv /var/www/html/admin*/ /var/www/html/adminpanel
+
+# Restart apache2
+systemctl restart apache2

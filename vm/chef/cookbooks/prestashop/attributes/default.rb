@@ -15,4 +15,6 @@
 default['prestashop']['version'] = '8.1.7'
 default['prestashop']['db']['name'] = 'prestashop'
 
-default['prestashop']['temp_packages'] = ['tar']
+default['prestashop']['temp_packages'] = ['unzip']
+
+default['php81']['distribution'] = "bookworm"
