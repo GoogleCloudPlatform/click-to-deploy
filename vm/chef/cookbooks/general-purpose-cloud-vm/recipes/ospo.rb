@@ -48,7 +48,7 @@ https://github.com/excid3/python-apt
 https://github.com/venthur/python-debianbts
 https://github.com/mvo5/unattended-upgrades
 EOF
-licenses <<-EOF
+  licenses <<-EOF
 asemblyscript_loader;git+https://github.com/AssemblyScript/assemblyscript.git
 babel_helper_validator-identifier;https://raw.githubusercontent.com/babel/babel/master/LICENSE
 babel_parser;https://raw.githubusercontent.com/babel/babel/master/LICENSE
