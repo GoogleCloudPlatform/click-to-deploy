@@ -1,4 +1,4 @@
-ARG AIRFLOW_VERSION="2.6.3"
+ARG AIRFLOW_VERSION="2.10.0"
 ARG AIRFLOW_EXTRAS="amazon,async,celery,cncf.kubernetes,dask,docker,elasticsearch,ftp,google,google_auth,grpc,hashicorp,http,ldap,microsoft.azure,mysql,odbc,pandas,postgres,redis,sendgrid,sftp,slack,ssh,statsd,virtualenv,apache-airflow-providers-cncf-kubernetes"
 
 ARG AIRFLOW_HOME=/opt/airflow
@@ -280,7 +280,7 @@ WORKDIR ${AIRFLOW_HOME}
 EXPOSE 8080
 USER ${AIRFLOW_UID}
 
-ENV C2D_RELEASE 2.6.3
+ENV C2D_RELEASE 2.10.0
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/entrypoint"]
 CMD [""]

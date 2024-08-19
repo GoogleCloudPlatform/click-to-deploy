@@ -16,11 +16,11 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 2/debian11/2.8
+- dir: 2/debian11/2.10
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     airflow:
-      version: 2.8.2
+      version: 2.10.0
     pip:
       version: 22.3.1
     gosu:
@@ -28,18 +28,18 @@ versions:
       version: '1.17'
   repo: airflow2
   tags:
-  - 2.8.2-debian11
-  - 2.8-debian11
+  - 2.10.0-debian11
+  - 2.10-debian11
   - 2-debian11
-  - 2.8.2
-  - '2.8'
+  - 2.10.0
+  - '2.10'
   - '2'
   - latest
-- dir: 2/debian11/2.6
+- dir: 2/debian11/2.9
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     airflow:
-      version: 2.6.3
+      version: 2.9.3
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
@@ -47,7 +47,7 @@ versions:
       version: 22.3.1
   repo: airflow2
   tags:
-  - 2.6.3-debian11
-  - 2.6-debian11
-  - 2.6.3
-  - '2.6'
+  - 2.9.3-debian11
+  - 2.9-debian11
+  - 2.9.3
+  - '2.9'
