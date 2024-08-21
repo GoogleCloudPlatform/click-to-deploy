@@ -4,7 +4,7 @@ FROM marketplace.gcr.io/google/c2d-debian11 as ospo
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
 
-RUN apt update && apt -y install ca-certificates
+RUN apt update && apt -y install ca-certificates curl
 
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \

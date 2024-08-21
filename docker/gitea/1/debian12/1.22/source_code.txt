@@ -1,5 +1,0 @@
-https://github.com/6543/go-version
-https://github.com/go-sql-driver/mysql
-https://github.com/hashicorp/go-cleanhttp
-https://github.com/hashicorp/go-retryablehttp
-https://github.com/hashicorp/golang-lru
