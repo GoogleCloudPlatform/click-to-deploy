@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12 as ospo
+FROM marketplace.gcr.io/google/c2d-debian11 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -46,7 +46,7 @@ RUN make clean-all build
 # Begin env-to-ini build
 RUN go build contrib/environment-to-ini/environment-to-ini.go
 
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/c2d-debian11
 
 COPY --from=ospo /usr/src /usr/src
 
