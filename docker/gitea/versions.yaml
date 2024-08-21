@@ -22,8 +22,8 @@ cloudbuild:
   enable_parallel: false
   machineType: 'E2_HIGHCPU_32'
 versions:
-- dir: 1/debian12/1.22
-  from: marketplace.gcr.io/google/debian12
+- dir: 1/debian11/1.22
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     gitea:
       version: '1.22'
@@ -33,15 +33,15 @@ versions:
     alpineVersion: '3.20'
   repo: gitea1
   tags:
-  - 1.22.1-debian12
-  - 1.22-debian12
-  - 1-debian12
+  - 1.22.1-debian11
+  - 1.22-debian11
+  - 1-debian11
   - '1.22.1'
   - '1.22'
   - '1'
   - latest
-- dir: 1/debian12/1.19
-  from: marketplace.gcr.io/google/debian12
+- dir: 1/debian11/1.19
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     gitea:
       version: '1.19'
@@ -51,7 +51,7 @@ versions:
     alpineVersion: '3.17'
   repo: gitea1
   tags:
-  - 1.19.9-debian12
-  - 1.19-debian12
+  - 1.19.9-debian11
+  - 1.19-debian11
   - '1.19.9'
   - '1.19'
