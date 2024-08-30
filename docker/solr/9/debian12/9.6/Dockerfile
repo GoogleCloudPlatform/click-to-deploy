@@ -1,6 +1,4 @@
-{{- $solr := index .Packages "solr" -}}
-
-FROM {{ .From }} as ospo
+FROM marketplace.gcr.io/google/debian12 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -17,14 +15,14 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/debian12
 
 COPY --from=ospo /usr/src /usr/src
 
-ARG SOLR_VERSION={{ $solr.Version }}
-ARG SOLR_KEYS={{ $solr.Gpg }}
+ARG SOLR_VERSION=9.6.1
+ARG SOLR_KEYS=50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
 
-ENV C2D_RELEASE={{ $solr.Version }}
+ENV C2D_RELEASE=9.6.1
 
 RUN set -ex; \
   apt-get update; \
@@ -63,7 +61,21 @@ RUN set -ex; \
   mkdir -p "$GNUPGHOME"; \
   chmod 700 "$GNUPGHOME"; \
   echo "disable-ipv6" >> "$GNUPGHOME/dirmngr.conf"; \
-  {{ `gpg --no-tty --keyserver $server --recv-keys $SOLR_KEYS` | KeyServersRetryLoop "\t" }} \
+  found='' && \
+	for server in \
+		pool.sks-keyservers.net \
+		na.pool.sks-keyservers.net \
+		eu.pool.sks-keyservers.net \
+		oc.pool.sks-keyservers.net \
+		ha.pool.sks-keyservers.net \
+		hkp://p80.pool.sks-keyservers.net:80 \
+		hkp://keyserver.ubuntu.com:80 \
+		pgp.mit.edu \
+	; do \
+		gpg --no-tty --keyserver $server --recv-keys $SOLR_KEYS \
+			&& found=yes && break; \
+	done; \
+	test -n "$found" \
   && exit 0
 
 RUN set -ex; \
