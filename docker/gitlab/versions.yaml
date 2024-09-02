@@ -17,18 +17,18 @@ cloudbuild:
   enable_parallel: false
   machineType: E2_HIGHCPU_32
 versions:
-- dir: 16/debian11/16.8
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 17/debian12/17.3
+  from: marketplace.gcr.io/google/debian12
   packages:
     gitlab:
-      version: 16.8.1
-  repo: gitlab16
+      version: 17.3.1
+  repo: gitlab17
   tags:
-  - 16.8.1-debian11
-  - 16.8-debian11
-  - 16-debian11
-  - 16.8.1
-  - '16.8'
-  - '16'
+  - 17.3.1-debian12
+  - 17.3-debian12
+  - 16-debian12
+  - 17.3.1
+  - '17.3'
+  - '17'
   - latest
 
