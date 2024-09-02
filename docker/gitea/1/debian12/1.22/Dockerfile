@@ -1,7 +1,4 @@
-{{- $gitea := index .Packages "gitea" -}}
-{{- $golang := index .Packages "golang" -}}
-
-FROM {{ .From }} as ospo
+FROM marketplace.gcr.io/google/debian12 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -19,12 +16,12 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 #Build stage
-FROM golang:{{ $golang.Version }}-bookworm AS build-env
+FROM golang:1.23-bookworm AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
 
-ARG GITEA_VERSION=release/v{{ $gitea.Version }}
+ARG GITEA_VERSION=release/v1.22
 ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
@@ -49,7 +46,7 @@ RUN make clean-all build
 # Begin env-to-ini build
 RUN go build contrib/environment-to-ini/environment-to-ini.go
 
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/debian12
 
 COPY --from=ospo /usr/src /usr/src
 
@@ -100,7 +97,7 @@ RUN addgroup \
 
 ENV USER git
 ENV GITEA_CUSTOM /data/gitea
-ENV C2D_RELEASE {{ $gitea.Version }}.9
+ENV C2D_RELEASE 1.22.9
 
 VOLUME ["/data"]
 
