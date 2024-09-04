@@ -16,8 +16,8 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 2/debian11/2.10
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 2/debian12/2.10
+  from: marketplace.gcr.io/google/debian12
   packages:
     airflow:
       version: 2.10.0
@@ -28,15 +28,15 @@ versions:
       version: '1.17'
   repo: airflow2
   tags:
-  - 2.10.0-debian11
-  - 2.10-debian11
-  - 2-debian11
+  - 2.10.0-debian12
+  - 2.10-debian12
+  - 2-debian12
   - 2.10.0
   - '2.10'
   - '2'
   - latest
-- dir: 2/debian11/2.9
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 2/debian12/2.9
+  from: marketplace.gcr.io/google/debian12
   packages:
     airflow:
       version: 2.9.3
@@ -47,7 +47,7 @@ versions:
       version: 22.3.1
   repo: airflow2
   tags:
-  - 2.9.3-debian11
-  - 2.9-debian11
+  - 2.9.3-debian12
+  - 2.9-debian12
   - 2.9.3
   - '2.9'

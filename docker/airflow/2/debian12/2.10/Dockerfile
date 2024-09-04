@@ -7,13 +7,13 @@ ARG AIRFLOW_USER_HOME_DIR=/home/airflow
 ARG AIRFLOW_PIP_VERSION="22.3.1"
 
 
-FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+FROM marketplace.gcr.io/google/debian12 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
 
-RUN apt update && apt -y install ca-certificates
+RUN apt update && apt -y install ca-certificates curl
 
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
@@ -25,7 +25,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 
-FROM marketplace.gcr.io/google/c2d-debian11 as airflow-build-image
+FROM marketplace.gcr.io/google/debian12 as airflow-build-image
 
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-o", "nounset", "-o", "nolog", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive LANGUAGE=C.UTF-8 LANG=C.UTF-8 LC_ALL=C.UTF-8 \
@@ -59,6 +59,7 @@ ENV DEV_APT_DEPS="\
      python3 \
      python3-pip \
      python3-dev \
+     python3-venv \
      sasl2-bin \
      software-properties-common \
      sqlite3 \
@@ -119,6 +120,10 @@ RUN adduser --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-passw
 
 USER airflow
 
+RUN python3 -m venv ~/venv
+
+ENV PATH="/home/airflow/venv/bin:$PATH"
+
 COPY --chown=airflow:0 scripts/docker/install_pip_version.sh /scripts/docker/
 
 RUN /scripts/docker/install_pip_version.sh
@@ -136,7 +141,7 @@ RUN /scripts/docker/install_airflow.sh \
     && find "${AIRFLOW_USER_HOME_DIR}/.local" -executable -print0 | xargs --null chmod g+x \
     && find "${AIRFLOW_USER_HOME_DIR}/.local" -print0 | xargs --null chmod g+rw
 
-FROM marketplace.gcr.io/google/c2d-debian11 as main
+FROM marketplace.gcr.io/google/debian12 as main
 
 COPY --from=ospo /usr/src /usr/src
 
@@ -162,18 +167,17 @@ ENV RUNTIME_APT_DEPS="\
        freetds-bin \
        krb5-user \
        ldap-utils \
-       libffi7 \
-       libldap-2.4-2 \
+       libffi8 \
+       libldap-common \
        libsasl2-2 \
        libsasl2-modules \
-       libssl1.1 \
+       libssl3 \
        locales  \
        lsb-release \
-       netcat \
+       netcat-traditional \
        openssh-client \
        pkg-config \
        postgresql-client \
-       python2 \
        python3 \
        python3-pip \
        rsync \
