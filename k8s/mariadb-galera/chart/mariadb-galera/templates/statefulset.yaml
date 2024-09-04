@@ -113,7 +113,7 @@ spec:
         image: {{ .Values.db.exporter.image }}
         args:
         - "--mysqld.address=127.0.0.1:3306"
-        - "--mysqld.username=root"
+        - "--mysqld.username={{ .Values.db.exporter.user }}"
         env:
         - name: MYSQLD_EXPORTER_PASSWORD
           valueFrom:
