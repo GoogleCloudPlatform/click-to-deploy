@@ -75,14 +75,15 @@ spec:
           readOnly: true
       - name: mysqld-exporter
         image: {{ .Values.db.exporter.image }}
+        args:
+        - "--mysqld.address=127.0.0.1:3306"
+        - "--mysqld.username=root"
         env:
         - name: MYSQLD_EXPORTER_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Release.Name }}-mariadb
               key: mysqld-exporter-pass
-        - name: DATA_SOURCE_NAME
-          value: {{ .Values.db.exporter.user }}:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/
         ports:
         - name: exporter
           containerPort: 9104
