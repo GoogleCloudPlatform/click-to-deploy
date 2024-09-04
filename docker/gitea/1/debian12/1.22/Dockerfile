@@ -1,10 +1,10 @@
-FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+FROM marketplace.gcr.io/google/debian12 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
 
-RUN apt update && apt -y install ca-certificates
+RUN apt update && apt -y install ca-certificates curl
 
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
@@ -16,19 +16,19 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 #Build stage
-FROM golang:1.21-alpine3.18 AS build-env
+FROM golang:1.23-bookworm AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
 
-ARG GITEA_VERSION=release/v1.21
+ARG GITEA_VERSION=release/v1.22
 ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
 
 # Build deps
-RUN apk --no-cache add \
-    build-base \
+RUN apt-get update && apt-get install -y \
+    build-essential \
     git \
     nodejs \
     npm \
@@ -46,7 +46,7 @@ RUN make clean-all build
 # Begin env-to-ini build
 RUN go build contrib/environment-to-ini/environment-to-ini.go
 
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian12
 
 COPY --from=ospo /usr/src /usr/src
 
@@ -60,8 +60,7 @@ RUN apt-get update && \
     openssh-server \
     s6 \
     sqlite3 \
-    gnupg \
-    musl-dev
+    gnupg
 
 RUN ln -s /usr/lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1 \
     &&  ssh-keygen -A \
@@ -98,7 +97,7 @@ RUN addgroup \
 
 ENV USER git
 ENV GITEA_CUSTOM /data/gitea
-ENV C2D_RELEASE 1.21.9
+ENV C2D_RELEASE 1.22.9
 
 VOLUME ["/data"]
 
