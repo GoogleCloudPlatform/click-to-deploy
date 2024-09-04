@@ -61,6 +61,9 @@ spec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
           initialDelaySeconds: 120
       - image: {{ .Values.db.exporter.image }}
+        args:
+        - "--mysqld.address=127.0.0.1:3306"
+        - "--mysqld.username={{ .Values.db.exporter.user }}"
         name: mysqld-exporter
         env:
         - name: MYSQLD_EXPORTER_PASSWORD
@@ -68,8 +71,6 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-mysqld-exporter-secret
               key: mysqld-exporter-pass
-        - name: DATA_SOURCE_NAME
-          value: "{{ .Values.db.exporter.user }}:{{ .Values.db.exporter.password }}@(127.0.0.1:3306)/"
         ports:
         - name: exporter
           containerPort: 9104
