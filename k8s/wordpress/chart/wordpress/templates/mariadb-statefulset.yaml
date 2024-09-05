@@ -2,65 +2,70 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Release.Name }}-mysql
-  labels: &MySQLDeploymentLabels
+  name: {{ .Release.Name }}-mariadb
+  labels: &MariaDBDeploymentLabels
     app.kubernetes.io/name: "{{ .Release.Name }}"
-    app.kubernetes.io/component: wordpress-mysql
+    app.kubernetes.io/component: wordpress-mariadb
 spec:
   replicas: 1
   selector:
-    matchLabels: *MySQLDeploymentLabels
-  serviceName: {{ .Release.Name }}-mysql-svc
+    matchLabels: *MariaDBDeploymentLabels
+  serviceName: {{ .Release.Name }}-mariadb-svc
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
-      labels: *MySQLDeploymentLabels
+      labels: *MariaDBDeploymentLabels
     spec:
       containers:
       - image: {{ .Values.db.image }}
-        name: mysql
+        name: mariadb
         env:
         # A password for root superuser.
-        - name: MYSQL_ROOT_PASSWORD
+        - name: MARIADB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Release.Name }}-mysql-secret
+              name: {{ .Release.Name }}-mariadb-secret
               key: root-password
         # A database name to be created at startup.
-        - name: MYSQL_DATABASE
+        - name: MARIADB_DATABASE
           value: wordpress
         # A new user to be created at startup.
-        - name: MYSQL_USER
+        - name: MARIADB_USER
           valueFrom:
             secretKeyRef:
-              name: {{ .Release.Name }}-mysql-secret
+              name: {{ .Release.Name }}-mariadb-secret
               key: wp-user
         # A password of the new user created at startup.
-        - name: MYSQL_PASSWORD
+        - name: MARIADB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Release.Name }}-mysql-secret
+              name: {{ .Release.Name }}-mariadb-secret
               key: wp-password
         ports:
-        - name: mysql
+        - name: mariadb
           containerPort: 3306
         volumeMounts:
-        - name: {{ .Release.Name }}-mysql-pvc
-          mountPath: /var/lib/mysql
+        - name: {{ .Release.Name }}-mariadb-pvc
+          mountPath: /var/lib/mariadb
           subPath: data
-        - name: mysql-config
+        - name: mariadb-config
           mountPath: /docker-entrypoint-initdb.d
           readOnly: true
-        readinessProbe:
-          exec:
-            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
-          initialDelaySeconds: 15
         livenessProbe:
-          exec:
-            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
-          initialDelaySeconds: 120
+          tcpSocket:
+            port: mariadb
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: mariadb
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
       - image: {{ .Values.db.exporter.image }}
+        args:
+        - "--mysqld.address=127.0.0.1:3306"
+        - "--mysqld.username={{ .Values.db.exporter.user }}"
         name: mysqld-exporter
         env:
         - name: MYSQLD_EXPORTER_PASSWORD
@@ -68,8 +73,6 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-mysqld-exporter-secret
               key: mysqld-exporter-pass
-        - name: DATA_SOURCE_NAME
-          value: "{{ .Values.db.exporter.user }}:{{ .Values.db.exporter.password }}@(127.0.0.1:3306)/"
         ports:
         - name: exporter
           containerPort: 9104
@@ -91,7 +94,7 @@ spec:
         command:
         - /monitor
         - --stackdriver-prefix=custom.googleapis.com
-        - --source=mysql:http://localhost:9104/metrics
+        - --source=mariadb:http://localhost:9104/metrics
         - --pod-id=$(POD_NAME)
         - --namespace-id=$(POD_NAMESPACE)
         - --monitored-resource-types=k8s
@@ -106,7 +109,7 @@ spec:
               fieldPath: metadata.namespace
       {{- end }}
       volumes:
-      - name: mysql-config
+      - name: mariadb-config
         secret:
           secretName: {{ .Release.Name }}-mysqld-exporter-secret
           items:
@@ -114,7 +117,7 @@ spec:
             path: mysqld_exporter.sql
   volumeClaimTemplates:
   - metadata:
-      name: {{ .Release.Name }}-mysql-pvc
+      name: {{ .Release.Name }}-mariadb-pvc
       labels:
         app.kubernetes.io/name: "{{ .Release.Name }}"
         app.kubernetes.io/component: wordpress-server

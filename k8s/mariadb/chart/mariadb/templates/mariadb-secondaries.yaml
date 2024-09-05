@@ -31,9 +31,9 @@ spec:
         image: "{{ .Values.mariadb.image.repo }}:{{ .Values.mariadb.image.tag }}"
         imagePullPolicy: Always
         env:
-        - name: HOST
+        - name: MARIADB_MASTER_HOST
           value: {{ .Release.Name }}-mariadb.{{ .Release.Namespace }}.svc.cluster.local
-        - name: MYSQL_ROOT_PASSWORD
+        - name: MARIADB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Release.Name }}-mariadb
@@ -42,14 +42,20 @@ spec:
         - bash
         - "-cx"
         - |
-          echo "Waiting for mysqld to be ready (accepting connections)"
-          until mariadb -h ${HOST} -uroot -p${MYSQL_ROOT_PASSWORD} -e "SELECT 1"; do sleep 1; done
-          # Generate mysql server-id from pod ordinal index.
+          # Generate appropriate conf.d file from configmap to emptyDir
           [[ $(hostname) =~ -([0-9]+)$ ]] || exit 1
           ordinal=${BASH_REMATCH[1]}
           # Add an offset to avoid reserved server-id=0 value.
           ID=$((100+$ordinal))
-          # Generate appropriate conf.d file from configmap to emptyDir
+
+          # Clean up preset config before starting first pod
+          echo "Cleaning out MariaDB folder..."
+          rm -rf /var/lib/mariadb/*
+          mkdir -p /var/lib/mariadb/
+
+          echo "Waiting for primary to be ready (accepting connections)"
+          until mariadb -h ${MARIADB_MASTER_HOST} -uroot -p${MARIADB_ROOT_PASSWORD} -e "SELECT 1"; do sleep 1; done
+          # Generate mysql server-id from pod ordinal index.
           sed "s/%%SERVER_ID%%/$ID/g" /mnt/configmap/my.cnf > /mnt/conf.d/my.cnf
         volumeMounts:
         - name: conf
@@ -63,7 +69,7 @@ spec:
         env:
         - name: MARIADB_MASTER_ROOT_USER
           value: "root"
-        - name: MYSQL_ROOT_PASSWORD
+        - name: MARIADB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Release.Name }}-mariadb
@@ -78,7 +84,7 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-mariadb
               key: mariadb-replication-password
-        - name: HOST
+        - name: MARIADB_MASTER_HOST
           value: {{ .Release.Name }}-mariadb.{{ .Release.Namespace }}.svc.cluster.local
         - name: SERVICE_PORT
           value: {{ .Values.service.port | quote }}
@@ -89,29 +95,9 @@ spec:
               - bash
               - "-cx"
               - |
-                echo "Waiting for mysqld to be ready (accepting connections)"
-
-                until mariadb -uroot -p${MYSQL_ROOT_PASSWORD} -e "SELECT 1"; do sleep 1; done
-                until mariadb -h ${HOST} -uroot -p${MYSQL_ROOT_PASSWORD} -e "SELECT 1"; do sleep 1; done
-
-                mkdir -p /var/mariadb/backup
-                BACKUP_FILE=/var/mariadb/backup/all-databases.sql
-
-                mariadb-dump -h${HOST} -P${SERVICE_PORT} -uroot -p${MYSQL_ROOT_PASSWORD} \
-                    --add-drop-database --flush-logs --flush-privileges \
-                    --master-data --all-databases > ${BACKUP_FILE}
-
-                mariadb -uroot -p${MYSQL_ROOT_PASSWORD} -e "STOP SLAVE;"
-                mariadb -uroot -p${MYSQL_ROOT_PASSWORD} -e "CHANGE MASTER TO \
-                  MASTER_HOST='${HOST}', \
-                  MASTER_PORT=${SERVICE_PORT}, \
-                  MASTER_USER='${MARIADB_REPLICATION_USER}', \
-                  MASTER_PASSWORD='${MARIADB_REPLICATION_PASSWORD}', \
-                  MASTER_SSL=1, \
-                  MASTER_CONNECT_RETRY=10;"
-                mariadb -uroot -p${MYSQL_ROOT_PASSWORD} < ${BACKUP_FILE}
-                mariadb -uroot -p${MYSQL_ROOT_PASSWORD} -e "START SLAVE;"
-                rm -f ${BACKUP_FILE}
+                cp /scripts/post_start.sh /tmp/post_start.sh
+                chmod +x /tmp/post_start.sh
+                /tmp/post_start.sh >> /etc/mysql/mariadb.conf.d/post_start.log
         ports:
         - name: mariadb
           containerPort: {{ .Values.service.port }}
@@ -132,6 +118,8 @@ spec:
           mountPath: /etc/mysql/mariadb.conf.d
         - name: tls-volume
           mountPath: /etc/mysql/mariadb.conf.d/certs
+        - name: post-start-scripts
+          mountPath: /scripts/
       volumes:
         - name: conf
           emptyDir: {}
@@ -141,6 +129,9 @@ spec:
         - name: tls-volume
           secret:
             secretName: {{ .Release.Name }}-tls
+        - name: post-start-scripts
+          secret:
+            secretName: {{ .Release.Name }}-mariadb-secondary
   volumeClaimTemplates:
   - metadata:
       name: {{ .Release.Name }}-data-pvc

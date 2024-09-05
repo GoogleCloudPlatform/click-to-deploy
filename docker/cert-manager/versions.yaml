@@ -25,25 +25,10 @@ versions:
   repo: cert-manager1
   tags:
   - 1.15.3-debian12
-  - 1.13-debian12
+  - 1.15-debian12
   - 1-debian12
   - 1.15.3
-  - '1.13'
+  - '1.15'
   - '1'
   - latest
   templateSubDir: cert-manager1
-# - dir: 1/debian11/1.13
-#   from: marketplace.gcr.io/google/c2d-debian11
-#   packages:
-#     cert-manager:
-#       version: 1.13.3
-#   repo: cert-manager1
-#   tags:
-#   - 1.13.3-debian11
-#   - 1.13-debian11
-#   - 1-debian11
-#   - 1.13.3
-#   - '1.13'
-#   - '1'
-#   - latest
-#   templateSubDir: cert-manager1
