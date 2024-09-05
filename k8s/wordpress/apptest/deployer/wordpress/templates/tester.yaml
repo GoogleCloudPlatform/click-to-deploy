@@ -33,19 +33,19 @@ spec:
     - name: MYSQL_ROOT_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: {{ .Release.Name }}-mysql-secret
+          name: {{ .Release.Name }}-mariadb-secret
           key: root-password
     # A username used for accessing the database.
     - name: WORDPRESS_DB_USER
       valueFrom:
         secretKeyRef:
-          name: {{ .Release.Name }}-mysql-secret
+          name: {{ .Release.Name }}-mariadb-secret
           key: wp-user
     # A password used for accessing the database.
     - name: WORDPRESS_DB_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: {{ .Release.Name }}-mysql-secret
+          name: {{ .Release.Name }}-mariadb-secret
           key: wp-password
     # A database name used by WordPress.
     - name: WORDPRESS_DB_NAME
