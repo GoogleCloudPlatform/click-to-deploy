@@ -31,7 +31,7 @@ information in the `wordpress` database. A single instance of MySQL is deployed
 as a Pod, using a Kubernetes StatefulSet.
 
 WordPress stores credentials for MySQL database in the
-`[APP-INSTANCE-NAME]-mysql-secret` Secret resource.
+`[APP-INSTANCE-NAME]-mariadb-secret` Secret resource.
 
 *   The password for the MySQL `root` user is stored in the `root-password`
     secret.
@@ -428,7 +428,7 @@ Using a separate terminal, create a local proxy using the following `kubectl`
 command:
 
 ```shell
-kubectl port-forward "svc/${APP_INSTANCE_NAME}-mysql-svc" 3306 --namespace "${NAMESPACE}"
+kubectl port-forward "svc/${APP_INSTANCE_NAME}-mariadb-svc" 3306 --namespace "${NAMESPACE}"
 ```
 
 ### Create the backup
