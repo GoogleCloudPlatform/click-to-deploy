@@ -2,7 +2,7 @@ FROM marketplace.gcr.io/google/debian12
 
 ENV C2D_RELEASE 3.5.0
 
-# Add Java 11
+# Add Java JDK
 RUN apt-get update \
   && apt-get install -y \
     openjdk-17-jdk

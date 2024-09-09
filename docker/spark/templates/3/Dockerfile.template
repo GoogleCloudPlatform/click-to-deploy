@@ -5,7 +5,7 @@ FROM {{ .From }}
 
 ENV C2D_RELEASE {{ $spark.Version }}
 
-# Add Java 11
+# Add Java JDK
 RUN apt-get update \
   && apt-get install -y \
     openjdk-17-jdk
