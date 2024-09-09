@@ -17,34 +17,17 @@ cloudbuild:
   enable_parallel: false
   machine_type: 'E2_HIGHCPU_32'
 versions:
-- dir: 3/debian12/3.6
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    scala:
-      minor: '2.13'
-    spark:
-      version: 3.5.0
-  repo: spark3
-  tags:
-  - 3.6.0-debian12
-  - 3.6-debian12
-  - 3-debian12
-  - 3.6.0
-  - '3.6'
-  - '3'
-  - latest
-  templateSubDir: '3'
 - dir: 3/debian12/3.5
   from: marketplace.gcr.io/google/debian12
   packages:
     scala:
       minor: '2.13'
     spark:
-      version: 3.5.0
+      version: 3.5.2
   repo: spark3
   tags:
-  - 3.5.0-debian12
+  - 3.5.2-debian12
   - 3.5-debian12
-  - 3.5.0
+  - 3.5.2
   - '3.5'
   templateSubDir: '3'
