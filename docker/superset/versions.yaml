@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,48 +16,34 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 2/debian11/2.1
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 4/debian12/4.0
+  from: marketplace.gcr.io/google/debian12
   packages:
     superset:
-      version: 2.1.1
-  repo: superset2
+      version: 4.0.2
+  repo: superset4
   tags:
-  - 2.1.1-debian11
-  - 2.1-debian11
-  - 2-debian11
-  - 2.1.1
-  - '2.1'
-  - '2'
+  - 4.0.2-debian11
+  - 4.0-debian11
+  - 4-debian11
+  - 4.0.2
+  - '4.0'
+  - '4'
   - latest
-  templateSubDir: 2
-- dir: 3/debian11/3.0
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    superset:
-      version: 3.0.0
-  repo: superset3
-  tags:
-  - 3.0.0-debian11
-  - 3.0-debian11
-  - 3-debian11
-  - 3.0.0
-  - '3.0'
-  - '3'
-  - latest
-  templateSubDir: 3  
+  templateSubDir: 4
+
+
 - dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
-  from: marketplace.gcr.io/google/c2d-debian11
+  from: marketplace.gcr.io/google/debian12
   packages:
     statsd_exporter:
-      version: 0.23.1
+      version: 0.27.1
   repo: statsd-exporter0
   tags:
-  - 0.23.1
-  - '0.23'
+  - 0.27.1
+  - '0.27'
   - '0'
   - latest
   templateSubDir: exporter
-
