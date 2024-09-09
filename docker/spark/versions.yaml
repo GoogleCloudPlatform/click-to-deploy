@@ -28,6 +28,9 @@ versions:
   tags:
   - 3.5.2-debian12
   - 3.5-debian12
+  - 3-debian12
   - 3.5.2
   - '3.5'
+  - '3'
+  - latest
   templateSubDir: '3'
