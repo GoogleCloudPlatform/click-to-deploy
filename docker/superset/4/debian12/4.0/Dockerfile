@@ -1,10 +1,7 @@
-{{- $superset := index .Packages "superset" -}}
+FROM marketplace.gcr.io/google/debian12
 
-
-FROM {{ .From }}
-
-ARG SUPERSET_VERSION="{{ $superset.Version }}"
-ENV C2D_RELEASE "{{ $superset.Version }}"
+ARG SUPERSET_VERSION="4.0.2"
+ENV C2D_RELEASE "4.0.2"
 ENV SUPERSET_VERSION ${SUPERSET_VERSION}
 ENV FLASK_APP="superset.app:create_app()"
 ENV SUPERSET_HOME=/var/lib/superset
@@ -16,7 +13,6 @@ RUN apt-get update \
 
 # Create superset user & install dependencies
 WORKDIR /home/superset
-COPY requirements*.txt ./
 RUN groupadd supergroup && \
     useradd -U -G supergroup superset && \
     mkdir -p /etc/superset && \
@@ -34,12 +30,23 @@ RUN groupadd supergroup && \
         libldap2-dev \
         libpq-dev \
         libsasl2-2 \
-        libsasl2-modules-gssapi-mit && \
-    pip install --disable-pip-version-check --upgrade "pip==23.2.1" && \
-    pip install -r requirements.txt && \
-    pip install apache-superset==$SUPERSET_VERSION && \
-    pip install sqlparse=='0.4.4'
-# https://github.com/apache/superset/issues/23742
+        libsasl2-modules-gssapi-mit
+
+
+# Prepare requirements
+RUN echo "Prepare requirements..." \
+    && curl -s -O -L https://raw.githubusercontent.com/apache/superset/4.0.2/requirements/base.txt \
+    && curl -s -O -L https://raw.githubusercontent.com/apache/superset/4.0.2/requirements/development.txt \
+    && sed -i 's/^-e.*//g' base.txt \
+    && sed -i 's/^-r.*//g' base.txt \
+    && sed -i 's/^-e.*//g' development.txt \
+    && sed -i 's/^-r.*//g' development.txt
+
+
+RUN apt -y install python3-pip \
+    && pip install -r base.txt --break-system-packages \
+    && pip install -r development.txt --break-system-packages \
+    && pip install apache-superset==$SUPERSET_VERSION --break-system-packages
 
 # Configure Filesystem
 VOLUME /etc/superset
@@ -51,4 +58,3 @@ EXPOSE 8088
 COPY ./docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-# ENTRYPOINT ["tail", "-f", "/dev/null"]

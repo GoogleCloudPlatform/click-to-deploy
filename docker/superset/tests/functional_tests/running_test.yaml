@@ -27,10 +27,8 @@ setup:
   - 'POSTGRES_PASSWORD=superset'
   - '-e'
   - 'POSTGRES_DB=superset'
-  - '-e'
-  - 'MYSQL_ROOT_PASSWORD=some-password'
   - '-d'
-  - 'marketplace.gcr.io/google/postgresql13'
+  - 'marketplace.gcr.io/google/postgresql16'
 - command: [sleep, '20s']
 - command:
   - 'docker'
