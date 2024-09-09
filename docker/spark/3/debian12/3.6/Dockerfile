@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian12
 
 ENV C2D_RELEASE 3.5.0
 
