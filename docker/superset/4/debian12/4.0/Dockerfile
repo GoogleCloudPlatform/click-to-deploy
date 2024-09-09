@@ -35,15 +35,15 @@ RUN groupadd supergroup && \
 
 # Prepare requirements
 RUN echo "Prepare requirements..." \
-    && curl -s -O -L https://raw.githubusercontent.com/apache/superset/4.0.2/requirements/base.txt \
-    && curl -s -O -L https://raw.githubusercontent.com/apache/superset/4.0.2/requirements/development.txt \
+    && curl -s -O -L "https://raw.githubusercontent.com/apache/superset/${SUPERSET_VERSION}/requirements/base.txt" \
+    && curl -s -O -L "https://raw.githubusercontent.com/apache/superset/${SUPERSET_VERSION}/requirements/development.txt" \
     && sed -i 's/^-e.*//g' base.txt \
     && sed -i 's/^-r.*//g' base.txt \
     && sed -i 's/^-e.*//g' development.txt \
     && sed -i 's/^-r.*//g' development.txt
 
 
-RUN apt -y install python3-pip \
+RUN apt -y install python3-pip python3-statsd \
     && pip install -r base.txt --break-system-packages \
     && pip install -r development.txt --break-system-packages \
     && pip install apache-superset==$SUPERSET_VERSION --break-system-packages
