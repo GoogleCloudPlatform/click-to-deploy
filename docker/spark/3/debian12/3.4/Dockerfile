@@ -1,18 +1,19 @@
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian12
 
-ENV C2D_RELEASE 3.5.0
+ENV C2D_RELEASE 3.4.1
 
-# Add Java 11
+# Add Java 17
 RUN apt-get update \
-  && apt-get install -y \
-    openjdk-11-jdk
+  && apt-get install -y openjdk-17-jdk \
+  && rm -rf /var/lib/apt/lists/*
 
 # Add Dependencies for PySpark and Spark
-RUN apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
     ca-certificates \
     curl \
     software-properties-common \
-    ssh \
+    openssh-client \
     net-tools \
     python3 \
     python3-pip \
@@ -23,13 +24,14 @@ RUN apt-get install -y \
     python3-sympy \
     supervisor \
     vim \
-    wget
+    wget && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 1
 
 # Fix the value of PYTHONHASHSEED
 # Note: this is needed when you use Python 3.3 or greater
-ENV SPARK_VERSION=3.5.0
+ENV SPARK_VERSION=3.4.1
 ENV SCALA_VERSION=2.13
 ENV SPARK_HOME=/opt/spark
 ENV PYTHONHASHSEED=1
