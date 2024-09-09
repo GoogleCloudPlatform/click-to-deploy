@@ -5,7 +5,7 @@ ENV C2D_RELEASE 3.5.0
 # Add Java 11
 RUN apt-get update \
   && apt-get install -y \
-    openjdk-11-jdk
+    openjdk-17-jdk
 
 # Add Dependencies for PySpark and Spark
 RUN apt-get install -y \
