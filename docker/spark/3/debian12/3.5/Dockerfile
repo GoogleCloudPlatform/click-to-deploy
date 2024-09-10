@@ -65,6 +65,15 @@ COPY metrics.properties /opt/spark/conf/metrics.properties
 COPY test_job.py /opt/spark-apps/test_job.py
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 
+# Patch zookeeper as per CVE-2023-44981
+RUN rm -f /opt/spark/jars/zookeeper-*.jar \
+  && curl -s -L -o /tmp/zookeeper.tar.gz https://dlcdn.apache.org/zookeeper/zookeeper-3.8.4/apache-zookeeper-3.8.4-bin.tar.gz \
+  && mkdir -p /tmp/zookeeper/  \
+  && tar -zxf /tmp/zookeeper.tar.gz -C /tmp/zookeeper --strip-components=1  \
+  && cp /tmp/zookeeper/lib/zookeeper-*.jar /opt/spark/jars/  \
+  && rm -rf /tmp/zookeeper  \
+  && rm -f /tmp/zookeeper.tar.gz
+
 WORKDIR /opt/spark
 
 ENTRYPOINT [ "/start-spark.sh" ]
