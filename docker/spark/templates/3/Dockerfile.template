@@ -5,10 +5,10 @@ FROM {{ .From }}
 
 ENV C2D_RELEASE {{ $spark.Version }}
 
-# Add Java 11
+# Add Java JDK
 RUN apt-get update \
   && apt-get install -y \
-    openjdk-11-jdk
+    openjdk-17-jdk
 
 # Add Dependencies for PySpark and Spark
 RUN apt-get install -y \
