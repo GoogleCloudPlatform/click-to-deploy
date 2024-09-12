@@ -31,23 +31,10 @@ versions:
       version: '1.23'
   repo: gitea1
   tags:
-  - 1.22.1-debian12
+  - 1.22.2-debian12
   - 1.22-debian12
   - 1-debian12
-  - '1.22.1'
+  - '1.22.2'
   - '1.22'
   - '1'
   - latest
-- dir: 1/debian12/1.19
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    gitea:
-      version: '1.19'
-    golang:
-      version: '1.23'
-  repo: gitea1
-  tags:
-  - 1.19.9-debian12
-  - 1.19-debian12
-  - '1.19.9'
-  - '1.19'
