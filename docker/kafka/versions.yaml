@@ -16,10 +16,29 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian11/3.6
+- dir: 3/debian12/3.7
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/c2d-debian11
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    kafka:
+      version: 3.7.0
+    scala:
+      version: '2.13'
+  repo: kafka3
+  tags:
+  - 3.7.0-debian12
+  - 3.7-debian12
+  - 3-debian12
+  - 3.7.0
+  - '3.7'
+  - '3'
+  - latest
+  templateSubDir: kafka
+- dir: 3/debian12/3.6
+  excludeTests:
+  - tests/functional_tests/exporter_test.yaml
+  from: marketplace.gcr.io/google/debian12
   packages:
     kafka:
       version: 3.6.1
@@ -27,41 +46,22 @@ versions:
       version: '2.13'
   repo: kafka3
   tags:
-  - 3.6.1-debian11
-  - 3.6-debian11
-  - 3-debian11
+  - 3.6.1-debian12
+  - 3.6-debian12
   - 3.6.1
   - '3.6'
-  - '3'
-  - latest
-  templateSubDir: debian11
-- dir: 3/debian11/3.4
-  excludeTests:
-  - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    kafka:
-      version: 3.4.1
-    scala:
-      version: '2.13'
-  repo: kafka3
-  tags:
-  - 3.4.1-debian11
-  - 3.4-debian11
-  - 3.4.1
-  - '3.4'
-  templateSubDir: debian11
+  templateSubDir: kafka
 - dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
-  from: marketplace.gcr.io/google/c2d-debian11
+  from: marketplace.gcr.io/google/debian12
   packages:
     kafka_exporter:
-      version: 1.6.0
+      version: 1.8.0
   repo: kafka-exporter1
   tags:
-  - 1.6.0
-  - '1.6'
+  - 1.8.0
+  - '1.8'
   - '1'
   - latest
   templateSubDir: exporter
