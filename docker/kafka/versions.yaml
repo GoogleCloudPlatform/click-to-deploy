@@ -16,22 +16,22 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian12/3.8
+- dir: 3/debian12/3.7
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
   from: marketplace.gcr.io/google/debian12
   packages:
     kafka:
-      version: 3.8.0
+      version: 3.7.0
     scala:
       version: '2.13'
   repo: kafka3
   tags:
-  - 3.8.0-debian12
-  - 3.8-debian12
+  - 3.7.0-debian12
+  - 3.7-debian12
   - 3-debian12
-  - 3.8.0
-  - '3.8'
+  - 3.7.0
+  - '3.7'
   - '3'
   - latest
   templateSubDir: debian11
