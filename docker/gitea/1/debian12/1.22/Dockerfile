@@ -56,6 +56,7 @@ RUN apt-get update && \
     apt-get install -y \
     bash \
     ca-certificates \
+    git \
     gettext \
     openssh-server \
     s6 \
