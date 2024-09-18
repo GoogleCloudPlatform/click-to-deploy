@@ -7,7 +7,7 @@ FROM {{ .From }} as ospo
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
 
-RUN apt update && apt -y install ca-certificates
+RUN apt update && apt -y install curl ca-certificates
 
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
@@ -89,7 +89,7 @@ RUN set -eux; \
         ca-certificates \
         dirmngr \
         gnupg \
-        netcat \
+        netcat-traditional \
         openssl \
         wget; \
     rm -rf /var/lib/apt/lists/*
