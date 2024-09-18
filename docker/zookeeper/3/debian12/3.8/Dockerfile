@@ -1,10 +1,10 @@
-FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+FROM marketplace.gcr.io/google/debian12 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
 
-RUN apt update && apt -y install ca-certificates
+RUN apt update && apt -y install curl ca-certificates
 
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
@@ -15,11 +15,11 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian12
 
 COPY --from=ospo /usr/src /usr/src
 
-ARG ZK_VERSION=3.8.3
+ARG ZK_VERSION=3.8.4
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \
@@ -86,7 +86,7 @@ RUN set -eux; \
         ca-certificates \
         dirmngr \
         gnupg \
-        netcat \
+        netcat-traditional \
         openssl \
         wget; \
     rm -rf /var/lib/apt/lists/*
@@ -94,7 +94,7 @@ RUN set -eux; \
     # Verify that gosu binary works
     # gosu nobody true
 
-ENV GPG_KEYS 3F7A1D16FA4217B1DC75E1C9FFE35B7F15DFA1BA
+ENV GPG_KEYS AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66
 
 ARG SHORT_DISTRO_NAME="zookeeper-${ZK_VERSION}"
 ARG DISTRO_NAME="apache-zookeeper-${ZK_VERSION}-bin"
