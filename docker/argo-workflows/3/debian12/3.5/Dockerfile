@@ -16,13 +16,13 @@
 
 
 
-FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+FROM marketplace.gcr.io/google/debian12 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
 
-RUN apt update && apt -y install ca-certificates
+RUN apt update && apt -y install curl ca-certificates
 
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
@@ -36,7 +36,7 @@ RUN mkdir -p /usr/src/licenses \
 # Stage: Server and Workflow Controller: Builder
 FROM golang:1.21 as builder
 
-ARG ARGO_VERSION="3.4.16"
+ARG ARGO_VERSION="3.5.10"
 ENV ARGO_VERSION "${ARGO_VERSION}"
 
 RUN apt-get update && apt-get --no-install-recommends install -y \
@@ -105,11 +105,11 @@ RUN target=/root/.cache/go-build make dist/argo
 
 
 # Stage: Final Image
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian12
 
 COPY --from=ospo /usr/src /usr/src
 
-ENV C2D_RELEASE "3.4.16"
+ENV C2D_RELEASE "3.5.10"
 USER 8737
 
 # Controller artifacts
