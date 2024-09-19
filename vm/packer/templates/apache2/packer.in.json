@@ -1,6 +1,7 @@
 {
   "license": "c2d-apache2",
   "source_image_family": "debian-11",
+  "image_family": "apache2",
   "chef": {
     "run_list": [ "c2d-config", "apache2::standalone", "google-cloud-ops-agent" ]
   }
