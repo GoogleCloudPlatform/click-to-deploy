@@ -16,29 +16,29 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 2/debian11/2.10
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 2/debian12/2.11
+  from: marketplace.gcr.io/google/debian12
   packages:
     harbor:
-      version: 2.10.0
+      version: 2.11.1
   repo: harbor2
   tags:
-  - 2.10.0-debian11
-  - 2.10-debian11
-  - 2-debian11
-  - 2.10.0
-  - '2.10'
+  - 2.11.1-debian12
+  - 2.11-debian12
+  - 2-debian12
+  - 2.11.1
+  - '2.11'
   - '2'
   - latest
-- dir: 2/debian11/2.7
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 2/debian12/2.7
+  from: marketplace.gcr.io/google/debian12
   packages:
     harbor:
       version: 2.7.4
   repo: harbor2
   tags:
-  - 2.7.4-debian11
-  - 2.7-debian11
+  - 2.7.4-debian12
+  - 2.7-debian12
   - 2.7.4
   - '2.7'
 
