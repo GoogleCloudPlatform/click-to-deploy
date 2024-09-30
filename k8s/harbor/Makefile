@@ -6,8 +6,8 @@ include ../images.Makefile
 CHART_NAME := harbor
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 2.7
-HARBOR_TRACK ?= v2.7.0
+TRACK ?= 2.10
+HARBOR_TRACK ?= v2.7.4
 
 VERIFY_WAIT_TIMEOUT = 1800
 
