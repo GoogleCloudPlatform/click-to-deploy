@@ -47,8 +47,8 @@ spec:
             path: /health
             scheme: HTTP
             port: 9999
-          initialDelaySeconds: 1
-          periodSeconds: 10
+          initialDelaySeconds: 120
+          periodSeconds: 30
         envFrom:
         - configMapRef:
             name: "{{ template "harbor.chartmuseum" . }}"
