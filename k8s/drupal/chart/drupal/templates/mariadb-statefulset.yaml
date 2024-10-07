@@ -59,7 +59,7 @@ spec:
         readinessProbe:
           exec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
-          initialDelaySeconds: 15
+          initialDelaySeconds: 120
         livenessProbe:
           exec:
             command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
@@ -85,10 +85,10 @@ spec:
           httpGet:
             path: /metrics
             port: 9104
-          initialDelaySeconds: 60
+          initialDelaySeconds: 120
           timeoutSeconds: 30
           failureThreshold: 10
-          periodSeconds: 10
+          periodSeconds: 60
       {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
