@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -8,10 +8,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM marketplace.gcr.io/google/c2d-debian11
-ENV EXPORTER_VERSION 1.1.0
+FROM marketplace.gcr.io/google/debian12
+ENV EXPORTER_VERSION 1.3.0
 
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl \
     && curl -L -o uwsgi.tar.gz https://github.com/timonwong/uwsgi_exporter/releases/download/v${EXPORTER_VERSION}/uwsgi_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
     && tar -xvf uwsgi.tar.gz --strip-components=1 \
     && mv uwsgi_exporter /usr/local/bin/uwsgi_exporter \
