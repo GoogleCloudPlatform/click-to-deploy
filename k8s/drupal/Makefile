@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := drupal
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 10.1
+TRACK ?= 10.3
 
 MYSQL_EXPORTER_TAG ?= exporter
 APACHE_EXPORTER_TAG ?= 0.13
