@@ -26,22 +26,22 @@ spec:
             memory: 100Mi
         env:
         # A password for root superuser.
-        - name: MYSQL_ROOT_PASSWORD
+        - name: MARIADB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Release.Name }}-mariadb-secret
               key: root-password
         # A database name to be created at startup.
-        - name: MYSQL_DATABASE
+        - name: MARIADB_DATABASE
           value: drupal
         # A new user to be created at startup.
-        - name: MYSQL_USER
+        - name: MARIADB_USER
           valueFrom:
             secretKeyRef:
               name: {{ .Release.Name }}-mariadb-secret
               key: drupal-user
         # A password of the new user created at startup.
-        - name: MYSQL_PASSWORD
+        - name: MARIADB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Release.Name }}-mariadb-secret
@@ -51,20 +51,25 @@ spec:
           containerPort: 3306
         volumeMounts:
         - name: {{ .Release.Name }}-mariadb-pvc
-          mountPath: /var/lib/mysql
+          mountPath: /var/lib/mariadb
           subPath: data
         - name: mariadb-config
           mountPath: /docker-entrypoint-initdb.d
           readOnly: true
-        readinessProbe:
-          exec:
-            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
-          initialDelaySeconds: 120
         livenessProbe:
-          exec:
-            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"]
-          initialDelaySeconds: 120
+          tcpSocket:
+            port: mariadb
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: mariadb
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
       - image: {{ .Values.db.exporter.image }}
+        args:
+        - "--mysqld.address=127.0.0.1:3306"
+        - "--mysqld.username={{ .Values.db.exporter.user }}"
         name: mysqld-exporter
         env:
         - name: MYSQLD_EXPORTER_PASSWORD
@@ -72,8 +77,6 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-mysqld-exporter-secret
               key: mysqld-exporter-pass
-        - name: DATA_SOURCE_NAME
-          value: {{ .Values.db.exporter.user }}:$(MYSQLD_EXPORTER_PASSWORD)@(127.0.0.1:3306)/
         ports:
         - name: exporter
           containerPort: 9104
@@ -85,10 +88,10 @@ spec:
           httpGet:
             path: /metrics
             port: 9104
-          initialDelaySeconds: 120
+          initialDelaySeconds: 240
           timeoutSeconds: 30
           failureThreshold: 10
-          periodSeconds: 60
+          periodSeconds: 120
       {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}

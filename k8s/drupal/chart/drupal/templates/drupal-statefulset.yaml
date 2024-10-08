@@ -22,8 +22,8 @@ spec:
         name: drupal
         resources:
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 300m
+            memory: 300Mi
         env:
         - name: AUTO_INSTALL
           value: 'yes'
@@ -44,7 +44,7 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-drupal-secret
               key: drupal-email
-        # A hostname of MySQL service.
+        # A hostname of MariaDB service.
         - name: DRUPAL_DB_HOST
           value: {{ .Release.Name }}-mariadb-svc
         # A username used for accessing the database.
