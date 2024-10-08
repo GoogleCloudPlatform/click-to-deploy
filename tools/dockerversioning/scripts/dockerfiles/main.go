@@ -13,9 +13,9 @@ import (
 	"path/filepath"
 	"reflect"
 	"strings"
-	"text/template"
 
 	"github.com/GoogleCloudPlatform/click-to-deploy/tools/dockerversioning/versions"
+	"github.com/google/safetext/yamltemplate"
 )
 
 type indentFormat string
