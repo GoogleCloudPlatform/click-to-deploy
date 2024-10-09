@@ -15,12 +15,12 @@ x-google-marketplace:
     resources:
       - replicas: 1
         requests:
-          cpu: 100m
-          memory: 100Mi
+          cpu: 300m
+          memory: 300Mi
       - replicas: 1
         requests:
-          cpu: 100m
-          memory: 100Mi
+          cpu: 300m
+          memory: 300Mi
 
   images:
     '':

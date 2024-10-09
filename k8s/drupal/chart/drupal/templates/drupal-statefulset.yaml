@@ -22,8 +22,8 @@ spec:
         name: drupal
         resources:
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 300m
+            memory: 300Mi
         env:
         - name: AUTO_INSTALL
           value: 'yes'
@@ -44,7 +44,7 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-drupal-secret
               key: drupal-email
-        # A hostname of MySQL service.
+        # A hostname of MariaDB service.
         - name: DRUPAL_DB_HOST
           value: {{ .Release.Name }}-mariadb-svc
         # A username used for accessing the database.
@@ -73,8 +73,8 @@ spec:
           httpGet:
             path: /
             port: 80
-          initialDelaySeconds: 150
-          periodSeconds: 30
+          initialDelaySeconds: 300
+          periodSeconds: 120
           timeoutSeconds: 5
           successThreshold: 2
           failureThreshold: 10
@@ -82,7 +82,7 @@ spec:
           httpGet:
             path: /
             port: 80
-          initialDelaySeconds: 240
+          initialDelaySeconds: 360
       - image: {{ .Values.apache.exporter.image }}
         name: apache-exporter
         args:
@@ -98,10 +98,10 @@ spec:
           httpGet:
             path: /metrics
             port: 9117
-          initialDelaySeconds: 60
-          timeoutSeconds: 30
+          initialDelaySeconds: 120
+          timeoutSeconds: 60
           failureThreshold: 10
-          periodSeconds: 10
+          periodSeconds: 60
       {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
