@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ setup:
   - 'MYSQL_ROOT_PASSWORD=some-password'
   - '-d'
   - 'marketplace.gcr.io/google/postgresql13'
-- command: [sleep, '20s']
+- command: [sleep, '180s']
 - command:
   - 'docker'
   - 'run'
@@ -54,7 +54,7 @@ setup:
   - '-d'
   - '$IMAGE'
   - 'webserver'
-- command: [sleep, '70s']
+- command: [sleep, '180s']
 
 teardown:
 - command: [docker, stop, some-airflow-$UNIQUE-id, some-postgres-$UNIQUE-id]
