@@ -31,7 +31,7 @@ setup:
   - 'MYSQL_ROOT_PASSWORD=some-password'
   - '-d'
   - 'marketplace.gcr.io/google/postgresql13'
-- command: [sleep, '20s']
+- command: [sleep, '120s']
 - command:
   - 'docker'
   - 'run'
@@ -54,7 +54,7 @@ setup:
   - '-d'
   - '$IMAGE'
   - 'webserver'
-- command: [sleep, '70s']
+- command: [sleep, '120s']
 
 teardown:
 - command: [docker, stop, some-airflow-$UNIQUE-id, some-postgres-$UNIQUE-id]
