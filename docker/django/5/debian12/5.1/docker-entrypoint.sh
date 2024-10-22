@@ -27,35 +27,22 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-set -x
+set -e
+
+function log_info() {
+    echo "====> $1"
+}
 
 function await_for_host_and_port() {
     local host="$1"
     local port="$2"
     timeout --preserve-status 300 bash -c "until echo > /dev/tcp/${host}/${port}; do sleep 2; done"
-    if [[ "$?" -ne 0 ]]; then
-        exit 1
-    fi
-}
-
-function setup_databases() {
-  local -r settings_file="$1"
-
-  if [[ "${C2D_DJANGO_DB_TYPE}" == "mysql" ]]; then
-    apply_db_settings "${settings_file}" "django.db.backends.mysql"
-  elif [[ "${C2D_DJANGO_DB_TYPE}" == "postgresql" ]]; then
-    apply_db_settings "${settings_file}" "django.db.backends.postgresql"
-  else
-    log_info "Invalid DB provided"
-    exit 1
-  fi
 }
 
 function apply_db_settings() {
-  local -r settings_file="$1"
-  local -r db_driver="$2"
-
-  local extra_config="$(cat <<-EOF
+    local settings_file="$1"
+    local db_driver="$2"
+    cat <<EOF >> "${settings_file}"
 DATABASES = {
   'default': {
     'ENGINE': '${db_driver}',
@@ -67,65 +54,62 @@ DATABASES = {
   }
 }
 EOF
-)"
-  echo "${extra_config}" >> "${settings_file}"
+}
+
+function setup_databases() {
+    local settings_file="$1"
+    if [[ "${C2D_DJANGO_DB_TYPE}" == "mysql" ]]; then
+        apply_db_settings "${settings_file}" "django.db.backends.mysql"
+    elif [[ "${C2D_DJANGO_DB_TYPE}" == "postgresql" ]]; then
+        apply_db_settings "${settings_file}" "django.db.backends.postgresql"
+    else
+        log_info "Invalid DB provided"
+        exit 1
+    fi
 }
 
 function setup_static_path() {
-  local -r settings_file="$1"
-  local -r static_path="/sites/${C2D_DJANGO_SITENAME}/static"
-  mkdir -p "${static_path}"
-  echo "STATIC_ROOT = '${static_path}'" >> "${settings_file}"
-}
-
-function log_info() {
-  echo "====> $1"
+    local settings_file="$1"
+    local static_path="/sites/${C2D_DJANGO_SITENAME}/static"
+    echo "STATIC_ROOT = '${static_path}'" >> "${settings_file}"
+    mkdir -p "${static_path}"
 }
 
 export C2D_DJANGO_MODE="--${C2D_DJANGO_MODE:="socket"}"
 export C2D_DJANGO_PORT="${C2D_DJANGO_PORT:=8080}"
 export C2D_DJANGO_ALLOWED_HOSTS="${C2D_DJANGO_ALLOWED_HOSTS:="'localhost'"}"
 
-declare -r SETTINGS_FILE="${C2D_DJANGO_SITENAME}/${C2D_DJANGO_SITENAME}/settings.py"
+declare -r SETTINGS_FILE="/sites/${C2D_DJANGO_SITENAME}/${C2D_DJANGO_SITENAME}/settings.py"
 
-# If website is not ready
-if [[ ! -d "${C2D_DJANGO_SITENAME}" ]]; then
-  cd /sites
+if [[ ! -d "/sites/${C2D_DJANGO_SITENAME}" ]]; then
+    cd /sites
+    log_info "Creating website..."
+    django-admin startproject "${C2D_DJANGO_SITENAME}"
 
-  # Create website
-  log_info "Creating website..."
-  django-admin startproject "${C2D_DJANGO_SITENAME}"
+    cd "${C2D_DJANGO_SITENAME}"
+    log_info "Setup for external access..."
+    sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = [${C2D_DJANGO_ALLOWED_HOSTS}]@g" "settings.py"
 
-  # Configure for external access
-  log_info "Setup for external access..."
-  sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = [${C2D_DJANGO_ALLOWED_HOSTS}]@g" \
-    "${C2D_DJANGO_SITENAME}/${C2D_DJANGO_SITENAME}/settings.py"
+    if [[ -n "${C2D_DJANGO_DB_TYPE}" ]]; then
+        log_info "Setting up database configuration..."
+        setup_databases "${SETTINGS_FILE}"
+        log_info "Awaiting for database connection..."
+        await_for_host_and_port "${C2D_DJANGO_DB_HOST}" "${C2D_DJANGO_DB_PORT}"
+    fi
 
-  # Setup databases
-  if [[ ! -z "${C2D_DJANGO_DB_TYPE}" ]]; then
-    echo "Setting up database configuration..."
-    echo "Config: ${C2D_DJANGO_DB_TYPE}"
-    env | grep "C2D_DJANGO_DB_" | grep -v "C2D_DJANGO_DB_PASSWORD"
-    setup_databases "${SETTINGS_FILE}"
+    setup_static_path "${SETTINGS_FILE}"
 
-    echo "Awaiting for database..."
-    await_for_host_and_port "${C2D_DJANGO_DB_HOST}" "${C2D_DJANGO_DB_PORT}"
-  fi
+    log_info "Running migrations..."
+    python manage.py makemigrations
+    python manage.py migrate
 
-  # Setting up static path
-  setup_static_path "${SETTINGS_FILE}"
-
-  # Run website migrations
-  python3 "${C2D_DJANGO_SITENAME}/manage.py" makemigrations
-  python3 "${C2D_DJANGO_SITENAME}/manage.py" migrate
-  python3 "${C2D_DJANGO_SITENAME}/manage.py" collectstatic --noinput
-
+    log_info "Collecting static files..."
+    python manage.py collectstatic --noinput
 else
-  log_info "Website already found."
+    log_info "Website already exists."
 fi
 
-echo "Starting Django container..."
+log_info "Starting Django container..."
+cd "/sites/${C2D_DJANGO_SITENAME}"
+exec uwsgi --socket 0.0.0.0:${C2D_DJANGO_PORT} --chdir /sites/${C2D_DJANGO_SITENAME}/${C2D_DJANGO_SITENAME} --module ${C2D_DJANGO_SITENAME}.wsgi:application --stats 0.0.0.0:1717 --py-autoreload 2 --lazy-apps --die-on-term
 
-# Run uwsgi
-cd "/sites/${C2D_DJANGO_SITENAME}" \
-  && /usr/bin/tini uwsgi -- "${C2D_DJANGO_MODE}" "0.0.0.0:${C2D_DJANGO_PORT}" --module "${C2D_DJANGO_SITENAME}.wsgi" --stats :1717 --py-autoreload 2 --lazy-apps --die-on-term
