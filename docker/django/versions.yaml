@@ -37,20 +37,6 @@ versions:
   - '5.1'
   - '5'
   - latest
-- dir: 4/debian12/4.2
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    django:
-      version: 4.2.16
-  repo: django4
-  tags:
-  - 4.2.16-debian12
-  - 4.2-debian12
-  - 4-debian12
-  - 4.2.16
-  - '4.2'
-  - '4'
-  - latest
 - dir: exporter
   excludeTests:
   - tests/functional_tests/basic_test.yaml
@@ -68,5 +54,3 @@ versions:
   - 1-debian12
   - latest
   templateSubDir: exporter
-
-

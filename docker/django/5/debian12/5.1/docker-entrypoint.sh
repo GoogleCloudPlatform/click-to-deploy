@@ -88,7 +88,7 @@ if [[ ! -d "/sites/${C2D_DJANGO_SITENAME}" ]]; then
 
     cd "${C2D_DJANGO_SITENAME}"
     log_info "Setup for external access..."
-    sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = [${C2D_DJANGO_ALLOWED_HOSTS}]@g" "settings.py"
+    sed -i -e "s@ALLOWED_HOSTS = \[]@ALLOWED_HOSTS = [${C2D_DJANGO_ALLOWED_HOSTS}]@g" "${SETTINGS_FILE}"
 
     if [[ -n "${C2D_DJANGO_DB_TYPE}" ]]; then
         log_info "Setting up database configuration..."
@@ -110,6 +110,10 @@ else
 fi
 
 log_info "Starting Django container..."
-cd "/sites/${C2D_DJANGO_SITENAME}"
-exec uwsgi --socket 0.0.0.0:${C2D_DJANGO_PORT} --chdir /sites/${C2D_DJANGO_SITENAME}/${C2D_DJANGO_SITENAME} --module ${C2D_DJANGO_SITENAME}.wsgi:application --stats 0.0.0.0:1717 --py-autoreload 2 --lazy-apps --die-on-term
-
+cd "/sites/${C2D_DJANGO_SITENAME}/"
+exec uwsgi \
+    "${C2D_DJANGO_MODE}" "0.0.0.0:${C2D_DJANGO_PORT}" \
+    --chdir "/sites/${C2D_DJANGO_SITENAME}/" \
+    --module ${C2D_DJANGO_SITENAME}.wsgi:application \
+    --stats 0.0.0.0:1717 \
+    --py-autoreload 2 --lazy-apps --die-on-term
