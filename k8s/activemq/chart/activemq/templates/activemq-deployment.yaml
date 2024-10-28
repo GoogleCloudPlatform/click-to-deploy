@@ -58,10 +58,10 @@ spec:
         livenessProbe:
           tcpSocket:
             port: activemq-ui
-          initialDelaySeconds: 400
-          periodSeconds: 10
+          initialDelaySeconds: 800
+          periodSeconds: 5
           timeoutSeconds: 5
-          failureThreshold: 5
+          failureThreshold: 15
         readinessProbe:
           tcpSocket:
             port: activemq-tcp
