@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"strconv"
+	"time"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -24,6 +25,19 @@ type Package struct {
 	Md5     string
 }
 
+type Label struct {
+	Key 				string	`yaml:"key"`
+	LabelValue	string	`yaml:"value"`
+	IsTimestamp bool		`yaml:"isTimestamp"`
+}
+
+func (l Label) Value() string {
+	if (l.IsTimestamp) {
+		return time.Now().Format(time.RFC3339)
+	}
+	return l.LabelValue
+}
+
 type Version struct {
 	Dir                  string
 	TemplateSubDir       string `yaml:"templateSubDir"`
@@ -37,6 +51,7 @@ type Version struct {
 	BuilderImage         string   `yaml:"builderImage"`
 	BuilderArgs          []string `yaml:"builderArgs"`
 	ImageNameFromBuilder string   `yaml:"imageNameFromBuilder"`
+	Labels							 []Label  `yaml:"labels"`
 }
 
 type Spec struct {
