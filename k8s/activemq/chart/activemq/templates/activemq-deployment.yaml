@@ -56,11 +56,13 @@ spec:
           runAsUser: 1000
           runAsGroup: 1000
         livenessProbe:
-          exec:
-            command:
-            - cat
-            - /opt/activemq/data/activemq.pid
-          initialDelaySeconds: 30
+          tcpSocket:
+            port: activemq-ui
+          initialDelaySeconds: 1200
+          timeoutSeconds: 10
+          periodSeconds: 50
+          successThreshold: 1
+          failureThreshold: 20
         readinessProbe:
           tcpSocket:
             port: activemq-tcp
