@@ -50,7 +50,7 @@ actions:
   bashTest:
     script: |-
       /opt/activemq/bin/activemq producer \
-        --messageCount 1 --message "TestMessage" \
+        --messageCount 1 --destination queue://TEST --message "TestMessage" \
         --brokerUrl tcp://${APP_SERVICE}:61616
     expect:
       stdout:
