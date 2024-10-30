@@ -1,9 +1,9 @@
 FROM marketplace.gcr.io/google/debian12
 
-ENV GITLAB_VERSION 17.3.1
-ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/bullseye/gitlab-ee_17.3.1-ee.0_amd64.deb/download.deb"
+ENV GITLAB_VERSION 17.5.1
+ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/bullseye/gitlab-ee_17.5.1-ee.0_amd64.deb/download.deb"
 
-ENV C2D_RELEASE 17.3.1
+ENV C2D_RELEASE 17.5.1
 
 SHELL ["/bin/sh", "-c"],
 
