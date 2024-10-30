@@ -6,6 +6,16 @@ Versioning tools for Dockerfile source repos. Previously, these tools were in  [
 - `cloudbuild` generates a configuration file to build these Dockerfiles using
   [Google Container Builder](https://cloud.google.com/container-builder/docs/).
 
+docker build -t dockertools:dev -f dockertools.Dockerfile .
+docker run --rm -it \
+  --workdir /mounted \
+  --mount type=bind,source="$(pwd)",target=/mounted \
+  --user $(id -u):$(id -g) \
+  dockertools:dev /bin/cloudbuild
+
+gcloud builds submit --timeout 5400s --config cloudbuild.yaml .
+
+
 # Installation
 
 - Install [Bazel, version 0.19.2](https://bazel.build) as the build tool.

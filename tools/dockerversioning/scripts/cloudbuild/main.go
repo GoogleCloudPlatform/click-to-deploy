@@ -81,8 +81,8 @@ const cloudBuildTemplateString = `steps:
     args:
       - 'build'
       - '--tag={{ .Tag }}'
-      {{- range .Labels }}
-      - '--label={{ .Key }}={{ .Value }}'
+      {{- range .Annotations }}
+      - '--annotation={{ .Key }}={{ .Value }}'
       {{- end }}
       - '{{ .Directory }}'
 {{- if $parallel }}
@@ -137,7 +137,7 @@ const cloudBuildTemplateString = `steps:
 {{- range $imageIndex, $image := .ImageBuilds }}
 {{- $primary := $image.Tag }}
 {{- range .Aliases }}
-  - name: gcr.io/cloud-builders/docker
+  - name: gcr.io/cloud-builders/docker:24.0.9
     args:
       - 'tag'
       - '{{ $primary }}'
@@ -190,7 +190,7 @@ type imageBuildTemplateData struct {
   BuilderImage         string
   BuilderArgs          []string
   ImageNameFromBuilder string
-  Labels               []versions.Label
+  Annotations          []versions.Annotation
 }
 
 type cloudBuildTemplateData struct {
@@ -261,10 +261,10 @@ func newCloudBuildTemplateData(
     if v.BuilderImage != "" {
       BuilderImageFull := fmt.Sprintf("%v/%v", registry, v.BuilderImage)
       data.ImageBuilds = append(
-        data.ImageBuilds, imageBuildTemplateData{v.Dir, v.ImageNameFromBuilder, images, versionSTests, versionFTests, v.Builder, BuilderImageFull, v.BuilderArgs, v.ImageNameFromBuilder, v.Labels})
+        data.ImageBuilds, imageBuildTemplateData{v.Dir, v.ImageNameFromBuilder, images, versionSTests, versionFTests, v.Builder, BuilderImageFull, v.BuilderArgs, v.ImageNameFromBuilder, v.Annotations})
     } else {
       data.ImageBuilds = append(
-        data.ImageBuilds, imageBuildTemplateData{v.Dir, images[0], images[1:], versionSTests, versionFTests, v.Builder, v.BuilderImage, v.BuilderArgs, v.ImageNameFromBuilder, v.Labels})
+        data.ImageBuilds, imageBuildTemplateData{v.Dir, images[0], images[1:], versionSTests, versionFTests, v.Builder, v.BuilderImage, v.BuilderArgs, v.ImageNameFromBuilder, v.Annotations})
     }
   }
 
