@@ -20,34 +20,18 @@ versions:
   from: marketplace.gcr.io/google/debian12
   packages:
     airflow:
-      version: 2.10.2
+      version: 2.10.3
     pip:
-      version: 24.2
+      version: 24.3.1
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
   repo: airflow2
   tags:
-  - 2.10.2-debian12
+  - 2.10.3-debian12
   - 2.10-debian12
   - 2-debian12
-  - 2.10.2
+  - 2.10.3
   - '2.10'
   - '2'
   - latest
-- dir: 2/debian12/2.6
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    airflow:
-      version: 2.6.3
-    gosu:
-      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.17'
-    pip:
-      version: 24.2
-  repo: airflow2
-  tags:
-  - 2.6.3-debian12
-  - 2.6-debian12
-  - 2.6.3
-  - '2.6'
