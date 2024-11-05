@@ -212,7 +212,7 @@ ENV RUNTIME_APT_COMMAND="echo" \
     INSTALL_MSSQL_CLIENT="true" \
     AIRFLOW_INSTALLATION_METHOD="apache-airflow" \
     AIRFLOW_UID=${AIRFLOW_UID} \
-    AIRFLOW__CORE__LOAD_EXAMPLES="false" \
+    AIRFLOW__DATABASE__LOAD_EXAMPLES="false" \
     AIRFLOW_USER_HOME_DIR=${AIRFLOW_USER_HOME_DIR} \
     AIRFLOW_HOME=${AIRFLOW_HOME} \
     PATH="${AIRFLOW_USER_HOME_DIR}/.local/bin:${PATH}" \
@@ -351,4 +351,4 @@ ENV C2D_RELEASE {{ $airflow.Version }}
 
 # Set default entrypoint and command for the container
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/entrypoint"]
-CMD [""]
+CMD ["webserver"]

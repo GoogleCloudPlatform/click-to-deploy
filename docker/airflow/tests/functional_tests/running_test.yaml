@@ -40,7 +40,7 @@ setup:
   - '--name'
   - 'some-airflow-$UNIQUE-id'
   - '-e'
-  - 'AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@some-postgres-$UNIQUE-id/airflow'
+  - 'AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@some-postgres-$UNIQUE-id/airflow'
   - '-e'
   - 'AIRFLOW_UID=50000'
   - '-e'
