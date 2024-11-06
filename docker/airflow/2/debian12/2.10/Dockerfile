@@ -287,6 +287,8 @@ RUN /scripts/docker/install_airflow.sh \
     && find "${AIRFLOW_USER_HOME_DIR}/.local" -executable -print0 | xargs --null chmod g+x \
     && find "${AIRFLOW_USER_HOME_DIR}/.local" -print0 | xargs --null chmod g+rw
 
+RUN pip3 install psycopg2-binary
+
 # Copy pre-built local environment for Airflow and set up entry points
 COPY --chown=airflow:0 --from=airflow-build-image \
      "${AIRFLOW_USER_HOME_DIR}/.local" "${AIRFLOW_USER_HOME_DIR}/.local"
