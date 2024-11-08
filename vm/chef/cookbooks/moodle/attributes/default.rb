@@ -16,6 +16,6 @@ default['moodle']['user'] = 'www-data'
 default['moodle']['group'] = 'www-data'
 default['moodle']['db']['name'] = 'moodle'
 default['moodle']['track'] = '404'
-default['moodle']['version'] = '4.4'
+default['moodle']['version'] = '4.5'
 
 default['php81']['distribution'] = 'bullseye'
