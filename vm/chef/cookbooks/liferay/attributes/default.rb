@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['liferay']['version'] = '7.4.3.72-ga72'
+default['liferay']['version'] = '7.4.3.125-ga125'
 # SHA1 value check for liferay SOURCE, the cookbook download it from
 # https://github.com/liferay/liferay-portal/archive/refs/tags/<version>.tar.gz
 default['liferay']['sha1']['source'] = '6ec72fa189386ee7e4886786cbf054479ec45479'
