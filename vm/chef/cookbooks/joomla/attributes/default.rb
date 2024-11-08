@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['joomla']['version'] = '5.1.0'
+default['joomla']['version'] = '5.2.1'
 default['joomla']['sha256'] = 'dbc4630923f02ed4e90be3c8734947a48285334ac8a416774d4e602d794ed227'
 default['joomla']['user'] = 'www-data'
 default['joomla']['db']['name'] = 'joomla_db'
