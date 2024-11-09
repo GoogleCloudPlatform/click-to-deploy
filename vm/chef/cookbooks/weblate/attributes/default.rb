@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['weblate']['version'] = '4.16'
+default['weblate']['version'] = '5.3.1'
 default['weblate']['db']['name'] = 'weblate'
 default['weblate']['pip-packages'] = [
   'psycopg2-binary',
