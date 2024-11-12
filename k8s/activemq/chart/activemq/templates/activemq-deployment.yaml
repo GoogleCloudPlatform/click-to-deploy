@@ -24,7 +24,7 @@ spec:
         name: activemq
         resources:
           requests:
-            memory: 130Mi
+            memory: 4Gi
             cpu: 10m
         env:
         - name: ACTIVEMQ_ADMIN_PASSWORD
@@ -58,12 +58,15 @@ spec:
         livenessProbe:
           tcpSocket:
             port: activemq-ui
-          initialDelaySeconds: 10
-          periodSeconds: 10
+          initialDelaySeconds: 1200
+          timeoutSeconds: 10
+          periodSeconds: 50
+          successThreshold: 1
+          failureThreshold: 20
         readinessProbe:
           tcpSocket:
             port: activemq-tcp
-          initialDelaySeconds: 10
+          initialDelaySeconds: 180
           periodSeconds: 10
       volumes:
       - name: activemq-data
