@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['cassandra']['version'] = '4.1.7'
+default['cassandra']['version'] = '5.0.2'
 default['cassandra']['apt_version'] = "#{default['cassandra']['version']}.*"
 
 default['cassandra']['repo']['uri'] = 'https://debian.cassandra.apache.org'
 default['cassandra']['repo']['components'] = ['main']
-default['cassandra']['repo']['distribution'] = '41x'
+default['cassandra']['repo']['distribution'] = '50x'
 default['cassandra']['repo']['keyserver'] = 'https://www.apache.org/dist/cassandra/KEYS'
