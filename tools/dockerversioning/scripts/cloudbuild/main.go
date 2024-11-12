@@ -88,6 +88,9 @@ const cloudBuildTemplateString = `steps:
       {{- range .Annotations }}
       - '--annotation={{ .Key }}={{ .Value }}'
       {{- end }}
+      {{- range .Labels }}
+      - '--label={{ .Key }}={{ .Value }}'
+      {{- end }}
       - '{{ .Directory }}'
 {{- if $parallel }}
     waitFor: ['-']
@@ -195,6 +198,7 @@ type imageBuildTemplateData struct {
   BuilderArgs          []string
   ImageNameFromBuilder string
   Annotations          []versions.Annotation
+  Labels               []versions.Annotation
 }
 
 type cloudBuildTemplateData struct {
@@ -273,10 +277,10 @@ func newCloudBuildTemplateData(
     if v.BuilderImage != "" {
       BuilderImageFull := fmt.Sprintf("%v/%v", registry, v.BuilderImage)
       data.ImageBuilds = append(
-        data.ImageBuilds, imageBuildTemplateData{v.Dir, v.ImageNameFromBuilder, images, versionSTests, versionFTests, v.Builder, BuilderImageFull, v.BuilderArgs, v.ImageNameFromBuilder, v.Annotations})
+        data.ImageBuilds, imageBuildTemplateData{v.Dir, v.ImageNameFromBuilder, images, versionSTests, versionFTests, v.Builder, BuilderImageFull, v.BuilderArgs, v.ImageNameFromBuilder, v.Annotations, v.Labels})
     } else {
       data.ImageBuilds = append(
-        data.ImageBuilds, imageBuildTemplateData{v.Dir, images[0], images[1:], versionSTests, versionFTests, v.Builder, v.BuilderImage, v.BuilderArgs, v.ImageNameFromBuilder, v.Annotations})
+        data.ImageBuilds, imageBuildTemplateData{v.Dir, images[0], images[1:], versionSTests, versionFTests, v.Builder, v.BuilderImage, v.BuilderArgs, v.ImageNameFromBuilder, v.Annotations, v.Labels})
     }
   }
 

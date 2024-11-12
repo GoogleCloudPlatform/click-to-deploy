@@ -28,7 +28,7 @@ type Package struct {
 type Annotation struct {
   Key 						string	`yaml:"key"`
   AnnotationValue	string	`yaml:"value"`
-  IsTimestamp 		bool		`yaml:"isTimestamp"`
+  IsTimestamp 		bool		`yaml:"timestamp"`
 }
 
 func (l Annotation) Value() string {
@@ -52,6 +52,7 @@ type Version struct {
   BuilderArgs          []string 					`yaml:"builderArgs"`
   ImageNameFromBuilder string   					`yaml:"imageNameFromBuilder"`
   Annotations         []Annotation  			`yaml:"annotations"`
+  Labels              []Annotation        `yaml:"labels"`
 }
 
 type Spec struct {
