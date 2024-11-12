@@ -3,6 +3,14 @@
 
 FROM {{ .From }} as ospo
 
+{{ range .Annotations  }}
+LABEL {{ .Key }} {{ .Value }}
+{{ end }}
+
+{{ range .Labels  }}
+LABEL {{ .Key }} {{ .Value }}
+{{ end }}
+
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt

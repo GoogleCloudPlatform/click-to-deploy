@@ -2,6 +2,14 @@
 
 FROM marketplace.gcr.io/google/debian12 as ospo
 
+
+LABEL annotation-key annotation-value
+
+
+
+LABEL label-key label-value
+
+
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
