@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['dreamfactory']['version'] = '4.14.1'
+default['dreamfactory']['version'] = '6.3.0'
 default['dreamfactory']['db']['name'] = 'dreamfactory'
 
 default['php81']['distribution'] = 'bullseye'
