@@ -14,8 +14,8 @@
 
 FROM marketplace.gcr.io/google/debian11
 
-ENV BAZEL_VERSION 0.19.2
-ENV BAZEL_ARCH linux_amd64_stripped
+ENV BAZEL_VERSION=0.19.2
+ENV BAZEL_ARCH=linux_amd64_stripped
 
 COPY ./ click-to-deploy/tools
 

@@ -40,11 +40,15 @@ type cloudBuildOptions struct {
 
   // Forces parallel build. If specified, images are build on bigger machines in parallel. Overrides EnableParallel.
   ForceParallel bool
+
+  // Defines the reference for the docker Cloud Build builder (https://cloud.google.com/build/docs/cloud-builders#supported_builder_images_provided_by)
+  DockerImage string
 }
 
 // TODO(huyhg): Replace "gcr.io/$PROJECT_ID/functional_test" with gcp-runtimes one.
 const cloudBuildTemplateString = `steps:
 {{- $parallel := .Parallel }}
+{{- $dockerImage := .DockerImage }}
 {{- if .RequireNewTags }}
 # Check if tags exist.
 {{- range .Images }}
@@ -59,7 +63,7 @@ const cloudBuildTemplateString = `steps:
 # Build images
 {{- range .ImageBuilds }}
 {{- if .Builder }}
-  - name: gcr.io/cloud-builders/docker
+  - name: {{ $dockerImage }}
     args:
       - 'build'
       - '--tag={{ .Tag }}'
@@ -77,7 +81,7 @@ const cloudBuildTemplateString = `steps:
     id: 'image-{{ .Tag }}'
 {{- end }}
 {{- else }}
-  - name: gcr.io/cloud-builders/docker
+  - name: {{ $dockerImage }}
     args:
       - 'build'
       - '--tag={{ .Tag }}'
@@ -137,7 +141,7 @@ const cloudBuildTemplateString = `steps:
 {{- range $imageIndex, $image := .ImageBuilds }}
 {{- $primary := $image.Tag }}
 {{- range .Aliases }}
-  - name: gcr.io/cloud-builders/docker:24.0.9
+  - name: {{ $dockerImage }}
     args:
       - 'tag'
       - '{{ $primary }}'
@@ -196,6 +200,7 @@ type imageBuildTemplateData struct {
 type cloudBuildTemplateData struct {
   RequireNewTags bool
   Parallel       bool
+  DockerImage    string
   ImageBuilds    []imageBuildTemplateData
   AllImages      []string
   TimeoutSeconds int
@@ -216,6 +221,13 @@ func newCloudBuildTemplateData(
   registry string, spec versions.Spec, options cloudBuildOptions) cloudBuildTemplateData {
   data := cloudBuildTemplateData{}
   data.RequireNewTags = options.RequireNewTags
+
+  // Defines the default docker image, if its not set
+  if (options.DockerImage == "") {
+    data.DockerImage = "gcr.io/cloud-builders/docker"
+  } else {
+    data.DockerImage = options.DockerImage
+  }
 
   // Determine the set of directories to operate on.
   dirs := make(map[string]bool)
@@ -345,6 +357,7 @@ func main() {
   machineTypePtr := config.StringOption("machineType","", "Optional machine type used to run the build, , must be one of: N1_HIGHCPU_8, N1_HIGHCPU_32, E2_HIGHCPU_8, E2_HIGHCPU_32. If not specified, the default machine is used.")
   enableParallel := config.BoolOption("enable_parallel", false, "Enable parallel build and bigger VM")
   forceParallel := config.BoolOption("force_parallel", false, "Force parallel build and bigger VM")
+  dockerImage := config.StringOption("docker_image", "gcr.io/cloud-builders/docker", "Optional docker builder reference")
   config.Parse()
 
   if *registryPtr == "" {
@@ -360,7 +373,7 @@ func main() {
     dirs = strings.Split(*dirsPtr, ",")
   }
   spec := versions.LoadVersions("versions.yaml")
-  options := cloudBuildOptions{dirs, *testsPtr, *newTagsPtr, *firstTagOnly, *timeoutPtr, *machineTypePtr, *enableParallel, *forceParallel}
+  options := cloudBuildOptions{dirs, *testsPtr, *newTagsPtr, *firstTagOnly, *timeoutPtr, *machineTypePtr, *enableParallel, *forceParallel, *dockerImage}
   result := renderCloudBuildConfig(*registryPtr, spec, options)
   fmt.Println(result)
 }

@@ -51,7 +51,7 @@ type Version struct {
   BuilderImage         string   					`yaml:"builderImage"`
   BuilderArgs          []string 					`yaml:"builderArgs"`
   ImageNameFromBuilder string   					`yaml:"imageNameFromBuilder"`
-  Annotations					[]Annotation  			`yaml:"annotations"`
+  Annotations         []Annotation  			`yaml:"annotations"`
 }
 
 type Spec struct {
