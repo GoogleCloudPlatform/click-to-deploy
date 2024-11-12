@@ -22,7 +22,7 @@ default['mautic']['packages'] = [
     'php8.1-imap',
 ]
 
-default['mautic']['version'] = '5.0.4'
+default['mautic']['version'] = '5.1.1'
 default['mautic']['user'] = 'www-data'
 default['mautic']['db']['name'] = 'mautic'
 
