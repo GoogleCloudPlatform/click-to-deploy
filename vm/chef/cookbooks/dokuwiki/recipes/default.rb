@@ -47,7 +47,7 @@ end
 
 # Download, untar and mark as owned by www-data all files of DokuWiki.
 remote_file '/tmp/dokuwiki.tgz' do
-  source "https://download.dokuwiki.org/src/dokuwiki/dokuwiki-#{node['dokuwiki']['download_version']}.tgz"
+  source "https://github.com/dokuwiki/dokuwiki/releases/download/release-#{node['dokuwiki']['download_version']}/dokuwiki-#{node['dokuwiki']['download_version']}.tgz"
   action :create
 end
 
