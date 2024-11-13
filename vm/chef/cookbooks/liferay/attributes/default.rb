@@ -15,7 +15,7 @@
 default['liferay']['version'] = '7.4.3.125-ga125'
 # SHA1 value check for liferay SOURCE, the cookbook download it from
 # https://github.com/liferay/liferay-portal/archive/refs/tags/<version>.tar.gz
-default['liferay']['sha1']['source'] = '6ec72fa189386ee7e4886786cbf054479ec45479'
+default['liferay']['sha1']['source'] = '459a7a1702b3a4be9a5676e4eec8cf1aaedfda8e7365b0f2cc7e0c705d469e68'
 # SHA1 value check for liferay bundle, the cookbook download it from
 # https://github.com/liferay/liferay-portal/releases/download/<version>/liferay-ce-portal-tomcat-<version>-<date>.tar.gz
 default['liferay']['sha1']['bundle'] = 'a6c8882e14cf4ffe4ca609def4b3053b14ad1f50'
