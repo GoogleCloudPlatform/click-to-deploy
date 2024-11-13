@@ -40,7 +40,7 @@ user node['redash']['linux']['user'] do
 end
 
 remote_file '/tmp/redash.tar.gz' do
-  source "https://github.com/getredash/redash/archive/refs/tags/#{node['redash']['version']}.tar.gz"
+  source "https://github.com/getredash/redash/archive/refs/tags/v#{node['redash']['version']}.tar.gz"
   verify "echo '#{node['redash']['sha1']} %{path}' | sha1sum -c"
   action :create
 end
