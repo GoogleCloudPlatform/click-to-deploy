@@ -13,7 +13,7 @@
 # limitations under the License.
 
 default['joomla']['version'] = '5.2.1'
-default['joomla']['sha256'] = 'dbc4630923f02ed4e90be3c8734947a48285334ac8a416774d4e602d794ed227'
+default['joomla']['sha256'] = '090db690680346076a0b9e5f051076191829f4d6745ccae243856a94024eada3'
 default['joomla']['user'] = 'www-data'
 default['joomla']['db']['name'] = 'joomla_db'
 
