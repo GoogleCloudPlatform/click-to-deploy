@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['dokuwiki']['download_version'] = '2024-02-06'
+default['dokuwiki']['download_version'] = '2024-02-06b'
 default['dokuwiki']['user']['name'] = 'admin'
 default['dokuwiki']['user']['real_name'] = 'John Doe'
 default['dokuwiki']['user']['groups'] = 'admin,user'
