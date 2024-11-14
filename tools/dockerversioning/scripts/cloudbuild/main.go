@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"os"
 	"strings"
 	"text/template"
@@ -60,7 +61,26 @@ const cloudBuildTemplateString = `steps:
 {{- end }}
 {{- end }}
 
-# Build images
+  # Build and push annotated image
+  - name: {{ $dockerImage }}
+    args:
+      - buildx
+      - create
+      - --name
+      - temp-builder
+      - --use
+    waitFor: ['-']
+    id: docker-create-env
+  - name: {{ $dockerImage }}
+    args:
+      - buildx
+      - inspect
+      - temp-builder
+      - --bootstrap
+    waitFor: ['docker-create-env']
+    id: docker-bootstrap-env
+
+  # Build images
 {{- range .ImageBuilds }}
 {{- if .Builder }}
   - name: {{ $dockerImage }}
@@ -81,21 +101,73 @@ const cloudBuildTemplateString = `steps:
     id: 'image-{{ .Tag }}'
 {{- end }}
 {{- else }}
+  {{- $testCounter := 0 }}
+  {{- $primary := .Tag }}
+  # Build test target image: {{ $primary }}
   - name: {{ $dockerImage }}
     args:
       - 'build'
-      - '--tag={{ .Tag }}'
+      - '-t'
+      - '{{ $primary }}'
+      - '{{ .Directory }}'
+    id: image-test-{{ $primary }}
+    {{- if $parallel }}
+    waitFor: ['docker-bootstrap-env']
+    {{- end }}
+
+  {{- range $testIndex, $test := .StructureTests }}
+  # Run structure test: {{ $primary }}
+  - name: gcr.io/gcp-runtimes/structure_test
+    args:
+      - '--image'
+      - '{{ $primary }}'
+      - '--config'
+      - '{{ $test }}'
+    waitFor: ['image-test-{{ $primary }}']
+    id: 'structure-test-{{ $primary }}-{{ $testIndex }}'
+
+  {{ end }}
+
+  {{- range $testIndex, $test := .FunctionalTests }}
+  # Run functional test: {{ $primary }}
+  - name: gcr.io/$PROJECT_ID/functional_test
+    args:
+      - '--verbose'
+      - '--vars'
+      - 'IMAGE={{ $primary }}'
+      - '--vars'
+      - 'UNIQUE={{ randomString 8 }}'
+      - '--test_spec'
+      - '{{ $test }}'
+    waitFor: ['image-test-{{ $primary }}']
+    id: 'functional-test-{{ $primary }}-{{ $testIndex }}'
+  {{- end }}
+
+  - name: {{ $dockerImage }}
+    args:
+      - 'buildx'
+      - 'build'
+      - '--push'
+      {{- range .Aliases }}
+      - '--tag'
+      - '{{ . }}'
+      {{- end }}
       {{- range .Annotations }}
-      - '--annotation={{ .Key }}={{ .Value }}'
+      - '--annotation=index,manifest:{{ .Key }}={{ .Value }}'
       {{- end }}
       {{- range .Labels }}
       - '--label={{ .Key }}={{ .Value }}'
       {{- end }}
       - '{{ .Directory }}'
-{{- if $parallel }}
-    waitFor: ['-']
-    id: 'image-{{ .Tag }}'
-{{- end }}
+    id: build-and-push-image-{{ $primary }}
+    waitFor:
+    {{- range $testIndex, $test := .StructureTests }}
+    - 'structure-test-{{ $primary }}-{{ $testIndex }}'
+    {{- end}}
+    {{- range $testIndex, $test := .FunctionalTests }}
+    - 'functional-test-{{ $primary }}-{{ $testIndex }}'
+    {{- end}}
+
 {{- end }}
 {{- end }}
 {{- end }}
@@ -114,54 +186,6 @@ const cloudBuildTemplateString = `steps:
       - '--config'
       - '{{ $test }}'
 {{- end }}
-{{- end }}
-
-{{- range $imageIndex, $image := .ImageBuilds }}
-{{- $primary := $image.Tag }}
-{{- range $testIndex, $test := $image.FunctionalTests }}
-{{- if and (eq $imageIndex 0) (eq $testIndex 0) }}
-
-# Run functional tests
-{{- end }}
-  - name: gcr.io/$PROJECT_ID/functional_test
-    args:
-      - '--verbose'
-      - '--vars'
-      - 'IMAGE={{ $primary }}'
-      - '--vars'
-      - 'UNIQUE={{ $imageIndex }}-{{ $testIndex }}'
-      - '--test_spec'
-      - '{{ $test }}'
-{{- if $parallel }}
-    waitFor: ['image-{{ $primary }}']
-    id: 'test-{{ $primary }}-{{ $testIndex }}'
-{{- end }}
-{{- end }}
-
-{{- end }}
-
-# Add alias tags
-{{- range $imageIndex, $image := .ImageBuilds }}
-{{- $primary := $image.Tag }}
-{{- range .Aliases }}
-  - name: {{ $dockerImage }}
-    args:
-      - 'tag'
-      - '{{ $primary }}'
-      - '{{ . }}'
-{{- if $parallel }}
-    waitFor:
-      - 'image-{{ $primary }}'
-{{- range $testIndex, $test := $image.FunctionalTests }}
-      - 'test-{{ $primary }}-{{ $testIndex }}'
-{{- end }}
-{{- end }}
-{{- end }}
-{{- end }}
-
-images:
-{{- range .AllImages }}
-  - '{{ . }}'
 {{- end }}
 
 {{- if not (eq .TimeoutSeconds 0) }}
@@ -336,8 +360,20 @@ func filterTests(structureTests []string, functionalTests []string, version vers
 func renderCloudBuildConfig(
   registry string, spec versions.Spec, options cloudBuildOptions) string {
   data := newCloudBuildTemplateData(registry, spec, options)
+
+  funcMap := template.FuncMap{
+    "randomString": func(length int) string {
+      bytes := make([]byte, length)
+      for i := 0; i < length; i++ {
+        bytes[i] = byte(rand.Intn(26) + 'a')
+      }
+      return string(bytes)
+    },
+  }
+
   tmpl, _ := template.
     New("cloudBuildTemplate").
+    Funcs(funcMap).
     Parse(cloudBuildTemplateString)
   var result bytes.Buffer
   tmpl.Execute(&result, data)
