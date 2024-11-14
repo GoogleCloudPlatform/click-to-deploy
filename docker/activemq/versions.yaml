@@ -15,7 +15,6 @@
 
 cloudbuild:
   enable_parallel: false
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
 versions:
 - dir: 6/debian12/6.1
   from: marketplace.gcr.io/google/debian12
@@ -24,14 +23,6 @@ versions:
       version: 6.1.3
       major: '6'
   repo: activemq6
-  annotations:
-  - key: annotation-key
-    value: annotation-value
-  labels:
-  - key: label-key
-    value: label-value
-  - key: ts
-    timestamp: true
   tags:
   - 6.1.3-debian12
   - 6.1-debian12

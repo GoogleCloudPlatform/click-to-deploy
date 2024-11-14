@@ -2,10 +2,6 @@
 
 FROM marketplace.gcr.io/google/debian12 as ospo
 
-
-
-
-
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
