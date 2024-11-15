@@ -86,7 +86,7 @@ default['odoo']['pip-packages'] = 'vobject qrcode pyldap num2words xlwt pyopenss
 
 default['odoo']['version'] = '18.0'
 default['odoo']['release'] = '20241107'
-default['odoo']['sha256'] = 'f2031c2633f7dd8fd18d64dac424a79b759d6e8ccd2f308f12bbbcdbe17e8d58'
+default['odoo']['sha256'] = '212a79485ed39c628060e83853f3d1067ca57b4b8a86f2b0e73b9d56ff766de9'
 default['odoo']['src']['sha256'] = '404e39408a080039967b1b14a75225370730073e4a468a2ad623274d8202c0ca'
 
 default['odoo']['wkhtmltopdf']['version'] = '0.12.6'
