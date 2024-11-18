@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['prestashop']['version'] = '8.0.4'
+default['prestashop']['version'] = '8.2.0'
 default['prestashop']['db']['name'] = 'prestashop'
 
 default['prestashop']['temp_packages'] = ['unzip']
