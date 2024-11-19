@@ -22,6 +22,9 @@ versions:
     falco:
       version: 0.36.2
   repo: falco0
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/5b7a25d4-ece2-4ae3-b8c3-652b2af4a5ec.cloudpartnerservices.goog
   tags:
   - 0.36.2-debian11
   - 0.36-debian11
@@ -33,6 +36,9 @@ versions:
 - dir: 0/debian11/0.34
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/5b7a25d4-ece2-4ae3-b8c3-652b2af4a5ec.cloudpartnerservices.goog
     falco:
       version: 0.34.1
   repo: falco0
@@ -48,6 +54,9 @@ versions:
       sha256: 5bd3367a0f0839ec96a32ad36d86a0c113476a12424771925cf8b5c2da87be65
       version: 0.8.6
   repo: falco-exporter0
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/14a94703-d67c-403c-8e1f-f5ad256e6cac.cloudpartnerservices.goog
   tags:
   - 0.8.6
   - '0.8'

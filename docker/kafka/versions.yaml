@@ -26,6 +26,9 @@ versions:
     scala:
       version: '2.13'
   repo: kafka3
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/ccea51e8-0540-4d1b-890e-2a1b04da0383.cloudpartnerservices.goog
   tags:
   - 3.7.0-debian12
   - 3.7-debian12
@@ -42,6 +45,9 @@ versions:
   packages:
     kafka:
       version: 3.6.1
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/ccea51e8-0540-4d1b-890e-2a1b04da0383.cloudpartnerservices.goog
     scala:
       version: '2.13'
   repo: kafka3
@@ -59,6 +65,9 @@ versions:
     kafka_exporter:
       version: 1.8.0
   repo: kafka-exporter1
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/a0c4026b-e814-4954-b5e5-c8bd9ee32753.cloudpartnerservices.goog
   tags:
   - 1.8.0
   - '1.8'

@@ -23,6 +23,9 @@ versions:
       gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
       version: 9.6.1
   repo: solr9
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/4af7481b-2d9f-4f98-bb26-cceb6db72414.cloudpartnerservices.goog
   tags:
   - 9.6.1-debian12
   - 9.6-debian12

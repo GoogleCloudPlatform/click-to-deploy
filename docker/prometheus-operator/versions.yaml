@@ -29,6 +29,9 @@ versions:
     golang:
       version: 1.23.1
   repo: prometheus-operator0
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/c7c58b15-e370-4ba7-b1ec-5d8e2c4df4df.cloudpartnerservices.goog
   tags:
   - 0.77.1-debian12
   - 0.77-debian12
@@ -42,6 +45,9 @@ versions:
   packages:
     prometheus-operator:
       version: 0.69.1
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/c7c58b15-e370-4ba7-b1ec-5d8e2c4df4df.cloudpartnerservices.goog
     golang:
       version: 1.23.1
   repo: prometheus-operator0

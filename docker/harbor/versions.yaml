@@ -22,6 +22,9 @@ versions:
     harbor:
       version: 2.11.1
   repo: harbor2
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/70c685e1-3aac-4626-9773-b0152237081b.cloudpartnerservices.goog
   tags:
   - 2.11.1-debian12
   - 2.11-debian12
@@ -33,6 +36,9 @@ versions:
 - dir: 2/debian12/2.7
   from: marketplace.gcr.io/google/debian12
   packages:
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/70c685e1-3aac-4626-9773-b0152237081b.cloudpartnerservices.goog
     harbor:
       version: 2.7.4
   repo: harbor2

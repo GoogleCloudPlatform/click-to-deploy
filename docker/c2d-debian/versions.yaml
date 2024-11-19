@@ -27,6 +27,9 @@ versions:
     debian11:
       version: 11.5.0
   repo: c2d-debian11
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/33c85580-241e-4bb8-a170-b1532293916b.cloudpartnerservices.goog
   tags:
   - '11.5.0'
   - '11.5'

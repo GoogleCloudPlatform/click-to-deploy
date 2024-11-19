@@ -30,6 +30,9 @@ versions:
     golang:
       version: '1.23'
   repo: gitea1
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/83c38401-9081-4bfd-8d88-f247f9c37ce9.cloudpartnerservices.goog
   tags:
   - 1.22.2-debian12
   - 1.22-debian12
