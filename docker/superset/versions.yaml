@@ -14,6 +14,7 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
 - dir: 4/debian12/4.0
@@ -22,6 +23,9 @@ versions:
     superset:
       version: 4.0.2
   repo: superset4
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: null
   tags:
   - 4.0.2-debian11
   - 4.0-debian11
@@ -41,6 +45,9 @@ versions:
     statsd_exporter:
       version: 0.27.1
   repo: statsd-exporter0
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/eef49bfe-eedd-4301-9165-8f2418cfecac.cloudpartnerservices.goog
   tags:
   - 0.27.1
   - '0.27'
