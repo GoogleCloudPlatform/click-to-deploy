@@ -21,7 +21,7 @@ describe 'Source code should exists' do
 end
 
 describe 'Liferay bundle should exists' do
-  describe file('/opt/liferay/tomcat/readme.html') do
+  describe file('/opt/liferay/bundles/liferay/readme.html') do
     it { should exist }
   end
 end
