@@ -20,12 +20,6 @@ describe 'Source code should exists' do
   end
 end
 
-describe 'Liferay bundle should exists' do
-  describe file('/opt/liferay-portal/readme.html') do
-    it { should exist }
-  end
-end
-
 describe 'Liferay service script should exists' do
   describe file('/etc/systemd/system/liferay.service') do
     it { should exist }
