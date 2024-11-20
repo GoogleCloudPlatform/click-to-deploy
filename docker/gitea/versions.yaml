@@ -19,6 +19,7 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
   machineType: 'E2_HIGHCPU_32'
 versions:
