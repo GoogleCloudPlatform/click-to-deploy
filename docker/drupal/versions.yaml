@@ -47,11 +47,11 @@ versions:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
       version: 2.5.8
     drupal:
+      md5: 1f7a37ba42ee22948ffc11bfe4541dbd
+      version: 10.2.8
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/2091b012-066a-46f0-8d26-63c5b7db70a4.cloudpartnerservices.goog
-      md5: 1f7a37ba42ee22948ffc11bfe4541dbd
-      version: 10.2.8
   repo: drupal10-php8-apache
   tags:
   - 10.2.8-debian12
@@ -76,4 +76,3 @@ versions:
   - '9.5'
   - '9'
   - latest
-

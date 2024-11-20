@@ -15,7 +15,6 @@
 
 cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
 - dir: 0/debian11/0.36
@@ -38,11 +37,11 @@ versions:
 - dir: 0/debian11/0.34
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
+    falco:
+      version: 0.34.1
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/5b7a25d4-ece2-4ae3-b8c3-652b2af4a5ec.cloudpartnerservices.goog
-    falco:
-      version: 0.34.1
   repo: falco0
   tags:
   - 0.34.1-debian11
@@ -65,4 +64,3 @@ versions:
   - '0'
   - latest
   templateSubDir: exporter
-

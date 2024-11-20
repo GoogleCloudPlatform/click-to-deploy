@@ -15,7 +15,6 @@
 
 cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
 - dir: 3/debian12/3.7
@@ -47,11 +46,11 @@ versions:
   packages:
     kafka:
       version: 3.6.1
+    scala:
+      version: '2.13'
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/ccea51e8-0540-4d1b-890e-2a1b04da0383.cloudpartnerservices.goog
-    scala:
-      version: '2.13'
   repo: kafka3
   tags:
   - 3.6.1-debian12

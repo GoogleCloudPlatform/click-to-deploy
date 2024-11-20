@@ -37,15 +37,14 @@ versions:
 - dir: 2/debian12/2.7
   from: marketplace.gcr.io/google/debian12
   packages:
+    harbor:
+      version: 2.7.4
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/70c685e1-3aac-4626-9773-b0152237081b.cloudpartnerservices.goog
-    harbor:
-      version: 2.7.4
   repo: harbor2
   tags:
   - 2.7.4-debian12
   - 2.7-debian12
   - 2.7.4
   - '2.7'
-
