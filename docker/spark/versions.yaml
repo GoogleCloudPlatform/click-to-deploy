@@ -14,6 +14,7 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
   machine_type: 'E2_HIGHCPU_32'
 versions:
@@ -25,6 +26,9 @@ versions:
     spark:
       version: 3.5.2
   repo: spark3
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/ad1bf2fb-7561-4833-8b24-ae3cc489a86f.cloudpartnerservices.goog
   tags:
   - 3.5.2-debian12
   - 3.5-debian12
