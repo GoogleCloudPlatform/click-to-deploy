@@ -14,6 +14,7 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
 - dir: 3/debian12/3.5
@@ -26,6 +27,9 @@ versions:
     golang:
       version: 1.21
   repo: argo-workflows3
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/dea629ec-49b1-439e-928d-1b08fa253321.cloudpartnerservices.goog
   tags:
   - 3.5.10-debian12
   - 3.5-debian12

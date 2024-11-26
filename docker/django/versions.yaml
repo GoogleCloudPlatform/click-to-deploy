@@ -21,6 +21,8 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
 - dir: 5/debian12/5.1
@@ -29,6 +31,9 @@ versions:
     django:
       version: 5.1.1
   repo: django5
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/88b938b9-1b2f-466d-943c-0f432e1e3fa8.cloudpartnerservices.goog
   tags:
   - 5.1.1-debian12
   - 5.1-debian12
@@ -45,6 +50,9 @@ versions:
     uwsgi_exporter:
       version: 1.3.0
   repo: uwsgi-exporter1
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/b068f3d2-c82d-4419-bded-155768bcd791.cloudpartnerservices.goog
   tags:
   - 1.3.0
   - '1.3'
