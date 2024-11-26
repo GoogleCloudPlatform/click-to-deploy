@@ -35,6 +35,7 @@ versions:
   - '11.5.0'
   - '11.5'
   - '11'
+  - latest
   templateSubDir: debian11
 - dir: 12/debian12
   from: marketplace.gcr.io/google/debian12
