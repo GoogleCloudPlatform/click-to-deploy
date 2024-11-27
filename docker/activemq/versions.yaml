@@ -14,6 +14,7 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
 - dir: 6/debian12/6.1
@@ -39,6 +40,9 @@ versions:
       version: 5.18.5
       major: '5'
   repo: activemq5
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/5e73b3d2-94bf-4217-8af3-5db683773cfd.cloudpartnerservices.goog
   tags:
   - 5.18.5-debian12
   - 5.18-debian12

@@ -19,6 +19,7 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
 - dir: 11/debian11
@@ -27,10 +28,14 @@ versions:
     debian11:
       version: 11.5.0
   repo: c2d-debian11
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/33c85580-241e-4bb8-a170-b1532293916b.cloudpartnerservices.goog
   tags:
   - '11.5.0'
   - '11.5'
   - '11'
+  - latest
   templateSubDir: debian11
 - dir: 12/debian12
   from: marketplace.gcr.io/google/debian12

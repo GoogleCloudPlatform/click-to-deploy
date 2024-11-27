@@ -13,8 +13,8 @@
 # limitations under the License.
 
 default['mattermost']['packages'] = ['jq', 'nginx', 'gettext-base']
-default['mattermost']['version'] = '9.5.3'
-default['mattermost']['sha256'] = '7f665aa7fd794cecb308ff7b0461a65e29b001ad664cfe36c37ed14e836402c4'
+default['mattermost']['version'] = '10.2.0'
+default['mattermost']['sha256'] = '06b3576df15422aa6faa4bdbfa3f01c3dbe1bc5363aa2d275c2be4fcd196aa67'
 
 # OS Settings
 default['mattermost']['user'] = 'mattermost'

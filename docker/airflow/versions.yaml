@@ -14,6 +14,7 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
 - dir: 2/debian12/2.10
@@ -27,6 +28,9 @@ versions:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
   repo: airflow2
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/a0ce6574-4b44-48a4-8a72-69c53ba93d3e.cloudpartnerservices.goog
   tags:
   - 2.10.3-debian12
   - 2.10-debian12
