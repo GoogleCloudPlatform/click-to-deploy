@@ -13,7 +13,7 @@
 # limitations under the License.
 
 default['tomcat']['version'] = '11.0.1'
-default['tomcat']['sha256'] = '1da18a4fd6a93d782445b4dc21c3e4822e6a7bc2f543a9bf8b029d263752ee4e'
+default['tomcat']['sha256'] = '7e2470ac429434534910940e77d04c6d4c47e3a83d7130128be4d091d8d2ee68'
 
 default['tomcat']['app']['install_dir'] = '/opt/tomcat'
 
