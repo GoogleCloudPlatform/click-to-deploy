@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ describe port(22) do
   it { should be_listening }
 end
 
-describe port(8005) do
+describe port(8009) do
   it { should be_listening }
 end
 
