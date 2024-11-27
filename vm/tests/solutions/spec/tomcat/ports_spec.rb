@@ -18,7 +18,7 @@ describe port(22) do
   it { should be_listening }
 end
 
-describe port(8009) do
+describe port(8005) do
   it { should be_listening }
 end
 
