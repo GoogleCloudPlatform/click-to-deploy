@@ -1,6 +1,6 @@
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian12
 
-ENV EXPORTER_VERSION 0.8.6
+ENV EXPORTER_VERSION=0.8.7
 
 RUN set -eu \
     # Installing utilities

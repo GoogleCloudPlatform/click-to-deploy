@@ -2,7 +2,7 @@
 
 FROM {{ .From }}
 
-ENV EXPORTER_VERSION {{ $falco_exporter.Version }}
+ENV EXPORTER_VERSION={{ $falco_exporter.Version }}
 
 RUN set -eu \
     # Installing utilities
