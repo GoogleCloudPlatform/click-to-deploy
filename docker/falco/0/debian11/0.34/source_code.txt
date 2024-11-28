@@ -1,5 +1,0 @@
-https://github.com/hashicorp/go-cleanhttp
-https://github.com/hashicorp/go-retryablehttp
-https://github.com/hashicorp/hcl
-https://github.com/letsencrypt/boulder
-https://github.com/opencontainers/go-digest
