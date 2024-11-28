@@ -13,7 +13,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM marketplace.gcr.io/google/php8-apache2:8.1
+FROM marketplace.gcr.io/google/php8-apache2:8.2
 
 COPY --from=ospo /usr/src /usr/src
 
