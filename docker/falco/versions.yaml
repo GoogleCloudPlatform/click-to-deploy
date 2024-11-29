@@ -18,7 +18,7 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 0/debian11/0.36
-  from: marketplace.gcr.io/google/c2d-debian11
+  from: marketplace.gcr.io/google/debian12
   packages:
     falco:
       version: 0.36.2
@@ -34,32 +34,17 @@ versions:
   - '0.36'
   - '0'
   - latest
-- dir: 0/debian11/0.34
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    falco:
-      version: 0.34.1
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/5b7a25d4-ece2-4ae3-b8c3-652b2af4a5ec.cloudpartnerservices.goog
-  repo: falco0
-  tags:
-  - 0.34.1-debian11
-  - 0.34-debian11
-  - 0.34.1
-  - '0.34'
 - dir: exporter
-  from: marketplace.gcr.io/google/c2d-debian11
+  from: marketplace.gcr.io/google/debian12
   packages:
     falco_exporter:
-      sha256: 5bd3367a0f0839ec96a32ad36d86a0c113476a12424771925cf8b5c2da87be65
-      version: 0.8.6
+      version: 0.8.7
   repo: falco-exporter0
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/14a94703-d67c-403c-8e1f-f5ad256e6cac.cloudpartnerservices.goog
   tags:
-  - 0.8.6
+  - 0.8.7
   - '0.8'
   - '0'
   - latest
