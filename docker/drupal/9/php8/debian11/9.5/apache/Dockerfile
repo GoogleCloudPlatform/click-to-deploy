@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/php8-apache2:8.1 as ospo
+FROM marketplace.gcr.io/google/debian12 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -25,12 +25,14 @@ RUN set -ex; \
 		libjpeg-dev \
 		libpng-dev \
 		libpq-dev \
+		libwebp-dev \
 		libzip-dev \
 	; \
 	\
 	docker-php-ext-configure gd \
 		--with-freetype=/usr \
 		--with-jpeg=/usr \
+		--with-webp \
 	; \
 	\
 	docker-php-ext-install -j "$(nproc)" \
