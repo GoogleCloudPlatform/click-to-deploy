@@ -4,6 +4,8 @@ FROM marketplace.gcr.io/google/debian12 as ospo
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
 
+RUN apt update && apt -y install curl ca-certificates
+
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
 		&& chmod +x /download-licenses.sh \
