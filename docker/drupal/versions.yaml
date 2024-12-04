@@ -20,7 +20,7 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 10/php8/debian12/10.3/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.1
+  from: marketplace.gcr.io/google/php8-apache2:8.2
   packages:
     composer:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
@@ -41,7 +41,7 @@ versions:
   - '10'
   - latest
 - dir: 10/php8/debian12/10.2/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.1
+  from: marketplace.gcr.io/google/php8-apache2:8.2
   packages:
     composer:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
