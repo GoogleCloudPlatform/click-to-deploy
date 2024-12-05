@@ -68,12 +68,12 @@ tests:
   command: [curl, -L, 'http://localhost']
   expect:
     stdout:
-      matches: '<title>Welcome! | Drupal_Site</title>'
+      matches: '<title>Welcome! | C2D_Drupal_Site</title>'
 - name: Test Drupal login page
   command: [curl, -L, 'http://localhost/user/login/']
   expect:
     stdout:
-      matches: '<title>Log in \| Drupal_Site</title>'
+      matches: '<title>Log in \| C2D_Drupal_Site</title>'
 - name: Test Apache status
   command: [curl, -L, 'http://localhost/server-status']
   expect:
