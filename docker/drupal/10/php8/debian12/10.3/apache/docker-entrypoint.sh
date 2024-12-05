@@ -85,15 +85,21 @@ if ! [[ -e index.php && -e core/lib/Drupal.php ]]; then
   fi
 
   tar cf - --one-file-system -C /usr/src/drupal . | tar xf -
-  sed -i '/RewriteCond %{REQUEST_FILENAME} !-f/i RewriteCond %{REQUEST_URI} !=/server-status' .htaccess
   chown -R www-data:www-data /var/www/html/{sites,modules,themes}
 
   echo >&2 "Complete! Drupal has been successfully copied to $(pwd)"
 
+  # Install core module
+  curl -o composer.phar "https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar" \
+    && echo "${COMPOSER_SHA256} composer.phar" | sha256sum -c - \
+    && chmod +x composer.phar \
+    && php ./composer.phar install \
+    && rm -f composer.phar
+
   if [[ ${AUTO_INSTALL} = 'yes' ]]; then
     : ${DRUPAL_USER_NAME:='admin'}
     : ${DRUPAL_USER_EMAIL:='noreply@example.com'}
-    : ${DRUPAL_SITE_NAME:='Drupal_Site'}
+    : ${DRUPAL_SITE_NAME:='C2D_Drupal_Site'}
     DRUPAL_USER_ID=$(cat /dev/urandom | tr -dc '1-9' | fold -w 2 | head -n 1)
     DBPREFIX=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1)_
     DP_URL="mysql://${DRUPAL_DB_USER}:${DRUPAL_DB_PASSWORD}@${DRUPAL_DB_HOST}/${DRUPAL_DB_NAME}"
@@ -108,14 +114,13 @@ if ! [[ -e index.php && -e core/lib/Drupal.php ]]; then
 
     chown -R www-data:www-data /var/www/html/sites/default
 
-
     echo >&2 "========================================================================"
     echo >&2
     echo >&2 "DRUPAL! has been configured!"
     echo >&2
     echo >&2 "For the administrative access please use the following:"
     echo >&2 "Username: ${DRUPAL_USER_NAME}"
-    echo >&2 "Password: ${DRUPAL_PASSWORD}"
+    echo >&2 "Password: [DRUPAL_PASSWORD] environment variable."
     echo >&2
     echo >&2 "========================================================================"
   else
@@ -130,5 +135,8 @@ if ! [[ -e index.php && -e core/lib/Drupal.php ]]; then
   fi
 
 fi
+
+# Enable server-status endpoint
+sed -i '/RewriteCond %{REQUEST_FILENAME} !-f/i RewriteCond %{REQUEST_URI} !=/server-status' .htaccess
 
 exec "$@"

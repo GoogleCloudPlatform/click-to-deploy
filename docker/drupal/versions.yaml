@@ -41,7 +41,7 @@ versions:
   - '10'
   - latest
 - dir: 10/php8/debian12/10.2/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.2
+  from: marketplace.gcr.io/google/php8-apache2:8.1
   packages:
     composer:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
@@ -58,21 +58,3 @@ versions:
   - 10.2-debian12
   - 10.2.10
   - '10.2'
-- dir: 9/php8/debian11/9.5/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.1
-  packages:
-    composer:
-      gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
-      version: 2.5.8
-    drupal:
-      md5: 064c3e9becb3599b95e1ff38fc335d34
-      version: 9.5.10
-  repo: drupal9-php8-apache
-  tags:
-  - 9.5.10-debian11
-  - 9.5-debian11
-  - 9-debian11
-  - 9.5.10
-  - '9.5'
-  - '9'
-  - latest
