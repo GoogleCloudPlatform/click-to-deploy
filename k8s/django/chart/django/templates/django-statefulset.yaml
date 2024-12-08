@@ -49,6 +49,8 @@ spec:
           value: "8080"
         - name: C2D_DJANGO_ALLOWED_HOSTS
           value: "'.localhost', '127.0.0.1', '[::1]', '{{ .Release.Name }}-django-svc', '{{ .Release.Name }}-nginx-svc'"
+        - name: C2D_DJANGO_MODE
+          value: "http"
         - name: C2D_DJANGO_DB_TYPE
           value: "postgresql"
         - name: C2D_DJANGO_DB_NAME
