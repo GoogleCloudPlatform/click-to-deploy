@@ -67,17 +67,21 @@ app/build:: .build/$(CHART_NAME)/VERSION \
                                .build/var/RELEASE \
                                | .build/$(CHART_NAME)
 	$(call print_target,$@)
-	docker build \
+
+	docker buildx create --name deployer-builder --use
+	docker buildx inspect deployer-builder --bootstrap
+	docker buildx build \
+		--push \
+		--annotation="index,manifest:cloudmarketplace.googleapis.com/service=$(SERVICE_NAME)" \
 		--build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 		--build-arg TAG="$(RELEASE)" \
 		--build-arg CHART_NAME="$(CHART_NAME)" \
 		--build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
 		--tag "$(APP_DEPLOYER_IMAGE)" \
+		--tag "$(APP_DEPLOYER_IMAGE_TRACK_TAG)" \
 		-f deployer/Dockerfile \
 		.
-	docker tag "$(APP_DEPLOYER_IMAGE)" "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
-	docker push "$(APP_DEPLOYER_IMAGE)"
-	docker push "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
+	@docker buildx rm deployer-builder
 	@touch "$@"
 
 
@@ -86,11 +90,9 @@ app/build:: .build/$(CHART_NAME)/VERSION \
                                     .build/var/RELEASE \
                                     | .build/$(CHART_NAME)
 	$(call print_target,$@)
-	docker pull $(image-$(CHART_NAME))
-	docker tag $(image-$(CHART_NAME)) "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker tag $(image-$(CHART_NAME)) "$(REGISTRY)/$(APP_ID):$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	docker push "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+
+	crane copy "$(image-$(CHART_NAME))" "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	crane copy "$(image-$(CHART_NAME))" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
 
 
@@ -106,11 +108,9 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/var/REGISTRY \
                                                .build/var/RELEASE \
                                                | .build/$(CHART_NAME)
 	$(call print_target,$*)
-	docker pull $(image-$*)
-	docker tag $(image-$*) "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
-	docker tag $(image-$*) "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)"
-	docker push "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
-	docker push "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)"
+
+	crane copy "$(image-$*)" "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
+	crane copy "$(image-$*)" "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)"
 	@touch "$@"
 
 
@@ -118,9 +118,17 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/var/REGISTRY \
                              $(shell find apptest -type f) \
                              | .build/$(CHART_NAME)
 	$(call print_target,$@)
+
+	docker buildx create --name tester-builder --use
+	docker buildx inspect tester-builder --bootstrap
+
 	cd apptest/tester \
-		&& docker build --tag "$(APP_TESTER_IMAGE)" .
-	docker push "$(APP_TESTER_IMAGE)"
+		&& docker buildx build \
+				--push \
+				--annotation="index,manifest:cloudmarketplace.googleapis.com/service=$(SERVICE_NAME)" \
+				--tag "$(APP_TESTER_IMAGE)" .
+
+	@docker buildx rm tester-builder
 	@touch "$@"
 
 
