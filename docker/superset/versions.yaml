@@ -25,7 +25,7 @@ versions:
   repo: superset4
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
-    value: null
+    value: services/29c81f89-5a27-48c7-bff4-7fc0a8f3e65c.cloudpartnerservices.goog
   tags:
   - 4.0.2-debian11
   - 4.0-debian11
@@ -35,7 +35,6 @@ versions:
   - '4'
   - latest
   templateSubDir: 4
-
 
 - dir: exporter
   excludeTests:
