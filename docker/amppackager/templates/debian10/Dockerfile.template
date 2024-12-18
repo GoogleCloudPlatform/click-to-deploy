@@ -15,7 +15,7 @@
 {{- $amppackager := index .Packages "amppackager" -}}
 
 # Use an official Go runtime as a parent image
-FROM golang:1.13 as builder
+FROM golang:1.17 as builder
 
 ENV GO111MODULE=on
 
