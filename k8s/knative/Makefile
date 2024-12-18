@@ -7,9 +7,9 @@ CHART_NAME := knative
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
-TRACK ?= 1.9
+TRACK ?= 1.10
 # Track for components
-KNATIVE_TRACK ?= v1.9.0
+KNATIVE_TRACK ?= v1.10.0
 ISTIO_TRACK ?= 1.16.0
 CM_TRACK ?= 1.11
 
