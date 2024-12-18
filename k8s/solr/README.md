@@ -1,8 +1,10 @@
 # Overview
 
-Apache Solr is an open-source enterprise-search platform, written in Java.
+Apache Solr is an open-source enterprise search platform, written in Java,
+from the Apache Lucene project.
 
-For more information on Apache Solr, see the Apache Solr [official website](https://solr.apache.org/).
+For more information on Apache Solr, see the Apache Solr
+[official website](https://lucene.apache.org/solr/).
 
 ## About Google Click to Deploy
 
@@ -12,41 +14,49 @@ Popular open stacks on Kubernetes, packaged by Google.
 
 ![Architecture diagram](resources/apache-solr-k8s-app-architecture.png)
 
-This solution is focused on SolrCloud mode which uses ZooKeeper as a external repository. By default 3 replicas of SolrCloud nodes and 3 replicas of ZooKeeper nodes are deployed. For more information about SolrCloud visit [official documentation](https://lucene.apache.org/solr/guide/8_6/solrcloud.html).
+This solution is focused on SolrCloud mode, which uses ZooKeeper as a external
+repository. By default, 3 replicas of SolrCloud nodes and 3 replicas of ZooKeeper
+nodes are deployed. For more information about SolrCloud, visit the
+[official documentation](https://lucene.apache.org/solr/guide/8_6/solrcloud.html).
 
-[Basic authentication plugin](https://solr.apache.org/guide/solr/latest/deployment-guide/basic-authentication-plugin.html) is enabled for SolrCloud by Job resource during post deployment.
+After you deploy this solution, the Job resource enables the
+[basic authentication plugin](https://lucene.apache.org/solr/guide/8_6/basic-authentication-plugin.html)
+for SolrCloud.
 
-[ZooKeeper Access Control](https://solr.apache.org/guide/solr/latest/deployment-guide/zookeeper-access-control.html) also applied to protect SolrCloud contents in ZooKeeper.
+The solution uses
+[ZooKeeper Access Control](https://lucene.apache.org/solr/guide/8_6/zookeeper-access-control.html)
+to protect its SolrCloud content in ZooKeeper.
 
-# Installation
+# Installing the solution
 
 ## Installing with Google Cloud Marketplace
 
-Get up and running with a few clicks! To install this SolrCloud app to a Google
-Kubernetes Engine (GKE) cluster by using Google Cloud Marketplace, follow the
+Get up and running with a few clicks! To install this SolrCloud app to a
+Google Kubernetes Engine (GKE) cluster by using Google Cloud Marketplace,
+follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/solr).
 
-## Command-line instructions
+## Installing with the command line
 
 You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
 workstation to follow the steps below.
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy&cloudshell_open_in_editor=README.md&cloudshell_working_dir=k8s/solr)
 
-### Prerequisites
+### Before you begin
 
 #### Setting up command-line tools
 
 You'll need the following tools in your development environment. If you are
-using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in your
-environment by default.
+using Cloud Shell, then `gcloud`, `kubectl`, Docker, and Git are installed in
+your environment by default.
 
 * [gcloud](https://cloud.google.com/sdk/gcloud/)
 * [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
-* [docker](https://docs.docker.com/install/)
-* [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* [openssl](https://www.openssl.org/)
-* [helm](https://helm.sh/)
+* [Docker](https://docs.docker.com/install/)
+* [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+* [OpenSSL](https://www.openssl.org/)
+* [Helm](https://helm.sh/)
 
 Configure `gcloud` as a Docker credential helper:
 
@@ -92,7 +102,7 @@ command:
 kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
 ```
 
-You need to run this command once.
+You must run this command once.
 
 The
 [Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
@@ -116,13 +126,14 @@ use the `default` namespace.
 export APP_INSTANCE_NAME=solr-1
 export NAMESPACE=default
 ```
-(Optional) Enable Stackdriver Metrics Exporter:
+(Optional) Enable Cloud Monitoring Metrics Exporter:
 
-> **NOTE:** Your GCP project must have Stackdriver enabled. If you are using a
-> non-GCP cluster, you cannot export metrics to Stackdriver.
+> **NOTE:** Your Google Cloud project must have Google Cloud's operations
+> suite enabled. If you are using a non-Google Cloud cluster, you cannot export
+> metrics to Google Cloud's operations suite.
 
-By default, the application does not export metrics to Stackdriver. To enable
-this option, change the value to `true`.
+By default, the app does not export metrics to Google Cloud's operations suite.
+To enable this option, change the value to `true`.
 
 ```shell
 export METRICS_EXPORTER_ENABLED=false
@@ -160,10 +171,11 @@ export ZK_ADMIN_USER="admin-user"
 export ZK_ADMIN_PASSWORD="$(generate_pwd)"
 ```
 
-Set the storage class for the persistent volume of SolrCloud nodes and ZooKeeper nodes:
+Set the storage class for the persistent volume of SolrCloud nodes and
+ZooKeeper nodes:
 
  * Set the StorageClass name. You can select your existing StorageClass name for
-   the persistent disk of SolrCloud application storage.
+   the persistent disk of SolrCloud app storage.
  * Set the persistent disk's size for SolrCloud storage. The default disk size is
    `10Gi`.
  * Set the persistent disk's size for ZooKeeper storage. The default disk size
@@ -174,10 +186,11 @@ export STORAGE_CLASS="standard" # provide your StorageClass name if not "standar
 export PERSISTENT_SOLR_SIZE="10Gi"
 export PERSISTENT_ZK_SIZE="5Gi"
 ```
+
 #### Creating a namespace in your Kubernetes cluster
 
-If you use a different namespace than `default`, or if the namespace does
-not exist yet, create a new namespace:
+If you use a different namespace than `default`, or if the namespace does not
+exist yet, create a new namespace:
 
 ```shell
 kubectl create namespace "${NAMESPACE}"
@@ -215,9 +228,10 @@ kubectl apply -f "${APP_INSTANCE_NAME}_manifest.yaml" --namespace "${NAMESPACE}"
 
 ### Accessing the SolrCloud UI web console
 
-The deployed service of SolrCloud is of type ClusterIP, so you can reach the SolrCloud Studio UI within a Kubernetes cluster by port-forwarding.
+The deployed service of SolrCloud is of type ClusterIP, so you can reach the
+SolrCloud Studio UI within a Kubernetes cluster by port-forwarding.
 
-To accomplish this, run the following commands:
+To do this, run the following commands:
 
 ```shell
 # Get "solr" user credentials of SolrCloud UI
@@ -233,11 +247,13 @@ echo "password: ${SOLR_PASSWORD}"
 kubectl port-forward svc/${APP_INSTANCE_NAME}-solr-svc --namespace ${NAMESPACE} 8983
 ```
 
-After running the commands, visit [http://localhost:8983](http://localhost:8983)
-from a web browser. Login with `solr` credentials.
+After you've run the commands, visit
+[http://localhost:8983](http://localhost:8983) from a web browser. Login with
+your `solr` credentials.
 
 ### Interacting with SolrCloud via `curl`
-> Note: Port-forwarding should be kept running
+
+> Note: You should keep port-forwarding running while you follow these steps.
 
 ```shell
 # Check Cluster status
@@ -251,8 +267,11 @@ curl --user ${SOLR_USER}:${SOLR_PASSWORD} "http://localhost:8983/solr/admin/coll
 
 ### Interacting with SolrCloud via `solr` control script
 
-For example if you have collection created you can check healtcheck by help of Solr control script.
-> Visit [Solr Control Script Reference](https://solr.apache.org/guide/solr/latest/deployment-guide/solr-control-script-reference.html) for more command options
+For example, if you have created a collection, you can check its health by
+using a Solr control script.
+
+> For more command options, visit the
+> [Solr Control Script Reference](https://lucene.apache.org/solr/guide/8_6/solr-control-script-reference.html).
 
 ```shell
 # Use your collection name instead of "my_collection"
@@ -262,11 +281,17 @@ kubectl -n ${NAMESPACE} exec -it ${APP_INSTANCE_NAME}-solr-0 -- bash -c "solr he
 ```
 
 ## Authentication and Security
-During post deployment of this SolrCloud solution, Solr basic authentication is enabled by Job resource. This action creates `security.json` and uploads it to ZooKeeper.
 
-To protect this configuration files in ZooKeeper, ZooKeeper ACL with "admin-user" and "readonly-user" is configured and used by Solr instances.
+After you deploy this SolrCloud solution, the Job resource enables Solr basic
+authentication. This creates `security.json` and uploads it to ZooKeeper.
 
-Those Java parameters should be passed to external clients which want to connect to secure SolrCloud. You can check this parameters by running below commands:
+To protect this configuration files in ZooKeeper, ZooKeeper Acceess Control
+Lists (ACLs) with "admin-user" and "readonly-user" are configured and
+used by Solr instances.
+
+You pass these Java parameters to external clients who want to connect to
+the secure SolrCloud. To check these parameters, run the following commands:
+
 ```shell
 # Java option for basic auth
 kubectl -n ${NAMESPACE} exec -it ${APP_INSTANCE_NAME}-solr-0 -- bash -c "echo SOLR_AUTH_TYPE=\$SOLR_AUTH_TYPE SOLR_AUTHENTICATION_OPTS=\$SOLR_AUTHENTICATION_OPTS"
@@ -276,16 +301,26 @@ kubectl -n ${NAMESPACE} exec -it ${APP_INSTANCE_NAME}-solr-0 -- bash -c "echo SO
 ```
 
 # Monitoring
-Solr image includes a Prometheus exporter to collect metrics and other data. In this solution seperate deployment and service used to access metrics. Exporter Deployment uses same Solr image, connects to main SolrCloud and ZooKeeper service, authenticates and exports metrics at 9983 port for `/metrics` endpoint.
 
-> Visit [Monitoring Solr with Prometheus and Grafana documentation](https://solr.apache.org/guide/solr/latest/deployment-guide/monitoring-with-prometheus-and-grafana.html) for more information.
+This Solr image includes a Prometheus exporter to collect metrics and other
+data. In this solution, a seperate deployment and service are used to access
+metrics. The exporter deployment uses same Solr image, connects to the main
+SolrCloud and ZooKeeper service, and authenticates and exports metrics at the
+`/metrics` endpoint port 9983.
 
-To check metrics from Solr exporter service forward exporter service port to local machine
+> For more information, visit the
+> [Monitoring Solr with Prometheus and Grafana documentation](https://lucene.apache.org/solr/guide/8_6/monitoring-solr-with-prometheus-and-grafana.html).
+
+To check metrics from the Solr exporter service, forward the exporter service's
+port to your local machine:
+
 ```shell
 # Forward Solr exporter service port to local workspace
 kubectl port-forward svc/${APP_INSTANCE_NAME}-solr-exporter --namespace ${NAMESPACE} 9983
 ```
-Visit http://localhost:9983/metrics to see metrics from Solr.
+
+After you forward the port, to see metrics from Solr, visit
+http://localhost:9983/metrics.
 
 # Scaling
 
@@ -306,11 +341,16 @@ When this option is used to scale down a cluster, it reduces the number of
 replicas without disconnecting nodes from the cluster. Scaling down also does
 not affect the `persistentvolumeclaims` of your StatefulSet.
 
+> For information on enabling autoscaling for collections, visit the
+> [SolrCloud Autoscaling documentation](https://lucene.apache.org/solr/guide/8_6/solrcloud-autoscaling-auto-add-replicas.html).
+
 # Upgrading the app
 
 Before you upgrade the app, we recommend that you back up all of your
 SolrCloud collections.
-> Visit [Solr Upgrade Notes](https://solr.apache.org/guide/solr/latest/upgrade-notes/solr-upgrade-notes.html) to check limitations for upgrading between versions
+
+> To check limitations on upgrading between versions, visit the
+> [Solr Upgrade Notes](https://lucene.apache.org/solr/guide/8_6/solr-upgrade-notes.html).
 
 The Solr StatefulSet is configured to roll out updates automatically. To
 start the update, patch the StatefulSet with a new image reference, where
@@ -329,14 +369,21 @@ new image, run the following command:
 kubectl get pods --selector app.kubernetes.io/name=${APP_INSTANCE_NAME} \
   --namespace ${NAMESPACE}
 ```
+
 # Solr Standalone mode
-It is also possible to deploy this Solr application as a standalone mode for testing purposes.
-> Warning: This should not be used for production!
 
-With Standalone mode enabled, instead of external ZooKeeper ensemble embedded ZooKeeper is used and Solr is deployed with single replica only.
-Also no any authentication will be applied to the solution to make it easier for testing.
+It is also possible to deploy this Solr app in a standalone mode, for
+testing purposes.
 
-To deploy Solr as a standalone mode, run following commands:
+> Warning: This should not be used for production.
+
+With Standalone mode enabled, the app uses embedded ZooKeeper instead of an
+external ZooKeeper ensemble, and deploys Solr with a single replica only.
+The solution also does not apply any authentication features, to enable more
+convenient testing.
+
+To deploy Solr in standalone mode, run the following commands:
+
 ```shell
 # Export necessary variables
 APP_INSTANCE_NAME=solr-standalone
@@ -390,8 +437,8 @@ export NAMESPACE=default
 ### Deleting the resources
 
 > Note: We recommend using the version of `kubectl` that is the same as the
-> version for your cluster. Using the same version for `kubectl` and the cluster
-> helps to avoid unforeseen issues.
+> version for your cluster. Using the same version for `kubectl` and the
+> cluster helps to avoid unforeseen issues.
 
 #### Deleting the deployment with the generated manifest file
 
@@ -412,9 +459,10 @@ kubectl delete application,statefulset,secret,service,deployment,pdb,cm,jobs \
   --selector app.kubernetes.io/name=${APP_INSTANCE_NAME}
 ```
 
-Deleting the `Application` resource deletes all of your deployment's resources,
-except for `PersistentVolumeClaim`. To remove the `PersistentVolumeClaim`s
-with their attached persistent disks, run the following `kubectl` command:
+When you delete the `Application` resource, you delete all of your deployment's
+resources, except for `PersistentVolumeClaim`. To remove the
+`PersistentVolumeClaim`s with their attached persistent disks, run the following
+`kubectl` command:
 
 ```shell
 kubectl delete persistentvolumeclaims \
