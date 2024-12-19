@@ -92,7 +92,7 @@ TESTER_BUILDER := tester-builder-$(shell echo $$RANDOM)
                                | .build/$(CHART_NAME)
 	$(call print_target,$@)
 
-	docker buildx create --append --name $(DEPLOYER_BUILDER) --use
+	docker buildx create --name $(DEPLOYER_BUILDER) --use
 	docker buildx inspect $(DEPLOYER_BUILDER) --bootstrap
 	docker buildx build \
 		--push \
@@ -147,7 +147,7 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
                              | .build/$(CHART_NAME)
 	$(call print_target,$@)
 
-	docker buildx create --append --name $(TESTER_BUILDER) --use
+	docker buildx create --name $(TESTER_BUILDER) --use
 	docker buildx inspect $(TESTER_BUILDER) --bootstrap
 	cd apptest/tester \
 		&& docker buildx build \
