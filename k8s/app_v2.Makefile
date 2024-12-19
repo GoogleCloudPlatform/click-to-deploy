@@ -126,7 +126,8 @@ app/uninstall: .build/var/APP_DEPLOYER_IMAGE \
 
 # Runs the verification pipeline.
 .PHONY: app/verify
-app/verify: app/publish \
+app/verify: .build/setup_crane \
+						app/publish \
             .build/var/APP_DEPLOYER_IMAGE \
             .build/var/MARKETPLACE_TOOLS_TAG \
             | .build/app/dev
