@@ -48,7 +48,8 @@ $(info ---- RELEASE = $(RELEASE))
 .build/$(CHART_NAME): | .build
 	mkdir -p "$@"
 
-app/build:: .build/$(CHART_NAME)/VERSION \
+app/build:: .build/setup_crane \
+						.build/$(CHART_NAME)/VERSION \
             .build/$(CHART_NAME)/$(CHART_NAME) \
             .build/$(CHART_NAME)/images \
             .build/$(CHART_NAME)/deployer
@@ -56,6 +57,25 @@ app/build:: .build/$(CHART_NAME)/VERSION \
 
 DEPLOYER_BUILDER := deployer-builder-$(shell echo $$RANDOM)
 TESTER_BUILDER := tester-builder-$(shell echo $$RANDOM)
+
+
+.build/setup_crane:
+	@if ! command -v crane &>/dev/null; then \
+	  VERSION=$$(curl -s "https://api.github.com/repos/google/go-containerregistry/releases/latest" | jq -r '.tag_name'); \
+	  OS=Linux; \
+	  ARCH=x86_64; \
+	  echo "Downloading crane version $$VERSION..."; \
+	  curl -sL "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" > go-containerregistry.tar.gz; \
+	  tar -zxvf go-containerregistry.tar.gz crane; \
+	  sudo mv crane /usr/local/bin/crane; \
+	  chmod 755 /usr/local/bin/crane; \
+	  rm go-containerregistry.tar.gz; \
+		sudo chmod +x /usr/local/bin/crane; \
+	  echo "crane successfully installed"; \
+	else \
+	  echo "crane is already installed"; \
+	fi; \
+	crane version
 
 
 .build/$(CHART_NAME)/deployer: deployer/* \
