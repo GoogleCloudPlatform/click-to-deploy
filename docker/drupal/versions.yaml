@@ -16,10 +16,11 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
 - dir: 10/php8/debian12/10.3/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.1
+  from: marketplace.gcr.io/google/php8-apache2:8.2
   packages:
     composer:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
@@ -28,6 +29,9 @@ versions:
       md5: 7b0f59c9fc1e3a0b753343cd0893eea6
       version: 10.3.6
   repo: drupal10-php8-apache
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/2091b012-066a-46f0-8d26-63c5b7db70a4.cloudpartnerservices.goog
   tags:
   - 10.3.6-debian12
   - 10.3-debian12
@@ -45,28 +49,12 @@ versions:
     drupal:
       md5: 1f7a37ba42ee22948ffc11bfe4541dbd
       version: 10.2.8
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/2091b012-066a-46f0-8d26-63c5b7db70a4.cloudpartnerservices.goog
   repo: drupal10-php8-apache
   tags:
   - 10.2.8-debian12
   - 10.2-debian12
   - 10.2.10
   - '10.2'
-- dir: 9/php8/debian11/9.5/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.1
-  packages:
-    composer:
-      gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
-      version: 2.5.8
-    drupal:
-      md5: 064c3e9becb3599b95e1ff38fc335d34
-      version: 9.5.10
-  repo: drupal9-php8-apache
-  tags:
-  - 9.5.10-debian11
-  - 9.5-debian11
-  - 9-debian11
-  - 9.5.10
-  - '9.5'
-  - '9'
-  - latest
-
