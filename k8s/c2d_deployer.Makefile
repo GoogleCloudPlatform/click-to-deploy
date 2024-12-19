@@ -78,7 +78,8 @@ TESTER_BUILDER := tester-builder-$(shell echo $$RANDOM)
 	crane version
 
 
-.build/$(CHART_NAME)/deployer: deployer/* \
+.build/$(CHART_NAME)/deployer: .build/setup_crane \
+															 deployer/* \
                                chart/$(CHART_NAME)/* \
                                chart/$(CHART_NAME)/templates/* \
                                schema.yaml \
@@ -108,7 +109,8 @@ TESTER_BUILDER := tester-builder-$(shell echo $$RANDOM)
 	@touch "$@"
 
 
-.build/$(CHART_NAME)/$(CHART_NAME): .build/var/REGISTRY \
+.build/$(CHART_NAME)/$(CHART_NAME): .build/setup_crane \
+																		.build/var/REGISTRY \
                                     .build/var/TRACK \
                                     .build/var/RELEASE \
                                     | .build/$(CHART_NAME)
@@ -122,11 +124,13 @@ TESTER_BUILDER := tester-builder-$(shell echo $$RANDOM)
 # map every element of ADDITIONAL_IMAGES list
 # from [image-name] to .build/$(CHART_NAME)/[image-name] format
 IMAGE_TARGETS_LIST = $(patsubst %,.build/$(CHART_NAME)/%,$(ADDITIONAL_IMAGES))
-.build/$(CHART_NAME)/images: $(IMAGE_TARGETS_LIST)
+.build/$(CHART_NAME)/images: .build/setup_crane \
+														 $(IMAGE_TARGETS_LIST)
 
 # extract image name from rule with .build/$(CHART_NAME)/%
 # and use % match as $* in recipe
-$(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/var/REGISTRY \
+$(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
+																							 .build/var/REGISTRY \
                                                .build/var/TRACK \
                                                .build/var/RELEASE \
                                                | .build/$(CHART_NAME)
@@ -137,7 +141,8 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/var/REGISTRY \
 	@touch "$@"
 
 
-.build/$(CHART_NAME)/tester: .build/var/APP_TESTER_IMAGE \
+.build/$(CHART_NAME)/tester: .build/setup_crane \
+														 .build/var/APP_TESTER_IMAGE \
                              $(shell find apptest -type f) \
                              | .build/$(CHART_NAME)
 	$(call print_target,$@)
