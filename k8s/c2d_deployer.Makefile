@@ -67,15 +67,9 @@ TESTER_BUILDER := tester-builder-$(shell echo $$RANDOM)
 	  echo "Downloading crane version $$VERSION..."; \
 	  curl -sL "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" > go-containerregistry.tar.gz; \
 	  tar -zxvf go-containerregistry.tar.gz crane; \
-		if command -v sudo &>/dev/null; then \
-			sudo mv crane /usr/local/bin/crane; \
-			sudo chmod 755 /usr/local/bin/crane; \
-			sudo chmod +x /usr/local/bin/crane; \
-		else \
-			mv crane /usr/local/bin/crane; \
-			chmod 755 /usr/local/bin/crane; \
-			chmod +x /usr/local/bin/crane; \
-		fi; \
+		mv crane /usr/local/bin/crane; \
+		chmod 755 /usr/local/bin/crane; \
+		chmod +x /usr/local/bin/crane; \
 	  rm go-containerregistry.tar.gz; \
 	  echo "crane successfully installed"; \
 	else \
