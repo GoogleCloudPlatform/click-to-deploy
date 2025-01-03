@@ -12,30 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['dreamfactory']['version'] = '6.3.0'
-default['dreamfactory']['db']['name'] = 'dreamfactory'
-default['dreamfactory']['packages'] = [
-  'git',
-  'curl',
-  'cron',
-  'zip',
-  'unzip',
-  'ca-certificates',
-  'apt-transport-https',
-  'lsof',
-  'mcrypt',
-  'libmcrypt-dev',
-  'libreadline-dev',
-  'wget',
-  'sudo',
-  'nginx',
-  'build-essential',
-  'unixodbc-dev',
-  'gcc',
-  'cmake',
-  'jq',
-  'libaio1',
-  'php-pear',
-]
-
-default['php81']['distribution'] = 'bookworm'
+package 'php8.1-raphf' do
+  action :install
+  retries 5
+  retry_delay 20
+end
