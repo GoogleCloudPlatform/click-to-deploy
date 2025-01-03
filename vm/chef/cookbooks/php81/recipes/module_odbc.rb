@@ -12,12 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name 'dreamfactory'
-depends 'git'
-depends 'composer'
-depends 'php81'
-depends 'nginx'
-depends 'mysql'
-depends 'redis'
-depends 'c2d-config'
-supports 'debian'
+package 'php8.1-odbc' do
+  action :install
+  retries 5
+  retry_delay 20
+end

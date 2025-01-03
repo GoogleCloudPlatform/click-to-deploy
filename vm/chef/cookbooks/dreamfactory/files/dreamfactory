@@ -36,8 +36,7 @@ systemctl stop nginx
 
 echo "Installing dependencies..."
 cd "${df_install_folder}"
-composer update --no-install
-composer install -n --no-dev
+composer install -n --no-dev --ignore-platform-reqs
 
 echo "Create database user..."
 setup_mysql_user "${df_db_user}" "${df_db_password}" "${df_db_name}" "${mysql_root_password}"
@@ -51,6 +50,7 @@ setup_database \
   "${df_admin_firstname}" "${df_admin_lastname}" "${df_admin_email}" "${df_admin_password}"
 
 echo "Setting up folder permissions..."
+chown -R "${nginx_usergroup}" "${df_install_folder}"
 chown -R "${nginx_usergroup}" storage/ bootstrap/cache/
 chmod -R 2775 storage/ bootstrap/cache/
 
@@ -65,7 +65,7 @@ configure_nginx
 #  remove web.config due security
 echo "Enabling Website..."
 rm -f "${df_install_folder}/public/web.config"
-rm -f /etc/nginx/sites-enabled/default.conf
+rm -f /etc/nginx/sites-enabled/default
 ln -s /etc/nginx/sites-available/dreamfactory.conf /etc/nginx/sites-enabled/
 
 echo "Starting Webserver..."

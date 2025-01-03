@@ -48,6 +48,8 @@ function create_config_file() {
   local db_user="$2"
   local db_password="$3"
   local redis_password="$4"
+  local app_key="$(openssl rand -base64 16)"
+
 
   php artisan df:env \
     --db_connection="mysql" \
@@ -58,12 +60,16 @@ function create_config_file() {
     --db_password="${db_password}" \
     --no-interaction
 
+  # Set APP KEY
+  sed -i "s#APP_KEY=.*#APP_KEY=${app_key}#" "${df_config_file}"
+
   # Configure Cache settings
   sed -i "s/#CACHE_HOST=/CACHE_HOST=localhost/" "${df_config_file}"
   sed -i "s/#CACHE_DATABASE=2/CACHE_DATABASE=2/" "${df_config_file}"
   sed -i "s/CACHE_DRIVER=file/CACHE_DRIVER=redis/" "${df_config_file}"
   sed -i "s/#CACHE_PORT=/CACHE_PORT=6379/" "${df_config_file}"
   sed -i "s/#CACHE_PASSWORD=/CACHE_PASSWORD=${redis_password}/" "${df_config_file}"
+
 }
 
 #######################################
