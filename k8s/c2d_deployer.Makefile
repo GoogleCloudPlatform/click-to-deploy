@@ -55,10 +55,6 @@ app/build:: .build/setup_crane \
             .build/$(CHART_NAME)/deployer
 
 
-DEPLOYER_BUILDER := deployer-builder-$(shell echo $$RANDOM)
-TESTER_BUILDER := tester-builder-$(shell echo $$RANDOM)
-
-
 .build/setup_crane:
 	@if ! command -v crane &>/dev/null; then \
 	  VERSION=$$(curl -s "https://api.github.com/repos/google/go-containerregistry/releases/latest" | jq -r '.tag_name'); \
@@ -77,7 +73,7 @@ TESTER_BUILDER := tester-builder-$(shell echo $$RANDOM)
 	fi; \
 	crane version
 
-
+.build/$(CHART_NAME)/deployer: DEPLOYER_BUILDER := "deployer-builder-$$RANDOM"
 .build/$(CHART_NAME)/deployer: .build/setup_crane \
 															 deployer/* \
                                chart/$(CHART_NAME)/* \
@@ -141,6 +137,7 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
 	@touch "$@"
 
 
+.build/$(CHART_NAME)/tester: TESTER_BUILDER := "tester-builder-$$RANDOM"
 .build/$(CHART_NAME)/tester: .build/setup_crane \
 														 .build/var/APP_TESTER_IMAGE \
                              $(shell find apptest -type f) \
