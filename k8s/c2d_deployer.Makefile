@@ -65,7 +65,7 @@ TESTER_BUILDER := tester-builder-$(shell echo $$RANDOM)
 	  OS=Linux; \
 	  ARCH=x86_64; \
 	  echo "Downloading crane version $$VERSION..."; \
-	  curl -sL "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" > go-containerregistry.tar.gz; \
+	  curl -sL -o go-containerregistry.tar.gz "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" ; \
 	  tar -zxvf go-containerregistry.tar.gz crane; \
 		mv crane /usr/local/bin/crane; \
 		chmod 755 /usr/local/bin/crane; \
