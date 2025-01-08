@@ -88,7 +88,7 @@ app/build:: .build/setup_crane \
                                | .build/$(CHART_NAME)
 	$(call print_target,$@)
 
-	DEPLOYER_BUILDER="deployer-builder-$$RANDOM"; \
+	DEPLOYER_BUILDER="deployer-builder-$$(openssl rand -base64 12 | tr -dc 'a-z0-9' | head -c 8)"; \
 		docker buildx create --name "$$DEPLOYER_BUILDER" --use \
 		&& docker buildx inspect "$$DEPLOYER_BUILDER" --bootstrap \
 		&& docker buildx build \
@@ -144,7 +144,7 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
                              | .build/$(CHART_NAME)
 	$(call print_target,$@)
 
-	TESTER_BUILDER="tester-builder-$$RANDOM"; \
+	TESTER_BUILDER="tester-builder-$$(openssl rand -base64 12 | tr -dc 'a-z0-9' | head -c 8)"; \
 	docker buildx create --name "$$TESTER_BUILDER" --use \
 		&& docker buildx inspect "$$TESTER_BUILDER" --bootstrap \
 		&& cd apptest/tester \
