@@ -74,7 +74,6 @@ app/build:: .build/setup_crane \
 	crane version
 
 
-.build/$(CHART_NAME)/deployer: DEPLOYER_BUILDER := "deployer-builder"
 .build/$(CHART_NAME)/deployer: .build/setup_crane \
 															 deployer/* \
                                chart/$(CHART_NAME)/* \
@@ -89,20 +88,21 @@ app/build:: .build/setup_crane \
                                | .build/$(CHART_NAME)
 	$(call print_target,$@)
 
-	docker buildx create --name $(DEPLOYER_BUILDER)-$$RANDOM --use
-	docker buildx inspect "$(DEPLOYER_BUILDER)-$$RANDOM" --bootstrap
-	docker buildx build \
-		--push \
-		--annotation="index,manifest:cloudmarketplace.googleapis.com/service=$(SERVICE_NAME)" \
-		--build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
-		--build-arg TAG="$(RELEASE)" \
-		--build-arg CHART_NAME="$(CHART_NAME)" \
-		--build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
-		--tag "$(APP_DEPLOYER_IMAGE)" \
-		--tag "$(APP_DEPLOYER_IMAGE_TRACK_TAG)" \
-		-f deployer/Dockerfile \
-		.
-	@docker buildx rm "$(DEPLOYER_BUILDER)-$$RANDOM"
+	DEPLOYER_BUILDER="deployer-builder-$$RANDOM"; \
+		docker buildx create --name "$$DEPLOYER_BUILDER" --use \
+		&& docker buildx inspect "$$DEPLOYER_BUILDER" --bootstrap \
+		&& docker buildx build \
+			--push \
+			--annotation="index,manifest:cloudmarketplace.googleapis.com/service=$(SERVICE_NAME)" \
+			--build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
+			--build-arg TAG="$(RELEASE)" \
+			--build-arg CHART_NAME="$(CHART_NAME)" \
+			--build-arg MARKETPLACE_TOOLS_TAG="$(MARKETPLACE_TOOLS_TAG)" \
+			--tag "$(APP_DEPLOYER_IMAGE)" \
+			--tag "$(APP_DEPLOYER_IMAGE_TRACK_TAG)" \
+			-f deployer/Dockerfile \
+			. \
+		&& docker buildx rm "$$DEPLOYER_BUILDER"
 	@touch "$@"
 
 
@@ -138,21 +138,21 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
 	@touch "$@"
 
 
-.build/$(CHART_NAME)/tester: TESTER_BUILDER := "tester-builder"
 .build/$(CHART_NAME)/tester: .build/setup_crane \
 														 .build/var/APP_TESTER_IMAGE \
                              $(shell find apptest -type f) \
                              | .build/$(CHART_NAME)
 	$(call print_target,$@)
 
-	docker buildx create --name $(TESTER_BUILDER) --use
-	docker buildx inspect $(TESTER_BUILDER) --bootstrap
-	cd apptest/tester \
+	TESTER_BUILDER="tester-builder-$$RANDOM"; \
+	docker buildx create --name "$$TESTER_BUILDER" --use \
+		&& docker buildx inspect "$$TESTER_BUILDER" --bootstrap \
+		&& cd apptest/tester \
 		&& docker buildx build \
 				--push \
 				--annotation="index,manifest:cloudmarketplace.googleapis.com/service=$(SERVICE_NAME)" \
-				--tag "$(APP_TESTER_IMAGE)" .
-	@docker buildx rm $(TESTER_BUILDER)
+				--tag "$(APP_TESTER_IMAGE)" .  \
+		&& docker buildx rm "$$TESTER_BUILDER"
 	@touch "$@"
 
 
