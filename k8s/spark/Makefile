@@ -7,6 +7,7 @@ CHART_NAME := spark
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 3.5
+SERVICE_NAME := services/1372e838-1abc-4b08-aaf0-94d75cba452a.cloudpartnerservices.goog
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google

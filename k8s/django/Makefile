@@ -7,13 +7,19 @@ CHART_NAME := django
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 5.0
+SERVICE_NAME := services/b0af85ce-23df-43aa-9f54-b6e81eeb27d1.cloudpartnerservices.goog
 UWSGI_EXPORTER_TRACK ?= 1.1
+SERVICE_NAME := services/b0af85ce-23df-43aa-9f54-b6e81eeb27d1.cloudpartnerservices.goog
 NGINX_TRACK ?= 1.25
+SERVICE_NAME := services/b0af85ce-23df-43aa-9f54-b6e81eeb27d1.cloudpartnerservices.goog
 EXPORTER_TAG ?= 0.11
 METRICS_EXPORTER_TAG ?= v0.5.1
 NFS_TRACK ?= 1.3
+SERVICE_NAME := services/b0af85ce-23df-43aa-9f54-b6e81eeb27d1.cloudpartnerservices.goog
 POSTGRESQL_TRACK ?= latest
+SERVICE_NAME := services/b0af85ce-23df-43aa-9f54-b6e81eeb27d1.cloudpartnerservices.goog
 POSTGRESQL_EXPORTER_TRACK ?= 0.13
+SERVICE_NAME := services/b0af85ce-23df-43aa-9f54-b6e81eeb27d1.cloudpartnerservices.goog
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_DJANGO ?= $(SOURCE_REGISTRY)/django5:$(TRACK)
