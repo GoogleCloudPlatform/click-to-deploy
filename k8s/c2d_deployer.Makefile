@@ -27,6 +27,7 @@ endif
 
 $(info ---- image-$(CHART_NAME) = $(image-$(CHART_NAME)))
 
+SHELL := /bin/bash
 
 ##### Common variables #####
 
@@ -54,15 +55,27 @@ app/build:: .build/setup_crane \
             .build/$(CHART_NAME)/images \
             .build/$(CHART_NAME)/deployer
 
+CRANE_BIN ?=
+CRANE_AUTOINSTALL := false
+
+ifeq ($(CRANE_BIN),)
+	CRANE_BIN := /usr/local/bin/crane
+	CRANE_AUTOINSTALL := true
+else
+	CRANE_AUTOINSTALL := false
+endif
 
 .build/setup_crane:
-	@if ! command -v crane &>/dev/null; then \
+	@echo "Using Crane Bin at: $(CRANE_BIN)"
+	@echo "Install Crane? $(CRANE_AUTOINSTALL)"
+
+	@if ! command -v crane &>/dev/null && "$(CRANE_AUTOINSTALL)" == "true"; then \
 		set -x; \
 	  VERSION=v0.20.2; \
 	  OS=Linux; \
 	  ARCH=x86_64; \
 	  echo "Downloading crane version $$VERSION..."; \
-	  curl -L -o go-containerregistry.tar.gz "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" \
+	  curl -v -L -o go-containerregistry.tar.gz "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" \
 			&& tar -zxvf go-containerregistry.tar.gz crane \
 			&& mv crane /usr/local/bin/crane \
 			&& chmod 755 /usr/local/bin/crane \
@@ -72,7 +85,7 @@ app/build:: .build/setup_crane \
 	else \
 	  echo "crane is already installed"; \
 	fi; \
-	crane version
+	"$(CRANE_BIN)" version
 
 
 .build/$(CHART_NAME)/deployer: .build/setup_crane \
@@ -114,8 +127,8 @@ app/build:: .build/setup_crane \
                                     | .build/$(CHART_NAME)
 	$(call print_target,$@)
 
-	crane copy "$(image-$(CHART_NAME))" "$(REGISTRY)/$(APP_ID):$(TRACK)"
-	crane copy "$(image-$(CHART_NAME))" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+	"$(CRANE_BIN)" copy "$(image-$(CHART_NAME))" "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	"$(CRANE_BIN)" copy "$(image-$(CHART_NAME))" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
 	@touch "$@"
 
 
@@ -134,8 +147,8 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
                                                | .build/$(CHART_NAME)
 	$(call print_target,$*)
 
-	crane copy "$(image-$*)" "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
-	crane copy "$(image-$*)" "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)"
+	"$(CRANE_BIN)" copy "$(image-$*)" "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
+	"$(CRANE_BIN)" copy "$(image-$*)" "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)"
 	@touch "$@"
 
 
