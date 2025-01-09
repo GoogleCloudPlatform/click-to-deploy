@@ -37,7 +37,11 @@ steps:
   args:
     - '-c'
     - |
-      curl -L -o /workspace/crane.tar.gz "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" \
+      VERSION=v0.20.2; \
+      OS=Linux; \
+      ARCH=x86_64; \
+      echo "Downloading crane version $VERSION..."; \
+      curl -L -o /workspace/crane.tar.gz "https://github.com/google/go-containerregistry/releases/download/$VERSION/go-containerregistry_${OS}_${ARCH}.tar.gz" \
         && tar -zxvf /workspace/crane.tar.gz crane \
         && mv crane /workspace/crane \
         && chmod 755 /workspace/crane \
