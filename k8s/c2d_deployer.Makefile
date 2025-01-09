@@ -160,7 +160,7 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
 
 
 .PHONY: .build/$(CHART_NAME)/VERSION
-.build/$(CHART_NAME)/VERSION:
+.build/$(CHART_NAME)/VERSION: .build/setup_crane
 	$(call print_target,$@)
 	@echo "$(C2D_CONTAINER_RELEASE)" | grep -qE "^$(TRACK)\.[0-9]+(\.[0-9]+)?$$" || \
 	( echo "C2D_RELEASE doesn't start with TRACK or doesn't match TRACK exactly"; exit 1 )
