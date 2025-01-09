@@ -62,7 +62,7 @@ app/build:: .build/setup_crane \
 	  OS=Linux; \
 	  ARCH=x86_64; \
 	  echo "Downloading crane version $$VERSION..."; \
-	  curl -v -L -o go-containerregistry.tar.gz "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" \
+	  curl -L -o go-containerregistry.tar.gz "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" \
 			&& tar -zxvf go-containerregistry.tar.gz crane \
 			&& mv crane /usr/local/bin/crane \
 			&& chmod 755 /usr/local/bin/crane \
