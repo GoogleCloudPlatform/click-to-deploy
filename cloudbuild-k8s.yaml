@@ -31,6 +31,20 @@ steps:
     docker pull "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG"
     docker tag "gcr.io/cloud-marketplace-tools/k8s/dev:$$TAG" "gcr.io/cloud-marketplace-tools/k8s/dev:local"
 
+- id: Setup Crane
+  name: gcr.io/cloud-builders/curl
+  entrypoint: sh
+  args:
+    - '-c'
+    - |
+      curl -L -o /workspace/crane.tar.gz "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" \
+        && tar -zxvf /workspace/crane.tar.gz crane \
+        && mv crane /workspace/crane \
+        && chmod 755 /workspace/crane \
+        && chmod +x /workspace/crane \
+        && rm /workspace/crane.tar.gz \
+        && echo "crane successfully installed"
+
 - id: Initialize Credentials
   name: gcr.io/cloud-builders/gcloud
   waitFor:
@@ -56,6 +70,7 @@ steps:
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'DOCKER_NETWORK=cloudbuild'
+  - 'CRANE_BIN=/workspace/crane'
   dir: k8s/${_SOLUTION_NAME}
   entrypoint: bash
   args:
@@ -72,6 +87,7 @@ steps:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
   - 'VERIFICATION_LOGS_PATH=/workspace/k8s/${_SOLUTION_NAME}/.mpdev_logs'
+  - 'CRANE_BIN=/workspace/crane'
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'DOCKER_NETWORK=cloudbuild'
@@ -88,6 +104,7 @@ steps:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
   - 'VERIFICATION_LOGS_PATH=/workspace/k8s/${_SOLUTION_NAME}/.mpdev_logs'
+  - 'CRANE_BIN=/workspace/crane'
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'DOCKER_NETWORK=cloudbuild'
@@ -105,6 +122,7 @@ steps:
   - 'KUBE_CONFIG=/workspace/.kube'
   - 'GCLOUD_CONFIG=/workspace/.config/gcloud'
   - 'VERIFICATION_LOGS_PATH=/workspace/k8s/${_SOLUTION_NAME}/.mpdev_logs'
+  - 'CRANE_BIN=/workspace/crane'
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'DOCKER_NETWORK=cloudbuild'
@@ -125,6 +143,7 @@ steps:
   # Use local Docker network named cloudbuild as described here:
   # https://cloud.google.com/cloud-build/docs/overview#build_configuration_and_build_steps
   - 'DOCKER_NETWORK=cloudbuild'
+  - 'CRANE_BIN=/workspace/crane'
   dir: k8s/${_SOLUTION_NAME}
   entrypoint: bash
   args:
