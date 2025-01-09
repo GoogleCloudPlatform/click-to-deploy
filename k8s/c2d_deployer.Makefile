@@ -50,18 +50,18 @@ $(info ---- RELEASE = $(RELEASE))
 
 app/build:: .build/setup_crane \
 						.build/$(CHART_NAME)/VERSION \
-            .build/$(CHART_NAME)/$(CHART_NAME) \
-            .build/$(CHART_NAME)/images \
-            .build/$(CHART_NAME)/deployer
+						.build/$(CHART_NAME)/$(CHART_NAME) \
+						.build/$(CHART_NAME)/images \
+						.build/$(CHART_NAME)/deployer
 
 
 .build/setup_crane:
 	@if ! command -v crane &>/dev/null; then \
-	  VERSION=v0.20.2; \
-	  OS=Linux; \
-	  ARCH=x86_64; \
-	  echo "Downloading crane version $$VERSION..."; \
-	  curl -sL -o go-containerregistry.tar.gz "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" \
+		VERSION=v0.20.2; \
+		OS=Linux; \
+		ARCH=x86_64; \
+		echo "Downloading crane version $$VERSION..."; \
+		curl -sL -o go-containerregistry.tar.gz "https://github.com/google/go-containerregistry/releases/download/$$VERSION/go-containerregistry_$${OS}_$${ARCH}.tar.gz" \
 			&& tar -zxvf go-containerregistry.tar.gz crane \
 			&& mv crane /usr/local/bin/crane \
 			&& chmod 755 /usr/local/bin/crane \
@@ -69,23 +69,23 @@ app/build:: .build/setup_crane \
 			&& rm go-containerregistry.tar.gz \
 			&& echo "crane successfully installed"; \
 	else \
-	  echo "crane is already installed"; \
+		echo "crane is already installed"; \
 	fi; \
 	crane version
 
 
 .build/$(CHART_NAME)/deployer: .build/setup_crane \
 															 deployer/* \
-                               chart/$(CHART_NAME)/* \
-                               chart/$(CHART_NAME)/templates/* \
-                               schema.yaml \
-                               .build/var/APP_DEPLOYER_IMAGE \
-                               .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
-                               .build/var/MARKETPLACE_TOOLS_TAG \
-                               .build/var/REGISTRY \
-                               .build/var/TRACK \
-                               .build/var/RELEASE \
-                               | .build/$(CHART_NAME)
+															 chart/$(CHART_NAME)/* \
+															 chart/$(CHART_NAME)/templates/* \
+															 schema.yaml \
+															 .build/var/APP_DEPLOYER_IMAGE \
+															 .build/var/APP_DEPLOYER_IMAGE_TRACK_TAG \
+															 .build/var/MARKETPLACE_TOOLS_TAG \
+															 .build/var/REGISTRY \
+															 .build/var/TRACK \
+															 .build/var/RELEASE \
+															 | .build/$(CHART_NAME)
 	$(call print_target,$@)
 
 	DEPLOYER_BUILDER="deployer-builder-$$(openssl rand -base64 12 | tr -dc 'a-z0-9' | head -c 8)"; \
@@ -108,9 +108,9 @@ app/build:: .build/setup_crane \
 
 .build/$(CHART_NAME)/$(CHART_NAME): .build/setup_crane \
 																		.build/var/REGISTRY \
-                                    .build/var/TRACK \
-                                    .build/var/RELEASE \
-                                    | .build/$(CHART_NAME)
+																		.build/var/TRACK \
+																		.build/var/RELEASE \
+																		| .build/$(CHART_NAME)
 	$(call print_target,$@)
 
 	crane copy "$(image-$(CHART_NAME))" "$(REGISTRY)/$(APP_ID):$(TRACK)"
@@ -128,9 +128,9 @@ IMAGE_TARGETS_LIST = $(patsubst %,.build/$(CHART_NAME)/%,$(ADDITIONAL_IMAGES))
 # and use % match as $* in recipe
 $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
 																							 .build/var/REGISTRY \
-                                               .build/var/TRACK \
-                                               .build/var/RELEASE \
-                                               | .build/$(CHART_NAME)
+																							 .build/var/TRACK \
+																							 .build/var/RELEASE \
+																							 | .build/$(CHART_NAME)
 	$(call print_target,$*)
 
 	crane copy "$(image-$*)" "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
@@ -140,8 +140,8 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
 
 .build/$(CHART_NAME)/tester: .build/setup_crane \
 														 .build/var/APP_TESTER_IMAGE \
-                             $(shell find apptest -type f) \
-                             | .build/$(CHART_NAME)
+														 $(shell find apptest -type f) \
+														 | .build/$(CHART_NAME)
 	$(call print_target,$@)
 
 	TESTER_BUILDER="tester-builder-$$(openssl rand -base64 12 | tr -dc 'a-z0-9' | head -c 8)"; \
