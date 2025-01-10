@@ -8,9 +8,12 @@ APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
 TRACK ?= 2.8
+SERVICE_NAME := services/a04a14b8-4fd4-469b-93c0-f540ac6eca56.cloudpartnerservices.goog
 # Track for components
 POSTGRESQL_TRACK ?= latest
+SERVICE_NAME := services/a04a14b8-4fd4-469b-93c0-f540ac6eca56.cloudpartnerservices.goog
 NFS_TRACK ?= 1.3
+SERVICE_NAME := services/a04a14b8-4fd4-469b-93c0-f540ac6eca56.cloudpartnerservices.goog
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 VERIFY_WAIT_TIMEOUT = 1800

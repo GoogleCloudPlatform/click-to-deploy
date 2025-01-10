@@ -7,6 +7,7 @@ CHART_NAME := activemq
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 6.1
+SERVICE_NAME := services/450acd45-a325-47bc-a603-0d79951b9800.cloudpartnerservices.goog
 
 VERIFY_WAIT_TIMEOUT = 1800
 
