@@ -2,7 +2,7 @@ FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
-    netcat \
+    netcat-traditional \
     dnsutils \
     default-jdk \
     && rm -rf /var/lib/apt/lists/*
