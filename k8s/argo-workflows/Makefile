@@ -7,6 +7,7 @@ CHART_NAME := argo-workflows
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 3.5
+SERVICE_NAME := services/f6f7625a-8d55-4b9d-a394-cdd8e6b47b44.cloudpartnerservices.goog
 
 EXPORTER_TAG ?= exporter
 POSTGRESQL_EXPORTER_TAG ?= 0.15
