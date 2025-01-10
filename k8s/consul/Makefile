@@ -7,6 +7,7 @@ CHART_NAME := consul
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 1.19
+SERVICE_NAME := services/f79e369a-ac45-423e-99ea-f3c29fcce504.cloudpartnerservices.goog
 
 CONSUL_EXPORTER_TAG ?= exporter
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
