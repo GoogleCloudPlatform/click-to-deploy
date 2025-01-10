@@ -5,8 +5,9 @@ include ../images.Makefile
 
 CHART_NAME := wordpress
 APP_ID ?= $(CHART_NAME)
-VERIFY_WAIT_TIMEOUT = 1800
+VERIFY_WAIT_TIMEOUT = 1700
 
+SERVICE_NAME := services/d60f6935-b4e7-46b3-8f96-eece88c7cd42.cloudpartnerservices.goog
 TRACK ?= 6.6
 
 METRICS_EXPORTER_TAG ?= v0.5.1
