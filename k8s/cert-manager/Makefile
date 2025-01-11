@@ -11,6 +11,7 @@ APP_ID ?= $(CHART_NAME)
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
 TRACK ?= 1.15
+SERVICE_NAME := services/a87fa03a-4d8e-473d-afe8-02efc04aa9f2.cloudpartnerservices.goog
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/cert-manager1:$(TRACK)
