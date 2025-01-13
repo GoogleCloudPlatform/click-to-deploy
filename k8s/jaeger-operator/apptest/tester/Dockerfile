@@ -1,11 +1,11 @@
-FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.5
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl wget dnsutils netcat jq \
+    curl dnsutils netcat jq \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/kubectl/1.26 \
-    && wget -q -O /opt/kubectl/1.26/kubectl \
+    && curl -L -o /opt/kubectl/1.26/kubectl \
        https://storage.googleapis.com/kubernetes-release/release/v1.26.1/bin/linux/amd64/kubectl \
     && chmod 755 /opt/kubectl/1.26/kubectl \
     && ln -s /opt/kubectl/1.26/kubectl /usr/bin/kubectl
