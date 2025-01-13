@@ -8,6 +8,7 @@ APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
 TRACK ?= 3.7
+SERVICE_NAME := services/de661158-ff88-479d-bcf3-206917bed7f6.cloudpartnerservices.goog
 KAFKA_EXPORTER_TAG ?= 1.8
 ZK_TAG ?= 3.8
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
