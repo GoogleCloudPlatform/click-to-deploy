@@ -9,6 +9,7 @@ APP_ID ?= $(CHART_NAME)
 VERIFY_WAIT_TIMEOUT = 1800
 
 TRACK ?= 17.5
+SERVICE_NAME := services/9f0fe022-a66a-4133-8099-f0ca7c61a2db.cloudpartnerservices.goog
 POSTGRESQL_TAG ?= latest
 POSTGRESQL_EXPORTER_TAG ?= latest
 REDIS_TAG ?= 7.2
