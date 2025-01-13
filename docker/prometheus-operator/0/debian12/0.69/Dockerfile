@@ -20,7 +20,10 @@ RUN set -x && \
 
 RUN git config --global http.sslverify false \
     && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags="-s \
-    -X github.com/prometheus-operator/prometheus-operator/pkg/version.Version=0.69.1" \
+    -X github.com/prometheus/common/version.Version=0.69.1 \
+    -X github.com/prometheus/common/version.Branch=0.69.1 \
+    -X github.com/prometheus/common/version.BuildUser=C2D \
+    -X github.com/prometheus/common/version.BuildDate=$(date '+%Y-%m-%d')" \
     -o operator cmd/operator/main.go
 
 # Download licenses

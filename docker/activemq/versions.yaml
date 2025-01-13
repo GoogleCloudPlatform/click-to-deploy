@@ -24,6 +24,9 @@ versions:
       version: 6.1.3
       major: '6'
   repo: activemq6
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/9d45a235-f0dc-4c94-9313-f7c995e0a78b.cloudpartnerservices.goog
   tags:
   - 6.1.3-debian12
   - 6.1-debian12

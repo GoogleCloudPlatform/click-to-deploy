@@ -1,0 +1,48 @@
+#!/bin/bash
+
+declare -r REPO_OWNER="dreamfactorysoftware/df-admin-interface"
+declare -r REPO_URL="https://github.com/${REPO_OWNER}"
+declare -r DF_FOLDER=/opt/dreamfactory
+declare -r DESTINATION_FOLDER="${DF_FOLDER}/public"
+declare -r TEMP_FOLDER="/tmp/df-ui"
+declare -r RELEASE_FILENAME="release.zip"
+declare -r FOLDERS_TO_REMOVE="dreamfactory filemanager df-api-docs-ui assets"
+
+REPO_OWNER="dreamfactorysoftware/df-admin-interface"
+REPO_URL="https://github.com/${REPO_OWNER}"
+DF_FOLDER=/opt/dreamfactory
+DESTINATION_FOLDER="${DF_FOLDER}/public"
+TEMP_FOLDER="/tmp/df-ui"
+RELEASE_FILENAME="release.zip"
+FOLDERS_TO_REMOVE="dreamfactory filemanager df-api-docs-ui assets"
+
+echo >&2 "Creating temporary directories..."
+mkdir -p "${TEMP_FOLDER}" "${DESTINATION_FOLDER}"
+
+echo >&2 "Setting up front-end..."
+cd "${TEMP_FOLDER}"
+
+# Getting the latest release
+latest_release="$(curl -s \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${REPO_OWNER}/releases" \
+            | jq -r '.[0].tag_name')"
+echo >&2 "- Latest release: ${latest_release}"
+
+# Download the release
+release_url="${REPO_URL}/releases/download/${latest_release}/release.zip"
+curl -LO "${release_url}"
+
+# Clean up destination folder
+find "$DESTINATION_FOLDER" -type f \( -name "*.js" -o -name "*.css" \) -exec rm {} \;
+for folder in ${FOLDERS_TO_REMOVE}; do
+    if [ -d "${DESTINATION_FOLDER}/${folder}" ]; then rm -rf "${DESTINATION_FOLDER}/${folder}"; fi;
+done
+
+# Extract the release
+unzip -qo "${RELEASE_FILENAME}" -d "${TEMP_FOLDER}"
+mv dist/index.html "${DF_FOLDER}/resources/views/index.blade.php"
+mv dist/* "${DESTINATION_FOLDER}"
+cd .. && rm -rf "${TEMP_FOLDER}"
+
+echo >&2 "Finished."
