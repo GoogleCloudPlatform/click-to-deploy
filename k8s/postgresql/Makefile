@@ -7,6 +7,7 @@ CHART_NAME := postgresql
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 16.4
+SERVICE_NAME := services/9fef4505-b5b0-4051-9078-bb00a639b18a.cloudpartnerservices.goog
 
 POSTGRESQL_TAG ?= $(TRACK)
 POSTGRESQL_EXPORTER_TAG ?= 0.15
