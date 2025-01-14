@@ -7,7 +7,9 @@ CHART_NAME := airflow
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
-TRACK ?= 2.8
+TRACK ?= 2.10
+SERVICE_NAME := services/a04a14b8-4fd4-469b-93c0-f540ac6eca56.cloudpartnerservices.goog
+
 # Track for components
 POSTGRESQL_TRACK ?= latest
 NFS_TRACK ?= 1.3
