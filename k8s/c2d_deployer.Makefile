@@ -85,6 +85,7 @@ endif
 	else \
 	  echo "crane is already installed"; \
 	fi; \
+	chmod +x "$(CRANE_BIN)"; \
 	"$(CRANE_BIN)" version
 
 
