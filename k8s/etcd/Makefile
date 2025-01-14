@@ -7,6 +7,7 @@ CHART_NAME := etcd
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 3.5
+SERVICE_NAME := services/8179d7ea-7a6d-4054-b2bc-27caef69db5a.cloudpartnerservices.goog
 
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
