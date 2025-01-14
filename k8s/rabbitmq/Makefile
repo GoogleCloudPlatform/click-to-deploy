@@ -7,6 +7,7 @@ CHART_NAME := rabbitmq
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 3.13
+SERVICE_NAME := services/95b23cea-d381-42ec-8459-27ede8f4fd5a.cloudpartnerservices.goog
 
 METRICS_EXPORTER_TAG ?= v0.9.0
 
