@@ -3,11 +3,15 @@
 ## About
 
 This directory hosts the source code for the Google Click to Deploy container images
-available through Google Cloud Platform Marketplace.
+available through [Google Cloud Platform Marketplace](https://console.cloud.google.com/marketplace/browse?filter=partner:click-to-deploy-containers&filter=solution-type:container).
 
 ## Disclaimer
 
 This is not an officially supported Google product.
+
+## Contribute
+
+If you feel like contributing to Click to Deploy Container Solutions, check our [development playbook](DEVELOPMENT.md).
 
 ## Docker images
 
