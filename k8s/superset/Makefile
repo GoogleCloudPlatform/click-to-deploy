@@ -7,6 +7,7 @@ CHART_NAME := superset
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 4.0
+SERVICE_NAME := services/e6580ff4-fda7-4750-b7a4-aeec14eecc6a.cloudpartnerservices.goog
 
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 REDIS_EXPORTER_TAG ?= 1.63
