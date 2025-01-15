@@ -88,10 +88,10 @@ spec:
           httpGet:
             path: /metrics
             port: 9104
-          initialDelaySeconds: 240
+          initialDelaySeconds: 160
           timeoutSeconds: 30
           failureThreshold: 10
-          periodSeconds: 120
+          periodSeconds: 60
       {{ if .Values.metrics.exporter.enabled }}
       - name: prometheus-to-sd
         image: {{ .Values.metrics.image }}
