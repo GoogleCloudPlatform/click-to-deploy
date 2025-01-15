@@ -3,9 +3,9 @@ actions:
   bashTest:
     script: |-
       kubectl wait --for=jsonpath='{.status.numberReady}'=3 --timeout=120s --namespace $NAMESPACE daemonset "${APP_INSTANCE_NAME}-falco"
-      falcoPods=$(kubectl get pods -l app.kubernetes.io/component=falco -o jsonpath="{..metadata.name}")
+      falcoPods=$(kubectl get pods -n $NAMESPACE -l app.kubernetes.io/component=falco -o jsonpath="{..metadata.name}")
       for podName in ${falcoPods}; do
-        kubectl exec ${podName} -c falco -- curl localhost:8765/healthz
+        kubectl exec ${podName} -c falco -- curl -s localhost:8765/healthz
           if [ $? -ne 0 ]; then
              exit 1
           fi
