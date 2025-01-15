@@ -8,6 +8,7 @@ APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 3.5
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
+SERVICE_NAME := services/1372e838-1abc-4b08-aaf0-94d75cba452a.cloudpartnerservices.goog
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
