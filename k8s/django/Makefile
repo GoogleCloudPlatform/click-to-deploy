@@ -7,6 +7,7 @@ CHART_NAME := django
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 5.0
+SERVICE_NAME := services/b0af85ce-23df-43aa-9f54-b6e81eeb27d1.cloudpartnerservices.goog
 UWSGI_EXPORTER_TRACK ?= 1.1
 NGINX_TRACK ?= 1.25
 EXPORTER_TAG ?= 0.11

@@ -7,6 +7,7 @@ CHART_NAME := prometheus
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 2.54
+SERVICE_NAME := services/057070e7-b352-4b46-bc03-fc8f141fce9a.cloudpartnerservices.goog
 TRACK_ALERTMANAGER ?= 0.27
 TRACK_KUBESTATEMETRICS ?= 2.13
 TRACK_NODEEXPORTER ?= 1.8
