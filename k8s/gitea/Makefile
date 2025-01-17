@@ -8,6 +8,7 @@ APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT ?= 100
 
 TRACK ?= 1.22
+SERVICE_NAME := services/174d8184-ad0d-4f01-8537-68c9110c4d38.cloudpartnerservices.goog
 POSTGRESQL_TAG ?= latest
 EXPORTER_TAG ?= latest
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
