@@ -13,7 +13,7 @@ actions:
       bodyText:
         html:
           title:
-            equals: 'Welcome! | Drupal_Site'
+            equals: 'Welcome! | C2D_Drupal_Site'
 
 - name: Login URL should be 200 OK (service DNS)
   httpTest:
@@ -24,4 +24,4 @@ actions:
       bodyText:
         html:
           title:
-            equals: 'Log in | Drupal_Site'
+            equals: 'Log in | C2D_Drupal_Site'
