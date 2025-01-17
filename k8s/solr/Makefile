@@ -9,6 +9,7 @@ WAIT_FOR_READY_TIMEOUT := 600
 
 TRACK ?= 9.6
 ZK_TAG ?= 3.8
+SERVICE_NAME := services/effa00b5-9dfc-4626-aa25-85435f332575.cloudpartnerservices.goog
 
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
