@@ -7,6 +7,7 @@ CHART_NAME ?= joomla
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 4.4
+SERVICE_NAME := services/012bd695-77ae-4119-a8d1-371a93102f64.cloudpartnerservices.goog
 
 APACHE_EXPORTER_TAG ?= 0.13
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
