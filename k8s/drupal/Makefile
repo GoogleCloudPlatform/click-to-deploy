@@ -7,6 +7,7 @@ CHART_NAME := drupal
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 10.3
+SERVICE_NAME := services/a046f271-479a-43ff-a12f-f10c6812120e.cloudpartnerservices.goog
 
 MYSQL_EXPORTER_TAG ?= exporter
 MARIADB_TAG ?= 11.1
