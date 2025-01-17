@@ -14,10 +14,10 @@ RUN set -eu \
     wget \
     curl \
     openjdk-11-jre \
-    netcat
+    netcat-traditional
 
 RUN set -eu \
-    && wget -q -O /bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
+    && curl -L -o /bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
     && chmod 755 /bin/kubectl \
     && curl -sSL https://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -o "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
     && tar -xzf /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt \
