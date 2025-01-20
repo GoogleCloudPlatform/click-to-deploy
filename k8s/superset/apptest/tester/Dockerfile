@@ -15,7 +15,7 @@
 FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    redis-tools ca-certificates curl dnsutils netcat-traditional jq \
+    redis-tools ca-certificates curl wget dnsutils netcat-traditional jq \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/kubectl/1.21 \
