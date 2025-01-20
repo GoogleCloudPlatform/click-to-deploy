@@ -9,6 +9,7 @@ APP_ID ?= $(CHART_NAME)
 VERIFY_WAIT_TIMEOUT = 1800
 
 TRACK ?= 11.5
+SERVICE_NAME := services/1b05c98f-d74b-4d67-a78c-16ea597cd191.cloudpartnerservices.goog
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
