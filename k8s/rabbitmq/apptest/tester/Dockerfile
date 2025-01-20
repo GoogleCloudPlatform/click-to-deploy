@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     gettext \
     python3 \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -L -o /bin/kubectl \
