@@ -8,6 +8,7 @@ APP_ID ?= $(CHART_NAME)
 VERIFY_WAIT_TIMEOUT = 1800
 
 TRACK ?= 4.1
+SERVICE_NAME := services/5a7d4b26-04c9-4426-b4d2-e1e645683965.cloudpartnerservices.goog
 
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
