@@ -7,6 +7,7 @@ CHART_NAME := influxdb
 APP_ID ?= $(CHART_NAME)
 
 TRACK ?= 2.7
+SERVICE_NAME := services/98477e57-9f15-425d-9e9c-f9318eea0d56.cloudpartnerservices.goog
 
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
