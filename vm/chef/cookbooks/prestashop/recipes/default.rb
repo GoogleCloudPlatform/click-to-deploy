@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,15 +21,15 @@ include_recipe 'apache2::mod-rewrite'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 include_recipe 'mysql::version-8.0-embedded'
-include_recipe 'php74'
-include_recipe 'php74::module_curl'
-include_recipe 'php74::module_dom'
-include_recipe 'php74::module_intl'
-include_recipe 'php74::module_libapache2'
-include_recipe 'php74::module_mbstring'
-include_recipe 'php74::module_mysql'
-include_recipe 'php74::module_simplexml'
-include_recipe 'php74::module_zip'
+include_recipe 'php81'
+include_recipe 'php81::module_curl'
+include_recipe 'php81::module_dom'
+include_recipe 'php81::module_intl'
+include_recipe 'php81::module_libapache2'
+include_recipe 'php81::module_mbstring'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_simplexml'
+include_recipe 'php81::module_zip'
 
 package node['prestashop']['temp_packages'] do
   action :install
@@ -39,24 +39,18 @@ execute 'create prestashop database' do
   command "mysql -u root -e 'CREATE DATABASE #{node['prestashop']['db']['name']}'"
 end
 
-# Download prestashop & verify its checksum
-remote_file '/tmp/prestashop.zip' do
-  source "https://download.prestashop.com/download/releases/prestashop_#{node['prestashop']['version']}.zip"
+remote_file '/tmp/prestashop-release.zip' do
+  source "https://github.com/PrestaShop/PrestaShop/releases/download/#{node['prestashop']['version']}/prestashop_#{node['prestashop']['version']}.zip"
   action :create
 end
 
-bash 'configure_prestashop' do
+bash 'extract prestashop' do
   user 'root'
   cwd '/tmp'
   code <<-EOH
-    # Create temporary directory
-    folder=$(mktemp -d)
-
-    # Unzip prestashop archive to temporary directory
-    unzip -q /tmp/prestashop.zip -d $folder
-
-    # Unzip source of prestashop to the final location
-    unzip -n -q $folder/prestashop.zip -d /var/www/html/
+    # Unzip prestashop archive
+    unzip -o /tmp/prestashop-release.zip -d /tmp
+    unzip -o /tmp/prestashop.zip -d /var/www/html
 EOH
 end
 
@@ -78,6 +72,6 @@ c2d_startup_script 'prestashop-install' do
   action :cookbook_file
 end
 
-package node['prestashop']['temp_packages'] do
-  action :purge
-end
+# package node['prestashop']['temp_packages'] do
+#   action :purge
+# end

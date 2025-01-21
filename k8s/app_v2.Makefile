@@ -129,6 +129,7 @@ app/uninstall: .build/var/APP_DEPLOYER_IMAGE \
 app/verify: app/publish \
             .build/var/APP_DEPLOYER_IMAGE \
             .build/var/MARKETPLACE_TOOLS_TAG \
+						.build/setup_crane \
             | .build/app/dev
 	$(call print_target)
 	.build/app/dev verify \

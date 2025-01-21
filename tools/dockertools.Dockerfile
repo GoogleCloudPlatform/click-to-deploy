@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,10 @@
 
 FROM marketplace.gcr.io/google/debian11
 
-ENV BAZEL_VERSION 0.19.2
-ENV BAZEL_ARCH linux_amd64_stripped
+ENV BAZEL_VERSION=0.19.2
+ENV BAZEL_ARCH=linux_amd64_stripped
+
+COPY ./ click-to-deploy/tools
 
 RUN set -eux \
     && apt-get update \
@@ -35,7 +37,6 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     && apt install gh
 
 RUN set -eux \
-    && git clone https://github.com/GoogleCloudPlatform/click-to-deploy.git \
     && cd click-to-deploy/tools \
     && bazel build dockerversioning/scripts/dockerfiles:dockerfiles dockerversioning/scripts/cloudbuild:cloudbuild \
     && cp bazel-bin/dockerversioning/scripts/dockerfiles/${BAZEL_ARCH}/dockerfiles /bin/dockerfiles \

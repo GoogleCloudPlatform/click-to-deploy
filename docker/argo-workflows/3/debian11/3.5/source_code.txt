@@ -1,4 +1,0 @@
-https://github.com/go-sql-driver/mysql
-https://github.com/hashicorp/go-uuid
-https://github.com/hashicorp/hcl
-https://github.com/opencontainers/go-digest

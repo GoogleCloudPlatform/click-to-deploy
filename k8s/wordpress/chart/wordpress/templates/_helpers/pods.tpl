@@ -6,10 +6,9 @@
     - sh
     - -c
     - |
-      echo 'Waiting for MySQL to become ready...'
-      until printf "." && nc -z -w 2 "{{ .Release.Name }}-mysql-svc" 3306; do
+      echo 'Waiting for MariaDB to become ready...'
+      until printf "." && nc -z -w 2 "{{ .Release.Name }}-mariadb-svc" 3306; do
         sleep 2;
       done;
-      echo 'MySQL is ready'
+      echo 'MariaDB is ready'
 {{- end }}
-

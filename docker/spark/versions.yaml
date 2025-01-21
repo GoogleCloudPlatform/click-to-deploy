@@ -14,38 +14,27 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
   machine_type: 'E2_HIGHCPU_32'
 versions:
-- dir: 3/debian11/3.5
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 3/debian12/3.5
+  from: marketplace.gcr.io/google/debian12
   packages:
     scala:
       minor: '2.13'
     spark:
-      version: 3.5.0
+      version: 3.5.2
   repo: spark3
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/ad1bf2fb-7561-4833-8b24-ae3cc489a86f.cloudpartnerservices.goog
   tags:
-  - 3.5.0-debian11
-  - 3.5-debian11
-  - 3-debian11
-  - 3.5.0
+  - 3.5.2-debian12
+  - 3.5-debian12
+  - 3-debian12
+  - 3.5.2
   - '3.5'
   - '3'
   - latest
   templateSubDir: '3'
-- dir: 3/debian11/3.4
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    scala:
-      minor: '2.13'
-    spark:
-      version: 3.4.1
-  repo: spark3
-  tags:
-  - 3.4.1-debian11
-  - 3.4-debian11
-  - 3.4.1
-  - '3.4'
-  templateSubDir: '3'
-

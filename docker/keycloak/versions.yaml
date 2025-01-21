@@ -14,6 +14,7 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
 - dir: 23/debian11/23.0
@@ -62,6 +63,9 @@ versions:
     sshdcommon:
       version: 2.9.2
   repo: keycloak21
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/86f72fc8-e5a0-4d16-8a93-218c7696748d.cloudpartnerservices.goog
   tags:
   - 21.1.2-debian11
   - 21.1-debian11

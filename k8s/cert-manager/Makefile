@@ -10,11 +10,12 @@ APP_ID ?= $(CHART_NAME)
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-TRACK ?= 1.13
+TRACK ?= 1.15
+SERVICE_NAME := services/a87fa03a-4d8e-473d-afe8-02efc04aa9f2.cloudpartnerservices.goog
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/cert-manager1:$(TRACK)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= eu.gcr.io/k8s-artifacts-prod/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MAIN))

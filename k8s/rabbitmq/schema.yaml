@@ -25,7 +25,7 @@ x-google-marketplace:
           type: REPO_WITH_REGISTRY
         rabbitmq.image.tag:
           type: TAG
-    debian11:
+    debian:
       properties:
         rabbitmq.initImage:
           type: FULL
