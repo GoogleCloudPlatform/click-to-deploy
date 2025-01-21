@@ -2,6 +2,10 @@ name: Pull Request Labeler
 on:
 - pull_request
 
+permissions:
+  issues: write
+  pull-requests: write
+
 jobs:
   label:
     runs-on: ubuntu-latest
