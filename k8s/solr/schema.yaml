@@ -54,7 +54,7 @@ properties:
   persistence.storageClass:
     type: string
     title: StorageClass
-    description: You can choose an existing StorageClass or create a new one.
+    description: You can choose an existing StorageClass or create new one.
     x-google-marketplace:
       type: STORAGE_CLASS
       storageClass:
@@ -62,7 +62,7 @@ properties:
   solr.standalone:
     type: boolean
     title: Solr Standalone mode
-    description: Solr Standalone mode is mainly for development and testing purposes. If this option is enabled, external ZooKeeper Ensemble will not be deployed and authentication will be disabled for the Solr services.
+    description: Solr Standalone mode is mainly for development and testing purposes. If this option is enabled external ZooKeeper ensemble will not be deployed and authentication will be disabled for the Solr services.
     default: false
 
   persistence.solr.storage.size:
@@ -104,8 +104,8 @@ properties:
 
   metrics.exporter.enabled:
     type: boolean
-    title: Enable Cloud Monitoring Metrics Exporter
-    description: Your Google Cloud project must have Google Cloud's operations suite enabled. Non-Google Cloud clusters cannot export metrics to Cloud Monitoring.
+    title: Enable Stackdriver Metrics Exporter
+    description: Your GCP project must have Stackdriver enabled. Non-GCP clusters cannot export metrics to Stackdriver.
     default: false
 
 required:

@@ -13,7 +13,7 @@ spec:
     type: {{ template "solrMode" . }}
     version: {{ .Values.solr.image.tag | quote }}
     description: |-
-      Apache Solr is an open-source enterprise search platform, written in Java, from the Apache Lucene project.
+      Apache Solr is an open-source enterprise-search platform, written in Java, from the Apache Lucene project.
 
       # Support
       Google does not offer support for this solution. However, community support is available on [StackOverflow](https://stackoverflow.com/questions/tagged/solr).
@@ -45,11 +45,11 @@ spec:
 
       Make sure that all components are in `ready` status.
 
-      Deployed service of {{ template "solrMode" . }} is of type ClusterIP, so you can reach to {{ template "solrMode" . }} Admin UI within a Kubernetes cluster.
+      Deployed service of {{ template "solrMode" . }} is ClusterIP type, so you can reach to {{ template "solrMode" . }} Admin UI within a kubernetes cluster.
 
       {{- if not .Values.solr.standalone }}
-      SolrCloud is configured with both a [basic authentication plugin](https://lucene.apache.org/solr/guide/8_6/basic-authentication-plugin.html) and [ZooKeeper access control lists (ACL)](https://lucene.apache.org/solr/guide/8_6/zookeeper-access-control.html).
-      You can check the credentials from the app's page in the console, or you print them by running the following commands:
+      SolrCloud is configured with [Basic authentication plugin](https://lucene.apache.org/solr/guide/8_6/basic-authentication-plugin.html) beside [ZooKeeper ACL](https://lucene.apache.org/solr/guide/8_6/zookeeper-access-control.html).
+      You can check credentials from application page in console or you can print it by running below commands:
 
       ```shell
       # Get and print SolrCloud user credentials
@@ -64,7 +64,7 @@ spec:
       ```
       {{- else }}
 
-      Solr deployed in a standalone mode, without any authentication enabled, for development and testing purposes.
+      Solr deployed as a standalone mode without any authentication enabled and for development and testing purposes.
 
       {{- end }}
 
@@ -75,7 +75,7 @@ spec:
         --namespace {{ .Release.Namespace }} 8983
       ```
 
-      Visit [http://localhost:8983/solr](http://localhost:8983/solr) on your web browser and log in with `solr` user credentials, if necessary.
+      Then visit [http://localhost:8983/solr](http://localhost:8983/solr) on your web browser and login with `solr` user credentials if necessary.
   info:
   - name: {{ template "solrMode" . }} service
     type: Reference
