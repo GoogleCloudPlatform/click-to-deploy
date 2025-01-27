@@ -11,6 +11,7 @@ APP_ID ?= $(CHART_NAME)
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
 TRACK ?= 1.45
+SERVICE_NAME := services/434ff7ab-fb9b-46c5-b76c-1d6088d5dc8b.cloudpartnerservices.goog
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/jaeger-operator1:$(TRACK)
 
