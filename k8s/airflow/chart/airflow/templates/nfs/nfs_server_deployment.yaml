@@ -18,7 +18,7 @@ spec:
       initContainers:
       - name: {{ .Release.Name }}-nfs-changeowner
         image: busybox
-        command: ["sh", "-c", "mkdir -p /exports/dags && mkdir -p /exports/logs && chmod -R 777 /exports"]   
+        command: ["sh", "-c", "mkdir -p /exports/dags && mkdir -p /exports/logs && chmod -R 777 /exports"]
         volumeMounts:
           - mountPath: /exports
             name: {{ .Release.Name }}-nfs-server-pvc
@@ -29,7 +29,7 @@ spec:
           - name: nfs
             containerPort: 2049
           - name: mountd
-            containerPort: 20048
+            containerPort: 55038
         securityContext:
           privileged: true
         volumeMounts:
