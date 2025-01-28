@@ -2,6 +2,7 @@ FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     postgresql-client \
+    ca-certificates \
     curl \
     redis-server \
     && rm -rf /var/lib/apt/lists/*
