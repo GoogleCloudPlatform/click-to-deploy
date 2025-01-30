@@ -23,6 +23,9 @@ versions:
       version: '1.22.0'
     jaeger-operator:
       version: 1.65.0
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/a7624147-d9f2-4865-a208-dadf190d0293.cloudpartnerservices.goog
   repo: jaeger-operator1
   tags:
   - 1.65.0-debian12
@@ -39,6 +42,9 @@ versions:
       version: '1.20'
     jaeger-operator:
       version: 1.53.0
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/a7624147-d9f2-4865-a208-dadf190d0293.cloudpartnerservices.goog
   repo: jaeger-operator1
   tags:
   - 1.53.0-debian12
