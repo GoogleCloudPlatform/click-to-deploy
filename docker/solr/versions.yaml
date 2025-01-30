@@ -14,20 +14,24 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 9/debian11/9.5
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 9/debian12/9.6
+  from: marketplace.gcr.io/google/debian12
   packages:
     solr:
-      gpg: E05FDF113D89E7FB4A2DF4B2684D544160392455
-      version: 9.5.0
+      gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
+      version: 9.6.1
   repo: solr9
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/4af7481b-2d9f-4f98-bb26-cceb6db72414.cloudpartnerservices.goog
   tags:
-  - 9.5.0-debian11
-  - 9.5-debian11
-  - 9-debian11
-  - '9.5.0'
-  - '9.5'
+  - 9.6.1-debian12
+  - 9.6-debian12
+  - 9-debian12
+  - '9.6.1'
+  - '9.6'
   - '9'
   - latest

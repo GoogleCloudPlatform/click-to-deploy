@@ -1,0 +1,366 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700" height="1850" viewBox="0 0 700 1850">
+    <defs>
+        <linearGradient id="theme_anelusia_linear-gradient_1" x1="-0.309" y1="-1.025" x2="0.988" y2="1.325" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#3AADAA"/>
+            <stop offset="1" stop-color="#7C6576"/>
+        </linearGradient>
+        <linearGradient id="theme_anelusia_linear-gradient_2" x1="-0.114" y1="-0.239" x2="1.228" y2="1.377" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#7C6576"/>
+            <stop offset="1" stop-color="#7C6576" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="theme_anelusia_linear-gradient_3" x1="1.228" y1="-0.598" x2="0.155" y2="0.985" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#7C6576" stop-opacity="0"/>
+            <stop offset="1" stop-color="#7C6576"/>
+        </linearGradient>
+        <linearGradient id="theme_anelusia_linear-gradient_4" x1="0.02" y1="-1.226" x2="0.5" y2="1.486" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#3AADAA"/>
+            <stop offset="1" stop-color="#383E45"/>
+        </linearGradient>
+        <linearGradient id="theme_anelusia_linear-gradient_5" x1="0.02" y1="-1.226" x2="0.5" y2="1.486" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#7C6576"/>
+            <stop offset="1" stop-color="#383E45"/>
+        </linearGradient>
+        <pattern width="1" height="1" id="theme_anelusia_s_banner_default_image_id" patternunits="objectBoundingBox">
+            <image width="466" height="310" preserveAspectRatio="xMidYMid slice" href="#s_banner_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_anelusia_library_image_10_id" patternunits="objectBoundingBox">
+            <image width="234" height="175" preserveAspectRatio="xMidYMid slice" href="#library_image_10_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_anelusia_library_image_05_id" patternunits="objectBoundingBox">
+            <image width="233" height="175" preserveAspectRatio="xMidYMid slice" href="#library_image_05_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_anelusia_library_image_08_id" patternunits="objectBoundingBox">
+            <image width="233" height="175" preserveAspectRatio="xMidYMid slice" href="#library_image_08_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_anelusia_library_image_13_id" patternunits="objectBoundingBox">
+            <image width="234" height="175" preserveAspectRatio="xMidYMid slice" href="#library_image_13_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_anelusia_library_image_03_id" patternunits="objectBoundingBox">
+            <image width="233" height="175" preserveAspectRatio="xMidYMid slice" href="#library_image_03_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_anelusia_library_image_02_id" patternunits="objectBoundingBox">
+            <image width="233" height="175" preserveAspectRatio="xMidYMid slice" href="#library_image_02_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_anelusia_s_media_list_default_image_1_id" patternunits="objectBoundingBox">
+            <image width="257" height="117" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_anelusia_s_media_list_default_image_2_id" patternunits="objectBoundingBox">
+            <image width="265" height="118" preserveAspectRatio="xMidYMid slice" href="#s_media_list_default_image_2_url"/>
+        </pattern>
+        <pattern id="theme_anelusia_s_company_team_image_1" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 282 282">
+            <image width="282" height="282" href="/web/image/website.s_company_team_image_1"/>
+        </pattern>
+        <pattern id="theme_anelusia_s_company_team_image_2" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 282 282">
+            <image width="282" height="282" href="/web/image/website.s_company_team_image_2"/>
+        </pattern>
+        <pattern id="theme_anelusia_s_company_team_image_3" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 282 282">
+            <image width="282" height="282" href="/web/image/website.s_company_team_image_3"/>
+        </pattern>
+        <pattern id="theme_anelusia_s_company_team_image_4" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 282 282">
+            <image width="282" height="282" href="/web/image/website.s_company_team_image_4"/>
+        </pattern>
+
+        <pattern id="theme_anelusia_s_reference_demo_image_1" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 24 24">
+            <image width="24" height="24" href="/web/image/website.s_reference_demo_image_1"/>
+        </pattern>
+        <pattern id="theme_anelusia_s_reference_demo_image_2" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 24 24">
+            <image width="24" height="24" href="/web/image/website.s_reference_demo_image_2"/>
+        </pattern>
+        <pattern id="theme_anelusia_s_reference_demo_image_3" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 24 24">
+            <image width="24" height="24" href="/web/image/website.s_reference_demo_image_3"/>
+        </pattern>
+        <pattern id="theme_anelusia_s_reference_demo_image_4" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 24 24">
+            <image width="24" height="24" href="/web/image/website.s_reference_demo_image_4"/>
+        </pattern>
+        <pattern id="theme_anelusia_s_reference_demo_image_5" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 24 24">
+            <image width="24" height="24" href="/web/image/website.s_reference_demo_image_1"/>
+        </pattern>
+        <pattern id="theme_anelusia_s_reference_demo_image_6" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" viewBox="0 0 24 24">
+            <image width="24" height="24" href="/web/image/website.s_reference_demo_image_2"/>
+        </pattern>
+        <filter id="filter_readability_anelusia">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0"/>
+            <feComponentTransfer>
+                <feFuncR type="table" tableValues="1 0"/>
+                <feFuncG type="table" tableValues="1 0"/>
+                <feFuncB type="table" tableValues="1 0"/>
+            </feComponentTransfer>
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncG type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncB type="linear" slope="10000" intercept="-4999.5"/>
+            </feComponentTransfer>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd" class="theme_anelusia">
+        <rect width="700" height="1850" fill="#FFFFFF"/>
+        <g class="svgc_menu">
+            <rect class="svgc_menu_bg" fill="#MENU_COLOR" width="700" height="37"/>
+            <path class="svgc_text" opacity="1" fill="#MENU_COLOR" fill-rule="nonzero" filter="url(#filter_readability_anelusia)" d="M76.345 23v-1.521h-3.741v-7.206h-1.845V23h5.586zm4.68.12c.77 0 1.463-.176 2.08-.527.619-.35 1.107-.86 1.467-1.528.36-.667.539-1.477.539-2.429 0-.951-.18-1.761-.54-2.429-.359-.667-.847-1.176-1.465-1.527-.618-.351-1.312-.527-2.082-.527-.775 0-1.471.176-2.088.527-.616.35-1.104.86-1.461 1.527-.358.668-.537 1.478-.537 2.43 0 .948.179 1.756.537 2.424a3.753 3.753 0 0 0 1.461 1.53c.617.352 1.313.528 2.088.528zm0-1.633a2.08 2.08 0 0 1-1.168-.328c-.333-.219-.59-.54-.774-.963-.183-.423-.275-.943-.275-1.56 0-.616.092-1.136.275-1.56.183-.423.441-.744.774-.962a2.075 2.075 0 0 1 1.167-.328c.446 0 .835.109 1.168.328.332.218.59.54.773.963.184.423.275.943.275 1.56 0 .616-.091 1.136-.275 1.559-.183.423-.44.744-.773.963a2.075 2.075 0 0 1-1.168.328zm9.277 1.632c.733 0 1.384-.148 1.952-.445a3.292 3.292 0 0 0 1.338-1.27c.324-.55.486-1.208.486-1.975v-1.1h-3.652v1.39h1.872l-.004.126c-.017.237-.07.452-.157.645l-.073.14a1.591 1.591 0 0 1-.682.633c-.296.15-.654.224-1.071.224-.46 0-.86-.111-1.198-.334-.338-.223-.6-.548-.784-.974-.184-.426-.277-.943-.277-1.551s.094-1.123.281-1.545c.188-.422.45-.744.787-.965a2.086 2.086 0 0 1 1.174-.332c.238 0 .456.03.654.089.197.06.373.146.528.258.155.112.286.248.394.409.108.16.192.344.252.552h1.875a3.19 3.19 0 0 0-.405-1.187 3.27 3.27 0 0 0-.812-.931 3.741 3.741 0 0 0-1.135-.607 4.3 4.3 0 0 0-1.381-.216 4.21 4.21 0 0 0-1.607.303 3.756 3.756 0 0 0-1.3.882 4.021 4.021 0 0 0-.867 1.413c-.206.555-.309 1.186-.309 1.894 0 .92.173 1.715.518 2.384a3.725 3.725 0 0 0 1.447 1.547c.62.362 1.338.543 2.156.543zm8.958 0c.77 0 1.463-.175 2.081-.526.618-.35 1.107-.86 1.466-1.528.36-.667.54-1.477.54-2.429 0-.951-.18-1.761-.54-2.429-.36-.667-.848-1.176-1.466-1.527s-1.311-.527-2.081-.527c-.776 0-1.472.176-2.088.527-.617.35-1.104.86-1.462 1.527-.358.668-.537 1.478-.537 2.43 0 .948.179 1.756.537 2.424.358.668.845 1.178 1.462 1.53.616.352 1.312.528 2.088.528zm0-1.632c-.446 0-.836-.11-1.168-.328-.332-.219-.59-.54-.773-.963-.184-.423-.275-.943-.275-1.56 0-.616.091-1.136.275-1.56.183-.423.44-.744.773-.962a2.075 2.075 0 0 1 1.168-.328c.446 0 .835.109 1.167.328.333.218.59.54.774.963.183.423.275.943.275 1.56 0 .616-.092 1.136-.275 1.559-.184.423-.441.744-.774.963a2.075 2.075 0 0 1-1.167.328z"/>
+            <g opacity=".6" transform="translate(245 15)">
+                <rect fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)" width="37" height="7"/>
+                <rect fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)" width="37" height="7" x="58"/>
+                <rect fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)" width="37" height="7" x="116"/>
+                <rect fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)" width="37" height="7" x="174"/>
+            </g>
+            <rect width="37" height="7" x="593" y="15" fill="#MENU_COLOR" opacity="1" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+        </g>
+        <g class="s_banner" transform="translate(0 35.5)">
+            <rect width="234" height="310" transform="translate(0 1.5)" fill="#3AADAA"/>
+            <rect fill="url(#theme_anelusia_s_banner_default_image_id)" class="img_reference_s_banner_default_image" width="466" height="310" transform="translate(234 1.5)"/>
+            <g transform="translate(-32 -404.881)">
+                <text transform="translate(242 519.381)" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_anelusia)" font-size="30" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-131.162" y="0">Welcome</tspan><tspan x="-126.738" y="37">Message</tspan></text>
+                <g transform="translate(108.63 545)" opacity="0.4">
+                    <rect width="131" height="2" transform="translate(1.37 32.025)" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                    <rect width="116" height="2" transform="translate(16.37 37.025)" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                </g>
+                <g transform="translate(-56 -31)">
+                    <rect width="94" height="28" rx="14" transform="translate(203 630)" fill="#383E45"/>
+                    <text transform="translate(273 648.381)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-46.471" y="0">Discover</tspan></text>
+                </g>
+            </g>
+        </g>
+        <g class="s_images_wall" transform="translate(0 -1)">
+            <rect fill="url(#theme_anelusia_library_image_03_id)" class="img_reference_library_image_03" width="233" height="175" transform="translate(234 523)"/>
+            <rect fill="url(#theme_anelusia_library_image_13_id)" class="img_reference_library_image_13" width="234" height="175" transform="translate(0 523)"/>
+            <rect fill="url(#theme_anelusia_library_image_10_id)" class="img_reference_library_image_10" width="234" height="175" transform="translate(0 348)"/>
+            <rect fill="url(#theme_anelusia_library_image_05_id)" class="img_reference_library_image_05" width="233" height="175" transform="translate(234 348)"/>
+            <rect fill="url(#theme_anelusia_library_image_08_id)" class="img_reference_library_image_08" width="233" height="175" transform="translate(467 348)"/>
+            <rect fill="url(#theme_anelusia_library_image_02_id)" class="img_reference_library_image_02" width="233" height="175" transform="translate(467 523)"/>
+        </g>
+        <g class="s_color_blocks_2" transform="translate(243 -133)">
+            <g transform="translate(0 9)">
+                <rect width="234" height="200" transform="translate(-243 821)" fill="#7C6576"/>
+                <g transform="translate(-191 853.966)">
+                    <text transform="translate(119 64.034)" fill="#7C6576" class="svgc_text" filter="url(#filter_readability_anelusia)" font-size="22" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-107.175" y="0">Entry Title</tspan></text>
+                    <g transform="translate(0 84.225)" opacity="0.4">
+                        <rect width="131" height="2" fill="#7C6576" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                        <rect width="116" height="2" transform="translate(8 5)" fill="#7C6576" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                    </g>
+                    <rect width="94" height="28" rx="14" transform="translate(19 106.2)" fill="#3AADAA"/>
+                    <text transform="translate(66 124.034)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-23.235" y="0">Discover</tspan></text>
+                    <circle cx="14" cy="14" r="14" transform="translate(52)" fill="#7C6576" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                </g>
+            </g>
+            <g transform="translate(234 9)">
+                <rect width="233" height="200" transform="translate(-243 821)" fill="#3AADAA"/>
+                <g transform="translate(-191 853.966)">
+                    <text transform="translate(119 64.034)" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_anelusia)" font-size="22" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-107.175" y="0">Entry Title</tspan></text>
+                    <g transform="translate(0 84.225)" opacity="0.4">
+                        <rect width="131" height="2" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                        <rect width="116" height="2" transform="translate(8 5)" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                    </g>
+                    <rect width="94" height="28" rx="14" transform="translate(19 106.2)" fill="#383E45"/>
+                    <text transform="translate(66 124.034)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-23.235" y="0">Discover</tspan></text>
+                    <circle cx="14" cy="14" r="14" transform="translate(52)" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                </g>
+            </g>
+            <g transform="translate(467 9)">
+                <rect width="233" height="200" transform="translate(-243 821)" fill="#383E45"/>
+                <g transform="translate(0 -17)">
+                    <text transform="translate(-72 935)" fill="#FFFFFF" font-size="22" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-107.175" y="0">Entry Title</tspan></text>
+                    <g transform="translate(-192.37 923.2)" opacity="0.4">
+                        <rect width="131" height="2" transform="translate(1.37 32.025)" fill="#FFFFFF"/>
+                        <rect width="116" height="2" transform="translate(9.37 37.025)" fill="#FFFFFF"/>
+                    </g>
+                    <rect width="94" height="28" rx="14" transform="translate(-172 977.2)" fill="#3AADAA"/>
+                    <text transform="translate(-125 995)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-23.235" y="0">Discover</tspan></text>
+                    <circle cx="14" cy="14" r="14" transform="translate(-139 871)" fill="#FFFFFF"/>
+                </g>
+            </g>
+        </g>
+        <g class="s_references" transform="translate(212.308 -341)">
+            <circle cx="42" cy="42" r="42" transform="translate(-161.309 1305.52)" fill="url(#theme_anelusia_s_reference_demo_image_1)"/>
+            <circle cx="42" cy="42" r="42" transform="translate(-60.615 1305.52)" fill="url(#theme_anelusia_s_reference_demo_image_2)"/>
+            <circle cx="42" cy="42" r="42" transform="translate(54.538 1305.52)" fill="url(#theme_anelusia_s_reference_demo_image_3)"/>
+            <circle cx="42" cy="42" r="42" transform="translate(157.462 1305.52)" fill="url(#theme_anelusia_s_reference_demo_image_4)"/>
+            <circle cx="42" cy="42" r="42" transform="translate(240.385 1305.52)" fill="url(#theme_anelusia_s_reference_demo_image_5)"/>
+            <circle cx="42" cy="42" r="42" transform="translate(353.309 1305.52)" fill="url(#theme_anelusia_s_reference_demo_image_6)"/>
+            <g transform="translate(91.25 1298.52)" opacity="0.4">
+                <rect width="93.441" height="2" transform="translate(0)" fill="#22263c"/>
+                <rect width="81.876" height="2" transform="translate(6 5)" fill="#22263c"/>
+            </g>
+            <text transform="translate(202.691 1283)" fill="url(#theme_anelusia_linear-gradient_1)" font-size="22" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-130.399" y="0">Section Title</tspan></text>
+        </g>
+        <g class="s_media_list" transform="translate(498 -427)">
+            <rect width="700" height="320" transform="translate(-498 1471)" fill="#383E45"/>
+            <g transform="translate(0 -2)">
+                <g transform="translate(-498 221.398)">
+                    <g transform="translate(70.406 1271.602)">
+                        <rect width="259.024" height="88.74" transform="translate(20.57 41.26)" fill="#7C6576"/>
+                        <path fill="url(#theme_anelusia_s_media_list_default_image_1_id)" class="img_reference_s_media_list_default_image_1" d="M256.628,116.552H0V0L256.628,25.285Z"/>
+                    </g>
+                    <g transform="translate(269.001 1278.037)">
+                        <rect width="1.501" height="1.487" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(0 9.095)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(0 18.189)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(0 27.284)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(0 36.379)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(7.957)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(7.957 9.095)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(7.957 18.189)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(7.957 27.284)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(7.957 36.379)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(15.914)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(15.914 9.095)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(15.914 18.189)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(15.914 27.284)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(15.914 36.379)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(23.88)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(23.88 9.095)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(23.88 18.189)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(23.88 27.284)" fill="#FFFFFF"/>
+                        <rect width="1.501" height="1.487" transform="translate(23.88 36.379)" fill="#FFFFFF"/>
+                    </g>
+                </g>
+                <g transform="translate(-498 205.98)">
+                    <g>
+                        <rect width="94" height="28" rx="14" transform="translate(397 1375.225)" fill="#3AADAA"/>
+                        <g transform="translate(395.63 1304)" opacity="0.4">
+                            <rect width="202.256" height="2" transform="translate(1.575 32.025)" fill="#FFFFFF"/>
+                            <rect width="187.256" height="2" transform="translate(1.575 37.025)" fill="#FFFFFF"/>
+                            <rect width="135" height="2" transform="translate(1.575 42.025)" fill="#FFFFFF"/>
+                            <rect width="159" height="2" transform="translate(1.575 47.025)" fill="#FFFFFF"/>
+                        </g>
+                        <text transform="translate(494 1317.02)" fill="#FFFFFF" font-size="20" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-97.432" y="0">Entry Title</tspan></text>
+                    </g>
+                    <text transform="translate(467 1393.02)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-46.471" y="0">Discover</tspan></text>
+                </g>
+            </g>
+            <g transform="translate(0 -13)">
+                <g transform="translate(-794.461 365.98)">
+                    <g>
+                        <rect width="94" height="28" rx="14" transform="translate(397 1375.225)" fill="#3AADAA"/>
+                        <g transform="translate(395.63 1304)" opacity="0.4">
+                            <rect width="202.256" height="2" transform="translate(1.575 32.025)" fill="#FFFFFF"/>
+                            <rect width="187.256" height="2" transform="translate(1.575 37.025)" fill="#FFFFFF"/>
+                            <rect width="135" height="2" transform="translate(1.575 42.025)" fill="#FFFFFF"/>
+                            <rect width="159" height="2" transform="translate(1.575 47.025)" fill="#FFFFFF"/>
+                        </g>
+                        <text transform="translate(493.461 1316.02)" fill="#FFFFFF" font-size="20" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-97.432" y="0">Entry Title</tspan></text>
+                    </g>
+                    <text transform="translate(466.461 1394.02)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-46.471" y="0">Discover</tspan></text>
+                </g>
+                <g transform="translate(-295 -9.602)">
+                    <g transform="translate(147 1663.602)">
+                        <path d="M80,0H330.976V103.912Z" transform="translate(-50.976)" fill="#3AADAA"/>
+                        <path fill="url(#theme_anelusia_s_media_list_default_image_2_id)" class="img_reference_s_media_list_default_image_2" d="M0,58.5H265V175.791L0,150.3Z" transform="translate(0 -45.791)"/>
+                    </g>
+                    <g transform="translate(176.046 1753.608)">
+                        <path d="M47.555,434.55h1.4l-.7,1.423-.7,1.423-.7-1.423-.7-1.423Z" transform="translate(-46.158 -434.55)" fill="#7C6576"/>
+                        <path d="M97.037,434.55h1.4l-.7,1.423-.7,1.423-.7-1.423-.7-1.423Z" transform="translate(-79.784 -434.55)" fill="#7C6576"/>
+                        <path d="M146.52,434.55h1.4l-.7,1.423-.7,1.423-.7-1.423-.7-1.423Z" transform="translate(-113.411 -434.55)" fill="#7C6576"/>
+                        <path d="M47.555,476.24h1.4l-.7,1.423-.7,1.423-.7-1.423-.7-1.423Z" transform="translate(-46.158 -460.46)" fill="#7C6576"/>
+                        <path d="M97.037,476.24h1.4l-.7,1.423-.7,1.423-.7-1.423-.7-1.423Z" transform="translate(-79.784 -460.46)" fill="#7C6576"/>
+                        <path d="M146.52,476.24h1.4l-.7,1.423-.7,1.423-.7-1.423-.7-1.423Z" transform="translate(-113.411 -460.46)" fill="#7C6576"/>
+                        <path d="M47.555,517.929h1.4l-.7,1.423-.7,1.444-.7-1.444-.7-1.423Z" transform="translate(-46.158 -486.369)" fill="#7C6576"/>
+                        <path d="M97.037,517.929h1.4l-.7,1.423-.7,1.444-.7-1.444-.7-1.423Z" transform="translate(-79.784 -486.369)" fill="#7C6576"/>
+                        <path d="M146.52,517.929h1.4l-.7,1.423-.7,1.444-.7-1.444-.7-1.423Z" transform="translate(-113.411 -486.369)" fill="#7C6576"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+        <g class="s_company_team">
+            <path fill="url(#theme_anelusia_s_company_team_image_1)" d="M58.1,60c-18.8-.636-37.608-1.056-56.406-1.692C1.056,39.294.636,20.49,0,1.692,19.86,1.056,39.93.636,60,0,59.364,19.86,58.734,39.93,58.1,60Z" transform="translate(103 1403)"/>
+            <path fill="url(#theme_anelusia_s_company_team_image_2)" d="M60.03,60l-60-2.48L1.44,0,53.677,4.955Z" transform="translate(382.97 1403)"/>
+            <path fill="url(#theme_anelusia_s_company_team_image_3)" d="M60,59.334,0,60,13.782,0,54.276,10.668Z" transform="translate(103 1490)"/>
+            <path fill="url(#theme_anelusia_s_company_team_image_4)" d="M60.03,60l-60-2.48L1.44,0,53.677,4.955Z" transform="translate(382.97 1490)"/>
+            <g transform="translate(184.404 1406.04)" opacity="0.4">
+                <rect width="131" height="2" transform="translate(1.575 32.025)" fill="#22263c"/>
+                <rect width="116" height="2" transform="translate(1.575 37.025)" fill="#22263c"/>
+                <rect width="79" height="2" transform="translate(1.575 42.025)" fill="#22263c"/>
+                <rect width="91" height="2" transform="translate(1.575 47.025)" fill="#22263c"/>
+            </g>
+            <g transform="translate(184.404 1493.04)" opacity="0.4">
+                <rect width="131" height="2" transform="translate(1.575 32.025)" fill="#22263c"/>
+                <rect width="116" height="2" transform="translate(1.575 37.025)" fill="#22263c"/>
+                <rect width="79" height="2" transform="translate(1.575 42.025)" fill="#22263c"/>
+                <rect width="91" height="2" transform="translate(1.575 47.025)" fill="#22263c"/>
+            </g>
+            <g transform="translate(464.425 1406.04)" opacity="0.4">
+                <rect width="131" height="2" transform="translate(1.575 32.025)" fill="#22263c"/>
+                <rect width="116" height="2" transform="translate(1.575 37.025)" fill="#22263c"/>
+                <rect width="79" height="2" transform="translate(1.575 42.025)" fill="#22263c"/>
+                <rect width="91" height="2" transform="translate(1.575 47.025)" fill="#22263c"/>
+            </g>
+            <g transform="translate(464.425 1493.04)" opacity="0.4">
+                <rect width="131" height="2" transform="translate(1.575 32.025)" fill="#22263c"/>
+                <rect width="116" height="2" transform="translate(1.575 37.025)" fill="#22263c"/>
+                <rect width="79" height="2" transform="translate(1.575 42.025)" fill="#22263c"/>
+                <rect width="91" height="2" transform="translate(1.575 47.025)" fill="#22263c"/>
+            </g>
+
+            <text transform="translate(291 1423)" fill="url(#theme_anelusia_linear-gradient_4)" font-size="16" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-106.406" y="0">Team Member</tspan></text>
+            <text transform="translate(291 1510)" fill="url(#theme_anelusia_linear-gradient_5)" font-size="16" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-106.406" y="0">Team Member</tspan></text>
+            <text transform="translate(571 1423)" fill="url(#theme_anelusia_linear-gradient_4)" font-size="16" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-106.406" y="0">Team Member</tspan></text>
+            <text transform="translate(571 1510)" fill="url(#theme_anelusia_linear-gradient_5)" font-size="16" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-106.406" y="0">Team Member</tspan></text>
+        </g>
+        <g class="s_call_to_action" transform="translate(498 -276)">
+            <rect width="700" height="150" transform="translate(-498 1864)" fill="#3AADAA"/>
+            <g transform="translate(-21 -143)">
+                <g transform="translate(-377 1468)">
+                    <rect width="94" height="28" rx="14" transform="translate(203 630)" fill="#383E45"/>
+                    <text transform="translate(273 648)" fill="#FFFFFF" font-size="11" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-46.471" y="0">Discover</tspan></text>
+                </g>
+                <g transform="translate(-193.37 2043.975)" opacity="0.4">
+                    <rect width="131" height="2" transform="translate(1.37 32.025)" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                    <rect width="116" height="2" transform="translate(9.37 37.025)" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                </g>
+                 <text transform="translate(-62 2056)" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_anelusia)" font-size="22" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-130.399" y="0">Section Title</tspan></text>
+            </g>
+            <g transform="translate(167.865 -314.98)">
+                <path d="M-114.633,401.411h0l-17.434-25.269-25.271-17.435,21.344-14.726h42.723l21.344,14.726L-97.2,376.141l-17.434,25.269Z" transform="translate(85 1835)" fill="url(#theme_anelusia_linear-gradient_2)"/>
+                <path d="M-94,395.62h-59.373a51.647,51.647,0,0,1-4.94-15.383,50.646,50.646,0,0,1-.143-15.835,41.284,41.284,0,0,1,9.661-20.564,66.606,66.606,0,0,1,8.155-8.063c2.684-2.265,5.766-4.588,9.425-7.1a104.6,104.6,0,0,1,16.607-9.6c6.214-2.755,11.759-4.094,16.952-4.094a26.956,26.956,0,0,1,7.709,1.1,31.192,31.192,0,0,1,9.624,5.041,41.216,41.216,0,0,1,8.157,8.258,42.144,42.144,0,0,1,5.71,10.373,34.438,34.438,0,0,1,2.284,11.385c.155,7.324-2.331,14.873-7.391,22.439a71.306,71.306,0,0,1-8.616,10.413A102.207,102.207,0,0,1-91.2,393.551c-.921.7-1.865,1.4-2.8,2.069Z" transform="translate(-485 1933.36)" fill="url(#theme_anelusia_linear-gradient_3)"/>
+                <path d="M-1.265,62.517a1.231,1.231,0,0,1-.873-.362,1.235,1.235,0,0,1,0-1.747L60.408-2.138a1.235,1.235,0,0,1,1.747,0,1.235,1.235,0,0,1,0,1.747L-.392,62.155A1.231,1.231,0,0,1-1.265,62.517Z" transform="translate(-574.567 2190.396)" fill="#383E45"/>
+                <path d="M-1.265,62.517a1.231,1.231,0,0,1-.873-.362,1.235,1.235,0,0,1,0-1.747L60.408-2.138a1.235,1.235,0,0,1,1.747,0,1.235,1.235,0,0,1,0,1.747L-.392,62.155A1.231,1.231,0,0,1-1.265,62.517Z" transform="translate(-574.567 2197.663)" fill="#383E45"/>
+                <path d="M-1.265,62.517a1.231,1.231,0,0,1-.873-.362,1.235,1.235,0,0,1,0-1.747L60.408-2.138a1.235,1.235,0,0,1,1.747,0,1.235,1.235,0,0,1,0,1.747L-.392,62.155A1.231,1.231,0,0,1-1.265,62.517Z" transform="translate(-574.567 2204.93)" fill="#383E45"/>
+                <path d="M-1.265,62.517a1.231,1.231,0,0,1-.873-.362,1.235,1.235,0,0,1,0-1.747L60.408-2.138a1.235,1.235,0,0,1,1.747,0,1.235,1.235,0,0,1,0,1.747L-.392,62.155A1.231,1.231,0,0,1-1.265,62.517Z" transform="translate(-574.567 2212.198)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-65.056 2310.523)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-53.234 2310.523)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-41.416 2310.523)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-29.599 2310.523)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-17.776 2310.523)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-5.958 2310.523)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(5.859 2310.523)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-65.056 2321.738)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-53.234 2321.738)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-41.416 2321.738)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-29.599 2321.738)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-17.776 2321.738)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(-5.958 2321.738)" fill="#383E45"/>
+                <rect width="3.458" height="3.458" transform="translate(5.859 2321.738)" fill="#383E45"/>
+            </g>
+        </g>
+        <g class="svgc_footer" transform="translate(0 1713)">
+            <rect width="700" height="112" transform="translate(0 25)" class="svgc_footer_bg" fill="#FOOTER_COLOR"/>
+            <g transform="translate(0 14)">
+                <g>
+                    <g transform="translate(-69 -23)">
+                        <circle cy="7.5" r="7.5" transform="translate(559 100)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                        <circle cy="7.5" r="7.5" transform="translate(587 100)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                        <circle cy="7.5" r="7.5" transform="translate(615 100)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                    </g>
+                    <g transform="translate(-265 -1692)">
+                        <rect width="93" height="2" transform="translate(475 1773)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                        <rect width="78" height="2" transform="translate(475 1778)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                    </g>
+                    <g transform="translate(-405 -1692)">
+                        <rect width="47" height="2" transform="translate(475 1773)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                        <rect width="39" height="2" transform="translate(475 1778)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                    </g>
+                </g>
+                <g transform="translate(0 -18)">
+                    <g transform="translate(210 60)" opacity="0.6">
+                        <g>
+                            <rect width="184" height="2" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                            <rect width="169" height="2" transform="translate(0 5)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                            <rect width="79" height="2" transform="translate(0 10)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                            <rect width="91" height="2" transform="translate(0 15)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)"/>
+                        </g>
+                    </g>
+                    <text transform="translate(158 75)" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_anelusia)" font-size="18" font-family="Arial-BoldMT, Arial, sans-serif" font-weight="700"><tspan x="-87.688" y="0">Entry Title</tspan></text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

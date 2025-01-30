@@ -1,0 +1,182 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_clean
+# 
+# Translators:
+# Vasiliy Korobatov <korobatov@gmail.com>, 2023
+# Wil Odoo, 2024
+# Collex100, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Collex100, 2024\n"
+"Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_call_to_action
+msgid "<b>50,000 people</b>, run Clean to grow their financial wealth."
+msgstr ""
+"<b>50 000 человек</b>, которые занимаются чисткой, чтобы приумножить свое "
+"финансовое состояние."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_cover
+msgid "<b>Sell from your couch</b>"
+msgstr "<b>Продавайте со своего дивана</b>"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_title
+msgid "<b>We create the perfect <br/>tailored solution for you</b>"
+msgstr "<b>Мы создадим для вас идеальное решение <br/></b>"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid ""
+"<br/>At any moment, you may contact our advisor through the in-app video "
+"meeting system."
+msgstr ""
+"<br/>В любой момент вы можете связаться с нашим консультантом через систему "
+"видеовстреч в приложении."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid ""
+"<br/>We integrate digital tools and solutions for better insights, enabling "
+"data-driven planning."
+msgstr ""
+"<br/>Мы интегрируем цифровые инструменты и решения для более глубокого "
+"понимания, что позволяет планировать на основе данных."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid ""
+"<br/>We invest in strategic advice tailored to your<br/>\n"
+"                            business problems and needs."
+msgstr ""
+"<br/>Мы инвестируем в стратегическое консультирование с учетом ваших<br/>\n"
+"                            проблем и потребностей вашего бизнеса."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_features
+msgid "All in one"
+msgstr "Все в одном"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid ""
+"Composed of 25 people from 25 to 66 years, we’re a young and dynamic "
+"company. We have open positions, do not hesitate to contact us."
+msgstr ""
+"Состоящая из 25 человек в возрасте от 25 до 66 лет, мы являемся молодой и "
+"динамичной компанией. У нас есть открытые вакансии, не стесняйтесь "
+"обращаться к нам."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_features
+msgid "Easy to use"
+msgstr "Легко использовать"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid "Efficient team processes"
+msgstr "Эффективные командные процессы"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_text_image
+msgid "Everything you need, <br/>totally free"
+msgstr "Все, что вам нужно, <br/>совершенно бесплатно"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_call_to_action
+msgid "Join them and make the right money move."
+msgstr "Присоединяйтесь к ним и сделайте правильный денежный шаг."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_cover
+msgid ""
+"Make your finances reach a new level with our online management system. "
+"<br/>Track every penny, directly from the comfort of your home."
+msgstr ""
+"Выведите свои финансы на новый уровень с помощью нашей онлайн-системы "
+"управления. <br/>Отслеживайте каждую копейку, не выходя из дома."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid "Our mission"
+msgstr "Наша миссия"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid "Our team"
+msgstr "Наша команда"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid "Our values"
+msgstr "Наши ценности"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid "Personal adviser"
+msgstr "Личный консультант"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid ""
+"Provide clear and concise financial advices to make your financial wealth "
+"grow. And this, completely free of charge."
+msgstr ""
+"Предоставляем четкие и ясные финансовые советы, чтобы ваше финансовое "
+"благосостояние росло. И все это совершенно бесплатно."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_features
+msgid "Secured"
+msgstr "Защищено"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid "Simplify things"
+msgstr "Упрощайте вещи"
+
+#. module: theme_clean
+#: model:ir.model,name:theme_clean.model_theme_utils
+msgid "Theme Utils"
+msgstr "Утилиты темы"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_text_image
+msgid ""
+"Track every expenses, uncover new ways to save, choose the right credit "
+"cards. <br/>All those advices and much more are included and totally free of"
+" charge."
+msgstr ""
+"Отслеживайте все расходы, находите новые способы экономии, выбирайте "
+"подходящие кредитные карты. <br/>Все эти и многие другие советы включены в "
+"приложение и совершенно бесплатны."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid ""
+"We created our company to improve the work-life balance. We believe that we "
+"need to focus on our family more than our work and finances."
+msgstr ""
+"Мы создали нашу компанию, чтобы улучшить баланс между работой и личной "
+"жизнью. Мы считаем, что нужно уделять больше внимания семье, чем работе и "
+"финансам."
+
+#. module: theme_clean
+#. odoo-javascript
+#: code:addons/theme_clean/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr "ширина"

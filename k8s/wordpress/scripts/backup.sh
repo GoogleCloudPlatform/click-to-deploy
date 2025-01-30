@@ -72,7 +72,7 @@ for var in app namespace; do
 done
 
 # Read wordpress database password from secret:
-readonly wordpress_db_password="$(kubectl get secret -n ${namespace} ${app}-mysql-secret \
+readonly wordpress_db_password="$(kubectl get secret -n ${namespace} ${app}-mariadb-secret \
   -o jsonpath='{.data.wp-password}' \
   | base64 -d)"
 

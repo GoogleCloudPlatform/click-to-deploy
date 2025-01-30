@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_process_steps" inherit_id="website.s_process_steps">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc3" separator=" "/>
+    </xpath>
+    <!-- Icons -->
+    <xpath expr="//i" position="attributes">
+        <attribute name="class" add="bg-o-color-5" remove="bg-o-color-1" separator=" "/>
+    </xpath>
+    <xpath expr="(//i)[3]" position="attributes">
+        <attribute name="class" add="bg-o-color-5" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+    <xpath expr="(//i)[4]" position="attributes">
+        <attribute name="class" add="bg-o-color-5" remove="bg-o-color-3" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- ======== COVER ======== -->
+<template id="s_cover" inherit_id="website.s_cover" name="Graphene s_cover">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pt160 pb240 s_parallax_no_overflow_hidden" remove="pt96 pb96 s_parallax_is_fixed s_parallax" separator=" "/>
+    </xpath>
+    <xpath expr="//h1" position="replace"/>
+    <xpath expr="//p" position="replace"/>
+    <xpath expr="//p" position="replace"/>
+    <xpath expr="//section/div[hasclass('container')]" position="inside">
+        <div class="row">
+            <div class="col col-lg-11">
+                <h1 style="text-align: right;">
+                    <b>Making the difference.</b>
+                </h1>
+                <p class="lead o_default_snippet_text" style="text-align: right">
+                    Our mission is to give customers the best experience.<br/>Extensive documentation &amp; guides, an active community,<br/>24/7 support make it a pleasure to work with us.
+                </p>
+                <p style="text-align: right">
+                    <a t-att-href="cta_btn_href" class="btn btn-primary btn-lg o_default_snippet_text"><t t-esc="cta_btn_text">Contact us</t></a>
+                </p>
+            </div>
+        </div>
+    </xpath>
+</template>
+
+<template id="configurator_s_cover" inherit_id="website.configurator_s_cover" name="Graphene s_cover">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/02_001","flip":[]}</attribute>
+    </xpath>
+    <xpath expr="//section/div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_02_001"/>
+    </xpath>
+</template>
+
+<!-- ======== TEXT-IMAGE ======== -->
+<template id="s_text_image" inherit_id="website.s_text_image" name="Graphene s_text_image">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pb96 pt0" remove="pb32 pt32" separator=" "/>
+    </xpath>
+    <xpath expr="//h2" position="replace">
+        <h3>Unique experiences to drive engagement</h3>
+        <div class="s_hr text-start pt16 pb0" data-snippet="s_hr" data-name="Separator">
+            <hr class="w-100 mx-auto" style="border-top-width: 1px; border-top-style: solid; border-top-color: rgba(0, 0, 0, 0) !important;"/>
+        </div>
+    </xpath>
+    <xpath expr="//p[1]" position="replace" mode="inner">
+        Users are looking to consume engaging content.<br/>We empowers our teams to create the most relevant content.
+    </xpath>
+    <xpath expr="//p[2]" position="replace">
+        <p>We have one goal in mind, the user satisfaction.</p>
+        <div class="s_hr text-start p0 pb32" data-snippet="s_hr" data-name="Separator">
+            <hr class="w-100 mx-auto" style="border-top-width: 1px; border-top-style: solid; border-top-color: var(--o-color-3) !important;"/>
+        </div>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')][1]" position="attributes">
+        <attribute name="class" add="col-lg-4 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')][1]" position="attributes">
+        <attribute name="class" add="col-lg-5 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg" remove="btn-primary" separator=" "/>
+    </xpath>
+</template>
+
+<template id="configurator_s_text_image" inherit_id="website.configurator_s_text_image" name="Graphene s_text_image">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/02_001","flip":["x","y"]}</attribute>
+    </xpath>
+    <xpath expr="//section/div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_02_001 o_second_extra_shape_mapping" style="background-image: url('/web_editor/shape/web_editor/Origins/02_001.svg?c4=o-color-3&amp;c5=rgba%280%2C%200%2C%200%2C%200%29&amp;flip=xy'); background-position: 50% 0%;"/>
+    </xpath>
+</template>
+
+<!-- ======== IMAGE-TEXT ======== -->
+<template id="s_image_text" inherit_id="website.s_image_text" name="Graphene s_image_text">
+    <xpath expr="//div[hasclass('col-lg-6')][1]" position="attributes">
+        <attribute name="class" add="col-lg-5 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-6')][1]" position="attributes">
+        <attribute name="class" add="col-lg-4 offset-lg-1" remove="col-lg-6" separator=" "/>
+    </xpath>
+    <xpath expr="//h2" position="after">
+        <div class="s_hr text-start pt16 pb0" data-snippet="s_hr" data-name="Separator">
+            <hr class="w-100 mx-auto" style="border-top-width: 1px; border-top-style: solid; border-top-color: rgba(0, 0, 0, 0) !important;"/>
+        </div>
+    </xpath>
+    <xpath expr="//p[2]" position="after">
+        <div class="s_hr text-start p0 pb32" data-snippet="s_hr" data-name="Separator">
+            <hr class="w-100 mx-auto" style="border-top-width: 1px; border-top-style: solid; border-top-color: var(--o-color-3) !important;"/>
+        </div>
+    </xpath>
+    <xpath expr="//a[hasclass('btn')]" position="attributes">
+        <attribute name="class" add="btn-lg" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== STEPS ======== -->
+<template id="s_process_steps" inherit_id="website.s_process_steps" name="Graphene s_process_steps">
+    <xpath expr="//section" position="attributes">
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        Add to Cart
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        Sign In
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        Pay
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        Get Delivered
+    </xpath>
+</template>
+
+<!-- ======== CAROUSEL ======== -->
+<template id="s_carousel" inherit_id="website.s_carousel" name="Graphene s_carousel">
+    <xpath expr="//div[hasclass('carousel-inner')]/div[1]" position="attributes">
+        <attribute name="style" add="background-position: 50% 100%;" separator=";"/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-inner')]/div[2]" position="attributes">
+        <attribute name="style" add="background-position: 50% 100%;" separator=";"/>
+    </xpath>
+    <xpath expr="//div[hasclass('carousel-inner')]/div[3]" position="attributes">
+        <attribute name="style" add="background-position: 50% 100%;" separator=";"/>
+    </xpath>
+</template>
+
+<!-- ======== COMPANY TEAM ======== -->
+<template id="s_company_team" inherit_id="website.s_company_team" name="Graphene s_company_team">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pb64" remove="pb48" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div//h4" position="replace" mode="inner">
+        Tony Fred, <small><b>CEO</b></small>
+    </xpath>
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div//p" position="replace">
+        <small>Founder and chief visionary, Tony is the driving force behind the company. He loves to keep his hands full by participating in the development of the software, marketing, and customer experience strategies.</small>
+    </xpath>
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div[2]//h4" position="replace" mode="inner">
+        Mich Stark, <small><b>COO</b></small>
+    </xpath>
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div[2]//p" position="replace" mode="inner">
+        <small>Mich loves taking on challenges. With his multi-year experience as Commercial Director in the software industry, Mich has helped the company to get where it is today. Mich is among the best minds.</small>
+    </xpath>
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div[3]//h4" position="replace" mode="inner">
+        Aline Turner, <small><b>CTO</b></small>
+    </xpath>
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div[3]//p" position="replace" mode="inner">
+        <small>Aline is one of the iconic people in life who can say they love what they do. She mentors 100+ in-house developers and looks after the community of thousands of developers.</small>
+    </xpath>
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div[4]//h4" position="replace" mode="inner">
+        Iris Joe, <small><b>CFO</b></small>
+    </xpath>
+    <xpath expr="//div[hasclass('s_nb_column_fixed')]/div[4]//p" position="replace" mode="inner">
+        <small>Iris, with her international experience, helps us easily understand the numbers and improves them. She is determined to drive success and delivers her professional acumen to bring the company to the next level.</small>
+    </xpath>
+</template>
+
+<template id="configurator_s_company_team" inherit_id="website.configurator_s_company_team" name="Graphene s_company_team">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/05","flip":[]}</attribute>
+    </xpath>
+    <xpath expr="//section/div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_05"/>
+    </xpath>
+</template>
+
+<!-- ======== 3 COLUMNS ======== -->
+<template id="s_three_columns" inherit_id="website.s_three_columns" name="Graphene s_three_columns">
+    <xpath expr="//div[hasclass('row')]/div//h3[1]" position="replace">
+        <h5>Powerful API</h5>
+        <div class="s_hr text-start pt8 pb16" data-snippet="s_hr" data-name="Separator">
+            <hr class="w-100 mx-auto" style="border-top-width: 1px; border-top-style: solid; border-top-color: var(--o-color-3) !important;"/>
+        </div>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div//p[1]" position="replace" mode="inner">
+        Thanks to our API, Developers report building their solutions 4x faster. Discover why and how.
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[2]//h3[1]" position="replace">
+        <h5>Mobile Experience</h5>
+        <div class="s_hr text-start pt8 pb16" data-snippet="s_hr" data-name="Separator">
+            <hr class="w-100 mx-auto" style="border-top-width: 1px; border-top-style: solid; border-top-color: var(--o-color-3) !important;"/>
+        </div>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[2]//p[1]" position="replace" mode="inner">
+        Probably the only CRM with a full mobile experience. Never wondered how it works? That's because it just works
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[3]//h3[1]" position="replace">
+        <h5>Support Team</h5>
+        <div class="s_hr text-start pt8 pb16" data-snippet="s_hr" data-name="Separator">
+            <hr class="w-100 mx-auto" style="border-top-width: 1px; border-top-style: solid; border-top-color: var(--o-color-3) !important;"/>
+        </div>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[3]//p[1]" position="replace" mode="inner">
+        We have a support team that will do everything to answer you as quickly as the voice assistants.
+    </xpath>
+</template>
+
+<!-- ======== CALL TO ACTION ======== -->
+<template id="s_call_to_action" inherit_id="website.s_call_to_action" name="Graphene s_call_to_action">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc5" remove="o_cc3" separator=" "/>
+    </xpath>
+    <xpath expr="//h3" position="replace">
+        <h3 style="text-align: right;"><b>50,000+ companies</b> run our software.</h3>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-9')]" position="attributes">
+        <attribute name="class" add="col-lg-8" remove="col-lg-9" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('col-lg-8')]/p" position="attributes">
+        <attribute name="style" add="text-align: right;" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== COMPARISON ======== -->
+<template id="s_comparisons" inherit_id="website.s_comparisons" name="Graphene s_comparisons">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pb48 pt24 o_cc o_cc4" remove="pt32 pb32" separator=" "/>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div//a" position="replace">
+        <a href="/contactus" class="btn btn-primary">Start Now</a>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[2]//a" position="replace">
+        <a href="/contactus" class="btn btn-primary">Start Now</a>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[2]//li[2]" position="replace">
+        <li class="list-group-item">Access to all modules</li>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[3]//a" position="replace">
+        <a href="/contactus" class="btn btn-primary">Start Now</a>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[3]//li[2]" position="replace">
+        <li class="list-group-item">Access to all modules and features</li>
+    </xpath>
+    <xpath expr="//div[hasclass('row')]/div[3]//li[4]" position="replace">
+        <li class="list-group-item">24/7 support</li>
+    </xpath>
+</template>
+
+<template id="configurator_s_comparisons" inherit_id="website.configurator_s_comparisons" name="Graphene s_comparisons">
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Origins/06_001","flip":["x"]}</attribute>
+    </xpath>
+    <xpath expr="//section/div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Origins_06_001" style="background-image: url('/web_editor/shape/web_editor/Origins/06_001.svg?c3=o-color-3&amp;c4=o-color-4&amp;flip=x'); background-position: 50% 50%;"/>
+    </xpath>
+</template>
+
+<!-- ======== NUMBERS ======== -->
+<template id="s_numbers" inherit_id="website.s_numbers" name="Graphene s_numbers">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="oe_img_bg o_bg_img_center pb56 pt56 s_parallax_no_overflow_hidden parallax s_parallax_is_fixed" remove="pb24 pt24" separator=" "/>
+    </xpath>
+    <xpath expr="//section/div[hasclass('container')]" position="before">
+        <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_parallax_default_image'); background-position: 50% 75%;"/>
+        <div class="o_we_bg_filter bg-black-75"></div>
+    </xpath>
+    <!-- Content -->
+    <xpath expr="//div[hasclass('row')]/div/span" position="attributes">
+        <attribute name="class" add="text-white" separator=" "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('row')]/div/span)[2]" position="attributes">
+        <attribute name="class" add="text-white" separator=" "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('row')]/div/span)[3]" position="attributes">
+        <attribute name="class" add="text-white" separator=" "/>
+    </xpath>
+    <xpath expr="(//div[hasclass('row')]/div/span)[4]" position="attributes">
+        <attribute name="class" add="text-white" separator=" "/>
+    </xpath>
+</template>
+
+<!-- ======== PICTURE ======== -->
+<template id="s_picture" inherit_id="website.s_picture" name="Graphene s_picture">
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="pb0 pt48" remove="pb24 pt48" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Zigs/01_001","flip":[]}</attribute>
+    </xpath>
+    <xpath expr="//section/div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Zigs_01_001"/>
+    </xpath>
+    <!-- Content -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        Grow with Us
+    </xpath>
+    <xpath expr="//p" position="replace" mode="inner">
+        Put your people at the heart of your marketing with tools that help you get to know your audience <br/>and see who you should be talking to.
+    </xpath>
+    <xpath expr="//img" position="attributes">
+        <attribute name="class" add="p-0 border-0" remove="padding-large" separator=" " />
+    </xpath>
+</template>
+
+</odoo>

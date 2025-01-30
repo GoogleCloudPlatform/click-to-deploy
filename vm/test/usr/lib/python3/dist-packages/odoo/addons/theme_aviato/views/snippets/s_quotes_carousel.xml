@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_quotes_carousel" inherit_id="website.s_quotes_carousel">
+    <!-- Quote 1 -->
+    <xpath expr="(//div[hasclass('s_blockquote_content')])[1]/p" position="replace" mode="inner">
+        It's difficult to describe how awesome the trip was. I feel like my life has changed forever. It would take too long to describe day by day the sights, sounds, architecture, art, food, history, and people that we came across. Ireland was fantastic.
+    </xpath>
+    <xpath expr="(//span[hasclass('s_blockquote_author')])[1]" position="replace" mode="inner">
+        <b>Linda and Paulo</b> • From Italy
+    </xpath>
+    <!-- Quote 2 -->
+    <xpath expr="(//div[hasclass('s_blockquote_content')])[2]/p" position="replace" mode="inner">
+        As always, Odoo Travel has delivered a truly wonderful travel experience for us. Norway was a great travel destination. The parts of the country we visited were beautiful, people were friendly, everything we ate was delicious, and there were many fun things to see and do.
+    </xpath>
+    <xpath expr="(//span[hasclass('s_blockquote_author')])[2]" position="replace" mode="inner">
+        <b>Jacques and Marie</b> • From France
+    </xpath>
+    <!-- Quote 3 -->
+    <xpath expr="(//div[hasclass('s_blockquote_content')])[3]/p" position="replace"  mode="inner">
+        We would like to thank Odoo Travel for organising wonderful tour for us in Delhi, Agra and Rajasthan. Everything was very well organised. Thank you very much for everything!
+    </xpath>
+    <xpath expr="(//span[hasclass('s_blockquote_author')])[3]" position="replace" mode="inner">
+        <b>Rose and Peter</b> • From United Kingdom
+    </xpath>
+</template>
+
+</odoo>

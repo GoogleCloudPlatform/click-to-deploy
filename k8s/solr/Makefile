@@ -7,14 +7,15 @@ CHART_NAME := solr
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
-TRACK ?= 9.5
+TRACK ?= 9.6
 ZK_TAG ?= 3.8
+SERVICE_NAME := services/effa00b5-9dfc-4626-aa25-85435f332575.cloudpartnerservices.goog
 
-METRICS_EXPORTER_TAG ?= v0.5.1
+METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_SOLR ?= $(SOURCE_REGISTRY)/solr9:$(TRACK)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 IMAGE_ZOOKEEPER ?= $(SOURCE_REGISTRY)/zookeeper3:$(ZK_TAG)
 
 # Main image

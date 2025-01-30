@@ -1,0 +1,227 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_vehicle
+# 
+# Translators:
+# Martin Trigaux, 2023
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2023
+# コフスタジオ, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: コフスタジオ, 2024\n"
+"Language-Team: Serbian (https://app.transifex.com/odoo/teams/41243/sr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: sr\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_call_to_action
+msgid "<b>50,000 pre-orders</b> already registered."
+msgstr "<b>50.000 prethodnih narudžbina </b>već registrovano."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_image_text
+msgid "<b>A greener lifestyle</b>"
+msgstr "<b>Zeleniji način života</b>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "<b>The world is yours</b>"
+msgstr "<b>Svet je tvoj</b>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $14,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>Od 14.000 dolara</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $19,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>Od 19.000 dolara</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $25,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>Od 25.000 dolara</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid ""
+"<span class=\"text-o-color-3\">Our uniquely designed LED headlights are not "
+"only gorgeous but powerfully light your way.<br/></span>"
+msgstr ""
+"<span class=\"text-o-color-3\">Naš jedinstveno dizajnirani LED farovi nisu "
+"samo prelepi, već snažno osvetljavaju vaš put.<br/></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #1"
+msgstr "Kočnice #1"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #2"
+msgstr "Kočnice #2"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #3"
+msgstr "Kočnice #3"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #4"
+msgstr "Kočnice #4"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #5"
+msgstr "Kočnice #5"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #6"
+msgstr "Kočnice #6"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid ""
+"Bring the KORAN to life on your smartphone or tablet so you can visualise it"
+" for yourself.<br/>"
+msgstr ""
+"Prenesi  KURAN na svom pametnom telefonu ili tabletu kako biste ga mogli "
+"vizualizovati sami.<br/>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Configure"
+msgstr "Podesi"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Dual Motor"
+msgstr "Dvojni motor"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_image_text
+msgid "Electric Driving"
+msgstr "Električna vožnja"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_masonry_block_image_texts_image_template
+msgid "Electrifying <b>Performance</b>."
+msgstr "Elektrizirajući <b>Izvođenje</b>."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_call_to_action
+msgid "Join the early joiners or request for a trial on track."
+msgstr ""
+"Pridružite se ranim pridružiocima ili zatražite probnu verziju na stazi."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran EQ"
+msgstr "Koran EQ"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran GT"
+msgstr "Koran GT"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran Mini"
+msgstr "Koran Mini"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Long Range"
+msgstr "Dugačak domet"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris hendrerit "
+"est bibendum sollicitudin vestibulum."
+msgstr ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris hendrerit "
+"est bibendum sollicitudin vestibulum."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "No compromise"
+msgstr "Bez kompromisa"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_references
+msgid "Our Partners"
+msgstr "Naši partneri"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features_grid
+msgid "Our web store"
+msgstr "Naša web prodavnica"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid ""
+"Performance and design were the key words during the conception of this "
+"super car. No compromises were made to keep the pleasure of driving despite "
+"those constraints."
+msgstr ""
+"Performanse i dizajn su bile ključne reči tokom konceptualizacije ovog super"
+" automobila. Nisu napravljeni kompromisi kako bi se zadržao užitak u vožnji "
+"uprkos tim ograničenjima."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_masonry_block_image_texts_image_template
+msgid "Smarter <b>Range</b>."
+msgstr "Pametniji <b>Raspon</b>."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "Start the engine"
+msgstr "Pokreni motor"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "Take advantage of a free track trial to discover it."
+msgstr "Iskoristite besplatan probni period da biste ga otkrili."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "Take it all. Compliments too."
+msgstr "Uzmi sve. Komplimenti takođe."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "The New KORAN X"
+msgstr "Novi KORAN X"
+
+#. module: theme_vehicle
+#: model:ir.model,name:theme_vehicle.model_theme_utils
+msgid "Theme Utils"
+msgstr "Korišćenje tema"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Top Speed"
+msgstr "Najveća brzina"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid "View the all-new KORAN in 3D wherever you are<br/>"
+msgstr ""
+"Pogledajte potpuno novi KORAN u 3D formatu gde god da se nalazite.<br/>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features_grid
+msgid "Your advantages"
+msgstr "Vaše prednosti"

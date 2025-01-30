@@ -1,0 +1,169 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_clean
+# 
+# Translators:
+# Wil Odoo, 2023
+# Daye Jeong, 2023
+# Sarah Park, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Sarah Park, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_call_to_action
+msgid "<b>50,000 people</b>, run Clean to grow their financial wealth."
+msgstr "<b>5만명</b>이 Clean을 통해 금융 자산을 늘려 가고 있습니다."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_cover
+msgid "<b>Sell from your couch</b>"
+msgstr "<b>소파에 누워서도 영업을 할 수 있습니다.</b>"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_title
+msgid "<b>We create the perfect <br/>tailored solution for you</b>"
+msgstr "<b>고객을 위한 완벽한 <br/>맞춤형 솔루션</b>"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid ""
+"<br/>At any moment, you may contact our advisor through the in-app video "
+"meeting system."
+msgstr "<br/>언제든 앱에 내장된 화상 회의 시스템으로 어드바이저에게 연락해 보세요."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid ""
+"<br/>We integrate digital tools and solutions for better insights, enabling "
+"data-driven planning."
+msgstr "<br/>디지털 도구와 솔루션을 하나로 통합하여 보다 깊이 있는 통찰력과 함께 데이터에 기반한 기획을 가능하게 합니다."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid ""
+"<br/>We invest in strategic advice tailored to your<br/>\n"
+"                            business problems and needs."
+msgstr ""
+"<br/>고객을 위한 전략적인 조언에 투자하여<br/>\n"
+"                            비즈니스 문제와 니즈를 해결합니다."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_features
+msgid "All in one"
+msgstr "올인원"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid ""
+"Composed of 25 people from 25 to 66 years, we’re a young and dynamic "
+"company. We have open positions, do not hesitate to contact us."
+msgstr ""
+"25세부터 66세까지 아우르는 25명의 직원으로 구성된 젋고 역동적인 회사입니다. 채용이 진행 중이므로, 언제든지 연락해 주시기 "
+"바랍니다."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_features
+msgid "Easy to use"
+msgstr "간단한 사용 방법"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid "Efficient team processes"
+msgstr "효율적인 팀 프로세스"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_text_image
+msgid "Everything you need, <br/>totally free"
+msgstr "필요한 모든 내용을<br/>무료로 사용해 보세요."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_call_to_action
+msgid "Join them and make the right money move."
+msgstr "함께 올바른 자금 흐름을 만들어 보세요."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_cover
+msgid ""
+"Make your finances reach a new level with our online management system. "
+"<br/>Track every penny, directly from the comfort of your home."
+msgstr ""
+"온라인 관리 시스템을 이용하여 재정을 새로운 차원으로 도약시켜 보세요. <br/>한 푼도 빠짐없이, 자택에서 편안하게 추적할 수 "
+"있습니다."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid "Our mission"
+msgstr "우리의 미션"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid "Our team"
+msgstr "당사 팀"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid "Our values"
+msgstr "우리의 가치"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid "Personal adviser"
+msgstr "개인 어드바이저"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid ""
+"Provide clear and concise financial advices to make your financial wealth "
+"grow. And this, completely free of charge."
+msgstr "명확하면서도 간결한 재무 조언을 통해 금융 자산을 키워 보세요. 또한 이 모든 내용이 완전 무료입니다."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_features
+msgid "Secured"
+msgstr "보안"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_carousel
+msgid "Simplify things"
+msgstr "업무 간소화"
+
+#. module: theme_clean
+#: model:ir.model,name:theme_clean.model_theme_utils
+msgid "Theme Utils"
+msgstr "테마 유틸"
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_text_image
+msgid ""
+"Track every expenses, uncover new ways to save, choose the right credit "
+"cards. <br/>All those advices and much more are included and totally free of"
+" charge."
+msgstr ""
+"모든 경비를 추적하고, 새로운 절감 방법을 찾아내며, 알맞은 신용카드를 선택해 보세요. <br/>이와 같은 어드바이스와 그 외 수많은 "
+"정보가 포함되어 있으며, 완전 무료입니다."
+
+#. module: theme_clean
+#: model_terms:theme.ir.ui.view,arch:theme_clean.s_three_columns
+msgid ""
+"We created our company to improve the work-life balance. We believe that we "
+"need to focus on our family more than our work and finances."
+msgstr "저희는 일과 삶의 균형을 개선시키기 위해 회사를 설립했습니다. 일과 돈보다 더욱 집중해야 하는 것은 가족이라고 믿습니다."
+
+#. module: theme_clean
+#. odoo-javascript
+#: code:addons/theme_clean/static/src/js/tour.js:0
+#, python-format
+msgid "width"
+msgstr "너비"

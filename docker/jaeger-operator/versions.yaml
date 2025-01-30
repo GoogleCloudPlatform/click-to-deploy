@@ -14,22 +14,41 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 1/debian11/1.53
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 1/debian12/1.65
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    golang:
+      version: '1.22.0'
+    jaeger-operator:
+      version: 1.65.0
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/a7624147-d9f2-4865-a208-dadf190d0293.cloudpartnerservices.goog
+  repo: jaeger-operator1
+  tags:
+  - 1.65.0-debian12
+  - 1.65-debian12
+  - 1-debian12
+  - '1.65.0'
+  - '1'
+  - latest
+
+- dir: 1/debian12/1.53
+  from: marketplace.gcr.io/google/debian12
   packages:
     golang:
       version: '1.20'
     jaeger-operator:
       version: 1.53.0
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/a7624147-d9f2-4865-a208-dadf190d0293.cloudpartnerservices.goog
   repo: jaeger-operator1
   tags:
-  - 1.53.0-debian11
-  - 1.53-debian11
-  - 1-d3bian11
+  - 1.53.0-debian12
+  - 1.53-debian12
   - 1.53.0
   - '1.53'
-  - '1'
-  - latest
-

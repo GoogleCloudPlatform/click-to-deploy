@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_numbers" inherit_id="website.s_numbers">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc1 pt112 pb112" remove="o_cc2 pt24 pb24" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Floats/12","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_shape o_web_editor_Floats_12"/>
+    </xpath>
+    <!-- Titles -->
+    <xpath expr="//h6" position="replace" mode="inner">
+        Useful options
+    </xpath>
+    <xpath expr="//h6" position="replace" mode="inner">
+        Beautiful snippets
+    </xpath>
+    <xpath expr="//h6" position="replace" mode="inner">
+        Amazing pages
+    </xpath>
+    <xpath expr="//h6" position="replace" mode="inner">
+        Outstanding images
+    </xpath>
+</template>
+
+</odoo>

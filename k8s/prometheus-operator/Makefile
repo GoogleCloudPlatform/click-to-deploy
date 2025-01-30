@@ -8,7 +8,8 @@ APP_ID ?= $(CHART_NAME)
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 
-TRACK ?= 0.65
+TRACK ?= 0.77
+SERVICE_NAME := services/6eff155d-707c-4095-be15-020e9da70f54.cloudpartnerservices.goog
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/prometheus-operator0:$(TRACK)
 

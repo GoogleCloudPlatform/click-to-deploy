@@ -1,0 +1,105 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * theme_nano
+# 
+# Translators:
+# e2f <projects@e2f.com>, 2019
+# Martin Trigaux, 2019
+# v2exerer <9010446@qq.com>, 2019
+# waveyeung <waveyeung@qq.com>, 2019
+# Xia Fajin <xia.fajin@elico-corp.com>, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-24 08:53+0000\n"
+"PO-Revision-Date: 2019-04-24 11:21+0000\n"
+"Last-Translator: liAnGjiA <liangjia@qq.com>, 2019\n"
+"Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.snippet_options
+msgid "<i class=\"fa fa-paint-brush\"/>Style"
+msgstr ""
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.preHeader
+msgid "<i class=\"fa fa-plus-circle\"/>Add..."
+msgstr ""
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.snippet_options
+msgid "Boxed"
+msgstr "盒装的"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.customize_modal
+msgid "Hide"
+msgstr ""
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.customize_modal
+msgid "Icons Bar"
+msgstr ""
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.customize_modal
+msgid "Icons Bar Position"
+msgstr ""
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.customize_modal
+msgid "Left"
+msgstr "左"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.customize_modal
+msgid "Menu"
+msgstr "菜单"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.snippet_options
+msgid "Muted"
+msgstr ""
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.customize_modal
+msgid "Right"
+msgstr "右"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.customize_modal
+msgid "Show"
+msgstr "显示"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.customize_modal
+msgid "Side Navigation"
+msgstr ""
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.customize_modal
+msgid "Standard"
+msgstr "标准"
+
+#. module: theme_nano
+#: model:ir.model,name:theme_nano.model_theme_utils
+msgid "Theme Utils"
+msgstr "主题实用工具"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.snippet_options
+msgid "Underline"
+msgstr "下划线"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.snippet_options
+msgid "Uppercase"
+msgstr ""

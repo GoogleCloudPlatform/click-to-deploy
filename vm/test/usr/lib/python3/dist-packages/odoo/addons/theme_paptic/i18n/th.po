@@ -1,0 +1,166 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_paptic
+# 
+# Translators:
+# Wil Odoo, 2023
+# Rasareeyar Lappiam, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_call_to_action
+msgid "<b>50,000+ companies</b> run Paptic to grow their businesses."
+msgstr ""
+"<b>บริษัทมากกว่า 50,000 แห่ง</b>ใช้งาน Paptic เพื่อขยายธุรกิจของพวกเขา"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_text_image
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">A Section Subtitle</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">คำบรรยายหมวด</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">Help you grow</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">ช่วยให้คุณเติบโต</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-gradient\">SUCCESS STORIES</font>"
+msgstr ""
+"<font style=\"background-image: linear-gradient(135deg, var(--o-color-1) 0%,"
+" var(--o-color-3) 100%);\" class=\"text-"
+"gradient\">เรื่องราวความสำเร็จ</font>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "Always Improving"
+msgstr "ปรับปรุงอยู่เสมอ"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "DISCOVER MORE  <i class=\"fa fa-chevron-right\"/>"
+msgstr "ค้นพบเพิ่มเติม  <i class=\"fa fa-chevron-right\"/>"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "Fallanzy Integration Explained"
+msgstr "อธิบายการรวม Fallanzy แล้ว"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"Fallanzy has been active in the workspace design and ergonomics consulting "
+"business for over 20 years. Discover how we answered to the challenges of "
+"this company."
+msgstr ""
+"Fallanzy "
+"ดำเนินธุรกิจด้านการออกแบบพื้นที่ทำงานและที่ปรึกษาด้านการยศาสตร์มาเป็นเวลากว่า"
+" 20 ปี ค้นพบวิธีที่เราตอบสนองต่อความท้าทายของบริษัทนี้"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "Grow your Business.<br/>Optimize your time."
+msgstr "ขยายธุรกิจของคุณ <br/>เพิ่มประสิทธิภาพเวลาของคุณ"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "HeyNosf Inc. Digital Transformation"
+msgstr "การเปลี่ยนแปลงทางดิจิทัลของ HeyNosf Inc. "
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"HeyNosf Inc. is a communication agency that was founded in 2006, by Jean-"
+"Louis Dewinter. He always had a strong interest in languages and decided to "
+"create a company reflecting his own interests."
+msgstr ""
+"HeyNosf Inc. เป็นหน่วยงานด้านการสื่อสารที่ก่อตั้งขึ้นในปี 2549 โดย Jean-"
+"Louis Dewinter "
+"เขามีความสนใจในภาษาอย่างมากมาโดยตลอดและตัดสินใจสร้างบริษัทที่สะท้อนถึงความสนใจของตนเอง"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid "Hotels Improvement Study"
+msgstr "การศึกษาการปรับปรุงโรงแรม"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "Man waiting at the airport"
+msgstr "ผู้ชายกำลังรออยู่ที่สนามบิน"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_three_columns
+msgid ""
+"Our solution is suitable for Hotels as well. We help management to optimize "
+"their time and employee to be more efficient and more productive. Discover "
+"our study."
+msgstr ""
+"โซลูชั่นของเราเหมาะสำหรับโรงแรมเช่นกัน "
+"เราช่วยให้ฝ่ายบริหารปรับเวลาและพนักงานให้มีประสิทธิภาพและประสิทธิผลมากขึ้น "
+"ค้นพบงานวิจัยของเรา"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "SCHEDULE A DEMO"
+msgstr "กำหนดเวลาการสาธิต"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_cover
+msgid "START NOW"
+msgstr "เริ่มตอนนี้"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid "Scalable and Modular"
+msgstr "ปรับขยายได้และเป็นโมดูลาร์"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"Thanks to our running release system, benefit from all updates (security and"
+" new features) in real time."
+msgstr ""
+"ด้วยระบบการเปิดตัวของเรา คุณจะได้รับประโยชน์จากการอัปเดตทั้งหมด "
+"(ความปลอดภัยและฟีเจอร์ใหม่) แบบเรียลไทม์"
+
+#. module: theme_paptic
+#: model:ir.model,name:theme_paptic.model_theme_utils
+msgid "Theme Utils"
+msgstr "ยูทิลิตี้ธีม"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_title
+msgid "Unique experiences."
+msgstr "ประสบการณ์ที่ไม่ซ้ำใคร"
+
+#. module: theme_paptic
+#: model_terms:theme.ir.ui.view,arch:theme_paptic.s_image_text
+msgid ""
+"Whether you start small or are already a large company, our solution adapts "
+"to your needs and grows with you."
+msgstr ""
+"ไม่ว่าคุณจะเริ่มต้นธุรกิจเล็กๆ หรือเป็นบริษัทขนาดใหญ่อยู่แล้ว "
+"โซลูชันของเราจะปรับให้เข้ากับความต้องการของคุณและเติบโตไปพร้อมกับคุณ"

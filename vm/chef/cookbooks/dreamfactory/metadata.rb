@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 name 'dreamfactory'
 depends 'git'
 depends 'composer'
-depends 'php74'
+depends 'php81'
 depends 'nginx'
 depends 'mysql'
 depends 'redis'

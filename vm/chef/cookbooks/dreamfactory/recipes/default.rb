@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,16 +18,28 @@ include_recipe 'mysql::version-8.0-embedded'
 include_recipe 'nginx'
 include_recipe 'redis::standalone'
 
-include_recipe 'php74'
-include_recipe 'php74::module_curl'
-include_recipe 'php74::module_json'
-include_recipe 'php74::module_mbstring'
-include_recipe 'php74::module_mongodb'
-include_recipe 'php74::module_mysql'
-include_recipe 'php74::module_opcache'
-include_recipe 'php74::module_sqlite'
-include_recipe 'php74::module_simplexml'
-include_recipe 'php74::module_zip'
+include_recipe 'php81'
+include_recipe 'php81::module_bcmath'
+include_recipe 'php81::module_cli'
+include_recipe 'php81::module_dev'
+include_recipe 'php81::module_curl'
+include_recipe 'php81::module_fpm'
+include_recipe 'php81::module_http'
+include_recipe 'php81::module_interbase'
+include_recipe 'php81::module_ldap'
+include_recipe 'php81::module_mbstring'
+include_recipe 'php81::module_mongodb'
+include_recipe 'php81::module_mysql'
+include_recipe 'php81::module_odbc'
+include_recipe 'php81::module_opcache'
+include_recipe 'php81::module_pdo'
+include_recipe 'php81::module_raphf'
+include_recipe 'php81::module_soap'
+include_recipe 'php81::module_sqlite'
+include_recipe 'php81::module_simplexml'
+include_recipe 'php81::module_sybase'
+include_recipe 'php81::module_xml'
+include_recipe 'php81::module_zip'
 include_recipe 'composer::composer2'
 include_recipe 'git'
 
@@ -37,16 +49,19 @@ apt_update do
   action :update
 end
 
-git '/usr/src/dreamfactory' do
-  repository 'https://github.com/dreamfactorysoftware/dreamfactory.git'
-  reference node['dreamfactory']['version']
-  action :checkout
+package 'install_packages' do
+  package_name node['dreamfactory']['packages']
+  action :install
 end
 
-bash 'Copy app' do
+bash 'Install Pear Packages' do
   user 'root'
   code <<-EOH
-    cp -rf /usr/src/dreamfactory/ /opt/
+  DEBIAN_FRONTEND=noninteractive pecl channel-update pecl.php.net && \
+    echo '' | pecl install --force mcrypt && \
+    echo '' | pecl install --force igbinary && \
+    echo '' | pecl install --force sqlsrv-5.11.1 && \
+    echo '' | pecl install --force pdo_sqlsrv-5.11.1
 EOH
 end
 
@@ -56,6 +71,32 @@ cookbook_file '/etc/nginx/sites-available/dreamfactory.conf' do
   group 'root'
   mode 0755
   action :create
+end
+
+git '/usr/src/dreamfactory' do
+  repository 'https://github.com/dreamfactorysoftware/dreamfactory.git'
+  reference node['dreamfactory']['version']
+  action :checkout
+end
+
+bash 'Copy DreamFactory to the production folder' do
+  user 'root'
+  code <<-EOH
+    cp -rf /usr/src/dreamfactory/ /opt/
+EOH
+end
+
+# Copy and install the front end
+cookbook_file '/opt/c2d/setup-frontend' do
+  source 'setup-frontend'
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
+execute 'install_frontend' do
+  command '/opt/c2d/setup-frontend'
 end
 
 cookbook_file '/opt/c2d/dreamfactory-utils' do

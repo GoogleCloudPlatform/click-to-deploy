@@ -24,7 +24,7 @@ x-google-marketplace:
       - replicas: 1
         requests:
           cpu: 10m
-          memory: 130Mi
+          memory: 4Gi
     istio:
       type: OPTIONAL
 
@@ -48,7 +48,7 @@ properties:
   persistence.size:
     type: string
     title: Storage size for persistent volumes
-    default: "5Gi"
+    default: "20Gi"
     description: ActiveMQ storage size
     pattern: '^[1-9][0-9]*(\.[0-9]+)?[TGM]i?$'
   admin.bindAllHosts:

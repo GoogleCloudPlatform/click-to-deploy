@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_product_catalog" inherit_id="website.s_product_catalog">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc5 pt96 pb96" remove="pt48 pb32" separator=" "/>
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Airy/03_001","flip":[]}</attribute>
+    </xpath>
+    <!-- Filter & shape -->
+    <xpath expr="//div[hasclass('container')]" position="before">
+        <div class="o_we_bg_filter bg-black-50"/>
+        <div class="o_we_shape o_web_editor_Airy_03_001"/>
+    </xpath>
+</template>
+
+</odoo>

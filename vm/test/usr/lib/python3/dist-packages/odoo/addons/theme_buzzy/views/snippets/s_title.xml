@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_title" inherit_id="website.s_title">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="o_cc o_cc4 pt152 pb152 oe_img_bg o_bg_img_center" remove="pb40 pt40" separator=" "/>
+    </xpath>
+    <!-- Title -->
+    <xpath expr="//h2" position="replace" mode="inner">
+        Increase your productivity
+    </xpath>
+</template>
+
+<template id="configurator_s_title" inherit_id="website.configurator_s_title">
+    <!-- Shape option -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="data-oe-shape-data">{"shape":"web_editor/Airy/13_001","flip":[]}</attribute>
+    </xpath>
+    <!-- Shape -->
+    <xpath expr="//section/*" position="before">
+        <div class="o_we_shape o_web_editor_Airy_13_001"/>
+    </xpath>
+</template>
+
+</odoo>

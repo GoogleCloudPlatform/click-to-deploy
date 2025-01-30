@@ -6,15 +6,16 @@ include ../images.Makefile
 CHART_NAME := consul
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 1.15
+TRACK ?= 1.19
+SERVICE_NAME := services/f79e369a-ac45-423e-99ea-f3c29fcce504.cloudpartnerservices.goog
 
 CONSUL_EXPORTER_TAG ?= exporter
-METRICS_EXPORTER_TAG ?= v0.5.1
+METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_CONSUL ?= $(SOURCE_REGISTRY)/consul1:$(TRACK)
 IMAGE_CONSUL_EXPORTER ?= $(SOURCE_REGISTRY)/consul1:$(CONSUL_EXPORTER_TAG)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image

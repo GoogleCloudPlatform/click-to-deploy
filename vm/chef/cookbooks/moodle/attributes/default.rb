@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 default['moodle']['user'] = 'www-data'
 default['moodle']['group'] = 'www-data'
 default['moodle']['db']['name'] = 'moodle'
-default['moodle']['track'] = '401'
-default['moodle']['version'] = '4.1.1'
+default['moodle']['track'] = '405'
+default['moodle']['version'] = '4.5'
 
 default['php81']['distribution'] = 'bullseye'

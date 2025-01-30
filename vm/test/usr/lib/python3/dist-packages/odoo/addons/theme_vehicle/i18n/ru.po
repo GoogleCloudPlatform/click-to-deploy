@@ -1,0 +1,226 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_vehicle
+# 
+# Translators:
+# Martin Trigaux, 2023
+# Vasiliy Korobatov <korobatov@gmail.com>, 2023
+# Collex100, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Collex100, 2024\n"
+"Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_call_to_action
+msgid "<b>50,000 pre-orders</b> already registered."
+msgstr "уже зарегистрировано <b>50 000 предварительных заказов</b>."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_image_text
+msgid "<b>A greener lifestyle</b>"
+msgstr "<b>Более экологичный образ жизни</b>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "<b>The world is yours</b>"
+msgstr "<b>Мир принадлежит тебе</b>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $14,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>От $14 000</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $19,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>От $19 000</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "<span class=\"d-inline-block mb-4\"><b>From $25,000</b></span>"
+msgstr "<span class=\"d-inline-block mb-4\"><b>От $25 000</b></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid ""
+"<span class=\"text-o-color-3\">Our uniquely designed LED headlights are not "
+"only gorgeous but powerfully light your way.<br/></span>"
+msgstr ""
+"<span class=\"text-o-color-3\">Наши светодиодные фары уникального дизайна не"
+" только великолепны, но и мощно освещают ваш путь.<br/></span>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #1"
+msgstr "Тормоза №1"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #2"
+msgstr "Тормоза #2"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #3"
+msgstr "Тормоза #3"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #4"
+msgstr "Тормоза #4"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #5"
+msgstr "Тормоза #5"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_product_list
+msgid "Brakes #6"
+msgstr "Тормоза #6"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid ""
+"Bring the KORAN to life on your smartphone or tablet so you can visualise it"
+" for yourself.<br/>"
+msgstr ""
+"Оживите Коран на своем смартфоне или планшете, чтобы вы могли представить "
+"его воочию.<br/>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Configure"
+msgstr "Настроить"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Dual Motor"
+msgstr "Двойной двигатель"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_image_text
+msgid "Electric Driving"
+msgstr "Электрическое вождение"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_masonry_block_image_texts_image_template
+msgid "Electrifying <b>Performance</b>."
+msgstr "Захватывающее <b>представление</b>."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_call_to_action
+msgid "Join the early joiners or request for a trial on track."
+msgstr ""
+"Присоединяйтесь к ранним участникам или пройдите пробное обучение на треке."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran EQ"
+msgstr "Коран EQ"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran GT"
+msgstr "Коран GT"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid "Koran Mini"
+msgstr "Коран мини"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Long Range"
+msgstr "Длинная дистанция"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_three_columns
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris hendrerit "
+"est bibendum sollicitudin vestibulum."
+msgstr ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris hendrerit "
+"est bibendum sollicitudin vestibulum."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "No compromise"
+msgstr "Никакого компромисса"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_references
+msgid "Our Partners"
+msgstr "Наши партнеры"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features_grid
+msgid "Our web store"
+msgstr "Наш интернет-магазин"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid ""
+"Performance and design were the key words during the conception of this "
+"super car. No compromises were made to keep the pleasure of driving despite "
+"those constraints."
+msgstr ""
+"Производительность и дизайн были ключевыми словами при создании этого "
+"суперкара. Никаких компромиссов не было сделано, чтобы сохранить "
+"удовольствие от вождения, несмотря на эти ограничения."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_masonry_block_image_texts_image_template
+msgid "Smarter <b>Range</b>."
+msgstr "Более умный <b>диапазон</b>."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "Start the engine"
+msgstr "Запустите двигатель"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_text_image
+msgid "Take advantage of a free track trial to discover it."
+msgstr "Воспользуйтесь бесплатной пробной версией, чтобы узнать об этом."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "Take it all. Compliments too."
+msgstr "Принимай все. И комплименты тоже."
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_cover
+msgid "The New KORAN X"
+msgstr "Новый KORAN X"
+
+#. module: theme_vehicle
+#: model:ir.model,name:theme_vehicle.model_theme_utils
+msgid "Theme Utils"
+msgstr "Утилиты темы"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features
+msgid "Top Speed"
+msgstr "Предельная скорость"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_picture
+msgid "View the all-new KORAN in 3D wherever you are<br/>"
+msgstr "Смотрите новый KORAN в 3D, где бы вы ни находились<br/>"
+
+#. module: theme_vehicle
+#: model_terms:theme.ir.ui.view,arch:theme_vehicle.s_features_grid
+msgid "Your advantages"
+msgstr "Ваши преимущества"

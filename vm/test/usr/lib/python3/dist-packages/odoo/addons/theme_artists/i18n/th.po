@@ -1,0 +1,162 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_artists
+# 
+# Translators:
+# Wil Odoo, 2023
+# Rasareeyar Lappiam, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: th\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "<b>Painting concept / April 2021</b>"
+msgstr "<b>แนวคิดการวาดภาพ / เมษายน 2564</b>"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "<b>Photoshoot / June 2021</b>"
+msgstr "<b>ถ่ายภาพ / มิถุนายน 2564</b>"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "<b>Typographic collection / March 2021</b>"
+msgstr "<b>คอลเลกชันวิชาการพิมพ์ / มีนาคม 2564</b>"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_call_to_action
+msgid "<b>Want to discover more?</b>"
+msgstr "<b>ต้องการเรียนรู้เพิ่มเติมหรือไม่?</b>"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "About me"
+msgstr "เกี่ยวกับฉัน"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "Aquitani"
+msgstr "ภาษาอัควิตานี"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_comparisons
+msgid "Basic sales &amp; marketing"
+msgstr "การขาย &amp; การตลาดขั้นพื้นฐาน"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "Contact me"
+msgstr "ติดต่อฉัน"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_call_to_action
+msgid "Contact me for a visit of my studio."
+msgstr "ติดต่อฉันเพื่อเยี่ยมชมสตูดิโอ"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "Discover"
+msgstr "ค้นพบ"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_image_text
+msgid "Discover <br/>my works"
+msgstr "พบกับผลงานของฉัน"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_cover
+msgid "Emotions <br/>through the colors"
+msgstr "สื่ออารมณ์<br/>ผ่านสีต่างๆ"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_banner
+msgid "Emotions through the colors"
+msgstr "สื่ออารมณ์ผ่านสีต่างๆ"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid ""
+"Formerly a corporate accountant, I started a professional transition 10 "
+"years ago."
+msgstr "ฉันเคยเป็นนักบัญชีมาก่อน ฉันเริ่มเปลี่ยนอาชีพเมื่อ 10 ปีที่แล้ว"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "Here is a selection of my works, exhibited in my studio."
+msgstr "นี่คือผลงานบางส่วนที่จัดแสดงในสตูดิโอของฉัน"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "Immemorabili"
+msgstr "ความทรงจำ"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_title
+msgid "It's all about perception"
+msgstr "และนั่นคือทั้งหมดที่เกี่ยวกับการรับรู้"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_text_image
+msgid "Let yourself <br/>be transported"
+msgstr "ปล่อยให้ตัวเองถูกพาไป"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "More details"
+msgstr "รายละเอียดเพิ่มเติม"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_product_list
+msgid "More info"
+msgstr "ข้อมูลเพิ่มเติม"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "My artistic process"
+msgstr "กระบวนการทางศิลปะของฉัน"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "My work"
+msgstr "งานของฉัน"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid ""
+"The choice of materials, colours are not insignificant, discover more about "
+"my artistic process."
+msgstr ""
+"การเลือกใช้วัสดุ สีไม่สำคัญ ค้นพบเพิ่มเติมเกี่ยวกับกระบวนการทางศิลปะของฉัน"
+
+#. module: theme_artists
+#: model:ir.model,name:theme_artists.model_theme_utils
+msgid "Theme Utils"
+msgstr "ยูทิลิตี้ธีม"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "Vincam"
+msgstr "Vincam"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_text_image
+msgid ""
+"Welcome to my online home. I invite you to come in, learn more about me and "
+"my work, and stop to embrace the slow pleasure of art and beauty."
+msgstr ""
+"ยินดีต้อนรับสู่หน้าแรกของฉัน "
+"ฉันขอเชิญคุณเข้ามาเรียนรู้เพิ่มเติมเกี่ยวกับฉันและงานของฉัน "
+"และเปิดรับความสุขอย่างเต็มเปี่ยมด้านศิลปะและความงาม"

@@ -31,6 +31,7 @@ include_recipe 'apache2::security-config'
 include_recipe 'php81'
 include_recipe 'php81::module_libapache2'
 include_recipe 'php81::module_xml'
+include_recipe 'dokuwiki::ospo'
 
 bash 'Download key' do
   user 'root'
@@ -46,7 +47,7 @@ end
 
 # Download, untar and mark as owned by www-data all files of DokuWiki.
 remote_file '/tmp/dokuwiki.tgz' do
-  source "https://download.dokuwiki.org/src/dokuwiki/dokuwiki-#{node['dokuwiki']['download_version']}.tgz"
+  source "https://github.com/dokuwiki/dokuwiki/releases/download/release-#{node['dokuwiki']['download_version']}/dokuwiki-#{node['dokuwiki']['download_version']}.tgz"
   action :create
 end
 

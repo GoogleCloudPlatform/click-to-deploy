@@ -1,4 +1,5 @@
 {{- $prometheus_operator := index .Packages "prometheus-operator" -}}
+{{- $golang := index .Packages "golang" -}}
 
 # Clone git repo
 FROM alpine/git:1.0.7 as git
@@ -9,7 +10,7 @@ RUN git clone https://github.com/prometheus-operator/prometheus-operator.git /sr
     && cd /src/prometheus-operator/ \
     && git checkout $PROMETHEUS_OPERATOR_VERSION
 
-FROM golang:1.21.6 as builder
+FROM golang:{{ $golang.Version }} as builder
 
 COPY --from=git /src/prometheus-operator /go/src/github.com/prometheus-operator/prometheus-operator
 
@@ -22,7 +23,10 @@ RUN set -x && \
 
 RUN git config --global http.sslverify false \
     && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags="-s \
-    -X github.com/prometheus-operator/prometheus-operator/pkg/version.Version={{ $prometheus_operator.Version }}" \
+    -X github.com/prometheus/common/version.Version={{ $prometheus_operator.Version }} \
+    -X github.com/prometheus/common/version.Branch={{ $prometheus_operator.Version }} \
+    -X github.com/prometheus/common/version.BuildUser=C2D \
+    -X github.com/prometheus/common/version.BuildDate=$(date '+%Y-%m-%d')" \
     -o operator cmd/operator/main.go
 
 # Download licenses
