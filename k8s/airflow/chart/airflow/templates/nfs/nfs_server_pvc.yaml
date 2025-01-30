@@ -9,6 +9,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
+  storageClassName: "{{ .Values.nfs.persistence.storageClass }}"
   resources:
     requests:
       storage: {{ .Values.nfs.persistence.size | quote }}
