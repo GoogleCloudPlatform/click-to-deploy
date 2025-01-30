@@ -38,6 +38,36 @@ spec:
               key: db-password
         - name: PGHOST
           value: "{{ .Release.Name }}-postgresql-svc"
+      - name: ensure-django
+        image: "{{ .Values.django.image.repo }}:{{ .Values.django.image.tag }}"
+        command:
+          - /bin/bash
+          - -c
+          - |
+            echo "Checking if django-admin is set up..."
+
+            # Prevent errors
+            set +e
+            admin_path="$(which django-admin)"
+            set -e
+
+            if [[ -z "${admin_path}" ]]; then
+              echo "- django-admin not set up. Installing it..."
+              python3 -m venv /sites/venv
+              pip install "Django==${C2D_RELEASE}" \
+                mysqlclient \
+                psycopg2 \
+                uwsgi
+            else
+              echo "- django-admin is present at ${admin_path}."
+            fi
+            echo "django-admin version:"
+            django-admin --version
+        volumeMounts:
+        - name: django-data
+          mountPath: /sites
+        securityContext:
+          runAsUser: 0
       containers:
       - image: "{{ .Values.django.image.repo }}:{{ .Values.django.image.tag }}"
         name: django
