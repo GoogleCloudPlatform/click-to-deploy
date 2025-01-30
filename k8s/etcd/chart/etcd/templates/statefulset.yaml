@@ -34,7 +34,7 @@ spec:
          - "/setup.sh"
         resources:
           requests:
-            cpu: 500m
+            cpu: 200m
             memory: 1Gi
         env:
         - name: MY_POD_IP
