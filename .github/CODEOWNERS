@@ -4,8 +4,3 @@
 # These owners will be the default owners for everything in
 # the repo. Unless a later match takes precedence.
 *                   @GoogleCloudPlatform/ccm-saap-team
-
-
-/docker/ @GoogleCloudPlatform/c2d-contributors
-/k8s/**/Makefile @GoogleCloudPlatform/c2d-contributors
-/vm/chef/cookbooks/**/attributes/default.rb @GoogleCloudPlatform/c2d-contributors
