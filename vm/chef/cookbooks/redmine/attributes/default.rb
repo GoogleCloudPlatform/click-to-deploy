@@ -26,8 +26,8 @@ default['redmine']['agpl_packages'] = [
   'libgs9-common',
   'libjbig2dec0',
 ]
-default['redmine']['version'] = '5.0.5'
-default['redmine']['ruby']['version'] = '3.0.5'
+default['redmine']['version'] = '5.1.4'
+default['redmine']['ruby']['version'] = '3.2.3'
 
 # OS Settings
 default['redmine']['user'] = 'redmine'

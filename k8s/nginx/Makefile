@@ -6,15 +6,16 @@ include ../images.Makefile
 CHART_NAME := nginx
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 1.25
+TRACK ?= 1.26
+SERVICE_NAME := services/ebfbb623-a7d4-4e60-ac99-416808963e17.cloudpartnerservices.goog
 
-EXPORTER_TAG ?= 0.11
+EXPORTER_TAG ?= 1.3
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_NGINX ?= $(SOURCE_REGISTRY)/nginx1:$(TRACK)
-IMAGE_NGINX_EXPORTER = $(SOURCE_REGISTRY)/nginx-exporter0:$(EXPORTER_TAG)
-IMAGE_DEBIAN ?= $(SOURCE_REGISTRY)/c2d-debian11:latest
+IMAGE_NGINX_EXPORTER = $(SOURCE_REGISTRY)/nginx-exporter1:$(EXPORTER_TAG)
+IMAGE_DEBIAN ?= $(SOURCE_REGISTRY)/debian12
 IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 

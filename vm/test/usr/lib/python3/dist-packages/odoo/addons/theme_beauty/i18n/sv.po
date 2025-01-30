@@ -1,0 +1,109 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_beauty
+# 
+# Translators:
+# Lasse L, 2023
+# Anders Wallenquist <anders.wallenquist@vertel.se>, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Anders Wallenquist <anders.wallenquist@vertel.se>, 2024\n"
+"Language-Team: Swedish (https://app.transifex.com/odoo/teams/41243/sv/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: sv\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_text_image
+msgid ""
+"<br/>\n"
+"        Escape from everyday busy reality and treat your body with intensive care. Beauty and health go hand in hand. Take time to slow down in our relaxing spa, and everything you’re chasing will come around."
+msgstr ""
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_company_team
+msgid "Aline"
+msgstr "Aline"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_call_to_action
+msgid "Beauty without <br/>expression is boring"
+msgstr ""
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_title
+msgid ""
+"Close your eyes and let yourself go in the expert hands of our beauticians."
+msgstr ""
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Essential oils"
+msgstr "Eteriska oljor"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Eyeliner"
+msgstr ""
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_company_team
+msgid "Iris"
+msgstr ""
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_call_to_action
+msgid "Join us and enjoy the pleasure of caring for yourself."
+msgstr ""
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Lipstick"
+msgstr ""
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Make-up"
+msgstr ""
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_company_team
+msgid "Mich"
+msgstr ""
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_text_image
+msgid "Pamper Yourself"
+msgstr ""
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Perfume"
+msgstr ""
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_product_list
+msgid "Skin gel"
+msgstr ""
+
+#. module: theme_beauty
+#: model:ir.model,name:theme_beauty.model_theme_utils
+msgid "Theme Utils"
+msgstr "Verktyg för teman"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_company_team
+msgid "Tony"
+msgstr "Tony"
+
+#. module: theme_beauty
+#: model_terms:theme.ir.ui.view,arch:theme_beauty.s_cover
+msgid "Working beauty <br/>from the inside out"
+msgstr ""

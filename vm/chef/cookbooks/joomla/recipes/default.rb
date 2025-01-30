@@ -19,6 +19,7 @@ include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
 
 include_recipe 'git'
+include_recipe 'joomla::ospo'
 
 include_recipe 'mysql::version-8.0-embedded'
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_image_gallery" inherit_id="website.s_image_gallery">
+    <!-- Section -->
+    <xpath expr="//section" position="attributes">
+        <attribute name="class" add="s_image_gallery_cover o_full_screen_height" separator=" "/>
+    </xpath>
+    <!-- Container -->
+    <xpath expr="//div[hasclass('container')]" position="attributes">
+        <attribute name="class" add="container-fluid" remove="container" separator=" "/>
+    </xpath>
+</template>
+
+<template id="s_images_wall" inherit_id="website.s_images_wall">
+    <!-- First image -->
+    <xpath expr="//img" position="attributes">
+        <attribute name="src">/web/image/website.library_image_19</attribute>
+    </xpath>
+</template>
+
+</odoo>

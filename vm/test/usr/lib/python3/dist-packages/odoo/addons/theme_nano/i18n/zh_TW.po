@@ -1,0 +1,116 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_nano
+# 
+# Translators:
+# Wil Odoo, 2023
+# Tony Ng, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Tony Ng, 2024\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_parallax
+msgid ""
+"<font class=\"bg-o-color-5\">Feel free to come up with your big idea. <br/> "
+"We take care of the rest.</font>"
+msgstr "<font class=\"bg-o-color-5\">歡迎提出您的好主意。<br/> 剩下的交給我們。</font>"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.new_page_template_about_map_s_text_block_h1
+msgid "About Us"
+msgstr "關於我們"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "Adaptable"
+msgstr "適應性強"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_cover
+msgid "Creative Studio"
+msgstr "創作工作室"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Details"
+msgstr "詳細資訊"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "Durable"
+msgstr "耐用"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Handcrafted"
+msgstr "手工製作"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Innovative"
+msgstr "創新"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "Intuitive"
+msgstr "直觀易懂"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Made in Santa's Workshop. High quality fabric &amp; exclusive designs."
+msgstr "聖誕老人工作室製造。優質布料和獨家設計。"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid ""
+"People should love the things they own. Things should be built to last."
+msgstr "人們應該熱愛自己擁有的東西。東西應該經久耐用。"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Tailored"
+msgstr "度身設計"
+
+#. module: theme_nano
+#: model:ir.model,name:theme_nano.model_theme_utils
+msgid "Theme Utils"
+msgstr "主題"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_three_columns
+msgid "Transforming traditional crafts — with a shot of modern savvy!"
+msgstr "改造傳統工藝，注入現代智慧！"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "We build modular solutions."
+msgstr "我們提供模組化解決方案。"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_cover
+msgid ""
+"We combine smart design with rich technology <br/>to craft innovative "
+"products."
+msgstr "結合智能設計與豐富技術，<br/>精心打造創新產品。"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "We craft long-lasting goods."
+msgstr "我們的產品經久耐用。"
+
+#. module: theme_nano
+#: model_terms:theme.ir.ui.view,arch:theme_nano.s_features
+msgid "We create easy-to-use products."
+msgstr "我們創造易於使用的產品。"

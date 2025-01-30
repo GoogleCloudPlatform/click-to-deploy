@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700" height="1850" viewBox="0 0 700 1850">
+
+    <defs>
+        <!-- Font -->
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&amp;display=swap');
+        </style>
+        <!-- Images -->
+        <pattern width="1" height="1" id="theme_treehouse_s_cover_default_image_id" patternunits="objectBoundingBox">
+            <image width="700" height="400" preserveAspectRatio="xMidYMid slice" href="#s_cover_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_treehouse_s_text_image_default_image_id" patternunits="objectBoundingBox">
+            <image width="280" height="180" preserveAspectRatio="xMidYMid slice" href="#s_text_image_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_treehouse_s_parallax_default_image_id" patternunits="objectBoundingBox">
+            <image width="700" height="300" preserveAspectRatio="xMidYMid slice" href="#s_parallax_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_treehouse_s_three_columns_default_image_1_id" patternunits="objectBoundingBox">
+            <image width="175" height="178" preserveAspectRatio="xMidYMid slice" href="#s_three_columns_default_image_1_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_treehouse_s_three_columns_default_image_2_id" patternunits="objectBoundingBox">
+            <image width="175" height="178" preserveAspectRatio="xMidYMid slice" href="#s_three_columns_default_image_2_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_treehouse_s_three_columns_default_image_3_id" patternunits="objectBoundingBox">
+            <image width="175" height="178" preserveAspectRatio="xMidYMid slice" href="#s_three_columns_default_image_3_url"/>
+        </pattern>
+        <filter id="filter_readability_treehouse">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0"/>
+            <feComponentTransfer>
+                <feFuncR type="table" tableValues="1 0"/>
+                <feFuncG type="table" tableValues="1 0"/>
+                <feFuncB type="table" tableValues="1 0"/>
+            </feComponentTransfer>
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncG type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncB type="linear" slope="10000" intercept="-4999.5"/>
+            </feComponentTransfer>
+        </filter>
+    </defs>
+
+    <!-- Layout -->
+    <g class="theme_treehouse_preview">
+
+        <g data-name="Header" class="svgc_menu">
+            <rect width="700" height="50" x="0" y="0" fill="#MENU_COLOR" class="svgc_menu_bg"/>
+            <text x="70" y="29" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" font-size="14" font-family="Poppins, sans-serif" font-weight="500">LOGO</text>
+            <rect width="40" height="8" x="130" y="20" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.5"/>
+            <rect width="40" height="8" x="180" y="20" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.5"/>
+            <rect width="40" height="8" x="230" y="20" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.5"/>
+            <rect width="40" height="8" x="490" y="20" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.5"/>
+            <g class="svgc_btn_group">
+                <rect width="80" height="24" x="550" y="12" rx="12" fill="#3AADAA"/>
+                <text x="564" y="28" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_treehouse)" font-size="12" font-family="Poppins, sans-serif" font-weight="500">Contact</text>
+            </g>
+        </g>
+
+        <g data-name="Cover">
+            <rect width="700" height="400" x="0" y="50" fill="url(#theme_treehouse_s_cover_default_image_id)" class="img_reference_s_cover_default_image"/>
+            <rect width="700" height="400" x="0" y="50" fill="#000000" opacity="0.5"/>
+            <circle cx="350" cy="150" r="30" fill="#FFFFFD"/>
+            <text x="333" y="162" fill="#3AADAA" font-size="32" font-family="FontAwesome, sans-serif">&#xf06c;</text>
+            <text x="265" y="235" fill="#FFFFFD" font-size="36" font-family="Poppins, sans-serif" font-weight="500">Welcome</text>
+            <rect width="120" height="8" x="290" y="260" fill="#FFFFFD" rx="2" opacity=".8"/>
+            <rect width="200" height="8" x="250" y="280" fill="#FFFFFD" rx="2" opacity=".8"/>
+            <g class="svgc_btn_group">
+                <rect width="90" height="26" x="305" y="330" fill="#3AADAA" rx="13"/>
+                <text x="324" y="347" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_treehouse)" font-size="12" font-family="Poppins, sans-serif" font-weight="500">Discover</text>
+            </g>
+        </g>
+
+        <g data-name="Text Image">
+            <rect width="700" height="300" x="0" y="450" fill="#FFFFFD"/>
+            <rect width="280" height="180" x="350" y="500" fill="url(#theme_treehouse_s_text_image_default_image_id)" class="img_reference_s_text_image_default_image"/>
+            <rect width="40" height="6" x="70" y="511" fill="#888"/>
+            <text x="70" y="570" fill="#222" font-size="24" font-family="Poppins, sans-serif" font-weight="500">Section Title</text>
+            <rect width="170" height="6" x="70" y="590" rx="2" fill="#888"/>
+            <rect width="200" height="6" x="70" y="602" rx="2" fill="#888"/>
+            <rect width="120" height="6" x="70" y="614" rx="2" fill="#888"/>
+            <g class="svgc_btn_group">
+                <rect width="80" height="26" x="70" y="655" fill="#3AADAA" rx="13"/>
+                <text x="89" y="673" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_treehouse)" font-size="12" font-family="Poppins, sans-serif" font-weight="500">Details</text>
+            </g>
+        </g>
+
+        <g data-name="Title">
+            <rect width="700" height="300" x="0" y="750" fill="url(#theme_treehouse_s_parallax_default_image_id)" class="img_reference_s_parallax_default_image"/>
+            <rect width="700" height="300" x="0" y="750" fill="#000000" opacity="0.5"/>
+            <text x="280" y="910" fill="#FFFFFD" font-size="24" font-family="Poppins, sans-serif" font-weight="500">Section Title</text>
+        </g>
+
+        <g data-name="Columns">
+            <rect width="700" height="400" x="0" y="1050" fill="#E9ECEF"/>
+            <g data-name="Column_1">
+                <rect width="175" height="270" x="70" y="1115" fill="#FFFFFD"/>
+                <rect width="175" height="135" x="70" y="1115" fill="url(#theme_treehouse_s_three_columns_default_image_1_id)" class="img_reference_s_three_columns_default_image_1"/>
+                <text x="86" y="1285" fill="#222" font-size="16" font-family="Poppins, sans-serif" font-weight="500">Entry Title</text>
+                <rect width="130" height="6" x="86" y="1313" fill="#888"/>
+                <rect width="90" height="6" x="86" y="1325" fill="#888"/>
+                <rect width="110" height="6" x="86" y="1302" fill="#888"/>
+                <rect width="175" height="25" x="70" y="1360" fill="#F7F7F7"/>
+                <rect width="40" height="6" x="86" y="1370" fill="#3AADAA"/>
+            </g>
+            <g data-name="Column_2" transform="translate(193 0)">
+                <rect width="175" height="270" x="70" y="1115" fill="#FFFFFD"/>
+                <rect width="175" height="135" x="70" y="1115" fill="url(#theme_treehouse_s_three_columns_default_image_2_id)" class="img_reference_s_three_columns_default_image_2"/>
+                <text transform="translate(86 1285)" fill="#222" font-size="16" font-family="Poppins, sans-serif" font-weight="500">Entry Title</text>
+                <rect width="130" height="6" x="86" y="1313" fill="#888"/>
+                <rect width="90" height="6" x="86" y="1325" fill="#888"/>
+                <rect width="110" height="6" x="86" y="1302" fill="#888"/>
+                <rect width="175" height="25" x="70" y="1360" fill="#F7F7F7"/>
+                <rect width="40" height="6" x="86" y="1370" fill="#3AADAA"/>
+            </g>
+            <g data-name="Column_3" transform="translate(385 0)">
+                <rect width="175" height="270" x="70" y="1115" fill="#FFFFFD"/>
+                <rect width="175" height="135" x="70" y="1115" fill="url(#theme_treehouse_s_three_columns_default_image_3_id)" class="img_reference_s_three_columns_default_image_3"/>
+                <text transform="translate(85 1285)" fill="#222" font-size="16" font-family="Poppins, sans-serif" font-weight="500">Entry Title</text>
+                <rect width="130" height="6" x="86" y="1313" fill="#888"/>
+                <rect width="90" height="6" x="86" y="1325" fill="#888"/>
+                <rect width="110" height="6" x="86" y="1302" fill="#888"/>
+                <rect width="175" height="25" x="70" y="1360" fill="#F7F7F7"/>
+                <rect width="40" height="6" x="86" y="1370" fill="#3AADAA"/>
+            </g>
+        </g>
+
+        <g data-name="Call to Action">
+            <rect width="700" height="195" x="0" y="1450" fill="#7C6576"/>
+            <rect width="700" height="195" x="0" y="1450" fill="url(#theme_treehouse_shape_rainy_08_001_id)"/>
+            <rect width="700" height="195" x="0" y="1450" fill="#000000" opacity=".25"/>
+            <text x="278" y="1515" fill="#FFFFFD" font-size="24" font-family="Poppins, sans-serif" font-weight="500">Section Title</text>
+            <rect width="280" height="6" x="210" y="1536" fill="#FFFFFD"/>
+            <rect width="120" height="6" x="290" y="1550" fill="#FFFFFD"/>
+            <g class="svgc_btn_group">
+                <rect width="90" height="24" rx="12" x="305" y="1578" fill="#3AADAA"/>
+                <text x="324" y="1594" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_treehouse)" font-size="12" font-family="Poppins, sans-serif" font-weight="500">Contact</text>
+            </g>
+        </g>
+
+        <g data-name="Footer" class="svgc_footer">
+            <rect width="700" height="170" x="0" y="1645" fill="#FOOTER_COLOR" class="svgc_footer_bg"/>
+            <circle cx="573" cy="1708" r="8" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.5"/>
+            <circle cx="598" cy="1708" r="8" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.5"/>
+            <circle cx="623" cy="1708" r="8" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.5"/>
+            <rect width="560" height="1" x="70" y="1750" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <rect width="40" height="8" x="590" y="1778" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <rect width="40" height="8" x="590" y="1683" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <rect width="80" height="8" x="70" y="1683" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <rect width="120" height="8" x="70" y="1704" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <rect width="40" height="8" x="243" y="1683" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <rect width="40" height="8" x="385" y="1683" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <rect width="40" height="8" x="540" y="1778" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <rect width="40" height="8" x="490" y="1778" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <rect width="40" height="8" x="440" y="1778" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <rect width="70" height="8" x="243" y="1704" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <rect width="70" height="8" x="385" y="1704" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" opacity="0.8"/>
+            <text x="70" y="1786" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_treehouse)" font-size="14" font-family="Poppins, sans-serif" font-weight="500">LOGO</text>
+        </g>
+
+        <g data-name="Copyright">
+            <rect width="700" height="40" x="0" y="1810" fill="#3AADAA"/>
+            <rect width="100" height="6" x="70" y="1828" rx="2" fill="#3AADAA" class="svgc_text" filter="url(#filter_readability_treehouse)"/>
+            <circle cx="350" cy="1810" r="20" fill="#3AADAA"/>
+        </g>
+
+    </g>
+</svg>

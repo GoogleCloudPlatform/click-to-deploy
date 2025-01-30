@@ -14,40 +14,28 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 2/debian11/2.8
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 2/debian12/2.10
+  from: marketplace.gcr.io/google/debian12
   packages:
     airflow:
-      version: 2.8.2
+      version: 2.10.3
     pip:
-      version: 22.3.1
+      version: 24.3.1
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
   repo: airflow2
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/a0ce6574-4b44-48a4-8a72-69c53ba93d3e.cloudpartnerservices.goog
   tags:
-  - 2.8.2-debian11
-  - 2.8-debian11
-  - 2-debian11
-  - 2.8.2
-  - '2.8'
+  - 2.10.3-debian12
+  - 2.10-debian12
+  - 2-debian12
+  - 2.10.3
+  - '2.10'
   - '2'
   - latest
-- dir: 2/debian11/2.6
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    airflow:
-      version: 2.6.3
-    gosu:
-      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.17'
-    pip:
-      version: 22.3.1
-  repo: airflow2
-  tags:
-  - 2.6.3-debian11
-  - 2.6-debian11
-  - 2.6.3
-  - '2.6'

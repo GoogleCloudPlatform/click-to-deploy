@@ -37,7 +37,7 @@ spec:
             scheme: HTTP
             port: 8080
           failureThreshold: 360
-          initialDelaySeconds: 10
+          initialDelaySeconds: 120
           periodSeconds: 10
         livenessProbe:
           httpGet:
@@ -52,7 +52,7 @@ spec:
             scheme: HTTP
             port: 8080
           failureThreshold: 2
-          periodSeconds: 10
+          periodSeconds: 60
         envFrom:
         - configMapRef:
             name: "{{ template "harbor.core" . }}"

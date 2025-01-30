@@ -1,0 +1,135 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_enark
+# 
+# Translators:
+# Wil Odoo, 2023
+# Malaz Abuidris <msea@odoo.com>, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_parallax
+msgid ""
+"<i>“One of the great beauties of architecture is that each time, it is like "
+"life starting all over again.”</i>"
+msgstr ""
+"<i>“من جماليات الهندسة المعمارية هي أنه في كل مرة تبدو الحياة وكأنها تبدأ من"
+" جديد.”</i> "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid "A Different Viewpoint."
+msgstr "وجهة نظر مختلفة. "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_call_to_action
+msgid "As <b>436 clients</b> before you, let’s work together"
+msgstr "بما أننا سبقناك بـ<b> 436</b> عميل، فلنعمل معاً "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_text_image
+msgid "Building Castle in Cloud"
+msgstr "بناء قلعة بين السحاب "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Construction site"
+msgstr "موقع بناء "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_picture
+msgid "Creating places that enhance the human experience."
+msgstr "إنشاء أماكن تعزز التجربة الإنسانية. "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid "Discover More"
+msgstr "اكتشف المزيد "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.enark_snippet_options
+msgid "Gradients"
+msgstr "التدرجات "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Know our clients."
+msgstr "اعرف عملاءك. "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid "Nature friendly"
+msgstr "صديق للطبيعة "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.enark_snippet_options
+msgid "None"
+msgstr "لا شيء"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"Our creations integrate and are in perfect harmony with their environment."
+msgstr "تتكامل إبداعاتنا وتتناغم تماماً مع بيئتها. "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"Our mastery of construction techniques has been built up over time through "
+"our close collaboration with the workers and our sustained presence on the "
+"construction sites."
+msgstr ""
+"إتقاننا لتقنيات البناء هي مهارات تمكنا من صقلها مع مرور الوقت، من خلال "
+"تعاوننا الوثيق مع العمال ووجودنا المستمر في مواقع البناء. "
+
+#. module: theme_enark
+#: model:ir.model,name:theme_enark.model_theme_utils
+msgid "Theme Utils"
+msgstr "أدوات السمة"
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_picture
+msgid "We always put people and nature at the center of our projects."
+msgstr "نحن دائماً نضع الناس والطبيعة كبؤرة لمشاريعنا. "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_media_list
+msgid ""
+"We always start by exploring our clients goals, priorities, lifestyle, and "
+"tastes."
+msgstr ""
+"نبدأ دائماً باستكشاف أهداف عملائنا وأولوياتهم وأسلوب حياتهم وأذواقهم. "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_banner
+msgid ""
+"We are a contemporary architecture firm working mainly in the residential, "
+"commercial and office sectors. Our projects are built all over the world, in"
+" urban and rural environments."
+msgstr ""
+"نحن شركة هندسة معمارية معاصرة تعمل بشكل رئيسي في القطاعات السكنية والتجارية "
+"والمكاتب. يتم بناء مشاريعنا في جميع أنحاء العالم، في البيئات الحضرية "
+"والريفية. "
+
+#. module: theme_enark
+#: model_terms:theme.ir.ui.view,arch:theme_enark.s_text_image
+msgid ""
+"When designing an architectural concept, we take into account the nine "
+"criteria that Zumthor considers to be important in creating an architectural"
+" atmosphere."
+msgstr ""
+"عند تصميم مفهوم معماري، نأخذ في الاعتبار المعايير التسعة التي يعتبرها زومثور"
+" مهمة في خلق جو معماري. "

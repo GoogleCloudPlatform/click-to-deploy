@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_blockquote" inherit_id="website.s_blockquote">
+    <!-- Icon -->
+    <xpath expr="//i" position="attributes">
+        <attribute name="class" add="bg-o-color-1" remove="bg-o-color-2" separator=" "/>
+    </xpath>
+</template>
+
+</odoo>

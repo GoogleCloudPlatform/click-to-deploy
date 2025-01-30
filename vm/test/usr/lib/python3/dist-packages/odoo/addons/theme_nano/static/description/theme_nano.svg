@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700" height="1850" viewBox="0 0 700 1850">
+
+    <defs>
+        <!-- Font -->
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600&amp;display=swap');
+        </style>
+        <!-- Images -->
+        <pattern width="1" height="1" id="theme_nano_s_cover_default_image_id" patternunits="objectBoundingBox">
+            <image width="539" height="319" preserveAspectRatio="xMidYMid slice" href="#s_cover_default_image_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_nano_library_image_10_id" patternunits="objectBoundingBox">
+            <image width="180" height="140" preserveAspectRatio="xMidYMid slice" href="#library_image_10_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_nano_library_image_05_id" patternunits="objectBoundingBox">
+            <image width="180" height="140" preserveAspectRatio="xMidYMid slice" href="#library_image_05_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_nano_library_image_08_id" patternunits="objectBoundingBox">
+            <image width="180" height="140" preserveAspectRatio="xMidYMid slice" href="#library_image_08_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_nano_library_image_13_id" patternunits="objectBoundingBox">
+            <image width="180" height="140" preserveAspectRatio="xMidYMid slice" href="#library_image_13_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_nano_library_image_03_id" patternunits="objectBoundingBox">
+            <image width="180" height="140" preserveAspectRatio="xMidYMid slice" href="#library_image_03_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_nano_library_image_02_id" patternunits="objectBoundingBox">
+            <image width="180" height="140" preserveAspectRatio="xMidYMid slice" href="#library_image_02_url"/>
+        </pattern>
+        <pattern width="1" height="1" id="theme_nano_s_parallax_default_image_id" patternunits="objectBoundingBox">
+            <image width="560" height="240" preserveAspectRatio="xMidYMid slice" href="#s_parallax_default_image_url"/>
+        </pattern>
+        <filter id="filter_readability_nano">
+            <feColorMatrix in="SourceGraphic" type="saturate" values="0"/>
+            <feComponentTransfer>
+                <feFuncR type="table" tableValues="1 0"/>
+                <feFuncG type="table" tableValues="1 0"/>
+                <feFuncB type="table" tableValues="1 0"/>
+            </feComponentTransfer>
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncG type="linear" slope="10000" intercept="-4999.5"/>
+                <feFuncB type="linear" slope="10000" intercept="-4999.5"/>
+            </feComponentTransfer>
+        </filter>
+    </defs>
+
+    <!-- Layout -->
+    <g id="theme_nano_preview">
+
+        <rect width="700" height="1850" fill="#383E45"/>
+
+        <g data-name="Header" class="svgc_menu">
+            <rect width="560" height="50" x="70" y="0" fill="#MENU_COLOR" class="svgc_menu_bg"/>
+            <rect width="30" height="8" x="600" y="20" fill="#MENU_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+            <text x="330" y="30" font-size="14" font-family="Nunito" font-weight="600" fill="#MENU_COLOR" class="svgc_text" filter="url(#filter_readability_nano)">LOGO</text>
+            <rect width="40" height="8" x="70" y="20" fill="#MENU_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+            <rect width="40" height="8" x="120" y="20" fill="#MENU_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+            <rect width="40" height="8" x="170" y="20" fill="#MENU_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+            <circle cx="582" cy="25" r="8" fill="#MENU_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_nano)"/>
+        </g>
+
+        <g data-name="Cover">
+            <rect width="539" height="319" x="70" y="70" fill="url(#theme_nano_s_cover_default_image_id)" class="img_reference_s_cover_default_image"/>
+            <rect width="539" height="319" x="70" y="70" fill="#000" opacity="0.25"/>
+            <path d="M167.622,0h67.762L67.762,340H0Z" transform="translate(259 50)" fill="#383E45" opacity="0.25"/>
+            <path d="M167.622,0h67.762L67.762,340H0Z" transform="translate(327 50)" fill="#383E45" opacity="0.5"/>
+            <path d="M167.622,0h67.762V340H0Z" transform="translate(395 50)" fill="#383E45"/>
+            <text x="215" y="177" fill="#FFFFFD" font-size="30" font-family="Nunito" font-weight="600">Welcome Message</text>
+            <rect width="200" height="8" rx="2" x="250" y="222" fill="#FFFFFD" opacity="0.8"/>
+            <rect width="120" height="8" rx="2" x="290" y="204" fill="#FFFFFD" opacity="0.8"/>
+            <g class="svgc_btn_group">
+                <rect width="80" height="26" rx="4" x="308" y="267" fill="#3AADAA"/>
+                <text x="324" y="284" fill="#3AADAA" class="svgc_text" font-size="10" font-family="Nunito" font-weight="600" filter="url(#filter_readability_nano)">Contact us</text>
+            </g>
+        </g>
+
+        <g data-name="Features">
+            <rect width="560" height="230" x="70" y="390" fill="#383E45"/>
+            <g data-name="Feature_1">
+                <rect width="50" height="50" rx="4" x="137" y="445" fill="#3AADAA"/>
+                <text x="115" y="528" fill="#383E45" class="svgc_text" filter="url(#filter_readability_nano)" font-size="18" font-family="Nunito" font-weight="600">Feature #01</text>
+                <rect width="90" height="6" rx="2" x="117" y="545" fill="#383E45" class="svgc_text" filter="url(#filter_readability_nano)"/>
+                <rect width="50" height="6" rx="2" x="137" y="559" fill="#383E45" class="svgc_text" filter="url(#filter_readability_nano)"/>
+            </g>
+            <g data-name="Feature_2">
+                <rect width="50" height="50" rx="4" x="324" y="445" fill="#FFFFFF"/>
+                <text x="300" y="528" fill="#383E45" class="svgc_text" filter="url(#filter_readability_nano)" font-size="18" font-family="Nunito" font-weight="600">Feature #02</text>
+                <rect width="90" height="6" rx="2" x="304" y="545" fill="#383E45" class="svgc_text" filter="url(#filter_readability_nano)"/>
+                <rect width="50" height="6" rx="2" x="324" y="559" fill="#383E45" class="svgc_text" filter="url(#filter_readability_nano)"/>
+            </g>
+            <g data-name="Feature_3">
+                <rect width="50" height="50" rx="4" x="512" y="445" fill="#7C6576"/>
+                <text x="488" y="528" fill="#383E45" class="svgc_text" filter="url(#filter_readability_nano)" font-size="18" font-family="Nunito" font-weight="600">Feature #03</text>
+                <rect width="90" height="6" rx="2" x="492" y="545" fill="#383E45" class="svgc_text" filter="url(#filter_readability_nano)"/>
+                <rect width="50" height="6" rx="2" x="512" y="559" fill="#383E45" class="svgc_text" filter="url(#filter_readability_nano)"/>
+            </g>
+        </g>
+
+        <g data-name="Text">
+            <rect width="560" height="190" x="70" y="620" fill="#FFFFFD"/>
+            <rect width="340" height="6" rx="2" x="175" y="683" fill="#888"/>
+            <rect width="240" height="6" rx="2" x="175" y="718" fill="#888"/>
+            <rect width="240" height="6" rx="2" x="175" y="695" fill="#888"/>
+            <rect width="350" height="6" rx="2" x="175" y="730" fill="#888"/>
+            <rect width="290" height="6" rx="2" x="175" y="742" fill="#888"/>
+        </g>
+
+        <g data-name="Images Wall">
+            <rect width="560" height="400" x="70" y="810" rx="4" fill="#383E45"/>
+            <rect width="180" height="140" x="70" y="865" rx="4" fill="url(#theme_nano_library_image_10_id)" class="img_reference_library_image_10"/>
+            <rect width="180" height="140" x="70" y="1015" rx="4" fill="url(#theme_nano_library_image_05_id)" class="img_reference_library_image_05"/>
+            <rect width="180" height="140" x="260" y="865" rx="4" fill="url(#theme_nano_library_image_08_id)" class="img_reference_library_image_08"/>
+            <rect width="180" height="140" x="260" y="1015" rx="4" fill="url(#theme_nano_library_image_13_id)" class="img_reference_library_image_13"/>
+            <rect width="180" height="140" x="450" y="865" rx="4" fill="url(#theme_nano_library_image_03_id)" class="img_reference_library_image_03"/>
+            <rect width="180" height="140" x="450" y="1015" rx="4" fill="url(#theme_nano_library_image_02_id)" class="img_reference_library_image_02"/>
+        </g>
+
+        <g data-name="Parallax">
+            <rect width="560" height="240" x="70" y="1205" fill="url(#theme_nano_s_parallax_default_image_id)" class="img_reference_s_parallax_default_image"/>
+            <rect width="560" height="240" x="70" y="1205" fill="#000000" opacity=".5"/>
+            <rect width="260" height="8" rx="2" x="220" y="1331" fill="#FFFFFD"/>
+            <rect width="180" height="8" rx="2" x="260" y="1311" fill="#FFFFFD"/>
+        </g>
+
+        <g data-name="References">
+            <rect width="560" height="205" x="70" y="1445" fill="#383E45"/>
+            <rect width="89" height="60" x="70" y="1550" fill="#FFFFFD"/>
+            <rect width="89" height="60" x="353" y="1550" fill="#FFFFFD"/>
+            <rect width="89" height="60" x="164" y="1550" fill="#FFFFFD"/>
+            <rect width="89" height="60" x="447" y="1550" fill="#FFFFFD"/>
+            <rect width="89" height="60" x="258" y="1550" fill="#FFFFFD"/>
+            <rect width="89" height="60" x="541" y="1550" fill="#FFFFFD"/>
+            <rect width="140" height="6" rx="2" x="280" y="1520" fill="#383E45" class="svgc_text" filter="url(#filter_readability_nano)"/>
+            <text x="300" y="1500" fill="#383E45" class="svgc_text" font-size="18" font-family="Nunito" font-weight="600" filter="url(#filter_readability_nano)">Section Title</text>
+        </g>
+
+        <g data-name="Footer" class="svgc_footer">
+            <rect width="560" height="150" x="70" y="1650" fill="#FOOTER_COLOR" class="svgc_footer_bg"/>
+            <g data-name="Column_1">
+                <text x="90" y="1700" font-size="16" font-family="Nunito" font-weight="600" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_nano)">Section Title</text>
+                <rect width="240" height="6" rx="2" x="90" y="1720" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+                <rect width="240" height="6" rx="2" x="90" y="1744" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+                <rect width="240" height="6" rx="2" x="90" y="1732" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+                <rect width="147" height="6" rx="2" x="90" y="1756" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+            </g>
+            <g data-name="Column_2">
+                <text x="390" y="1704" font-size="12" font-family="Nunito" font-weight="600" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_nano)">Entry Title</text>
+                <rect width="90" height="6" rx="2" x="390" y="1732" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+                <rect width="90" height="6" rx="2" x="390" y="1720" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+                <rect width="90" height="6" rx="2" x="390" y="1744" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+                <rect width="50" height="6" rx="2" x="390" y="1756" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+            </g>
+            <g data-name="Column_3">
+                <text x="520" y="1704" font-size="12" font-family="Nunito" font-weight="600" fill="#FOOTER_COLOR" class="svgc_text" filter="url(#filter_readability_nano)">Entry Title</text>
+                <rect width="90" height="6" rx="2" x="520" y="1720" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+                <rect width="90" height="6" rx="2" x="520" y="1732" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.5" filter="url(#filter_readability_nano)"/>
+                <circle cx="529" cy="1758" r="8" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_nano)"/>
+                <circle cx="550" cy="1758" r="8" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_nano)"/>
+                <circle cx="571" cy="1758" r="8" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_nano)"/>
+                <circle cx="592" cy="1758" r="8" fill="#FOOTER_COLOR" class="svgc_text" opacity="0.8" filter="url(#filter_readability_nano)"/>
+            </g>
+        </g>
+
+        <g data-name="Copyright">
+            <rect width="560" height="50" x="70" y="1800" fill="#383E45"/>
+            <circle cx="350" cy="1800" r="15" fill="#383E45"/>
+            <rect width="120" height="6" rx="2" x="71" y="1822" fill="#383E45" class="svgc_text" filter="url(#filter_readability_nano)"/>
+        </g>
+    </g>
+
+</svg>

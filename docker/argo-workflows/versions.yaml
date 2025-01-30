@@ -14,38 +14,27 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 3/debian11/3.5
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 3/debian12/3.5
+  from: marketplace.gcr.io/google/debian12
   packages:
     argo_workflows:
-      version: 3.5.5
+      version: 3.5.10
     nodejs:
       major: 20
     golang:
       version: 1.21
   repo: argo-workflows3
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/dea629ec-49b1-439e-928d-1b08fa253321.cloudpartnerservices.goog
   tags:
-  - 3.5.5-debian11
-  - 3.5-debian11
-  - 3-debian11
-  - 3.5.5
+  - 3.5.10-debian12
+  - 3.5-debian12
+  - 3-debian12
+  - 3.5.10
   - '3.5'
   - '3'
   - latest
-- dir: 3/debian11/3.4
-  from: marketplace.gcr.io/google/c2d-debian11
-  packages:
-    argo_workflows:
-      version: 3.4.16
-    nodejs:
-      major: 20
-    golang:
-      version: 1.21
-  repo: argo-workflows3
-  tags:
-  - 3.4.16-debian11
-  - 3.4-debian11
-  - 3.4.16
-  - '3.4'

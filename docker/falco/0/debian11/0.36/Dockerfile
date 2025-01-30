@@ -1,10 +1,10 @@
-FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+FROM marketplace.gcr.io/google/debian12 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
 
-RUN apt update && apt -y install ca-certificates
+RUN apt update && apt -y install curl ca-certificates
 
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
@@ -15,17 +15,17 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian12
 
 COPY --from=ospo /usr/src /usr/src
 ARG FALCO_VERSION=0.36.2
 ARG VERSION_BUCKET=deb
 ENV VERSION_BUCKET=${VERSION_BUCKET}
 
-ENV FALCO_VERSION ${FALCO_VERSION}
-ENV C2D_RELEASE 0.36.2
-ENV HOST_ROOT /host
-ENV HOME /root
+ENV FALCO_VERSION=${FALCO_VERSION}
+ENV C2D_RELEASE=0.36.2
+ENV HOST_ROOT=/host
+ENV HOME=/root
 
 RUN cp /etc/skel/.bashrc /root && cp /etc/skel/.profile /root
 
@@ -34,8 +34,9 @@ RUN apt-get update \
 	bash-completion \
 	bc \
 	bison \
-	clang-11 \
+	clang \
 	ca-certificates \
+	curl \
 	dkms \
 	flex \
 	gnupg2 \
@@ -44,13 +45,10 @@ RUN apt-get update \
 	libc6-dev \
 	libelf-dev \
 	libssl-dev \
-	llvm-11 \
-	netcat \
+	llvm \
+	netcat-traditional \
 	xz-utils \
 	&& rm -rf /var/lib/apt/lists/*
-
-RUN ln -s /usr/bin/clang-11 /usr/bin/clang \
-	&& ln -s /usr/bin/llc-11 /usr/bin/llc
 
 RUN curl -s https://falco.org/repo/falcosecurity-packages.asc | apt-key add - \
 	&& echo "deb https://download.falco.org/packages/${VERSION_BUCKET} stable main" | tee -a /etc/apt/sources.list.d/falcosecurity.list \

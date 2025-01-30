@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['dreamfactory']['version'] = '4.14.1'
+default['dreamfactory']['version'] = '6.3.0'
 default['dreamfactory']['db']['name'] = 'dreamfactory'
+default['dreamfactory']['packages'] = [
+  'git',
+  'curl',
+  'cron',
+  'zip',
+  'unzip',
+  'ca-certificates',
+  'apt-transport-https',
+  'lsof',
+  'mcrypt',
+  'libmcrypt-dev',
+  'libreadline-dev',
+  'wget',
+  'sudo',
+  'nginx',
+  'build-essential',
+  'unixodbc-dev',
+  'gcc',
+  'cmake',
+  'jq',
+  'libaio1',
+  'php-pear',
+]
 
-default['php81']['distribution'] = 'bullseye'
+default['php81']['distribution'] = 'bookworm'

@@ -1,0 +1,167 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_artists
+# 
+# Translators:
+# Сергей Шебанин <sergey@shebanin.ru>, 2023
+# Martin Trigaux, 2023
+# Vasiliy Korobatov <korobatov@gmail.com>, 2023
+# Collex100, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:23+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Collex100, 2024\n"
+"Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "<b>Painting concept / April 2021</b>"
+msgstr "<b>Концепция картины / апрель 2021 г</b>"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "<b>Photoshoot / June 2021</b>"
+msgstr "<b>Фотосессия / июнь 2021 г</b>"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "<b>Typographic collection / March 2021</b>"
+msgstr "<b>Типографская коллекция / Март 2021</b>"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_call_to_action
+msgid "<b>Want to discover more?</b>"
+msgstr "<b>Хотите узнать больше?</b>"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "About me"
+msgstr "Обо мне"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "Aquitani"
+msgstr "Aquitani"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_comparisons
+msgid "Basic sales &amp; marketing"
+msgstr "Основы продаж и маркетинга"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "Contact me"
+msgstr "Свяжитесь со мной"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_call_to_action
+msgid "Contact me for a visit of my studio."
+msgstr "Свяжитесь со мной, чтобы посетить мою студию."
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "Discover"
+msgstr "Узнать больше"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_image_text
+msgid "Discover <br/>my works"
+msgstr "Откройте для себя <br/>мои работы"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_cover
+msgid "Emotions <br/>through the colors"
+msgstr "Эмоции <br/>через цвета"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_banner
+msgid "Emotions through the colors"
+msgstr "Эмоции через цвета"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid ""
+"Formerly a corporate accountant, I started a professional transition 10 "
+"years ago."
+msgstr ""
+"Бывший корпоративный бухгалтер, я начал профессиональную карьеру 10 лет "
+"назад."
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "Here is a selection of my works, exhibited in my studio."
+msgstr "Здесь представлена подборка моих работ, выставленных в моей студии."
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "Immemorabili"
+msgstr "Immemorabili"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_title
+msgid "It's all about perception"
+msgstr "Все дело в восприятии"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_text_image
+msgid "Let yourself <br/>be transported"
+msgstr "Позвольте себе <br/>быть транспортированным"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "More details"
+msgstr "Подробнее"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_product_list
+msgid "More info"
+msgstr "Больше информации"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "My artistic process"
+msgstr "Мой творческий процесс"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid "My work"
+msgstr "Моя работа"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_three_columns
+msgid ""
+"The choice of materials, colours are not insignificant, discover more about "
+"my artistic process."
+msgstr ""
+"Выбор материалов, цветов играет немаловажную роль, узнайте больше о моем "
+"творческом процессе."
+
+#. module: theme_artists
+#: model:ir.model,name:theme_artists.model_theme_utils
+msgid "Theme Utils"
+msgstr "Утилиты темы"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_carousel
+msgid "Vincam"
+msgstr "Vincam"
+
+#. module: theme_artists
+#: model_terms:theme.ir.ui.view,arch:theme_artists.s_text_image
+msgid ""
+"Welcome to my online home. I invite you to come in, learn more about me and "
+"my work, and stop to embrace the slow pleasure of art and beauty."
+msgstr ""
+"Добро пожаловать в мой онлайн-дом. Я приглашаю вас зайти, узнать больше обо "
+"мне и моих работах и остановиться, чтобы получить медленное удовольствие от "
+"искусства и красоты."

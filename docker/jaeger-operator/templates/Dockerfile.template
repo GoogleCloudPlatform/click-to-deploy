@@ -24,7 +24,6 @@ WORKDIR /go/src/github.com/jaegertracing/jaeger-operator
 ENV GO111MODULE=on
 
 RUN go install github.com/kardianos/govendor@latest \
-    && govendor license +vendor > NOTICES \
     && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 \
        go build -o jaeger-operator -ldflags "${LD_FLAGS} \
        -X github.com/jaegertracing/jaeger-operator/pkg/version.buildDate=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
@@ -49,7 +48,6 @@ COPY --from=git /src/jaeger-operator/scripts/* /scripts/
 COPY --from=builder /go/src/github.com/jaegertracing/jaeger-operator/jaeger-operator ${OPERATOR}
 
 # License and Notices
-COPY --from=builder /go/src/github.com/jaegertracing/jaeger-operator/NOTICES /usr/share/jaeger-operator/NOTICES
 COPY --from=builder /go/src/github.com/jaegertracing/jaeger-operator/LICENSE /usr/share/jaeger-operator/LICENSE
 
 ENTRYPOINT ["/usr/local/bin/jaeger-operator"]

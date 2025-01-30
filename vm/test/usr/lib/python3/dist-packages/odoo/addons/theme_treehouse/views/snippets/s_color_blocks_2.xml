@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_color_blocks_2" inherit_id="website.s_color_blocks_2">
+    <!-- Column #01 -->
+    <xpath expr="//i" position="replace">
+        <i class="fa fa-2x fa-cloud bg-white text-secondary rounded-circle m-4 mx-auto"/>
+    </xpath>
+    <xpath expr="//h2" position="replace" mode="inner">
+        Sky is the limit.
+    </xpath>
+    <!-- Column #02 -->
+    <xpath expr="//div[hasclass('row')]/*[2]" position="replace">
+        <div class="col-lg-6 p-0">
+            <img src="/theme_treehouse/static/src/img/backgrounds/06.jpg" class="w-100 h-100" style="object-fit: cover;" alt=""/>
+        </div>
+    </xpath>
+</template>
+
+</odoo>

@@ -1,0 +1,255 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_aviato
+# 
+# Translators:
+# Vasiliy Korobatov <korobatov@gmail.com>, 2023
+# Wil Odoo, 2024
+# Collex100, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Collex100, 2024\n"
+"Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_cover
+msgid ""
+"<b>A travel agent helps you to plan your <br/> trip from start to finish.</b>\n"
+"        <br/>"
+msgstr ""
+"<b>Туристическое агентство поможет вам спланировать путешествие на <br/> от начала и до конца.</b>\n"
+"        <br/>"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid "<b>Jacques and Marie</b> • From France"
+msgstr "<b>Жак и Мари</b> - из Франции"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid "<b>Linda and Paulo</b> • From Italy"
+msgstr "<b>Линда и Пауло</b> - из Италии"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid "<b>Rose and Peter</b> • From United Kingdom"
+msgstr "<b>Роза и Питер</b> - из Великобритании"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_picture
+msgid "<em>Odoo Travel New York</em>"
+msgstr "<em>Odoo Travel New York</em>"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid ""
+"A heady mix of haunting ruins, awe-inspiring art and vibrant street life, "
+"Italy’s hot-blooded capital is one of the world’s most romantic and "
+"charismatic cities."
+msgstr ""
+"Пьянящий микс из призрачных руин, трепетного искусства и яркой уличной жизни"
+" - столица Италии является одним из самых романтичных и харизматичных "
+"городов мира."
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid ""
+"As always, Odoo Travel has delivered a truly wonderful travel experience for"
+" us. Norway was a great travel destination. The parts of the country we "
+"visited were beautiful, people were friendly, everything we ate was "
+"delicious, and there were many fun things to see and do."
+msgstr ""
+"Как всегда, компания Odoo Travel обеспечила нам поистине чудесные "
+"впечатления от путешествия. Норвегия была прекрасным местом для путешествия."
+" Части страны, которые мы посетили, были прекрасны, люди были дружелюбны, "
+"все, что мы ели, было вкусным, и было много интересных вещей, которые можно "
+"было увидеть и сделать."
+
+#. module: theme_aviato
+#. odoo-javascript
+#: code:addons/theme_aviato/static/src/js/tour.js:0
+#: code:addons/theme_aviato/static/src/js/tour.js:0
+#, python-format
+msgid "Background Shape"
+msgstr "Форма фона"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "Book now"
+msgstr "Забронировать"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_popup
+msgid "Check out now and get $200 off your first booking."
+msgstr ""
+"Оформите заказ прямо сейчас и получите скидку 200 долларов на первое "
+"бронирование."
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_features
+msgid "Flight Booking"
+msgstr "Бронирование рейсов"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_features
+msgid "Hotel Booking"
+msgstr "Бронирование отеля"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid ""
+"It's difficult to describe how awesome the trip was. I feel like my life has"
+" changed forever. It would take too long to describe day by day the sights, "
+"sounds, architecture, art, food, history, and people that we came across. "
+"Ireland was fantastic."
+msgstr ""
+"Трудно описать, насколько потрясающей была эта поездка. Я чувствую, что моя "
+"жизнь изменилась навсегда. Описывать день за днем достопримечательности, "
+"звуки, архитектуру, искусство, еду, историю и людей, с которыми мы "
+"столкнулись, было бы слишком долго. Ирландия была фантастической."
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_image_text
+msgid "Itinerary Planning"
+msgstr "Планирование маршрута"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_text_image
+msgid ""
+"Our team travels widely the globe to bring our clients first-hand knowledge "
+"of upcoming destinations, new \"hot\" hotels and ships, local restaurants, "
+"neighborhood hangouts, bars, pubs, the best. beaches and places to visit and"
+" not to see."
+msgstr ""
+"Наша команда путешествует по всему миру, чтобы предоставить нашим клиентам "
+"информацию из первых рук о предстоящих направлениях, новых \"горячих\" "
+"отелях и кораблях, местных ресторанах, тусовках, барах, пабах, лучших пляжах"
+" и местах, которые стоит посетить и которые не стоит видеть."
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_picture
+msgid "Our travel agencies"
+msgstr "Наши туристические агентства"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_image_text
+msgid ""
+"Our vision is to make travel planning stress free and make travel more fun. "
+"No matter the type of trip you have in mind, we have the resources and "
+"expertise necessary to create the perfect trip"
+msgstr ""
+"Наша цель - избавить вас от стресса при планировании путешествий и сделать "
+"их более увлекательными. Независимо от того, какой тип путешествия вы "
+"задумали, у нас есть ресурсы и опыт, необходимые для создания идеальной "
+"поездки"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "Paris"
+msgstr "Париж"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid ""
+"Paris' monument-lined boulevards, museums, classical bistros and boutiques "
+"are enhanced by a new wave of multimedia galleries, creative wine bars..."
+msgstr ""
+"Парижские бульвары, усыпанные памятниками, музеи, классические бистро и "
+"бутики дополняются новой волной мультимедийных галерей, креативных винных "
+"баров..."
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_cover
+msgid "Plan your trip with us"
+msgstr "Планируйте свое путешествие вместе с нами"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "Prague"
+msgstr "Прага"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid ""
+"Prague is the equal of Paris in terms of beauty. Its history goes back a "
+"millennium. And the beer? The best in Europe. Prague is the perfect city to "
+"walk around."
+msgstr ""
+"По красоте Прага не уступает Парижу. Ее история насчитывает тысячелетия. А "
+"пиво? Лучшее в Европе. Прага - идеальный город для прогулок."
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "Rome"
+msgstr "Рим"
+
+#. module: theme_aviato
+#: model:ir.model,name:theme_aviato.model_theme_utils
+msgid "Theme Utils"
+msgstr "Утилиты темы"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_features
+msgid "Ticket Booking"
+msgstr "Бронирование билетов"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_title
+msgid "Top Destinations"
+msgstr "Популярные направления"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_popup
+msgid "Travel Now"
+msgstr "Путешествуйте сейчас"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_cover
+msgid "Travel to any corner <br/>of the world"
+msgstr "Путешествуйте в любой уголок <br/>мира"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_quotes_carousel
+msgid ""
+"We would like to thank Odoo Travel for organising wonderful tour for us in "
+"Delhi, Agra and Rajasthan. Everything was very well organised. Thank you "
+"very much for everything!"
+msgstr ""
+"Мы хотели бы поблагодарить Odoo Travel за организацию замечательного тура "
+"для нас в Дели, Агру и Раджастан. Все было очень хорошо организовано. "
+"Большое спасибо за все!"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_text_image
+msgid "What we can do, <b>for you</b>"
+msgstr "Что мы можем сделать <b>для вас</b>"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_popup
+msgid "Win 200$"
+msgstr "Выиграйте 200$"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "s_three_columns_1"
+msgstr "s_three_columns_1"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "s_three_columns_2"
+msgstr "s_three_columns_2"
+
+#. module: theme_aviato
+#: model_terms:theme.ir.ui.view,arch:theme_aviato.s_three_columns
+msgid "s_three_columns_3"
+msgstr "s_three_columns_3"

@@ -1,0 +1,360 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* theme_yes
+# 
+# Translators:
+# Wil Odoo, 2023
+# Sarah Park, 2023
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-28 12:21+0000\n"
+"PO-Revision-Date: 2023-10-27 15:39+0000\n"
+"Last-Translator: Sarah Park, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_call_to_action
+msgid "<b>345 couples</b> trusted us to organize their wedding."
+msgstr "<b>345쌍의 커플</b>이 웨딩 플랜을 위해 저희를 선택해 주셨습니다."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">The "
+"Designer</font>"
+msgstr "<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">디자이너</font>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">The Founder "
+"&amp; Planner</font>"
+msgstr ""
+"<font style=\"font-weight: bolder;\" class=\"text-o-color-1\">설립자 및 "
+"플래너</font>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"<span class=\"s_blockquote_author\"><b>Jack and Mary</b> • Married in "
+"2019</span>"
+msgstr ""
+"<span class=\"s_blockquote_author\"><b>Jack and Mary</b> • 2019년 결혼</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"<span class=\"s_blockquote_author\"><b>Linda and Paul</b> • Married in "
+"2020</span>"
+msgstr ""
+"<span class=\"s_blockquote_author\"><b>Linda and Paul</b> • 2020년 결혼</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"<span class=\"s_blockquote_author\"><b>Rose and Peter</b> • Renewed their "
+"vows in 2021</span>"
+msgstr ""
+"<span class=\"s_blockquote_author\"><b>Rose and Peter</b> • 2021년 리마인드 "
+"웨딩</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "<span style=\"font-size: 36px;\">Engagement ceremonies</span>"
+msgstr "<span style=\"font-size: 36px;\">약혼식</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "<span style=\"font-size: 36px;\">Vow renewals</span>"
+msgstr "<span style=\"font-size: 36px;\">리마인드 웨딩</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "<span style=\"font-size: 36px;\">Wedding Receptions</span>"
+msgstr "<span style=\"font-size: 36px;\">웨딩 리셉션</span>"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_three_columns
+msgid "Accomodations"
+msgstr "숙소"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid ""
+"As a full service experience, we monitor all aspects of your wedding from "
+"planning to execution."
+msgstr "풀 서비스를 경험하실 수 있도록, 계획부터 실제 예식까지 결혼식의 모든 내용을 모니터링합니다."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"As a passionate wedding designer with a romantic soul, Clair adores "
+"celebrating the special moments in life in magical places and creating an "
+"authentic experience for couples."
+msgstr ""
+"로맨틱한 영혼을 가진 열정적인 웨딩 플래너로서, Clair는 마법과 같은 장소에서 특별한 순간을 축하할 수 있도록 하고 커플에게 아름다운"
+" 경험을 선사하는 일을 사랑합니다. "
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Attire"
+msgstr "복장"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_three_columns
+msgid "Car Rental"
+msgstr "자동차 렌트"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Caterers"
+msgstr "케이터링"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Check out our gallery"
+msgstr "포토 갤러리"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Check out our list of favorite caterers."
+msgstr "협력 케이터링 리스트 보기"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Check out our list of favorite venues."
+msgstr "협력 장소 리스트 보기"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid "Clair Stark"
+msgstr "Clair Stark"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "FAQ"
+msgstr "FAQ"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find a Caterer"
+msgstr "케이터링 검색"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_text_image
+msgid "Find a photographer"
+msgstr "사진 작가 검색"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_image_text
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find a venue"
+msgstr "장소 검색"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find the answers to all your questions <br/>in our FAQ."
+msgstr "궁금한 내용의 답을 <br/>FAQ에서 찾아보세요."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Find the perfect outfit for before, during and after the main event."
+msgstr "메인 이벤트 중 혹은 전후로 입으실 완벽한 의상을 찾아보세요."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"From the beginning of our planning process, our planner was incredible! She "
+"made us feel heard, gave great suggestions and was always just an email or "
+"call away when we had any last minute questions. Couldn't have done it "
+"without her!"
+msgstr ""
+"계획에 있어서 과정의 처음부터 저희 플래너는 정말 대단했어요! 저희 이야기를 경청하고 훌륭한 조언을 주셨고 마지막 순간까지 궁금한 점에 "
+"대해서 항상 이메일이나 전화에 바로 답변을 주셨어요. 그분 없이는 해낼 수 없었을 거예요!"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Get in touch"
+msgstr "연락하기"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid ""
+"Get inspired with the latest trends and advice from our wedding experts."
+msgstr "최신 웨딩 트렌드와 함께 웨딩 전문가의 조언을 통해 아이디어를 얻어 보세요."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Go to FAQ"
+msgstr "FAQ"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_picture
+msgid ""
+"Intimate or with hundreds of guests, outdoors or indoors : we organize the "
+"wedding of your dreams."
+msgstr "프라이빗하게 또는 수백 명의 게스트와 함께, 야외나 실내에서, 고객님이 꿈꿔 온 웨딩을 실현해 드립니다."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_call_to_action
+msgid "Join them and let us help you make this day unforgettable."
+msgstr "함께 하시면 잊을 수 없는 날로 만들어 드립니다."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_banner
+msgid "Just as you dreamt it."
+msgstr "고객님이 꿈꾸어 온 그대로."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Let us plan your perfect day"
+msgstr "완벽한 날을 위해 계획해 드립니다."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid "Livia Sailor"
+msgstr "Livia Sailor"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_company_team
+msgid ""
+"Livia is our head wedding coordinator and stylist, she'll turn any of your "
+"ideas into reality, making sure your wedding day is smooth and looks better "
+"than anything you have ever seen on Pinterest."
+msgstr ""
+"Livia는 수석 웨딩 코디네이터이자 스타일리스트입니다. 어떤 아이디어이든 현실로 만들어서, 고객 결혼식이 순조롭게 진행되고 방송에서 본"
+" 그 어떤 결혼식보다도 멋지게 보일 수 있게 합니다. "
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_picture
+msgid "Love is in the air"
+msgstr "사랑의 기운이 느껴집니다."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_three_columns
+msgid "Make up &amp;amp; Hair"
+msgstr "메이크업 및 헤어"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_title
+msgid "Meet our team"
+msgstr "팀 소개"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_cover
+msgid "Meet us"
+msgstr "회사 소개"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_cover
+msgid "Once in a lifetime moments"
+msgstr "일생에 단 한 번뿐인 순간"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"Our wedding coordinator made the entire process so much less stressful. She "
+"was more than kind, accommodating, and helpful in more ways than one! She "
+"always answered my emails within a day and thoroughly. She went above and "
+"beyond, I would recommend her to anyone!"
+msgstr ""
+"웨딩 플래너님 덕분에 전체적인 과정에서 받았던 스트레스가 훨씬 줄어 들었어요. 너무 친절하고 이야기도 잘 들어주신데다가, 여러 가지로 "
+"많이 도와주셨답니다! 제 이메일에 항상 하루 안에 완벽하게 답을 해 주셨어요. 기대했던 것 이상이어서, 누구에게나 추천해 드리고 "
+"싶습니다!"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "See how others renewed their vows"
+msgstr "다른 고객님들의 리마인드 웨딩 보기"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "See the blog"
+msgstr "블로그 보기"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Shop"
+msgstr "쇼핑"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "Start planning your engagement"
+msgstr "약혼식 계획을 시작해 보세요."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid "Start planning your wedding"
+msgstr "웨딩 플랜을 시작해 보세요."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_picture
+msgid "Stuart and Iliana's wedding at the Barn."
+msgstr "헛간에서 열린 스튜어트와 일리아나의 결혼식"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "Take a look at some of our favourite weddings."
+msgstr "가장 좋았던 결혼식 몇 장면을 소개합니다."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_quotes_carousel
+msgid ""
+"Thank you so much for being a part of our special day. It was so nice "
+"working with you. Without your help the day would not have been as perfect "
+"as it was."
+msgstr ""
+"저희의 특별한 날에 함께 해 주셔서 진심으로 감사드립니다. 같이 진행할 수 있어서 정말 좋았어요. 도와주시지 않았다면 그렇게 완벽한 "
+"행사가 될 수 없었을 거예요."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid ""
+"The heartfelt exchange of wedding vows is often the most memorable part of a"
+" marriage ceremony."
+msgstr "결혼식에서 진정한 결혼 서약의 순간은 결혼식에서 가장 기억에 남는 장면입니다."
+
+#. module: theme_yes
+#: model:ir.model,name:theme_yes.model_theme_utils
+msgid "Theme Utils"
+msgstr "테마 유틸"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_masonry_block_default_template
+msgid "Venues"
+msgstr "장소"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "View our blog for inspiration"
+msgstr "블로그에서 많은 내용을 확인해 보세요."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid "View our work"
+msgstr "작업 보기"
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_carousel
+msgid ""
+"We are focused on providing high-quality service and customer satisfaction."
+msgstr "고퀄리티의 서비스와 고객 만족을 위해 노력하고 있습니다."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_media_list
+msgid ""
+"We’ll help you mark the engagement milestone with an unforgettable ceremony."
+msgstr "잊지 못할 예식과 함께 약혼식의 이정표로 만들기 위해 지원해 드리겠습니다."
+
+#. module: theme_yes
+#: model_terms:theme.ir.ui.view,arch:theme_yes.s_cover
+msgid "You focus on the big day, let us focus on you."
+msgstr "중요한 날에만 집중하세요. 노력은 저희가 하겠습니다."
