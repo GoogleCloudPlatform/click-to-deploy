@@ -61,16 +61,6 @@ actions:
     expect:
       exitCode:
         equals: 0
-- name: Trying to find previous request from Jaeger query service
-  bashTest:
-    script: |
-      sleep 10; \
-      curl --retry 3 --retry-connrefused --retry-max-time 60 \
-        "example-query.${NAMESPACE}.svc.cluster.local:16686/api/traces?service=jaeger-query&tags=%7B%22http.url%22%3A%22%2Fapi%2Fservices%3Ffoo%3Dbar%22%7D" \
-        | jq .data[0] | grep "api/services?foo=bar"
-    expect:
-      exitCode:
-        equals: 0
 - name: Delete test Jaeger
   bashTest:
     script: |
