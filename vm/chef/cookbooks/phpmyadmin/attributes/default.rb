@@ -13,5 +13,5 @@
 # limitations under the License.
 
 default['phpmyadmin']['packages'] = ['unzip']
-default['phpmyadmin']['version'] = '5.2.1'
-default['phpmyadmin']['sha256'] = '31c95fe5c00e0f899b5d31ac6fff506cf8061f2f746e9d7084c395f47451946e'
+default['phpmyadmin']['version'] = '5.2.2'
+default['phpmyadmin']['sha256'] = '6b99534f72ffb1d7275f50d23ca4141e1495c97d7cadb73a41d6dc580ed5ce29'
