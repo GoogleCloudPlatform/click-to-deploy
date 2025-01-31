@@ -14,7 +14,6 @@
 
 name 'odoo'
 depends 'postgresql'
-depends 'openssh'
 depends 'nginx'
 depends 'c2d-config'
 depends 'c2d-shared'
