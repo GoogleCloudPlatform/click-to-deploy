@@ -2,6 +2,18 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
+  name: {{ .Release.Name }}-nfs-server-pvc
+spec:
+  storageClassName: "{{ .Values.nfs.persistence.storageClass }}"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.nfs.persistence.size | quote }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
   name: {{ .Release.Name }}-nfs-dags-logs
   labels:
     app: {{ include "airflow.labels.app" . }}

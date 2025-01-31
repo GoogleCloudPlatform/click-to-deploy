@@ -30,6 +30,7 @@ spec:
         name: {{ .Release.Name }}
     spec:
       restartPolicy: Always
+      terminationGracePeriodSeconds: 60
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
       initContainers:
         {{- include "airflow.init_container.check_db" . | indent 8 }}
@@ -45,16 +46,14 @@ spec:
             {{- include "airflow.envFrom" . | indent 12 }}
           env:
             {{- include "airflow.env" . | indent 12 }}
-            - name: _AIRFLOW_WWW_USER_CREATE 
+            - name: _AIRFLOW_WWW_USER_CREATE
               value: 'true'
           command:
             {{- include "airflow.command" . | indent 12 }}
           args:
-            - "bash"
-            - "-c"
-            - "exec airflow webserver"
+            - "webserver"
           livenessProbe: &probes
-            initialDelaySeconds: 30 
+            initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 6
@@ -98,4 +97,3 @@ spec:
           secret:
             secretName: {{ .Release.Name }}-webserver-config
             defaultMode: 0644
-
