@@ -1,6 +1,5 @@
 {{- $gitea := index .Packages "gitea" -}}
 {{- $golang := index .Packages "golang" -}}
-{{- $distroMajor := index .TemplateArgs "alpineVersion" -}}
 
 FROM {{ .From }} as ospo
 
@@ -8,7 +7,7 @@ FROM {{ .From }} as ospo
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
 
-RUN apt update && apt -y install ca-certificates
+RUN apt update && apt -y install ca-certificates curl
 
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
@@ -20,7 +19,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 #Build stage
-FROM golang:{{ $golang.Version }}-alpine{{ $distroMajor }} AS build-env
+FROM golang:{{ $golang.Version }}-bookworm AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
@@ -31,8 +30,8 @@ ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
 
 # Build deps
-RUN apk --no-cache add \
-    build-base \
+RUN apt-get update && apt-get install -y \
+    build-essential \
     git \
     nodejs \
     npm \
@@ -60,12 +59,12 @@ RUN apt-get update && \
     apt-get install -y \
     bash \
     ca-certificates \
+    git \
     gettext \
     openssh-server \
     s6 \
     sqlite3 \
-    gnupg \
-    musl-dev
+    gnupg
 
 RUN ln -s /usr/lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1 \
     &&  ssh-keygen -A \

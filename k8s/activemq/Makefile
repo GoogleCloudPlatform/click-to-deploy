@@ -6,12 +6,13 @@ include ../images.Makefile
 CHART_NAME := activemq
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 5.18
+TRACK ?= 6.1
+SERVICE_NAME ?= services/450acd45-a325-47bc-a603-0d79951b9800.cloudpartnerservices.goog
 
 VERIFY_WAIT_TIMEOUT = 1800
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
-IMAGE_ACTIVEMQ ?= $(SOURCE_REGISTRY)/activemq5:$(TRACK)
+IMAGE_ACTIVEMQ ?= $(SOURCE_REGISTRY)/activemq6:$(TRACK)
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_ACTIVEMQ))

@@ -51,20 +51,20 @@ spec:
             secretKeyRef:
               name: {{ .Release.Name }}-wordpress-secret
               key: wp-password
-        # A hostname and port of MySQL service.
+        # A hostname and port of MariaDB service.
         - name: WORDPRESS_DB_HOST
-          value: {{ .Release.Name }}-mysql-svc
+          value: {{ .Release.Name }}-mariadb-svc
         # A username used for accessing the database.
         - name: WORDPRESS_DB_USER
           valueFrom:
             secretKeyRef:
-              name: {{ .Release.Name }}-mysql-secret
+              name: {{ .Release.Name }}-mariadb-secret
               key: wp-user
         # A password used for accessing the database.
         - name: WORDPRESS_DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Release.Name }}-mysql-secret
+              name: {{ .Release.Name }}-mariadb-secret
               key: wp-password
         # A database name used by WordPress.
         - name: WORDPRESS_DB_NAME

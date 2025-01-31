@@ -104,7 +104,7 @@ spec:
               scheme: HTTP
               path: /probe/ready
               port: api-server
-            initialDelaySeconds: 5
+            initialDelaySeconds: 120
             periodSeconds: 10
             successThreshold: 1
             failureThreshold: 3

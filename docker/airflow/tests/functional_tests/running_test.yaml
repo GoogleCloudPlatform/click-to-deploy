@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ setup:
   - '--name'
   - 'some-airflow-$UNIQUE-id'
   - '-e'
-  - 'AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@some-postgres-$UNIQUE-id/airflow'
+  - 'AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@some-postgres-$UNIQUE-id/airflow'
   - '-e'
   - 'AIRFLOW_UID=50000'
   - '-e'
@@ -68,4 +68,3 @@ tests:
   expect:
     stdout:
       matches: '"status": "healthy"'
-

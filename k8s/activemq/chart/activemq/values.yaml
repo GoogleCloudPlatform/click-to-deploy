@@ -4,7 +4,7 @@ image:
   pullPolicy: IfNotPresent
 persistence:
   storageClass: null
-  size: 5Gi
+  size: 10Gi
 consolePassword: null
 enableBashDebug: false
 admin:

@@ -1,0 +1,129 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-mariadb
+  labels: &MariaDBDeploymentLabels
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+    app.kubernetes.io/component: wordpress-mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *MariaDBDeploymentLabels
+  serviceName: {{ .Release.Name }}-mariadb-svc
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: *MariaDBDeploymentLabels
+    spec:
+      containers:
+      - image: {{ .Values.db.image }}
+        name: mariadb
+        env:
+        # A password for root superuser.
+        - name: MARIADB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mariadb-secret
+              key: root-password
+        # A database name to be created at startup.
+        - name: MARIADB_DATABASE
+          value: wordpress
+        # A new user to be created at startup.
+        - name: MARIADB_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mariadb-secret
+              key: wp-user
+        # A password of the new user created at startup.
+        - name: MARIADB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mariadb-secret
+              key: wp-password
+        ports:
+        - name: mariadb
+          containerPort: 3306
+        volumeMounts:
+        - name: {{ .Release.Name }}-mariadb-pvc
+          mountPath: /var/lib/mariadb
+          subPath: data
+        - name: mariadb-config
+          mountPath: /docker-entrypoint-initdb.d
+          readOnly: true
+        livenessProbe:
+          tcpSocket:
+            port: mariadb
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: mariadb
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+      - image: {{ .Values.db.exporter.image }}
+        args:
+        - "--mysqld.address=127.0.0.1:3306"
+        - "--mysqld.username={{ .Values.db.exporter.user }}"
+        name: mysqld-exporter
+        env:
+        - name: MYSQLD_EXPORTER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-mysqld-exporter-secret
+              key: mysqld-exporter-pass
+        ports:
+        - name: exporter
+          containerPort: 9104
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9104
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9104
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+          periodSeconds: 10
+      {{- if .Values.metrics.exporter.enabled }}
+      - name: prometheus-to-sd
+        image: {{ .Values.metrics.image }}
+        command:
+        - /monitor
+        - --stackdriver-prefix=custom.googleapis.com
+        - --source=mariadb:http://localhost:9104/metrics
+        - --pod-id=$(POD_NAME)
+        - --namespace-id=$(POD_NAMESPACE)
+        - --monitored-resource-types=k8s
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{- end }}
+      volumes:
+      - name: mariadb-config
+        secret:
+          secretName: {{ .Release.Name }}-mysqld-exporter-secret
+          items:
+          - key: mysqld_exporter.sql
+            path: mysqld_exporter.sql
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Release.Name }}-mariadb-pvc
+      labels:
+        app.kubernetes.io/name: "{{ .Release.Name }}"
+        app.kubernetes.io/component: wordpress-server
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "{{ .Values.db.persistence.storageClass }}"
+      resources:
+        requests:
+          storage: "{{ .Values.db.persistence.size }}"
