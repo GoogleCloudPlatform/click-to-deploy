@@ -7,7 +7,7 @@ CHART_NAME := jenkins
 APP_ID ?= $(CHART_NAME)
 VERIFY_WAIT_TIMEOUT = 1800
 
-TRACK ?= 2
+TRACK ?= 2.494
 SERVICE_NAME := services/db9fe615-e7a9-4387-abe6-4126d6cec552.cloudpartnerservices.goog
 METRICS_EXPORTER_TAG ?= v0.5.1
 
