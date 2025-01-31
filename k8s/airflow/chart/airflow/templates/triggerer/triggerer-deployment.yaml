@@ -30,6 +30,7 @@ spec:
         name: {{ .Release.Name }}
     spec:
       restartPolicy: Always
+      terminationGracePeriodSeconds: 60
       serviceAccountName: {{ include "airflow.serviceAccountName" . }}
       initContainers:
         {{- include "airflow.init_container.check_db" . | indent 8 }}
@@ -44,11 +45,9 @@ spec:
           command:
             {{- include "airflow.command" . | indent 12 }}
           args:
-            - "bash"
-            - "-c"
-            - "exec airflow triggerer"
+            - "triggerer"
           livenessProbe:
-            initialDelaySeconds: 10 
+            initialDelaySeconds: 10
             periodSeconds: 30
             timeoutSeconds: 60
             failureThreshold: 5
@@ -86,4 +85,3 @@ spec:
             {{- include "airflow.volumeMounts" . | indent 12 }}
       volumes:
         {{- include "airflow.volumes" . | indent 8 }}
-
