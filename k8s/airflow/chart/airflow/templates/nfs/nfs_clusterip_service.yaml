@@ -8,7 +8,7 @@ spec:
       port: 2049
       protocol: TCP
     - name: mountd
-      port: 20048
+      port: 55038
       protocol: TCP
   selector:
     role: nfs-server
