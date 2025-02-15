@@ -7,11 +7,11 @@ CHART_NAME := airflow
 APP_ID ?= $(CHART_NAME)
 WAIT_FOR_READY_TIMEOUT := 600
 
-TRACK ?= 2.8
+TRACK ?= 2.10
 # Track for components
 POSTGRESQL_TRACK ?= latest
 NFS_TRACK ?= 1.3
-METRICS_EXPORTER_TAG ?= v0.5.1
+METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
 VERIFY_WAIT_TIMEOUT = 1800
 
@@ -29,7 +29,7 @@ IMAGE_NFS ?= $(SOURCE_REGISTRY)/nfs-server1:$(NFS_TRACK)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_AIRFLOW))
 
 # Prometheus-to-SD
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 # List of images used in application
 ADDITIONAL_IMAGES := postgresql nfs prometheus-to-sd
