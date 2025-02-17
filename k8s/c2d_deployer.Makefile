@@ -108,7 +108,7 @@ endif
 		&& docker buildx inspect "$$DEPLOYER_BUILDER" --bootstrap \
 		&& docker buildx build \
 			--push \
-			--annotation="index,manifest:cloudmarketplace.googleapis.com/service=$(SERVICE_NAME)" \
+			--annotation="index,manifest:com.googleapis.cloudmarketplace.product.service.name=$(SERVICE_NAME)" \
 			--build-arg REGISTRY="$(REGISTRY)/$(APP_ID)" \
 			--build-arg TAG="$(RELEASE)" \
 			--build-arg CHART_NAME="$(CHART_NAME)" \
@@ -165,7 +165,7 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
 		&& cd apptest/tester \
 		&& docker buildx build \
 				--push \
-				--annotation="index,manifest:cloudmarketplace.googleapis.com/service=$(SERVICE_NAME)" \
+				--annotation="index,manifest:com.googleapis.cloudmarketplace.product.service.name=$(SERVICE_NAME)" \
 				--tag "$(APP_TESTER_IMAGE)" .  \
 		&& docker buildx rm "$$TESTER_BUILDER"
 	@touch "$@"

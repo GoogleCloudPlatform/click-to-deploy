@@ -13,7 +13,7 @@ SERVICE_NAME := services/9f0fe022-a66a-4133-8099-f0ca7c61a2db.cloudpartnerservic
 POSTGRESQL_TAG ?= latest
 POSTGRESQL_EXPORTER_TAG ?= latest
 REDIS_TAG ?= 7.2
-REDIS_EXPORTER_TAG ?= latest
+REDIS_EXPORTER_TAG ?= 1.63
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
