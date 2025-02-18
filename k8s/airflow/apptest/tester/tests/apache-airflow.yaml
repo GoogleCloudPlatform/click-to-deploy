@@ -44,7 +44,7 @@ actions:
       kubectl exec ${AIRFLOW_PODNAME} -c airflow-web --namespace $NAMESPACE -- airflow dags test testdag | grep -c -P "^(.*) INFO - test passed$"
     expect:
       stdout:
-        matches: "1"
+        matches: "2"
 - name: Scale down airflow
   bashTest:
     script: |

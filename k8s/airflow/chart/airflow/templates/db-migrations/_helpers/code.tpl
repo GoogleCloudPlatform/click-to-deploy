@@ -6,8 +6,19 @@ The python script to apply airflow database migrations.
 ## Imports ##
 #############
 import logging
+import signal
 import time
+import sys
 from airflow.utils.db import upgradedb
+
+
+def signal_handler(sig, frame):
+    print('Termination signal received.')
+    sys.exit(0)
+
+
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
 
 
 #############

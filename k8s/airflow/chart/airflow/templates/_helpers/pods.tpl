@@ -32,9 +32,8 @@ EXAMPLE USAGE: {{ include "airflow.init_container.check_db" (dict "Release" .Rel
   command:
     {{- include "airflow.command" . | indent 4 }}
   args:
-    - "bash"
-    - "-c"
-    - "exec timeout 60s airflow db check"
+    - "db"
+    - "check"
   volumeMounts:
     {{- include "airflow.volumeMounts" . | indent 4 }}
 {{- end }}
@@ -53,9 +52,10 @@ EXAMPLE USAGE: {{ include "airflow.init_container.wait_for_db_migrations" (dict 
   command:
     {{- include "airflow.command" . | indent 4 }}
   args:
-    - "bash"
-    - "-c"
-    - "exec airflow db check-migrations -t 60"
+    - "db"
+    - "check-migrations"
+    - "-t"
+    - "60"
   volumeMounts:
     {{- include "airflow.volumeMounts" . | indent 4 }}
 {{- end }}
