@@ -32,7 +32,6 @@ kind: PersistentVolume
 metadata:
   name: {{ .Release.Name }}-nfs-dags-logs
 spec:
-  persistentVolumeReclaimPolicy: "Delete"
   capacity:
     storage: {{ .Values.nfs.persistence.size | quote }}
   storageClassName: "{{ .Values.nfs.persistence.storageClass }}"
