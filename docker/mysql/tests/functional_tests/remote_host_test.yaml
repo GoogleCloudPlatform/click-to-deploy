@@ -1,0 +1,34 @@
+# Copyright (C) 2017 Google Inc.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+setup:
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-mysql-server-$UNIQUE-id, -e, 'MYSQL_ROOT_PASSWORD=example-password', -d, '$IMAGE']
+- command: [sleep, 30s]
+- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-mysql-client-$UNIQUE-id, -d, '$IMAGE', sh, -c, 'sleep 320']
+
+teardown:
+- command: [docker, stop, some-mysql-server-$UNIQUE-id, some-mysql-client-$UNIQUE-id]
+- command: [docker, rm, some-mysql-server-$UNIQUE-id, some-mysql-client-$UNIQUE-id]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
+
+target: some-mysql-client-$UNIQUE-id
+tests:
+- name: Can connect to remote container
+  command: [mysql, -h, some-mysql-server-$UNIQUE-id, -uroot, -pexample-password, -e, 'SHOW DATABASES']
+  expect:
+    stdout:
+      matches: mysql

@@ -1,0 +1,45 @@
+# Copyright (c) 2019, Google Inc.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# This test-suite is responsible to assure that standalone nginx-exporter has
+# proper connectivity with nginx web servers which have stub_status enabled.
+
+setup:
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command: [docker, run, --privileged=true, -e, "ENABLE_STUB_STATUS=true", -e, "ENABLE_STUB_ALL_HOSTS=true",--name, some-nginx-$UNIQUE-id, --net, testbridge-$UNIQUE-id, -d, 'marketplace.gcr.io/google/nginx1:1.25']
+- command: [docker, run, --privileged=true, --name, some-nginx-exporter-$UNIQUE-id, -e, 'SCRAPE_URI=http://some-nginx-$UNIQUE-id:8080/stub_status', -p, '9113:9113', --net, testbridge-$UNIQUE-id, -d, '$IMAGE']
+- command: [sleep, 5s]
+- command: [docker, exec, some-nginx-exporter-$UNIQUE-id, sh, -c, 'apt-get update && apt-get install -y curl']
+
+teardown:
+- command: [docker, stop, some-nginx-$UNIQUE-id, some-nginx-exporter-$UNIQUE-id]
+- command: [docker, rm, some-nginx-$UNIQUE-id, some-nginx-exporter-$UNIQUE-id]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
+
+target: some-nginx-exporter-$UNIQUE-id
+tests:
+- name: Test Prometheus exporter container
+  command: [curl, 'http://localhost:9113/metrics']
+  expect:
+    stdout:
+      matches: '(?m)^nginx_up 1$'

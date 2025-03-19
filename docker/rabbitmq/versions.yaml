@@ -1,0 +1,46 @@
+# Copyright 2025 Google LLC
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  enable_parallel: false
+versions:
+- dir: 3/debian12/3.13
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
+    otp:
+      version: 26.2.5.3
+    rabbitmq:
+      version: 3.13.7
+  repo: rabbitmq3
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/96358145-e7c1-4dcb-aaee-e4a35745c11d.cloudpartnerservices.goog
+  tags:
+  - 3.13.7-debian12
+  - 3.13-debian12
+  - 3-debian12
+  - 3.13.7
+  - '3.13'
+  - '3'
+  - latest

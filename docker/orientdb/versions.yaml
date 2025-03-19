@@ -1,0 +1,41 @@
+# Copyright 2024 Google LLC
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+cloudbuild:
+  enable_parallel: false
+versions:
+- dir: 3/debian11/3.2
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    orientdb:
+      sha256: 9dd9d6d0da9383da36050c7f46335313d0e820d3546cd313ead755bb6ead365c
+      version: 3.2.27
+  repo: orientdb3
+  tags:
+  - 3.2.27-debian11
+  - 3.2-debian11
+  - 3-debian11
+  - 3.2.27
+  - '3.2'
+  - '3'
+  - latest
+  templateArgs:
+    download_server: https://repo1.maven.org/maven2/com/orientechnologies
+

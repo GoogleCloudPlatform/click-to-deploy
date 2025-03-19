@@ -1,0 +1,37 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  enable_parallel: false
+versions:
+- dir: 1/debian11/1.6
+  from: marketplace.gcr.io/google/c2d-debian11
+  packages:
+    pushgateway:
+      version: 1.6.2
+  repo: prometheus-pushgateway1
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/fe4a2959-4551-43f2-a5c6-73ae7c8963d3.cloudpartnerservices.goog
+  tags:
+  - 1.6.2-debian11
+  - 1.6-debian11
+  - 1-debian11
+  - 1.6.2
+  - '1.6'
+  - '1'
+  - latest
+

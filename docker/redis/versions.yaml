@@ -1,0 +1,75 @@
+# Copyright 2024 Google LLC
+#
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of the copyright holder nor the
+#       names of its contributors may be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL Google Inc. BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  enable_parallel: true
+versions:
+# Never update for a later version than Redis 7.2.4
+#  due to its current licensing
+- dir: 7/debian12/7.2
+  excludeTests:
+  - tests/functional_tests/redis_exporter_test.yaml
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
+    redis:
+      version: 7.2.4
+  repo: redis7
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/b811d430-5ef1-420d-a7c1-6c9537ff94d6.cloudpartnerservices.goog
+  tags:
+  - 7.2.4-debian12
+  - 7.2-debian12
+  - 7-debian12
+  - 7.2.4
+  - '7.2'
+  - '7'
+  - latest
+  templateSubDir: redis7
+- dir: exporter
+  excludeTests:
+  - tests/functional_tests/set_get_test.yaml
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    golang:
+      version: '1.21.1'
+    redis_exporter:
+      version: 1.63.0
+  repo: redis-exporter1
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/88d78573-15f3-4af8-8f68-30b957986856.cloudpartnerservices.goog
+  tags:
+  - 1.63.0
+  - '1.63'
+  - '1'
+  - latest
+  templateSubDir: exporter

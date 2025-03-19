@@ -1,0 +1,31 @@
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, run, --privileged=true, --name, some-cassandra-$UNIQUE-id, -e, 'CASSANDRA_PROMETHEUS_ENABLED=true', -d, '$IMAGE']
+- command: [sleep, 5s]
+- command: [docker, exec, some-cassandra-$UNIQUE-id, sh, -c, 'apt-get update && apt-get install -y curl']
+- command: [sleep, 20s]
+
+teardown:
+- command: [docker, stop, some-cassandra-$UNIQUE-id]
+- command: [docker, rm, some-cassandra-$UNIQUE-id]
+
+target: some-cassandra-$UNIQUE-id
+tests:
+- name: Test Prometheus metrics
+  command: [curl, 'http://localhost:9404/metrics']
+  expect:
+    stdout:
+      matches: '# TYPE cassandra_threadpools_completedtasks gauge'

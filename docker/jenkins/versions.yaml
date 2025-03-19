@@ -1,0 +1,45 @@
+# Copyright 2025 Google LLC
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  enable_parallel: false
+versions:
+- dir: 2/debian12/2.494
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    jenkins:
+      sha256: 2f85910fa035d8bb6460ab5b4c574f95e9e72a39b14419df608186bf704f64c4
+      version: '2.494'
+    tini:
+      sha256: c5b0666b4cb676901f90dfcb37106783c5fe2077b04590973b885950611b30ee
+      version: 0.19.0
+  repo: jenkins2
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/515fce80-e53c-42ce-8425-3cdf6fc0f0d4.cloudpartnerservices.goog
+  tags:
+  - 2.494-debian12
+  - 2-debian12
+  - '2.494'
+  - '2'
+  - latest
+  templateArgs:
+    c2dRelease: 2.494.1

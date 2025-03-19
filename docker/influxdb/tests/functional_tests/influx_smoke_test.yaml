@@ -1,0 +1,51 @@
+# Copyright (c) 2018 Google LLC.
+#
+# The MIT License (MIT)
+#  
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+setup:
+
+- command: [docker, run, --name, some-influxdb-$UNIQUE-id, -e, DOCKER_INFLUXDB_INIT_MODE=setup, -e, DOCKER_INFLUXDB_INIT_USERNAME=some-user, -e, DOCKER_INFLUXDB_INIT_PASSWORD=some-password,-e, DOCKER_INFLUXDB_INIT_ORG=some-org, -e, DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=some-token-$UNIQUE-id, -e, DOCKER_INFLUXDB_HTTP_AUTH_ENABLED=true, -e, DOCKER_INFLUXDB_INIT_BUCKET=some-bucket-$UNIQUE-id, -d, $IMAGE]
+- command: [sleep, 30s]
+
+teardown:
+- command: [docker, stop, some-influxdb-$UNIQUE-id]
+- command: [docker, rm, some-influxdb-$UNIQUE-id]
+
+target: some-influxdb-$UNIQUE-id
+tests:
+- name: Can read from a bucket
+  command: [curl, --header, "Authorization: Token some-token-$UNIQUE-id", "localhost:8086/api/v2/buckets?name=some-bucket-$UNIQUE-id"]
+  expect:
+    stdout:
+      matches: 'some-bucket'
+- name: Can use influx CLI
+  command: [influx, bucket, list]
+  expect:
+    stdout:
+      matches: _monitoring
+    stderr:
+      mustBeEmpty: true
+- name: Is InfluxDB /metrics HTTP endpoint working
+  command:
+  - curl
+  - http://localhost:8086/metrics
+  expect:
+    stdout:
+      matches: '(?m)^# HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.$'

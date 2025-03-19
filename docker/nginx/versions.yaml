@@ -1,0 +1,66 @@
+# Copyright 2024 Google LLC
+#
+# Redistribution and use in source and binary forms, with or without modification, are permitted
+# provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this list of conditions
+# and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions
+# and the following disclaimer in the documentation and/or other materials provided with
+# the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+# FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+# WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  enable_parallel: false
+versions:
+- dir: 1/debian12/1.26
+  excludeTests:
+  - tests/functional_tests/exporter_test.yaml
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    nginx:
+      version: 1.26.2
+  repo: nginx1
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/2e7c2687-3a3c-465b-84e9-ee17fc5f89fd.cloudpartnerservices.goog
+  tags:
+  - 1.26.2-debian12
+  - 1.26-debian12
+  - 1-debian12
+  - 1.26.2
+  - '1.26'
+  - '1'
+  - latest
+  templateArgs:
+    os: bookworm
+    repo: http://nginx.org/packages/debian/
+  templateSubDir: nginx
+- dir: exporter
+  excludeTests:
+  - tests/functional_tests/nginx_test.yaml
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    exporter:
+      version: 1.3.0
+  repo: nginx-exporter1
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/dda4477e-0715-4738-9c5f-4d73e19bac3d.cloudpartnerservices.goog
+  tags:
+  - 1.3.0
+  - '1.3'
+  - '1'
+  - latest
+  templateSubDir: exporter
