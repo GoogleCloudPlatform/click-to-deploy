@@ -1,0 +1,40 @@
+# Copyright 2024 Google LLC.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, run, --name, some-consul-$UNIQUE-id, -d, '$IMAGE']
+- command: [sleep, 15s]
+
+teardown:
+- command: [docker, stop, some-consul-$UNIQUE-id]
+- command: [docker, rm, some-consul-$UNIQUE-id]
+
+target: some-consul-$UNIQUE-id
+tests:
+- name: Run consul binary
+  command: [/bin/consul, version]
+  expect:
+    stdout:
+      matches: '^Consul.+'
+- name: Put key and value to consul
+  command: [/bin/consul, kv, put, key, value_to_store]
+  expect:
+    stdout:
+      matches: '^Success! Data written to: key'
+- name: Get stored value from consul by key
+  command: [/bin/consul, kv, get, key]
+  expect:
+    stdout:
+      matches: '^value_to_store'
+

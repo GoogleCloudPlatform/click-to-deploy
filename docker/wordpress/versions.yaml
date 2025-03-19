@@ -1,0 +1,63 @@
+# Copyright 2024 Google LLC
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+cloudbuild:
+  enable_parallel: true
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
+versions:
+- dir: 6/php8/debian11/apache/6.6
+  excludeTests:
+  - tests/functional_tests/apache_exporter_test.yaml
+  from: marketplace.gcr.io/google/php8-apache2:8.2
+  packages:
+    wordpress:
+      version: 6.6.1
+  repo: wordpress6-php8-apache
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/1a8e88da-5416-4d78-b91e-9a1b2be81323.cloudpartnerservices.goog
+  tags:
+  - 6.6.1-debian11
+  - 6.6-debian11
+  - 6-debian11
+  - 6.6.1
+  - '6.6'
+  - '6'
+  - latest
+  templateArgs:
+    c2dRelease: 6.6.1
+    cmd: apache2-foreground
+  templateSubDir: debian11
+- dir: exporter
+  excludeTests:
+  - tests/functional_tests/running_test.yaml
+  from: marketplace.gcr.io/google/debian11
+  packages:
+    apache_exporter:
+      version: 0.13.4
+    golang:
+      version: '1.20'
+  repo: apache-exporter0
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/8139d7ec-b450-4593-829e-608b968b7454.cloudpartnerservices.goog
+  tags:
+  - 0.13.4
+  - '0.13'
+  - '0'
+  - latest
+  templateSubDir: exporter

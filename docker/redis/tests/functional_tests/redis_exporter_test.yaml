@@ -1,0 +1,37 @@
+# Copyright (c) 2019, Google LLC.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+setup:
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-redis-$UNIQUE-id, -d, 'launcher.gcr.io/google/redis4:latest']
+- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-redis-exporter-$UNIQUE-id, -d, -e, 'REDIS_ADDR=some-redis-$UNIQUE-id', '-p', '9121:9121', '$IMAGE']
+- command: [docker, exec, some-redis-exporter-$UNIQUE-id, apt, update]
+- command: [docker, exec, some-redis-exporter-$UNIQUE-id, apt, install, curl, -y]
+
+teardown:
+- command: [docker, stop, some-redis-$UNIQUE-id, some-redis-exporter-$UNIQUE-id]
+- command: [docker, rm, some-redis-$UNIQUE-id, some-redis-exporter-$UNIQUE-id]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
+
+target: some-redis-exporter-$UNIQUE-id
+tests:
+- name: Is Redis Exporter /metrics HTTP endpoint working
+  command:
+  - curl
+  - http://localhost:9121/metrics
+  expect:
+    stdout:
+      matches: '(?m)^redis_up 1$'

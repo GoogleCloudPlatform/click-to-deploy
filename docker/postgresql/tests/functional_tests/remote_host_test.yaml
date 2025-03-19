@@ -1,0 +1,40 @@
+# Copyright 2021 Google LLC
+#
+# Permission to use, copy,
+# modify, and distribute this software and its documentation for any purpose,
+# without fee, and without a written agreement is hereby granted, provided that
+# the above copyright notice and this paragraph and the following two paragraphs
+# appear in all copies.
+#
+# IN NO EVENT SHALL GOOGLE BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING
+# LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION,
+# EVEN IF GOOGLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# GOOGLE SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT
+# NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+# PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS,
+# AND GOOGLE HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# ENHANCEMENTS, OR MODIFICATIONS.
+
+setup:
+- command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
+- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-postgres-server-$UNIQUE-id, -e, 'POSTGRES_PASSWORD=example-password', -e, 'POSTGRES_USER=testuser', -e, 'POSTGRES_DB=testdb', -d, '$IMAGE']
+- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-postgres-client-$UNIQUE-id, -d, '$IMAGE']
+- command: [sleep, 30s]
+
+teardown:
+- command: [docker, stop, some-postgres-server-$UNIQUE-id, some-postgres-client-$UNIQUE-id]
+- command: [docker, rm, some-postgres-server-$UNIQUE-id, some-postgres-client-$UNIQUE-id]
+- command: [docker, network, rm, testbridge-$UNIQUE-id]
+
+target: some-postgres-client-$UNIQUE-id
+tests:
+- name: Can connect to remote host
+  command:
+     - sh
+     - '-c'
+     - 'PGPASSWORD=example-password psql --host=some-postgres-server-$UNIQUE-id --username=testuser --dbname=testdb --list'
+  expect:
+    stdout:
+      matches: List of databases

@@ -1,0 +1,33 @@
+# Copyright 2023 Google LLC
+#
+# Permission to use, copy,
+# modify, and distribute this software and its documentation for any purpose,
+# without fee, and without a written agreement is hereby granted, provided that
+# the above copyright notice and this paragraph and the following two paragraphs
+# appear in all copies.
+#
+# IN NO EVENT SHALL GOOGLE BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING
+# LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION,
+# EVEN IF GOOGLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# GOOGLE SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT
+# NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+# PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS,
+# AND GOOGLE HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# ENHANCEMENTS, OR MODIFICATIONS.
+
+setup:
+- command: [docker, run, --name, exporter-$UNIQUE-id, -d, '$IMAGE']
+
+teardown:
+- command: [docker, stop, exporter-$UNIQUE-id]
+- command: [docker, rm, exporter-$UNIQUE-id]
+
+target: exporter-$UNIQUE-id
+tests:
+- name: Check licence
+  command: [sha256sum, /usr/src/licenses/postgres-exporter.LICENSE]
+  expect:
+    stdout:
+      equals: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4  /usr/src/licenses/postgres-exporter.LICENSE
