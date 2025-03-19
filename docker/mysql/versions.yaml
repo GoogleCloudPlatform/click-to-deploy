@@ -30,16 +30,16 @@ versions:
     mysql:
       gpg: "BCA4 3417 C3B4 85DD 128E C6D4 B7B3 B788 A8D3 785C"
       major: '8.0'
-      version: 8.0.40
+      version: 8.0.41
   repo: mysql8
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/13da159e-d102-4c5c-b567-c11745a06cf7.cloudpartnerservices.goog
   tags:
-  - 8.0.40-debian12
+  - 8.0.41-debian12
   - 8.0-debian12
   - 8-debian12
-  - 8.0.40
+  - 8.0.41
   - '8.0'
   - '8'
   - latest
