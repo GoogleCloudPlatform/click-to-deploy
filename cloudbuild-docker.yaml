@@ -23,7 +23,7 @@ steps:
   - click-to-deploy
   - --file
   - tools/dockertools.Dockerfile
-  - .
+  - tools
 
 - id: Invoke dockerfiles Tool
   name: click-to-deploy
