@@ -1,0 +1,14 @@
+steps:
+- id: Build Functional Test Docker Image
+  name: gcr.io/cloud-builders/docker
+  args:
+  - build
+  - --tag
+  - gcr.io/$PROJECT_ID/functional_test
+  - --file
+  - tools/functional_tests.Dockerfile
+  - tools
+
+artifacts:
+  images:
+    - gcr.io/$PROJECT_ID/functional_test
