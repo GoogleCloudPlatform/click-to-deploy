@@ -27,7 +27,7 @@ steps:
 
 - id: Invoke dockerfiles Tool
   name: click-to-deploy
-  entrypoint: bin/dockerfiles
+  entrypoint: dockerfiles
   dir: docker/$_SOLUTION_NAME
   args:
   - --verify_only
@@ -38,7 +38,7 @@ steps:
   dir: docker/$_SOLUTION_NAME
   args:
   - -c
-  - bin/cloudbuild > cloudbuild.yaml
+  - cloudbuild > cloudbuild.yaml
 
 - id: Test Solution
   name: gcr.io/cloud-builders/gcloud
