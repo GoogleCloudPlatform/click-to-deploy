@@ -6,7 +6,7 @@ steps:
   - --tag
   - gcr.io/$PROJECT_ID/functional_test
   - --file
-  - tools/functional_tests.Dockerfile
+  - tools/functional_test.Dockerfile
   - tools
 
 artifacts:
