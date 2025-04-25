@@ -21,23 +21,22 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: ""
+  storageClassName: "{{ .Values.nfs.persistence.storageClass }}"
   resources:
     requests:
       storage: {{ .Values.nfs.persistence.size | quote }}
+  volumeName: {{ .Release.Name }}-nfs-dags-logs
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: {{ .Release.Name }}-nfs-dags-logs
 spec:
-  persistentVolumeReclaimPolicy: "Delete"
   capacity:
     storage: {{ .Values.nfs.persistence.size | quote }}
-  storageClassName: ""
+  storageClassName: "{{ .Values.nfs.persistence.storageClass }}"
   accessModes:
     - ReadWriteMany
   nfs:
-    server: {{ .Release.Name }}-nfs-server.{{ .Release.Namespace }}.svc.cluster.local
+    server: "{{ .Release.Name }}-nfs-server.{{ .Release.Namespace }}.svc.cluster.local"
     path: "/"
-

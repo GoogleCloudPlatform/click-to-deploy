@@ -1,0 +1,33 @@
+# Copyright (C) 2017 Google Inc.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+setup:
+- command: [docker, run, --name, some-mysql-$UNIQUE-id, -e, 'MYSQL_ROOT_PASSWORD=example-password', -d, '$IMAGE']
+- command: [sleep, 30s]
+
+teardown:
+- command: [docker, stop, some-mysql-$UNIQUE-id]
+- command: [docker, rm, some-mysql-$UNIQUE-id]
+
+target: some-mysql-$UNIQUE-id
+tests:
+- name: Create a database
+  command: [mysql, -uroot, -pexample-password, -e, 'CREATE DATABASE exampledb']
+- name: Show databases
+  command: [mysql, -uroot, -pexample-password, -e, 'SHOW DATABASES']
+  expect:
+    stdout:
+      matches: exampledb

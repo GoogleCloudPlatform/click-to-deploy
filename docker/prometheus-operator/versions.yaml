@@ -19,34 +19,41 @@
 
 
 cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 0/debian11/0.74
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 0/debian12/0.77
+  from: marketplace.gcr.io/google/debian12
   packages:
     prometheus-operator:
-      version: 0.74.0
+      version: 0.77.1
     golang:
-      version: 1.22.0
+      version: 1.23.1
   repo: prometheus-operator0
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/c7c58b15-e370-4ba7-b1ec-5d8e2c4df4df.cloudpartnerservices.goog
   tags:
-  - 0.74.0-debian11
-  - 0.74-debian11
-  - 0-debian11
-  - 0.74.0
-  - '0.74'
+  - 0.77.1-debian12
+  - 0.77-debian12
+  - 0-debian12
+  - 0.77.1
+  - '0.77'
   - '0'
   - latest
-- dir: 0/debian11/0.65
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 0/debian12/0.69
+  from: marketplace.gcr.io/google/debian12
   packages:
     prometheus-operator:
-      version: 0.65.2
+      version: 0.69.1
     golang:
-      version: 1.21.6
+      version: 1.23.1
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/c7c58b15-e370-4ba7-b1ec-5d8e2c4df4df.cloudpartnerservices.goog
   repo: prometheus-operator0
   tags:
-  - 0.65.2-debian11
-  - 0.65-debian11
-  - 0.65.2
-  - '0.65'
+  - 0.69.1-debian12
+  - 0.69-debian12
+  - 0.69.1
+  - '0.69'

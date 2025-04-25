@@ -8,12 +8,13 @@ APP_ID ?= $(CHART_NAME)
 VERIFY_WAIT_TIMEOUT = 1800
 
 TRACK ?= 4.1
+SERVICE_NAME := services/5a7d4b26-04c9-4426-b4d2-e1e645683965.cloudpartnerservices.goog
 
-METRICS_EXPORTER_TAG ?= v0.5.1
+METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_CASSANDRA ?= $(SOURCE_REGISTRY)/cassandra4:$(TRACK)
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image

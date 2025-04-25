@@ -1,10 +1,11 @@
-FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.5
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget \
+    ca-certificates \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget -q -O /bin/kubectl \
+RUN curl -L -o /bin/kubectl \
     https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl \
       && chmod 755 /bin/kubectl
 

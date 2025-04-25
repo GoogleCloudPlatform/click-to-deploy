@@ -8,13 +8,14 @@ APP_ID ?= $(CHART_NAME)
 
 VERIFY_WAIT_TIMEOUT = 1800
 
-TRACK ?= 11.1
+TRACK ?= 11.5
+SERVICE_NAME := services/1b05c98f-d74b-4d67-a78c-16ea597cd191.cloudpartnerservices.goog
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_MARIADB ?= $(SOURCE_REGISTRY)/mariadb11:$(TRACK)
 IMAGE_MYSQLD_EXPORTER ?= $(SOURCE_REGISTRY)/mysql8:exporter
-IMAGE_PROMETHEUS_TO_SD ?= k8s.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= eu.gcr.io/k8s-artifacts-prod/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image

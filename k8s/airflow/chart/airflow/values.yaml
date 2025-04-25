@@ -20,7 +20,7 @@ nfs:
     repo: null
     tag: null
   persistence:
-    storageClass: standard
+    storageClass: null
     size: 5Gi
 
 metrics:
@@ -37,4 +37,3 @@ postgresql:
   persistence:
     storageClass: standard
     size: 5Gi
-

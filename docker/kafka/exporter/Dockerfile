@@ -1,6 +1,6 @@
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian12
 
-ENV EXPORTER_VERSION 1.6.0
+ENV EXPORTER_VERSION 1.8.0
 
 ENV EXPORTER_USER="exporter" \
     EXPORTER_UID="9308" \
@@ -12,7 +12,7 @@ ENV PATH="${PATH}:${EXPORTER_HOME}"
 
 RUN set -ex; \
   apt update \
-  && apt -y install ca-certificates \
+  && apt -y install ca-certificates curl \
   && groupadd -r --gid "${EXPORTER_GID}" "${EXPORTER_GROUP}" \
   && useradd -r --uid "${EXPORTER_UID}" --gid "${EXPORTER_GID}" -s /sbin/nologin "${EXPORTER_USER}"
 

@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/c2d-debian11 as exporter-builder
+FROM marketplace.gcr.io/google/debian12 as exporter-builder
 
 ENV EXPORTER_VERSION 1.1.0
 ENV EXPORTER_SHA256 c7446aa33d3505fc8b4a92327c89a543f217ebb246c76880ea796f2893d40418
@@ -12,7 +12,7 @@ RUN set -eu \
     && echo "${EXPORTER_SHA256} /zookeeper_exporter" | sha256sum -c \
     && chmod +x /zookeeper_exporter
 
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian12
 
 RUN set -eu \
     # Installing utilities
