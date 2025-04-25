@@ -22,5 +22,5 @@ steps:
 
 artifacts:
   objects:
-    location: 'gs://$PROJECT_ID-kokoro/'
+    location: 'gs://$PROJECT_ID-kokoro/artifacts/'
     paths: ['/workspace/cloudbuild', '/workspace/dockerfiles', '/workspace/cloudbuild_$COMMIT_SHA', '/workspace/dockerfiles_$COMMIT_SHA']
