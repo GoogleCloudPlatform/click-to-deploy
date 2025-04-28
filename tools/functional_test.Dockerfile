@@ -33,8 +33,8 @@ RUN set -eux \
 # Build the tools via Bazel.
 WORKDIR /click-to-deploy/tools
 
-RUN bazel build functional_tests/src/runtest \
-    && RUNTEST_PATH="$(realpath bazel-bin/functional_tests/src/runtest/linux_amd64_stripped/runtest)" \
+RUN bazel build functional_test/src/runtest \
+    && RUNTEST_PATH="$(realpath bazel-bin/functional_test/src/runtest/linux_amd64_stripped/runtest)" \
     && ln -s "${RUNTEST_PATH}" /runtest
 
 ENTRYPOINT [ "/runtest" ]
