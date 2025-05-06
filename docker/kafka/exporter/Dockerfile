@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/debian12
 
-ENV EXPORTER_VERSION 1.8.0
+ENV EXPORTER_VERSION 1.9.0
 
 ENV EXPORTER_USER="exporter" \
     EXPORTER_UID="9308" \
