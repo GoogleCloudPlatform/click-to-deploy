@@ -9,7 +9,7 @@ This is not an official Google product.
 This image contains an installation of ActiveMQ
 
 For more information, see the
-[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/activemq5).
+[Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/activemq6).
 
 ### Prerequisites
 
@@ -21,20 +21,27 @@ gcloud auth configure-docker
 ### Pull command
 
 ```shell
-docker -- pull marketplace.gcr.io/google/activemq5
+docker -- pull marketplace.gcr.io/google/activemq6
 ```
 Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/click-to-deploy/tree/master/docker/activemq/5/debian9/5.17).
 =======
 
 # <a name="table-of-contents"></a>Table of Contents
-* [Using Docker](#using-docker)
-  * [Running ActiveMQ](#running-activemq-docker)
-    * [Run a  server](#run-a-server)
-    * [Start an activemq instance](#start-a-activemq-instance-docker)
-* [References](#references)
-  * [Ports](#references-ports)
-  * [Environment Variables](#references-environment-variables)
-  * [Volumes](#references-volumes)
+- [activemq-docker](#activemq-docker)
+- [Disclaimer](#disclaimer)
+- [About](#about)
+    - [Prerequisites](#prerequisites)
+    - [Pull command](#pull-command)
+- [Dockerfile for this image can be found here.](#dockerfile-for-this-image-can-be-found-here)
+- [Table of Contents](#table-of-contents)
+- [Using Docker](#using-docker)
+  - [Running ActiveMQ](#running-activemq)
+    - [ Run a server](#-run-a-server)
+    - [ Start an ActiveMQ instance](#-start-an-activemq-instance)
+- [ References](#-references)
+  - [Ports](#ports)
+  - [Environment Variables](#environment-variables)
+  - [Volumes](#volumes)
 
 # Using Docker
 
@@ -61,7 +68,7 @@ version: '2'
 services:
   activemq:
     container_name: activemq
-    image: marketplace.gcr.io/google/activemq5
+    image: marketplace.gcr.io/google/activemq6
     environment:
       - ACTIVEMQ_ADMIN_PASSWORD=some-password
     ports:
@@ -73,7 +80,7 @@ services:
     volumes:
       - ./data/:/opt/activemq/data
 ```
-  
+
 Or you can use `docker run` directly:
 
 ```shell
@@ -85,7 +92,7 @@ docker run -e ACTIVEMQ_ADMIN_PASSWORD="some-password" \
     -p 61614:61614 \
     -p 8161:8161 \
     -v $PWD/data/:/opt/activemq/data \
-    marketplace.gcr.io/google/activemq5
+    marketplace.gcr.io/google/activemq6
 ```
 Default admin username is `admin`
 
