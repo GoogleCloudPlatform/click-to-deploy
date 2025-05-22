@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,39 +17,54 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 4/debian12/4.0
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/29c81f89-5a27-48c7-bff4-7fc0a8f3e65c.cloudpartnerservices.goog
+  dir: 4/debian12/4.1
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    superset:
+      version: 4.1.1
+  repo: superset4
+  tags:
+  - 4.1.1-debian12
+  - 4.1-debian12
+  - 4-debian12
+  - 4.1.1
+  - '4.1'
+  - '4'
+  - latest
+  templateSubDir: '4'
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/29c81f89-5a27-48c7-bff4-7fc0a8f3e65c.cloudpartnerservices.goog
+  dir: 4/debian12/4.0
   from: marketplace.gcr.io/google/debian12
   packages:
     superset:
       version: 4.0.2
   repo: superset4
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/29c81f89-5a27-48c7-bff4-7fc0a8f3e65c.cloudpartnerservices.goog
   tags:
-  - 4.0.2-debian11
-  - 4.0-debian11
-  - 4-debian11
+  - 4.0.2-debian12
+  - 4.0-debian12
   - 4.0.2
   - '4.0'
-  - '4'
-  - latest
-  templateSubDir: 4
-
-- dir: exporter
+  templateSubDir: '4'
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/eef49bfe-eedd-4301-9165-8f2418cfecac.cloudpartnerservices.goog
+  dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
   from: marketplace.gcr.io/google/debian12
   packages:
     statsd_exporter:
-      version: 0.27.1
+      version: 0.28.0
   repo: statsd-exporter0
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/eef49bfe-eedd-4301-9165-8f2418cfecac.cloudpartnerservices.goog
   tags:
-  - 0.27.1
-  - '0.27'
+  - 0.28.0
+  - '0.28'
   - '0'
   - latest
   templateSubDir: exporter
+
