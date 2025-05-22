@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,31 +17,46 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 1/debian12/1.19
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/d71a4687-04ab-4b11-bc63-2b2574d96f6a.cloudpartnerservices.goog
+  dir: 1/debian12/1.21
   from: marketplace.gcr.io/google/debian12
   packages:
     consul:
-      gpg: C874011F0AB405110D02105534365D9472D7468F
+      gpg: C874011F0AB405110D02105534365D9472D7468F 91A6E7F85D05C65630BEF18951852D87348FFC4C
+      version: 1.21.0
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
+  repo: consul1
+  tags:
+  - 1.21.0-debian12
+  - 1.21-debian12
+  - 1-debian12
+  - 1.21.0
+  - '1.21'
+  - '1'
+  - latest
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/d71a4687-04ab-4b11-bc63-2b2574d96f6a.cloudpartnerservices.goog
+  dir: 1/debian12/1.19
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    consul:
+      gpg: C874011F0AB405110D02105534365D9472D7468F 91A6E7F85D05C65630BEF18951852D87348FFC4C
       version: 1.19.2
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
   repo: consul1
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/d71a4687-04ab-4b11-bc63-2b2574d96f6a.cloudpartnerservices.goog
   tags:
   - 1.19.2-debian12
   - 1.19-debian12
-  - 1-debian12
   - 1.19.2
   - '1.19'
-  - '1'
-  - latest
 - dir: exporter
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/d71a4687-04ab-4b11-bc63-2b2574d96f6a.cloudpartnerservices.goog
   from: marketplace.gcr.io/google/debian12
   packages:
     consul_exporter:
@@ -55,3 +70,4 @@ versions:
   templateArgs:
     consul_exporter_notices_check_sum: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
   templateSubDir: exporter
+
