@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,24 +17,35 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 3/debian12/3.5
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/dea629ec-49b1-439e-928d-1b08fa253321.cloudpartnerservices.goog
+  dir: 3/debian12/3.6
   from: marketplace.gcr.io/google/debian12
   packages:
     argo_workflows:
-      version: 3.5.10
-    nodejs:
-      major: 20
-    golang:
-      version: 1.21
+      version: 3.6.7
   repo: argo-workflows3
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/dea629ec-49b1-439e-928d-1b08fa253321.cloudpartnerservices.goog
   tags:
-  - 3.5.10-debian12
-  - 3.5-debian12
+  - 3.6.7-debian12
+  - 3.6-debian12
   - 3-debian12
-  - 3.5.10
-  - '3.5'
+  - 3.6.7
+  - '3.6'
   - '3'
   - latest
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/dea629ec-49b1-439e-928d-1b08fa253321.cloudpartnerservices.goog
+  dir: 3/debian12/3.5
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    argo_workflows:
+      version: 3.5.14
+  repo: argo-workflows3
+  tags:
+  - 3.5.14-debian12
+  - 3.5-debian12
+  - 3.5.14
+  - '3.5'
+
