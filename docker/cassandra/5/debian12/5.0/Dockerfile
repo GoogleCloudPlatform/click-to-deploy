@@ -95,15 +95,15 @@ RUN apt-get update \
 # https://wiki.apache.org/cassandra/DebianPackaging#Adding_Repository_Keys
 ENV GPG_KEYS 514A2AD631A57A16DD0047EC749D6EEC0353B12C A26E528B271F19B9E5D8E19EA278B781FE4B2BDA A4C465FEA0C552561A392A61E91335D77E3E87CB
 
-ENV CASSANDRA_VERSION 4.1.7
+ENV CASSANDRA_VERSION 5.0.2
 ENV CASSANDRA_HOME /opt/cassandra
 ENV CASSANDRA_CONFIG /etc/cassandra
 ENV PATH $CASSANDRA_HOME/bin:$PATH
 
-ENV C2D_RELEASE 4.1.7
+ENV C2D_RELEASE 5.0.2
 
 RUN set -ex; \
-	export DIST_FILE="https://archive.apache.org/dist/cassandra/4.1.7/apache-cassandra-4.1.7-bin.tar.gz"; \
+	export DIST_FILE="https://archive.apache.org/dist/cassandra/5.0.2/apache-cassandra-5.0.2-bin.tar.gz"; \
 	wget --progress=dot:giga -O "cassandra-bin.tgz" "${DIST_FILE}"
 
 RUN mkdir -p "$CASSANDRA_HOME"; \

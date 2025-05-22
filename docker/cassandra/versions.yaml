@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,35 @@
 
 
 cloudbuild:
-  enable_parallel: false
   docker_image: gcr.io/cloud-builders/docker:24.0.9
+  enable_parallel: false
 versions:
-- dir: 4/debian12/4.1
+- dir: 5/debian12/5.0
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    cassandra:
+      gpg: 514A2AD631A57A16DD0047EC749D6EEC0353B12C A26E528B271F19B9E5D8E19EA278B781FE4B2BDA
+        A4C465FEA0C552561A392A61E91335D77E3E87CB
+      version: 5.0.2
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.10'
+  repo: cassandra5
+  tags:
+  - 5.0.2-debian12
+  - 5.0-debian12
+  - 5-debian12
+  - 5.0.2
+  - '5.0'
+  - '5'
+  - latest
+  templateArgs:
+    c2dRelease: 5.0.2
+  templateSubDir: cassandra4
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/ba024e66-0fcf-4db1-8775-c934ffaf77da.cloudpartnerservices.goog
+  dir: 4/debian12/4.1
   from: marketplace.gcr.io/google/debian12
   packages:
     cassandra:
@@ -25,13 +50,9 @@ versions:
         A4C465FEA0C552561A392A61E91335D77E3E87CB
       version: 4.1.7
     gosu:
-      version: '1.17'
-    golang:
-      version: '1.23.4'
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.10'
   repo: cassandra4
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/ba024e66-0fcf-4db1-8775-c934ffaf77da.cloudpartnerservices.goog
   tags:
   - 4.1.7-debian12
   - 4.1-debian12
@@ -43,3 +64,4 @@ versions:
   templateArgs:
     c2dRelease: 4.1.7
   templateSubDir: cassandra4
+
