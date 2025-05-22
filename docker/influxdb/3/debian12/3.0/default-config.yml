@@ -1,4 +1,6 @@
-# Copyright 2025 Google LLC
+# Copyright (c) 2021 Google LLC.
+# 
+# The MIT License (MIT)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -6,10 +8,10 @@
 # use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
 # the Software, and to permit persons to whom the Software is furnished to do so,
 # subject to the following conditions:
-#
+# 
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-#
+# 
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 # FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -17,44 +19,6 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
-  enable_parallel: false
-versions:
-- dir: 3/debian12/3.0
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    influxdb:
-      gpg: C2901040ED25017F50A9D556E2FAD7C38A3B47D2 05CE15085FC09D18E99EFB22684A14CF2582E0C5
-      version: 3.0.3
-  repo: influxdb3
-  tags:
-  - 3.0.3-debian12
-  - 3.0-debian12
-  - 3-debian12
-  - 3.0.3
-  - '3.0'
-  - '3'
-  - latest
-  templateSubDir: influxdb27
-- annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/1ba71019-45d5-45af-b15f-3d87d301321a.cloudpartnerservices.goog
-  dir: 2/debian12/2.7
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    influxdb:
-      gpg: C2901040ED25017F50A9D556E2FAD7C38A3B47D2 05CE15085FC09D18E99EFB22684A14CF2582E0C5
-      version: 2.7.11
-  repo: influxdb2
-  tags:
-  - 2.7.11-debian12
-  - 2.7-debian12
-  - 2-debian12
-  - 2.7.11
-  - '2.7'
-  - '2'
-  - latest
-  templateSubDir: influxdb27
-
+bolt-path: /var/lib/influxdb2/influxd.bolt
+engine-path: /var/lib/influxdb2/engine
+nats-port: 4222
