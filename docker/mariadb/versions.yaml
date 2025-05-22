@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,24 +19,23 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 11/debian12/11.5
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/2a63a3a0-26e6-41c3-8e5a-7e9c6ac0964b.cloudpartnerservices.goog
+  dir: 11/debian12/11.5
   excludeTests:
   - tests/functional_tests/10_create_db_test.yaml
   - tests/functional_tests/10_remote_host_test.yaml
   from: marketplace.gcr.io/google/debian12
   packages:
-    golang:
-      version: '1.20'
     gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
     mariadb:
       gpg: 177F4010FE56CA3336300305F1656F24C74CD1D8
       major: '11.5'
       version: 11.5.2
   repo: mariadb11
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/2a63a3a0-26e6-41c3-8e5a-7e9c6ac0964b.cloudpartnerservices.goog
   tags:
   - 11.5.2-debian12
   - 11.5-debian12
@@ -49,62 +48,31 @@ versions:
     c2dRelease: 11.5.2
     distroCodename: bookworm
     distroMajor: '12'
-
-- dir: 11/debian12/11.1
-  excludeTests:
-  - tests/functional_tests/10_create_db_test.yaml
-  - tests/functional_tests/10_remote_host_test.yaml
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    golang:
-      version: '1.20'
-    gosu:
-      version: '1.17'
-    mariadb:
-      gpg: 177F4010FE56CA3336300305F1656F24C74CD1D8
-      major: '11.1'
-      version: 11.1.6
-  annotations:
+- annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/2a63a3a0-26e6-41c3-8e5a-7e9c6ac0964b.cloudpartnerservices.goog
-  repo: mariadb11
-  tags:
-  - 11.1.6-debian12
-  - 11.1-debian12
-  - 11.1.6
-  - '11.1'
-  templateArgs:
-    c2dRelease: 11.1.6
-    distroCodename: bookworm
-    distroMajor: '12'
-
-- dir: 10/debian12/10.11
+    value: services/1082de93-67cf-464e-8cec-c5137645640a.cloudpartnerservices.goog
+  dir: 10/debian12/10.12
   excludeTests:
   - tests/functional_tests/11_create_db_test.yaml
   - tests/functional_tests/11_remote_host_test.yaml
   from: marketplace.gcr.io/google/debian12
   packages:
-    golang:
-      version: '1.20'
     gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
     mariadb:
       gpg: 177F4010FE56CA3336300305F1656F24C74CD1D8
-      major: '10.11'
-      version: '10.11.9'
+      major: '10.12'
+      version: '10.12'
   repo: mariadb10
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/1082de93-67cf-464e-8cec-c5137645640a.cloudpartnerservices.goog
   tags:
-  - 10.11.9-debian12
-  - 10.11-debian12
+  - 10.12-debian12
   - 10-debian12
-  - '10.11.9'
-  - '10.11'
+  - '10.12'
   - '10'
   - latest
   templateArgs:
-    c2dRelease: 10.11.9
+    c2dRelease: 10.12.0
     distroCodename: bookworm
     distroMajor: '12'
+
