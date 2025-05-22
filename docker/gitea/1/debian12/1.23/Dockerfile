@@ -21,7 +21,7 @@ FROM golang:-bookworm AS build-env
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
 
-ARG GITEA_VERSION=release/v1.22
+ARG GITEA_VERSION=release/v1.23
 ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
@@ -98,7 +98,7 @@ RUN addgroup \
 
 ENV USER git
 ENV GITEA_CUSTOM /data/gitea
-ENV C2D_RELEASE 1.22.9
+ENV C2D_RELEASE 1.23.9
 
 VOLUME ["/data"]
 
