@@ -19,7 +19,7 @@ FROM marketplace.gcr.io/google/debian12
 
 COPY --from=ospo /usr/src /usr/src
 
-ARG ZK_VERSION=3.8.4
+ARG ZK_VERSION=3.9.3
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \
