@@ -71,8 +71,8 @@ RUN set -ex ;\
 
 VOLUME /var/www/html
 
-ENV JOOMLA_VERSION 4.4.13
-ENV C2D_RELEASE 4.4.13
+ENV JOOMLA_VERSION 5.3.0
+ENV C2D_RELEASE 5.3.0
 
 # Download package and extract to web volume
 RUN set -ex; \

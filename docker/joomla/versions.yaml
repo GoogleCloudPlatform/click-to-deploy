@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,20 +19,34 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 4/php8/debian12/4.4
-  from: marketplace.gcr.io/google/php8-apache2:8.3
+- dir: 5/php8/debian12/5.3
+  from: marketplace.gcr.io/google/php8-apache2:8.2
   packages:
     joomla:
-      version: 4.4.8
-  repo: joomla4-php8-apache
-  annotations:
+      version: 5.3.0
+  repo: joomla5-php8-apache
+  tags:
+  - 5.3.0-debian12
+  - 5.3-debian12
+  - 5-debian12
+  - 5.3.0
+  - '5.3'
+  - '5'
+  - latest
+- annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/545638c3-744a-453a-9793-994aa18913a0.cloudpartnerservices.goog
+  dir: 4/php8/debian12/4.4
+  from: marketplace.gcr.io/google/php8-apache2:8.2
+  packages:
+    joomla:
+      version: 4.4.13
+  repo: joomla4-php8-apache
   tags:
-  - 4.4.8-debian12
+  - 4.4.13-debian12
   - 4.4-debian12
   - 4-debian12
-  - 4.4.8
+  - 4.4.13
   - '4.4'
   - '4'
   - latest
