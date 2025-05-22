@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11 as exporter-builder
+FROM marketplace.gcr.io/google/debian12 as exporter-builder
 
 ENV GOPATH /usr/local
 ENV GOROOT /usr/local/go
@@ -39,7 +39,7 @@ RUN set -eux \
     # Extracts licences
     && govendor license +vendor > /NOTICES
 
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/debian12
 
 # Update libtasn
 RUN apt-get update \
