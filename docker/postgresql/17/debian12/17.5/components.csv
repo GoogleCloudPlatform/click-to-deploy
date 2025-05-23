@@ -1,0 +1,4 @@
+postgresql;https://github.com/postgres/postgres/blob/master/COPYRIGHT
+github.com_opencontainers_runc;https://raw.githubusercontent.com/opencontainers/runc/master/LICENSE
+github.com_tianon_gosu;https://github.com/tianon/gosu/blob/master/LICENSE
+golang.org_x_sys;https://go.googlesource.com/sys/+/refs/heads/master/LICENSE
