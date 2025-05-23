@@ -67,7 +67,7 @@ versions:
     mariadb:
       gpg: 177F4010FE56CA3336300305F1656F24C74CD1D8
       major: '10.11'
-      version: '10.11'
+      version: '10.11.13'
   repo: mariadb10
   tags:
   - 10.11-debian12
