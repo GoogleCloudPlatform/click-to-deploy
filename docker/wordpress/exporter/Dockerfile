@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11 as exporter-builder
+FROM marketplace.gcr.io/google/debian12 as exporter-builder
 
 ENV GOPATH /usr/local
 ENV GOROOT /usr/local/go
@@ -11,7 +11,6 @@ RUN set -eux \
     && apt-get update \
     && apt-get install -y \
         curl \
-        govendor \
         tar \
         git \
         make \
@@ -29,6 +28,7 @@ RUN set -eux \
     && tar -xzf /tmp/apache_exporter.tar.gz --strip-components=1 -C /usr/local/src/apache_exporter
 
 RUN set -eux \
+    && go install github.com/kardianos/govendor@latest \
     && mkdir -p "${GOPATH}/src/github.com/Lusitaniae/apache_exporter" \
     && cd "${GOPATH}/src/github.com/Lusitaniae/apache_exporter" \
     && tar -xzf /tmp/apache_exporter.tar.gz --strip-components=1 -C . \
@@ -39,7 +39,7 @@ RUN set -eux \
     # Extracts licences
     && govendor license +vendor > /NOTICES
 
-FROM marketplace.gcr.io/google/debian11
+FROM marketplace.gcr.io/google/debian12
 
 # Update libtasn
 RUN apt-get update \
