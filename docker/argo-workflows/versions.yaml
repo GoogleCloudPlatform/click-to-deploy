@@ -25,6 +25,10 @@ versions:
   packages:
     argo_workflows:
       version: 3.6.7
+    golang:
+      version: '1.21'
+    nodejs:
+      major: '20'
   repo: argo-workflows3
   tags:
   - 3.6.7-debian12
@@ -42,10 +46,13 @@ versions:
   packages:
     argo_workflows:
       version: 3.5.14
+    golang:
+      version: '1.21'
+    nodejs:
+      major: '20'
   repo: argo-workflows3
   tags:
   - 3.5.14-debian12
   - 3.5-debian12
   - 3.5.14
   - '3.5'
-

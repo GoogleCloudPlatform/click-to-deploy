@@ -34,7 +34,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 # Stage: Server and Workflow Controller: Builder
-FROM golang: as builder
+FROM golang:1.21 as builder
 
 ARG ARGO_VERSION="3.5.14"
 ENV ARGO_VERSION "${ARGO_VERSION}"
@@ -63,7 +63,7 @@ RUN go mod download
 
 
 # Stage: Server: UI
-FROM node: as argo-ui
+FROM node:20 as argo-ui
 
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/package.json ui/
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/yarn.lock ui/
