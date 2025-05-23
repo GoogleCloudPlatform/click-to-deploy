@@ -1,6 +1,4 @@
-{{- $falco := index .Packages "falco" -}}
-
-FROM {{ .From }} as ospo
+FROM marketplace.gcr.io/google/debian12 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -17,15 +15,15 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/debian12
 
 COPY --from=ospo /usr/src /usr/src
-ARG FALCO_VERSION={{ $falco.Version }}
+ARG FALCO_VERSION=0.40.0
 ARG VERSION_BUCKET=deb
 ENV VERSION_BUCKET=${VERSION_BUCKET}
 
 ENV FALCO_VERSION=${FALCO_VERSION}
-ENV C2D_RELEASE={{ $falco.Version }}
+ENV C2D_RELEASE=0.40.0
 ENV HOST_ROOT=/host
 ENV HOME=/root
 
