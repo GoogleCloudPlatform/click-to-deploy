@@ -31,9 +31,9 @@ versions:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
     mysql:
-      gpg: 859BE8D7C586F538430B19C2467B942D3A79BD29
+      gpg: BCA4 3417 C3B4 85DD 128E C6D4 B7B3 B788 A8D3 785C
       major: '8.0'
-      version: 8.0.42-1debian12
+      version: 8.0.42
   repo: mysql8
   tags:
   - 8.0.42-debian12
@@ -67,4 +67,3 @@ versions:
   - exporter-0.15
   - exporter-0.15.0
   templateSubDir: exporter
-
