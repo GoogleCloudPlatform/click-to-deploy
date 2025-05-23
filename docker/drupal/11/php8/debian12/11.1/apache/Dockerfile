@@ -15,7 +15,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM marketplace.gcr.io/google/php8-apache2:8.1
+FROM marketplace.gcr.io/google/php8-apache2:8.3
 
 COPY --from=ospo /usr/src /usr/src
 
@@ -75,9 +75,9 @@ RUN a2enmod rewrite expires
 WORKDIR /usr/src/drupal
 
 # https://www.drupal.org/node/3060/release
-ENV DRUPAL_VERSION 10.2.8
-ENV C2D_RELEASE 10.2.8
-ENV DRUPAL_MD5 1f7a37ba42ee22948ffc11bfe4541dbd
+ENV DRUPAL_VERSION 11.1.7
+ENV C2D_RELEASE 11.1.7
+ENV DRUPAL_MD5 31c4313357bb0fac1a0f52135d766539
 
 # Download package and extract to web volume
 RUN set -eux; \
