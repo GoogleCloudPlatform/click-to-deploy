@@ -41,7 +41,7 @@ versions:
   templateArgs:
     c2dRelease: 6.6.2
     cmd: apache2-foreground
-  templateSubDir: debian11
+  templateSubDir: wordpress
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/8139d7ec-b450-4593-829e-608b968b7454.cloudpartnerservices.goog
@@ -61,4 +61,3 @@ versions:
   - '0'
   - latest
   templateSubDir: exporter
-
