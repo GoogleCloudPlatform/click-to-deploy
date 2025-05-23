@@ -1,10 +1,10 @@
 FROM marketplace.gcr.io/google/debian12
 
 # This is the release of Consul to pull in.
-ENV CONSUL_VERSION 1.19.2
+ENV CONSUL_VERSION 1.21.0
 ENV CONSUL_GPG C874011F0AB405110D02105534365D9472D7468F 91A6E7F85D05C65630BEF18951852D87348FFC4C
 
-ENV C2D_RELEASE 1.19.2
+ENV C2D_RELEASE 1.21.0
 
 # This is the location of the releases.
 ENV HASHICORP_RELEASES https://releases.hashicorp.com
