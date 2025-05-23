@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,34 +17,21 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 0/debian12/0.27
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/ddf06993-1d47-428e-83b0-9210e0a5ece2.cloudpartnerservices.goog
+  dir: 0/debian12/0.28
   from: marketplace.gcr.io/google/debian12
   packages:
     alertmanager:
-      version: 0.27.0
+      version: 0.28.1
   repo: prometheus-alertmanager0
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/ddf06993-1d47-428e-83b0-9210e0a5ece2.cloudpartnerservices.goog
   tags:
-  - 0.27.0-debian12
-  - 0.27-debian12
+  - 0.28.1-debian12
+  - 0.28-debian12
   - 0-debian12
-  - 0.27.0
-  - '0.27'
+  - 0.28.1
+  - '0.28'
   - '0'
   - latest
-- dir: 0/debian12/0.26
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    alertmanager:
-      version: 0.26.0
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/ddf06993-1d47-428e-83b0-9210e0a5ece2.cloudpartnerservices.goog
-  repo: prometheus-alertmanager0
-  tags:
-  - 0.26.0-debian12
-  - 0.26-debian12
-  - 0.26.0
-  - '0.26'
+
