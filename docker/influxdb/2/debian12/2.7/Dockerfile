@@ -38,9 +38,9 @@ RUN groupadd -r influxdb --gid=1000 && \
     mkdir -p /home/influxdb && \
     chown -R influxdb:influxdb /home/influxdb
 
-ENV INFLUXDB_VERSION 2.7.10
-ENV C2D_RELEASE 2.7.10
-ENV INFLUX_CLI_VERSION 2.7.10
+ENV INFLUXDB_VERSION 2.7.11
+ENV C2D_RELEASE 2.7.11
+ENV INFLUX_CLI_VERSION 2.7.11
 
 RUN case "$(dpkg --print-architecture)" in \
       *amd64) arch=amd64 ;; \

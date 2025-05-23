@@ -1,6 +1,6 @@
 FROM  marketplace.gcr.io/google/debian12 as build
 
-ENV APP_VERSION=1.15.5
+ENV APP_VERSION=1.17.2
 
 RUN apt-get update \
     && apt-get install \
@@ -32,7 +32,7 @@ RUN apt-get update \
 
 WORKDIR /app
 
-ENV C2D_RELEASE=1.15.5
+ENV C2D_RELEASE=1.17.2
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 # Non root
