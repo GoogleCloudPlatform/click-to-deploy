@@ -20,7 +20,7 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 11/php8/debian12/11.1/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.2
+  from: marketplace.gcr.io/google/php8-apache2:8.3
   packages:
     composer:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
@@ -41,7 +41,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/2091b012-066a-46f0-8d26-63c5b7db70a4.cloudpartnerservices.goog
   dir: 10/php8/debian12/10.4/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.2
+  from: marketplace.gcr.io/google/php8-apache2:8.3
   packages:
     composer:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
@@ -62,7 +62,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/2091b012-066a-46f0-8d26-63c5b7db70a4.cloudpartnerservices.goog
   dir: 10/php8/debian12/10.3/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.2
+  from: marketplace.gcr.io/google/php8-apache2:8.3
   packages:
     composer:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
@@ -76,4 +76,3 @@ versions:
   - 10.3-debian12
   - 10.3.14
   - '10.3'
-
