@@ -53,7 +53,7 @@ versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/1082de93-67cf-464e-8cec-c5137645640a.cloudpartnerservices.goog
-  dir: 10/debian12/10.12
+  dir: 10/debian12/10.11
   excludeTests:
   - tests/functional_tests/11_create_db_test.yaml
   - tests/functional_tests/11_remote_host_test.yaml
@@ -66,16 +66,16 @@ versions:
       version: '1.17'
     mariadb:
       gpg: 177F4010FE56CA3336300305F1656F24C74CD1D8
-      major: '10.12'
-      version: '10.12'
+      major: '10.11'
+      version: '10.11'
   repo: mariadb10
   tags:
-  - 10.12-debian12
+  - 10.11-debian12
   - 10-debian12
-  - '10.12'
+  - '10.11'
   - '10'
   - latest
   templateArgs:
-    c2dRelease: 10.12.0
+    c2dRelease: 10.11.13
     distroCodename: bookworm
     distroMajor: '12'

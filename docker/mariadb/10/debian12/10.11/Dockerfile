@@ -47,7 +47,7 @@ RUN set -eux; ls -lAFh /go/bin/gosu-*; file /go/bin/gosu-*
 
 FROM marketplace.gcr.io/google/debian12
 
-ENV C2D_RELEASE 10.12
+ENV C2D_RELEASE 10.11
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
@@ -108,14 +108,14 @@ ENV LANG C.UTF-8
 
 
 # bashbrew-architectures: amd64 arm64v8 ppc64le s390x
-ARG MARIADB_VERSION=1:10.12+maria~deb12
+ARG MARIADB_VERSION=1:10.11+maria~deb12
 ENV MARIADB_VERSION $MARIADB_VERSION
 # release-status:Alpha
 # release-support-type:Unknown
 # (https://downloads.mariadb.org/rest-api/mariadb/)
 
 # Allowing overriding of REPOSITORY, a URL that includes suite and component for testing and Enterprise Versions
-ARG REPOSITORY="http://archive.mariadb.org/mariadb-10.12/repo/debian/ bookworm main"
+ARG REPOSITORY="http://archive.mariadb.org/mariadb-10.11/repo/debian/ bookworm main"
 
 RUN set -e;\
 	echo "deb ${REPOSITORY}" > /etc/apt/sources.list.d/mariadb.list; \
