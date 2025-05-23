@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -21,9 +21,56 @@
 cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
-  machineType: E2_HIGHCPU_32
 versions:
-- dir: 16/debian12/16.4
+- dir: 17/debian12/17.5
+  excludeTests:
+  - tests/functional_tests/exporter_licence_test.yaml
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
+    postgresql:
+      gpg: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+      major: '17'
+      version: 17.5*
+  repo: postgresql17
+  tags:
+  - 17.5-debian12
+  - 17-debian12
+  - '17.5'
+  - '17'
+  - latest
+  templateArgs:
+    c2dRelease: 17.5.0
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/86f72fc8-e5a0-4d16-8a93-218c7696748d.cloudpartnerservices.goog
+  dir: 16/debian12/16.9
+  excludeTests:
+  - tests/functional_tests/exporter_licence_test.yaml
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
+    postgresql:
+      gpg: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+      major: '16'
+      version: 16.9*
+  repo: postgresql16
+  tags:
+  - 16.9-debian12
+  - 16-debian12
+  - '16.9'
+  - '16'
+  - latest
+  templateArgs:
+    c2dRelease: 16.9.0
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/86f72fc8-e5a0-4d16-8a93-218c7696748d.cloudpartnerservices.goog
+  dir: 16/debian12/16.4
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
   from: marketplace.gcr.io/google/debian12
@@ -36,18 +83,15 @@ versions:
       major: '16'
       version: 16.4*
   repo: postgresql16
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/86f72fc8-e5a0-4d16-8a93-218c7696748d.cloudpartnerservices.goog
   tags:
   - 16.4-debian12
-  - 16-debian12
   - '16.4'
-  - '16'
-  - latest
   templateArgs:
     c2dRelease: 16.4.0
-- dir: 15/debian12/15.8
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/a61f6b8d-e6d0-4863-9040-03cb7f09cf0c.cloudpartnerservices.goog
+  dir: 15/debian12/15.13
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
   from: marketplace.gcr.io/google/debian12
@@ -58,20 +102,20 @@ versions:
     postgresql:
       gpg: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
       major: '15'
-      version: 15.8*
+      version: 15.13*
   repo: postgresql15
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/a61f6b8d-e6d0-4863-9040-03cb7f09cf0c.cloudpartnerservices.goog
   tags:
-  - 15.8-debian12
+  - 15.13-debian12
   - 15-debian12
-  - '15.8'
+  - '15.13'
   - '15'
   - latest
   templateArgs:
-    c2dRelease: 15.8.0
-- dir: 14/debian12/14.13
+    c2dRelease: 15.13.0
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/55e64a92-c0ce-4793-89cc-c16c7cd62ce3.cloudpartnerservices.goog
+  dir: 14/debian12/14.18
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
   from: marketplace.gcr.io/google/debian12
@@ -82,20 +126,20 @@ versions:
     postgresql:
       gpg: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
       major: '14'
-      version: 14.13*
+      version: 14.18*
   repo: postgresql14
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/55e64a92-c0ce-4793-89cc-c16c7cd62ce3.cloudpartnerservices.goog
   tags:
-  - 14.13-debian12
+  - 14.18-debian12
   - 14-debian12
-  - '14.13'
+  - '14.18'
   - '14'
   - latest
   templateArgs:
-    c2dRelease: 14.13.0
-- dir: 13/debian12/13.16
+    c2dRelease: 14.18.0
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/7d797b74-f0e7-4422-85e3-165505ae2c29.cloudpartnerservices.goog
+  dir: 13/debian12/13.21
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
   from: marketplace.gcr.io/google/debian12
@@ -106,34 +150,32 @@ versions:
     postgresql:
       gpg: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
       major: '13'
-      version: 13.16*
+      version: 13.21*
   repo: postgresql13
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/7d797b74-f0e7-4422-85e3-165505ae2c29.cloudpartnerservices.goog
   tags:
-  - 13.16-debian12
+  - 13.21-debian12
   - 13-debian12
-  - '13.16'
+  - '13.21'
   - '13'
   - latest
   templateArgs:
-    c2dRelease: 13.16.0
-- dir: exporter
+    c2dRelease: 13.21.0
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/f1e0e68f-e0c9-4598-88b1-1245d424c25b.cloudpartnerservices.goog
+  dir: exporter
   excludeTests:
   - tests/functional_tests/create_db_test.yaml
   - tests/functional_tests/remote_host_test.yaml
   from: marketplace.gcr.io/google/debian12
   packages:
     postgres_exporter:
-      version: 0.15.0
+      version: 0.17.1
   repo: postgresql-exporter0
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/f1e0e68f-e0c9-4598-88b1-1245d424c25b.cloudpartnerservices.goog
   tags:
-  - 0.15.0
-  - '0.15'
+  - 0.17.1
+  - '0.17'
   - '0'
   - latest
   templateSubDir: exporter
+
