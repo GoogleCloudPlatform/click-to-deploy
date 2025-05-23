@@ -34,7 +34,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 # Stage: Server and Workflow Controller: Builder
-FROM golang:1.21 as builder
+FROM golang:1.24 as builder
 
 ARG ARGO_VERSION="3.6.7"
 ENV ARGO_VERSION "${ARGO_VERSION}"

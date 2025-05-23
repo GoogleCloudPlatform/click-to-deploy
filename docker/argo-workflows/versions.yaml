@@ -26,7 +26,7 @@ versions:
     argo_workflows:
       version: 3.6.7
     golang:
-      version: '1.21'
+      version: '1.24'
     nodejs:
       major: '20'
   repo: argo-workflows3
@@ -47,7 +47,7 @@ versions:
     argo_workflows:
       version: 3.5.14
     golang:
-      version: '1.21'
+      version: '1.23'
     nodejs:
       major: '20'
   repo: argo-workflows3
