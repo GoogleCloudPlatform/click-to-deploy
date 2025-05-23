@@ -1,6 +1,4 @@
-{{- $joomla := index .Packages "joomla" -}}
-
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/php8-apache2:8.2
 
 RUN set -ex; \
   savedAptMark="$(apt-mark showmanual)"; \
@@ -73,8 +71,8 @@ RUN set -ex ;\
 
 VOLUME /var/www/html
 
-ENV JOOMLA_VERSION {{ $joomla.Version }}
-ENV C2D_RELEASE {{ $joomla.Version }}
+ENV JOOMLA_VERSION 5.3.0
+ENV C2D_RELEASE 5.3.0
 
 # Download package and extract to web volume
 RUN set -ex; \
