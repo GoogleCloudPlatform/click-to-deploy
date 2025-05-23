@@ -1,0 +1,4 @@
+https://github.com/PyMySQL/mysqlclient
+https://github.com/psycopg/psycopg2
+https://github.com/python/typing_extensions
+https://github.com/unbit/uwsgi

@@ -41,7 +41,7 @@ setup:
   - '-e'
   - 'POSTGRES_DB=django'
   - '-d'
-  - 'marketplace.gcr.io/google/postgresql13'
+  - 'marketplace.gcr.io/google/postgresql14'
 - command:
   - 'docker'
   - 'run'
