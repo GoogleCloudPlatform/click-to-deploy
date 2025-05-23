@@ -92,8 +92,8 @@ RUN set -ex; \
   apt-key list
 
 ENV PG_MAJOR 15
-ENV PG_VERSION 15.8*
-ENV C2D_RELEASE 15.8.0
+ENV PG_VERSION 15.13*
+ENV C2D_RELEASE 15.13.0
 
 RUN echo 'deb https://apt-archive.postgresql.org/pub/repos/apt bookworm-pgdg-archive main' > /etc/apt/sources.list.d/pgdg.list
 
