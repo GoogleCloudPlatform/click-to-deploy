@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/debian12
 
-ENV C2D_RELEASE 3.5.2
+ENV C2D_RELEASE 3.5.5
 
 # Add Java JDK
 RUN apt-get update \
@@ -29,7 +29,7 @@ RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 
 
 # Fix the value of PYTHONHASHSEED
 # Note: this is needed when you use Python 3.3 or greater
-ENV SPARK_VERSION=3.5.2
+ENV SPARK_VERSION=3.5.5
 ENV SCALA_VERSION=2.13
 ENV SPARK_HOME=/opt/spark
 ENV PYTHONHASHSEED=1
