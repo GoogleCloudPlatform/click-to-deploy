@@ -1,6 +1,6 @@
 # Build gosu from the source. As by 2023-09-26 project only have releases
 # from go 1.18. https://github.com/tianon/gosu/releases
-FROM golang: as gosu-build
+FROM golang:1.23 as gosu-build
 
 RUN git clone https://github.com/tianon/gosu.git --branch 1.17 /go/src/github.com/tianon/gosu
 
