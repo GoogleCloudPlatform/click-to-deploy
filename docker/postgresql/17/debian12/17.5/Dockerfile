@@ -91,9 +91,9 @@ RUN set -ex; \
   rm -rf "$GNUPGHOME"; \
   apt-key list
 
-ENV PG_MAJOR 14
-ENV PG_VERSION 14.13*
-ENV C2D_RELEASE 14.13.0
+ENV PG_MAJOR 17
+ENV PG_VERSION 17.5*
+ENV C2D_RELEASE 17.5.0
 
 RUN echo 'deb https://apt-archive.postgresql.org/pub/repos/apt bookworm-pgdg-archive main' > /etc/apt/sources.list.d/pgdg.list
 
