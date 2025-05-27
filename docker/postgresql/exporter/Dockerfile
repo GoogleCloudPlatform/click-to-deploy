@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/debian12
 
-ARG EXPORTER_VERSION=0.15.0
+ARG EXPORTER_VERSION=0.17.1
 ENV EXPORTER_VERSION "${EXPORTER_VERSION}"
 RUN env && apt-get update && \
 	apt-get install --no-install-recommends -y ca-certificates curl openssl libtasn1-6 \
