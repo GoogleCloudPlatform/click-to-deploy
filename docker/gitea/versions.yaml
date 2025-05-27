@@ -31,6 +31,8 @@ versions:
   packages:
     gitea:
       version: '1.23'
+    golang:
+      version: '1.23'
   repo: gitea1
   tags:
   - 1.23.8-debian12
@@ -48,10 +50,11 @@ versions:
   packages:
     gitea:
       version: '1.22'
+    golang:
+      version: '1.23'
   repo: gitea1
   tags:
   - 1.22.9-debian12
   - 1.22-debian12
   - 1.22.9
   - '1.22'
-
