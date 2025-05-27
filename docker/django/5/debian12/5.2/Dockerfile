@@ -45,7 +45,7 @@ RUN mkdir -p /usr/src/licenses \
 FROM marketplace.gcr.io/google/debian12
 
 COPY --from=ospo /usr/src /usr/src
-ENV C2D_RELEASE 5.1.9
+ENV C2D_RELEASE 5.2.1
 
 ENV C2D_DJANGO_USER="django" \
     C2D_DJANGO_UID="8983" \
@@ -88,7 +88,7 @@ ENV PATH="/sites/venv/bin:$PATH"
 # Install Python packages in a virtual environment
 RUN pip install --upgrade pip && \
     pip install \
-        django==5.1.9 \
+        django==5.2.1 \
         mysqlclient \
         psycopg2 \
         uwsgi
