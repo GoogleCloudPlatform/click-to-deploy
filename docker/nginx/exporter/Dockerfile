@@ -1,6 +1,6 @@
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian11
 
-ENV EXPORTER_VERSION 1.3.0
+ENV EXPORTER_VERSION 1.4.2
 
 COPY licenses/ /usr/share/doc/
 
