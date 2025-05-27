@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,36 +17,37 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 2/debian12/2.54
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
+  dir: 2/debian12/2.55
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    prometheus:
+      sha256: 7a6b6d5ea003e8d59def294392c64e28338da627bf760cf268e788d6a8832a23
+      version: 2.55.0
+  repo: prometheus2
+  tags:
+  - 2.55.0-debian12
+  - 2.55-debian12
+  - 2-debian12
+  - 2.55.0
+  - '2.55'
+  - '2'
+  - latest
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
+  dir: 2/debian12/2.54
   from: marketplace.gcr.io/google/debian12
   packages:
     prometheus:
       sha256: 31715ef65e8a898d0f97c8c08c03b6b9afe485ac84e1698bcfec90fc6e62924f
       version: 2.54.1
   repo: prometheus2
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
   tags:
   - 2.54.1-debian12
   - 2.54-debian12
-  - 2-debian12
   - 2.54.1
   - '2.54'
-  - '2'
-  - latest
-- dir: 2/debian12/2.49
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    prometheus:
-      sha256: 93460f66d17ee70df899e91db350d9705c20b1576800f96acbd78fa004e7dc07
-      version: 2.49.1
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
-  repo: prometheus2
-  tags:
-  - 2.49.1-debian12
-  - 2.49-debian12
-  - 2.49.1
-  - '2.49'
+
