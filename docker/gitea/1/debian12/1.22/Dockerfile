@@ -16,7 +16,9 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 #Build stage
-FROM golang:1.23-bookworm AS build-env
+# alpine-3.20 contains nodejs 20.x required for gitea 1.22
+# alpine-3.21 contains nodejs 22.x required for gitea 1.23
+FROM golang:1.23-alpine3.20 AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
@@ -27,8 +29,8 @@ ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
 
 # Build deps
-RUN apt-get update && apt-get install -y \
-    build-essential \
+RUN apk --no-cache add \
+    build-base \
     git \
     nodejs \
     npm \
