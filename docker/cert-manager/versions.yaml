@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,21 +18,37 @@ cloudbuild:
   enable_parallel: false
   machineType: E2_HIGHCPU_32
 versions:
-- dir: 1/debian12/1.15
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/bde1bd76-14f1-46d2-99ad-f484cff10720.cloudpartnerservices.goog
+  dir: 1/debian12/1.17
   from: marketplace.gcr.io/google/debian12
   packages:
     cert-manager:
-      version: 1.15.3
+      version: 1.17.2
   repo: cert-manager1
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/bde1bd76-14f1-46d2-99ad-f484cff10720.cloudpartnerservices.goog
   tags:
-  - 1.15.3-debian12
-  - 1.15-debian12
+  - 1.17.2-debian12
+  - 1.17-debian12
   - 1-debian12
-  - 1.15.3
-  - '1.15'
+  - 1.17.2
+  - '1.17'
   - '1'
   - latest
   templateSubDir: cert-manager1
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/bde1bd76-14f1-46d2-99ad-f484cff10720.cloudpartnerservices.goog
+  dir: 1/debian12/1.15
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    cert-manager:
+      version: 1.15.5
+  repo: cert-manager1
+  tags:
+  - 1.15.5-debian12
+  - 1.15-debian12
+  - 1.15.5
+  - '1.15'
+  templateSubDir: cert-manager1
+
