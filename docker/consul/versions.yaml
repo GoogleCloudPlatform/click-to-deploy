@@ -24,7 +24,7 @@ versions:
   from: marketplace.gcr.io/google/debian12
   packages:
     consul:
-      gpg: C874011F0AB405110D02105534365D9472D7468F 91A6E7F85D05C65630BEF18951852D87348FFC4C
+      gpg: C874011F0AB405110D02105534365D9472D7468F
       version: 1.21.0
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -45,7 +45,7 @@ versions:
   from: marketplace.gcr.io/google/debian12
   packages:
     consul:
-      gpg: C874011F0AB405110D02105534365D9472D7468F 91A6E7F85D05C65630BEF18951852D87348FFC4C
+      gpg: C874011F0AB405110D02105534365D9472D7468F
       version: 1.19.2
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -70,4 +70,3 @@ versions:
   templateArgs:
     consul_exporter_notices_check_sum: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
   templateSubDir: exporter
-
