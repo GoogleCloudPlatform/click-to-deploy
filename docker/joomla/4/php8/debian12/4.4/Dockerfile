@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/php8-apache2:8.3
+FROM marketplace.gcr.io/google/php8-apache2:8.2
 
 RUN set -ex; \
   savedAptMark="$(apt-mark showmanual)"; \
@@ -71,15 +71,15 @@ RUN set -ex ;\
 
 VOLUME /var/www/html
 
-ENV JOOMLA_VERSION 4.4.8
-ENV C2D_RELEASE 4.4.8
+ENV JOOMLA_VERSION 4.4.13
+ENV C2D_RELEASE 4.4.13
 
 # Download package and extract to web volume
 RUN set -ex; \
-  curl -o joomla.tar.bz2 -SL https://github.com/joomla/joomla-cms/releases/download/${JOOMLA_VERSION}/Joomla_${JOOMLA_VERSION}-Stable-Full_Package.tar.bz2; \
+  curl -o joomla.tar.gz -SL https://github.com/joomla/joomla-cms/releases/download/${JOOMLA_VERSION}/Joomla_${JOOMLA_VERSION}-Stable-Full_Package.tar.gz; \
   mkdir /usr/src/joomla; \
-  tar -xf joomla.tar.bz2 -C /usr/src/joomla; \
-  rm joomla.tar.bz2; \
+  tar -xf joomla.tar.gz -C /usr/src/joomla; \
+  rm joomla.tar.gz; \
   chown -R www-data:www-data /usr/src/joomla
 
 # Copy init scripts
