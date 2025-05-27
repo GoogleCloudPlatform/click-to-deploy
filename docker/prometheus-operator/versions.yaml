@@ -27,6 +27,8 @@ versions:
   packages:
     prometheus-operator:
       version: 0.78.0
+    golang:
+      version: '1.23.1'
   repo: prometheus-operator0
   tags:
   - 0.78.0-debian12
@@ -41,10 +43,11 @@ versions:
   packages:
     prometheus-operator:
       version: 0.77.2
+    golang:
+      version: '1.23.1'
   repo: prometheus-operator0
   tags:
   - 0.77.2-debian12
   - 0.77-debian12
   - 0.77.2
   - '0.77'
-
