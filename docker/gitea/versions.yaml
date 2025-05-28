@@ -35,6 +35,8 @@ versions:
       version: '1.23'
     golang:
       version: '1.23'
+    nodejs:
+      major: '20'
   repo: gitea1
   tags:
   - 1.23.8-debian12
@@ -56,6 +58,8 @@ versions:
       version: '1.22'
     golang:
       version: '1.23'
+    nodejs:
+      major: '20'
   repo: gitea1
   tags:
   - 1.22.9-debian12
