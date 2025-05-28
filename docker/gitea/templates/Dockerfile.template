@@ -1,4 +1,3 @@
-{{- $alpine := index .Packages "alpine" -}}
 {{- $gitea := index .Packages "gitea" -}}
 {{- $golang := index .Packages "golang" -}}
 {{- $nodejs := index .Packages "nodejs" -}}
