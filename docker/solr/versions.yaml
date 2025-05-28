@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,21 +17,37 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 9/debian12/9.6
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/4af7481b-2d9f-4f98-bb26-cceb6db72414.cloudpartnerservices.goog
+  dir: 9/debian12/9.8
   from: marketplace.gcr.io/google/debian12
   packages:
     solr:
-      gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
-      version: 9.6.1
+      gpg: FDB3D11D716BB32ACF8C93AB919B21537AA80271
+      version: 9.8.1
   repo: solr9
-  annotations:
+  tags:
+  - 9.8.1-debian12
+  - 9.8-debian12
+  - 9-debian12
+  - 9.8.1
+  - '9.8'
+  - '9'
+  - latest
+- annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/4af7481b-2d9f-4f98-bb26-cceb6db72414.cloudpartnerservices.goog
+  dir: 9/debian12/9.6
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    solr:
+      gpg: FDB3D11D716BB32ACF8C93AB919B21537AA80271
+      version: 9.6.1
+  repo: solr9
   tags:
   - 9.6.1-debian12
   - 9.6-debian12
-  - 9-debian12
-  - '9.6.1'
+  - 9.6.1
   - '9.6'
-  - '9'
-  - latest
+
