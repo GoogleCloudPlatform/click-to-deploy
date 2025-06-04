@@ -20,7 +20,7 @@ FROM marketplace.gcr.io/google/debian12
 COPY --from=ospo /usr/src /usr/src
 
 ARG SOLR_VERSION=9.6.1
-ARG SOLR_KEYS=FDB3D11D716BB32ACF8C93AB919B21537AA80271
+ARG SOLR_KEYS=50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
 
 ENV C2D_RELEASE=9.6.1
 
@@ -81,6 +81,7 @@ RUN set -ex; \
 RUN set -ex; \
   export GNUPGHOME="/tmp/gnupg_home"; \
   MAX_REDIRECTS=1; \
+  gpg --keyserver hkps://keys.openpgp.org --recv-keys "$SOLR_KEYS"; \
   for url in $SOLR_DOWNLOAD_URL $SOLR_CLOSER_URL $SOLR_DIST_URL $SOLR_ARCHIVE_URL; do \
     if [ -f "/opt/solr-$SOLR_VERSION.tgz" ]; then break; fi; \
     echo "downloading $url"; \

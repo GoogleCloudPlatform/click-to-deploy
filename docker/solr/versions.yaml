@@ -24,7 +24,7 @@ versions:
   from: marketplace.gcr.io/google/debian12
   packages:
     solr:
-      gpg: FDB3D11D716BB32ACF8C93AB919B21537AA80271
+      gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
       version: 9.8.1
   repo: solr9
   tags:
@@ -42,7 +42,7 @@ versions:
   from: marketplace.gcr.io/google/debian12
   packages:
     solr:
-      gpg: FDB3D11D716BB32ACF8C93AB919B21537AA80271
+      gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
       version: 9.6.1
   repo: solr9
   tags:
