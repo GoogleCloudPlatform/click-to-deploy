@@ -1,0 +1,43 @@
+# Copyright 2019 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+setup:
+- command: [docker, run, --env, "ETCD_ROOT_PASSWORD=rootpw", --env, ETCDCTL_API=3, --name, some-etcd-$UNIQUE-id, -d, '$IMAGE']
+- command: [sleep, '5']
+teardown:
+- command: [docker, stop, some-etcd-$UNIQUE-id]
+- command: [docker, rm, some-etcd-$UNIQUE-id]
+
+target: some-etcd-$UNIQUE-id
+tests:
+- name: SHOW etcdctl VERSION
+  command: [etcdctl, version]
+  expect:
+    stdout:
+      matches: '^etcdctl version'
+- name: SHOW etcd VERSION
+  command: [etcd, --version]
+  expect:
+    stdout:
+      matches: '^etcd Version'
+- name: Set 'Hello World!' message
+  command: [etcdctl, "--user=root:rootpw", "--endpoints=http://localhost:2379", put, message, 'Hello World!']
+  expect:
+    stdout:
+      matches: 'OK'
+- name: Get message
+  command: [etcdctl, "--user=root:rootpw", "--endpoints=http://localhost:2379", get, message]
+  expect:
+    stdout:
+      matches: 'Hello World!'
