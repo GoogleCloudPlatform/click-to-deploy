@@ -29,7 +29,7 @@ versions:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
     zookeeper:
-      gpg: 52A7EA3EECAE05B0A8306471790761798F6E35FC
+      gpg: 52A7EA3EECAE05B0A8306471790761798F6E35FC 3F7A1D16FA4217B1DC75E1C9FFE35B7F15DFA1BA
       version: 3.9.3
   repo: zookeeper3
   tags:
@@ -53,7 +53,7 @@ versions:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
     zookeeper:
-      gpg: 52A7EA3EECAE05B0A8306471790761798F6E35FC
+      gpg: 52A7EA3EECAE05B0A8306471790761798F6E35FC 3F7A1D16FA4217B1DC75E1C9FFE35B7F15DFA1BA
       version: 3.8.4
   repo: zookeeper3
   tags:
@@ -80,4 +80,3 @@ versions:
   - exporter-1
   - exporter
   templateSubDir: exporter
-
