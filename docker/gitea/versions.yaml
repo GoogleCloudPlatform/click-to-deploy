@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -21,24 +21,44 @@
 cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
-  machineType: 'E2_HIGHCPU_32'
+  machineType: E2_HIGHCPU_32
 versions:
-- dir: 1/debian12/1.22
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/83c38401-9081-4bfd-8d88-f247f9c37ce9.cloudpartnerservices.goog
+  dir: 1/debian12/1.23
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    gitea:
+      version: '1.23'
+    golang:
+      version: '1.23'
+    nodejs:
+      major: '20'
+  repo: gitea1
+  tags:
+  - 1.23.8-debian12
+  - 1.23-debian12
+  - 1-debian12
+  - 1.23.8
+  - '1.23'
+  - '1'
+  - latest
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/83c38401-9081-4bfd-8d88-f247f9c37ce9.cloudpartnerservices.goog
+  dir: 1/debian12/1.22
   from: marketplace.gcr.io/google/debian12
   packages:
     gitea:
       version: '1.22'
     golang:
       version: '1.23'
+    nodejs:
+      major: '20'
   repo: gitea1
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/83c38401-9081-4bfd-8d88-f247f9c37ce9.cloudpartnerservices.goog
   tags:
-  - 1.22.2-debian12
+  - 1.22.9-debian12
   - 1.22-debian12
-  - 1-debian12
-  - '1.22.2'
+  - 1.22.9
   - '1.22'
-  - '1'
-  - latest
