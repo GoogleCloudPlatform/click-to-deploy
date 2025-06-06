@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt-get install -y wget git tar gzip build-essential
 
 # Install Go
-ARG GO_VERSION=
+ARG GO_VERSION=1.20
 RUN wget https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz && \
     tar -xzf go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local
 
@@ -23,13 +23,14 @@ RUN go install github.com/kardianos/govendor@latest
 
 # Configure environment variables for etcd
 ARG ETCD_VERSION=3.6.0
-ARG ETCD_SHA256=3f6b48d8c2844699f2b19c1880508ecf63e1489769ed37ebb97495d5cd848a89
+ARG ETCD_SHA256=42305b0dcbba7b6fdff0382d0c7b99c42026c88c44847a619ab58cde216725d9
 ENV ETCD_VER=${ETCD_VERSION}
 ENV ETCD_FILE=etcd.tar.gz
 
 # Download etcd source code and validate checksum
 RUN wget -q https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/etcd-v${ETCD_VER}-linux-amd64.tar.gz -O ${ETCD_FILE} && \
-    echo "${ETCD_SHA256}  ${ETCD_FILE}" | sha256sum -c - && \
+    echo "${ETCD_SHA256}  ${ETCD_FILE}" > checksum.txt && \
+    sha256sum -c checksum.txt && \     
     mkdir -p $GOPATH/src/github.com/etcd-io/ && \
     tar -xzf ${ETCD_FILE} -C $GOPATH/src/github.com/etcd-io/ --strip-components=1
 
@@ -52,7 +53,7 @@ RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE 
 ## Builded new "marketplace.gcr.io/google/debian12" container will contain only files copied from Builder image
 FROM marketplace.gcr.io/google/debian12
 
-ENV C2D_RELEASE 
+ENV C2D_RELEASE=3.6.0 
 
 RUN apt-get update && \
     apt-get install -y libc-bin libssl3 && \

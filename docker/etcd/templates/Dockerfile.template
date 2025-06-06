@@ -26,13 +26,14 @@ RUN go install github.com/kardianos/govendor@latest
 
 # Configure environment variables for etcd
 ARG ETCD_VERSION={{ $etcd.Version }}
-ARG ETCD_SHA256=3f6b48d8c2844699f2b19c1880508ecf63e1489769ed37ebb97495d5cd848a89
+ARG ETCD_SHA256={{ $etcd.SHA256 }}
 ENV ETCD_VER=${ETCD_VERSION}
 ENV ETCD_FILE=etcd.tar.gz
 
 # Download etcd source code and validate checksum
 RUN wget -q https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/etcd-v${ETCD_VER}-linux-amd64.tar.gz -O ${ETCD_FILE} && \
-    echo "${ETCD_SHA256}  ${ETCD_FILE}" | sha256sum -c - && \
+    echo "${ETCD_SHA256}  ${ETCD_FILE}" > checksum.txt && \
+    sha256sum -c checksum.txt && \
     mkdir -p $GOPATH/src/github.com/etcd-io/ && \
     tar -xzf ${ETCD_FILE} -C $GOPATH/src/github.com/etcd-io/ --strip-components=1
 
@@ -72,7 +73,7 @@ ENV ETCD_DATA_DIR="/var/run/etcd/default.etcd"
 EXPOSE 2379 2380
 
 RUN etcd_version=$(etcd --version | grep 'etcd Version:' | cut -d ' ' -f 3) && \
-    test "${C2D_RELEASE}" = "${etcd_version}" || { echo "Version check failed"; exit 1; }
+    test "${C2D_RELEASE}" = "${etcd_version}" || { echo "Version check failed: expected ${C2D_RELEASE}, got ${etcd_version}"; exit 1; }
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["etcd"]
