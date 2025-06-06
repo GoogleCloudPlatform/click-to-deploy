@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels: &Labels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: longhorn
+    app: longhorn-ui
+  name: longhorn-ui
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *Labels
+  template:
+    metadata:
+      labels: *Labels 
+    spec:
+      containers:
+      - name: longhorn-ui
+        image: {{ .Values.longhorn.ui.image.repo }}:{{ .Values.longhorn.ui.image.tag }}
+        imagePullPolicy: Always
+        volumeMounts:
+        - name : nginx-cache
+          mountPath: /var/cache/nginx/
+        - name : nginx-config
+          mountPath: /var/config/nginx/
+        - name: var-run
+          mountPath: /var/run/
+        ports:
+        - containerPort: 8000
+          name: http
+        env:
+          - name: LONGHORN_MANAGER_IP
+            value: "http://longhorn-backend:9500"
+          - name: LONGHORN_UI_PORT
+            value: "8000"
+      volumes:
+      - emptyDir: {}
+        name: nginx-cache
+      - emptyDir: {}
+        name: nginx-config
+      - emptyDir: {}
+        name: var-run
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels: &Labels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: longhorn
+    app: longhorn-ui
+  name: {{ .Release.Name }}-longhorn-frontend
+  namespace: {{ .Release.Namespace }}
+spec:
+  {{- if .Values.enablePublicServiceAndIngress }}
+  type: NodePort
+  {{- else }}
+  type: ClusterIP
+  {{- end }}
+  selector: *Labels
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+
