@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,25 +16,26 @@
 cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
-  machine_type: 'E2_HIGHCPU_32'
+  machineType: E2_HIGHCPU_32
 versions:
-- dir: 3/debian12/3.5
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/ad1bf2fb-7561-4833-8b24-ae3cc489a86f.cloudpartnerservices.goog
+  dir: 3/debian12/3.5
   from: marketplace.gcr.io/google/debian12
   packages:
     scala:
       minor: '2.13'
     spark:
-      version: 3.5.2
+      version: 3.5.5
   repo: spark3
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/ad1bf2fb-7561-4833-8b24-ae3cc489a86f.cloudpartnerservices.goog
   tags:
-  - 3.5.2-debian12
+  - 3.5.5-debian12
   - 3.5-debian12
   - 3-debian12
-  - 3.5.2
+  - 3.5.5
   - '3.5'
   - '3'
   - latest
   templateSubDir: '3'
+
