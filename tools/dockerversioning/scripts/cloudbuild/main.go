@@ -49,7 +49,6 @@ type cloudBuildOptions struct {
   EnableProvenance bool
 }
 
-// TODO(huyhg): Replace "gcr.io/$PROJECT_ID/functional_test" with gcp-runtimes one.
 const cloudBuildTemplateString = `steps:
 {{- $parallel := .Parallel }}
 {{- $dockerImage := .DockerImage }}
@@ -128,7 +127,8 @@ const cloudBuildTemplateString = `steps:
       - '{{ $test }}'
     waitFor: ['image-test-{{ $primary }}']
     id: 'structure-test-{{ $primary }}-{{ $testIndex }}'
-  {{- end }}
+
+  {{ end }}
 
   {{- range $testIndex, $test := .FunctionalTests }}
   # Run functional test: {{ $primary }}
@@ -150,8 +150,6 @@ const cloudBuildTemplateString = `steps:
       - 'buildx'
       - 'build'
       - '--push'
-      - '--tag'
-      - '{{ .Tag }}'
       {{- range .Aliases }}
       - '--tag'
       - '{{ . }}'
