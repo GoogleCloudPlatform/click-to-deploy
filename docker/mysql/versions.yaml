@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,7 +19,10 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 8/debian12/8.0
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/13da159e-d102-4c5c-b567-c11745a06cf7.cloudpartnerservices.goog
+  dir: 8/debian12/8.0
   excludeTests:
   - tests/functional_tests/mysqld_exporter_test.yaml
   from: marketplace.gcr.io/google/debian12
@@ -28,72 +31,39 @@ versions:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
     mysql:
-      gpg: "BCA4 3417 C3B4 85DD 128E C6D4 B7B3 B788 A8D3 785C"
+      gpg: BCA4 3417 C3B4 85DD 128E C6D4 B7B3 B788 A8D3 785C
       major: '8.0'
-      version: 8.0.41
+      version: 8.0.42
   repo: mysql8
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/13da159e-d102-4c5c-b567-c11745a06cf7.cloudpartnerservices.goog
   tags:
-  - 8.0.41-debian12
+  - 8.0.42-debian12
   - 8.0-debian12
   - 8-debian12
-  - 8.0.41
+  - 8.0.42
   - '8.0'
   - '8'
   - latest
   templateArgs:
-    distroMajor: '12'
     distroCodename: bookworm
+    distroMajor: '12'
   templateSubDir: mysql
-
-- dir: 5/debian12/5.7
-  excludeTests:
-  - tests/functional_tests/mysqld_exporter_test.yaml
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    gosu:
-      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.17'
-    mysql:
-      gpg: "BCA4 3417 C3B4 85DD 128E C6D4 B7B3 B788 A8D3 785C"
-      major: '5.7'
-      version: 5.7.42
-  repo: mysql5
-  annotations:
+- annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/b4f25409-d1ce-4b19-9f86-6d97914c6b71.cloudpartnerservices.goog
-  tags:
-  - 5.7.42-debian12
-  - 5.7-debian12
-  - 5-debian12
-  - 5.7.42
-  - '5.7'
-  - '5'
-  - latest
-  templateArgs:
-    distroMajor: '10'
-    distroCodename: buster
-  templateSubDir: mysql
-
-- dir: exporter
+    value: services/13da159e-d102-4c5c-b567-c11745a06cf7.cloudpartnerservices.goog
+  dir: exporter
   excludeTests:
   - tests/functional_tests/create_db_test.yaml
   - tests/functional_tests/remote_host_test.yaml
   from: marketplace.gcr.io/google/debian12
   packages:
     golang:
-      minor: 1.21
+      minor: '1.21'
     mysqld_exporter:
-      sha256: 85ea5bc68e1b9f466c1df10ff016652dd210371d42245e012b876265e89ae29d
-      version: 0.15.1
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/13da159e-d102-4c5c-b567-c11745a06cf7.cloudpartnerservices.goog
+      sha256: 3973db1c46b0323a957a43916b759ee71ddab9096958ce78401fdff894b0dc51
+      version: 0.15.0
   repo: mysql8
   tags:
   - exporter
   - exporter-0.15
-  - exporter-0.15.1
+  - exporter-0.15.0
   templateSubDir: exporter

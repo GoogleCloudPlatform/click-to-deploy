@@ -22,7 +22,29 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 3/debian12/3.13
+- dir: 4/debian12/4.0
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
+    otp:
+      version: 26.2.5.3
+    rabbitmq:
+      version: 4.0.3
+  repo: rabbitmq4
+  tags:
+  - 4.0.3-debian12
+  - 4.0-debian12
+  - 4-debian12
+  - 4.0.3
+  - '4.0'
+  - '4'
+  - latest
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/96358145-e7c1-4dcb-aaee-e4a35745c11d.cloudpartnerservices.goog
+  dir: 3/debian12/3.13
   from: marketplace.gcr.io/google/debian12
   packages:
     gosu:
@@ -33,9 +55,6 @@ versions:
     rabbitmq:
       version: 3.13.7
   repo: rabbitmq3
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/96358145-e7c1-4dcb-aaee-e4a35745c11d.cloudpartnerservices.goog
   tags:
   - 3.13.7-debian12
   - 3.13-debian12
@@ -44,3 +63,4 @@ versions:
   - '3.13'
   - '3'
   - latest
+

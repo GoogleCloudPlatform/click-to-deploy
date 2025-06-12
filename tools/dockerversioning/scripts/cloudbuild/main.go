@@ -44,9 +44,11 @@ type cloudBuildOptions struct {
 
   // Defines the reference for the docker Cloud Build builder (https://cloud.google.com/build/docs/cloud-builders#supported_builder_images_provided_by)
   DockerImage string
+
+  // Defines whether the build provenance should be generated or not (default: false)
+  EnableProvenance bool
 }
 
-// TODO(huyhg): Replace "gcr.io/$PROJECT_ID/functional_test" with gcp-runtimes one.
 const cloudBuildTemplateString = `steps:
 {{- $parallel := .Parallel }}
 {{- $dockerImage := .DockerImage }}
@@ -196,10 +198,20 @@ timeout: {{ .TimeoutSeconds }}s
 {{- if $parallel }}
 options:
   machineType: 'E2_HIGHCPU_8'
+  requestedVerifyOption: {{ formatProvenance .EnableProvenance }}
 {{- else }}
-{{- if .MachineType }}
 options:
   machineType: '{{ .MachineType }}'
+  requestedVerifyOption: {{ formatProvenance .EnableProvenance }}
+{{- end }}
+
+{{- if .EnableProvenance }}
+images:
+{{- range $imageIndex, $image := .ImageBuilds }}
+  - {{ $image.Tag }}
+  {{- range .Aliases }}
+  - {{ . }}
+  {{- end }}
 {{- end }}
 {{- end }}
 `
@@ -210,6 +222,7 @@ const structureTestsDir = "tests/structure_tests"
 const testJsonSuffix = "_test.json"
 const testYamlSuffix = "_test.yaml"
 const workspacePrefix = "/workspace/"
+const DefaultMachineType = "UNSPECIFIED"
 
 type imageBuildTemplateData struct {
   Directory            string
@@ -226,13 +239,14 @@ type imageBuildTemplateData struct {
 }
 
 type cloudBuildTemplateData struct {
-  RequireNewTags bool
-  Parallel       bool
-  DockerImage    string
-  ImageBuilds    []imageBuildTemplateData
-  AllImages      []string
-  TimeoutSeconds int
-  MachineType    string
+  RequireNewTags    bool
+  Parallel          bool
+  DockerImage       string
+  ImageBuilds       []imageBuildTemplateData
+  AllImages         []string
+  TimeoutSeconds    int
+  MachineType       string
+  EnableProvenance  bool
 }
 
 func shouldParallelize(options cloudBuildOptions, numberOfVersions int, numberOfTests int) bool {
@@ -249,6 +263,16 @@ func newCloudBuildTemplateData(
   registry string, spec versions.Spec, options cloudBuildOptions) cloudBuildTemplateData {
   data := cloudBuildTemplateData{}
   data.RequireNewTags = options.RequireNewTags
+
+  // Defines the build machine type
+  if options.MachineType != "" {
+    data.MachineType = options.MachineType
+  } else {
+    data.MachineType = DefaultMachineType
+  }
+
+  // Defines the provenance option
+  data.EnableProvenance = options.EnableProvenance
 
   // Defines the default docker image, if its not set
   if (options.DockerImage == "") {
@@ -309,7 +333,6 @@ func newCloudBuildTemplateData(
   }
 
   data.TimeoutSeconds = options.TimeoutSeconds
-  data.MachineType = options.MachineType
   data.Parallel = shouldParallelize(options, len(spec.Versions), len(functionalTests))
   return data
 }
@@ -369,6 +392,12 @@ func renderCloudBuildConfig(
       }
       return string(bytes)
     },
+    "formatProvenance": func(enableProvenance bool) string {
+      if enableProvenance {
+        return "VERIFIED"
+      }
+      return "NOT_VERIFIED"
+    },
   }
 
   tmpl, _ := template.
@@ -398,8 +427,10 @@ func main() {
   enableParallel := config.BoolOption("enable_parallel", false, "Enable parallel build and bigger VM")
   forceParallel := config.BoolOption("force_parallel", false, "Force parallel build and bigger VM")
   dockerImage := config.StringOption("docker_image", "gcr.io/cloud-builders/docker", "Optional docker builder reference")
+  enableProvenance := config.BoolOption("enable_provenance", false, "Enable Cloud Build provenance or not (default: false)")
   config.Parse()
 
+  // registry validation
   if *registryPtr == "" {
     log.Fatalf("--registry flag is required")
   }
@@ -412,8 +443,29 @@ func main() {
   if *dirsPtr != "" {
     dirs = strings.Split(*dirsPtr, ",")
   }
+
   spec := versions.LoadVersions("versions.yaml")
-  options := cloudBuildOptions{dirs, *testsPtr, *newTagsPtr, *firstTagOnly, *timeoutPtr, *machineTypePtr, *enableParallel, *forceParallel, *dockerImage}
+
+  options := cloudBuildOptions{
+    // Build configuration
+    dirs,
+    *testsPtr,
+    *newTagsPtr,
+    *firstTagOnly,
+
+    // Resource allocation
+    *timeoutPtr,
+    *machineTypePtr,
+
+    // Parallelization settings
+    *enableParallel,
+    *forceParallel,
+
+    // Build options
+    *dockerImage,
+    *enableProvenance,
+  }
+
   result := renderCloudBuildConfig(*registryPtr, spec, options)
   fmt.Println(result)
 }
