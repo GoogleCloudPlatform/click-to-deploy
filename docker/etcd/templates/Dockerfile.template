@@ -53,6 +53,7 @@ RUN wget -q https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/etcd-
 # Download the release License
 RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE -O /LICENSE
 
+
 ## Builded new "marketplace.gcr.io/google/debian12" container will contain only files copied from Builder image
 FROM marketplace.gcr.io/google/debian12
 
