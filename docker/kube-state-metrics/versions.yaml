@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,38 +17,23 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 2/debian12/2.14
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/c613a576-2e1c-40bb-ae32-ca094100f227.cloudpartnerservices.goog
+  dir: 2/debian12/2.15
   from: marketplace.gcr.io/google/debian12
   packages:
     golang:
-      version: 1.23.0
+      version: 1.23.5
     kube-state-metrics:
-      version: 2.14.0
+      version: 2.15.0
   repo: kube-state-metrics2
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/c613a576-2e1c-40bb-ae32-ca094100f227.cloudpartnerservices.goog
   tags:
-  - 2.14.0-debian12
-  - 2.14-debian12
+  - 2.15.0-debian12
+  - 2.15-debian12
   - 2-debian12
-  - 2.14.0
-  - '2.14'
+  - 2.15.0
+  - '2.15'
   - '2'
   - latest
-- dir: 2/debian12/2.13
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    golang:
-      version: 1.22.0
-    kube-state-metrics:
-      version: 2.13.0
-  repo: kube-state-metrics2
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/c613a576-2e1c-40bb-ae32-ca094100f227.cloudpartnerservices.goog
-  tags:
-  - 2.13.0-debian12
-  - 2.13-debian12
-  - 2.13.0
-  - '2.13'
+
