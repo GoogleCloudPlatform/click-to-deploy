@@ -17,8 +17,6 @@ FROM marketplace.gcr.io/google/debian12
 ENV BAZEL_VERSION=0.19.2
 ENV BAZEL_ARCH=linux_amd64_stripped
 
-COPY ./ click-to-deploy/tools
-
 RUN set -eux \
     && apt-get update \
     && apt-get install git wget unzip python3 g++ ca-certificates curl -y
@@ -29,8 +27,11 @@ RUN set -eux \
     && chmod +x /bazel-installer.sh \
     && /bazel-installer.sh
 
+COPY ./ /click-to-deploy/tools
+
 RUN set -eux \
-    && cd click-to-deploy/tools \
+    && pwd \
+    && cd /click-to-deploy/tools \
     && bazel build dockerversioning/scripts/dockerfiles:dockerfiles dockerversioning/scripts/cloudbuild:cloudbuild \
     && cp bazel-bin/dockerversioning/scripts/dockerfiles/${BAZEL_ARCH}/dockerfiles /bin/dockerfiles \
     && cp bazel-bin/dockerversioning/scripts/cloudbuild/${BAZEL_ARCH}/cloudbuild /bin/cloudbuild

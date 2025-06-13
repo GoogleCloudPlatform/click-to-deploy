@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,38 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 1/debian12/1.8
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/0b86772a-0533-4aa1-aae2-d42fab2af63b.cloudpartnerservices.goog
+  dir: 1/debian12/1.9
   from: marketplace.gcr.io/google/debian12
   packages:
     nodeexporter:
-      version: 1.8.2
+      version: 1.9.1
   repo: prometheus-nodeexporter1
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/0b86772a-0533-4aa1-aae2-d42fab2af63b.cloudpartnerservices.goog
   tags:
-  - 1.8.2-debian12
-  - 1.8-debian12
+  - 1.9.1-debian12
+  - 1.9-debian12
   - 1-debian12
-  - 1.8.2
-  - '1.8'
+  - 1.9.1
+  - '1.9'
   - '1'
   - latest
-- dir: 1/debian12/1.6
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    nodeexporter:
-      version: 1.6.1
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/0b86772a-0533-4aa1-aae2-d42fab2af63b.cloudpartnerservices.goog
-  repo: prometheus-nodeexporter1
-  tags:
-  - 1.6.1-debian12
-  - 1.6-debian12
-  - 1.6.1
-  - '1.6'
+
