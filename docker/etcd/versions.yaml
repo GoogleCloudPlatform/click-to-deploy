@@ -1,0 +1,60 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  enable_parallel: false
+versions:
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/8be1fafd-f0c6-4770-b23e-bce06be7b750.cloudpartnerservices.goog
+  dir: 3/debian12/3.6
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    etcd:
+      sha256: 42305b0dcbba7b6fdff0382d0c7b99c42026c88c44847a619ab58cde216725d9
+      version: 3.6.0
+    golang:
+      version: 1.20
+  templateArgs:
+    c2dRelease: 3.6.0
+  repo: etcd3
+  tags:
+  - 3.6.0-debian12
+  - 3.6-debian12
+  - 3-debian12
+  - 3.6.0
+  - '3.6'
+  - '3'
+  - latest
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/8be1fafd-f0c6-4770-b23e-bce06be7b750.cloudpartnerservices.goog
+  dir: 3/debian12/3.5
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    etcd:
+      sha256: adddda4b06718e68671ffabff2f8cee48488ba61ad82900e639d108f2148501c
+      version: 3.5.21
+    golang:
+      version: 1.20
+  templateArgs:
+    c2dRelease: 3.5.21
+  repo: etcd3
+  tags:
+  - 3.5.21-debian12
+  - 3.5-debian12
+  - 3.5.21
+  - '3.5'
