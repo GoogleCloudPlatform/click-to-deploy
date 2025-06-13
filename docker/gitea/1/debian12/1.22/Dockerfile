@@ -27,12 +27,13 @@ ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
 
 # Build deps
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    git \
-    nodejs \
-    npm \
-    && rm -rf /var/cache/apk/*
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x \
+    | bash - ; \
+    apt update && apt -y install \
+        build-essential \
+        git \
+        nodejs \
+        && rm -rf /var/cache/apk/*
 
 #Setup repo
 RUN git clone -b ${GITEA_VERSION} https://github.com/go-gitea/gitea.git ${GOPATH}/src/code.gitea.io/gitea
@@ -54,14 +55,14 @@ EXPOSE 22 3000
 
 RUN apt-get update && \
     apt-get install -y \
-    bash \
-    ca-certificates \
-    git \
-    gettext \
-    openssh-server \
-    s6 \
-    sqlite3 \
-    gnupg
+        bash \
+        ca-certificates \
+        git \
+        gettext \
+        openssh-server \
+        s6 \
+        sqlite3 \
+        gnupg
 
 RUN ln -s /usr/lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1 \
     &&  ssh-keygen -A \
