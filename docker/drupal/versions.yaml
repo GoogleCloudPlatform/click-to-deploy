@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,42 +19,60 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 10/php8/debian12/10.3/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.2
+- dir: 11/php8/debian12/11.1/apache
+  from: marketplace.gcr.io/google/php8-apache2:8.3
   packages:
     composer:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
       version: 2.5.8
     drupal:
-      md5: 7b0f59c9fc1e3a0b753343cd0893eea6
-      version: 10.3.6
-  repo: drupal10-php8-apache
-  annotations:
+      md5: 31c4313357bb0fac1a0f52135d766539
+      version: 11.1.7
+  repo: drupal11-php8-apache
+  tags:
+  - 11.1.7-debian12
+  - 11.1-debian12
+  - 11-debian12
+  - 11.1.7
+  - '11.1'
+  - '11'
+  - latest
+- annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/2091b012-066a-46f0-8d26-63c5b7db70a4.cloudpartnerservices.goog
+  dir: 10/php8/debian12/10.4/apache
+  from: marketplace.gcr.io/google/php8-apache2:8.3
+  packages:
+    composer:
+      gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
+      version: 2.5.8
+    drupal:
+      md5: 3ee542f57bfb6140ae05d29d11918df5
+      version: 10.4.7
+  repo: drupal10-php8-apache
   tags:
-  - 10.3.6-debian12
-  - 10.3-debian12
+  - 10.4.7-debian12
+  - 10.4-debian12
   - 10-debian12
-  - 10.3.6
-  - '10.3'
+  - 10.4.7
+  - '10.4'
   - '10'
   - latest
-- dir: 10/php8/debian12/10.2/apache
-  from: marketplace.gcr.io/google/php8-apache2:8.1
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/2091b012-066a-46f0-8d26-63c5b7db70a4.cloudpartnerservices.goog
+  dir: 10/php8/debian12/10.3/apache
+  from: marketplace.gcr.io/google/php8-apache2:8.3
   packages:
     composer:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
       version: 2.5.8
     drupal:
-      md5: 1f7a37ba42ee22948ffc11bfe4541dbd
-      version: 10.2.8
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/2091b012-066a-46f0-8d26-63c5b7db70a4.cloudpartnerservices.goog
+      md5: 0511f20f69caa44181fadbe23bc4d03f
+      version: 10.3.14
   repo: drupal10-php8-apache
   tags:
-  - 10.2.8-debian12
-  - 10.2-debian12
-  - 10.2.10
-  - '10.2'
+  - 10.3.14-debian12
+  - 10.3-debian12
+  - 10.3.14
+  - '10.3'

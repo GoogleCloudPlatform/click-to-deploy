@@ -33,6 +33,36 @@ export PATH=$PATH:$PWD/bazel-bin/dockerversioning/scripts/dockerfiles/${BAZEL_AR
 export PATH=$PATH:$PWD/bazel-bin/dockerversioning/scripts/cloudbuild/${BAZEL_ARCH}/
 ```
 
+# Build the image
+
+Execute the script below from the `tools/` directory:
+
+```shell
+cd tools/
+docker build -t dockertools -f dockertools.Dockerfile .
+```
+
+Add the alias to your terminal session:
+
+```shell
+alias c2d_tools='docker run \
+  --rm \
+  --workdir /mounted \
+  --mount type=bind,source="$(pwd)",target=/mounted \
+  --user $(id -u):$(id -g) \
+  dockertools'
+```
+
+Test in a Docker folder:
+
+```shell
+# Generate the Cloud Build manifest
+c2d_tools cloudbuild | tee cloudbuild.yaml
+
+# Test dockerfiles binary
+c2d_tools dockerfiles -verify_only
+```
+
 # Create `versions.yaml`
 
 At root of the Dockerfile source repo, add a file called `versions.yaml`.
