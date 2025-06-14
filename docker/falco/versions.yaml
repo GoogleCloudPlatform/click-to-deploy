@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,35 +17,48 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 0/debian11/0.36
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/5b7a25d4-ece2-4ae3-b8c3-652b2af4a5ec.cloudpartnerservices.goog
+  dir: 0/debian12/0.40
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    falco:
+      version: 0.40.0
+  repo: falco0
+  tags:
+  - 0.40.0-debian12
+  - 0.40-debian12
+  - 0-debian12
+  - 0.40.0
+  - '0.40'
+  - '0'
+  - latest
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/5b7a25d4-ece2-4ae3-b8c3-652b2af4a5ec.cloudpartnerservices.goog
+  dir: 0/debian12/0.36
   from: marketplace.gcr.io/google/debian12
   packages:
     falco:
       version: 0.36.2
   repo: falco0
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/5b7a25d4-ece2-4ae3-b8c3-652b2af4a5ec.cloudpartnerservices.goog
   tags:
-  - 0.36.2-debian11
-  - 0.36-debian11
-  - 0-debian11
+  - 0.36.2-debian12
+  - 0.36-debian12
   - 0.36.2
   - '0.36'
-  - '0'
-  - latest
 - dir: exporter
   from: marketplace.gcr.io/google/debian12
   packages:
     falco_exporter:
-      version: 0.8.7
+      sha256: 42d82b7ac22c2c62609be5755506ca93524f2bc6beb28eb93b8acabeae5ec118
+      version: 0.8.2
   repo: falco-exporter0
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/14a94703-d67c-403c-8e1f-f5ad256e6cac.cloudpartnerservices.goog
   tags:
-  - 0.8.7
+  - 0.8.2
   - '0.8'
   - '0'
   - latest
   templateSubDir: exporter
+
