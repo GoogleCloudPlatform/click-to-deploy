@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt-get install -y wget git tar gzip build-essential
 
 # Install Go
-ARG GO_VERSION=1.20
+ARG GO_VERSION=1.22.0
 RUN wget https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz && \
     tar -xzf go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local
 
