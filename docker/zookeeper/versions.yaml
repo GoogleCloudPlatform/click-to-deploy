@@ -26,7 +26,6 @@ versions:
   from: marketplace.gcr.io/google/debian12
   packages:
     gosu:
-      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
     zookeeper:
       gpg: 3F7A1D16FA4217B1DC75E1C9FFE35B7F15DFA1BA
@@ -50,7 +49,6 @@ versions:
   from: marketplace.gcr.io/google/debian12
   packages:
     gosu:
-      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.17'
     zookeeper:
       gpg: AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66

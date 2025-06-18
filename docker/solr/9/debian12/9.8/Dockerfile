@@ -19,10 +19,10 @@ FROM marketplace.gcr.io/google/debian12
 
 COPY --from=ospo /usr/src /usr/src
 
-ARG SOLR_VERSION=9.6.1
+ARG SOLR_VERSION=9.8.1
 ARG SOLR_KEYS=50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
 
-ENV C2D_RELEASE=9.6.1
+ENV C2D_RELEASE=9.8.1
 
 RUN set -ex; \
   apt-get update; \
