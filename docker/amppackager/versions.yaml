@@ -15,6 +15,23 @@ _variables:
   from10: &from10 'gcr.io/cloud-marketplace/google/debian10'
 
 versions:
+  # amppackager v6
+  - dir: '1/debian10/1.0.3'
+    repo: 'amppackager1'
+    templateSubDir: debian10
+    tags:
+      - '1.0.3-debian10'
+      - '1.0.3'
+      - '1.0'
+      - '1.0-debian10'
+      - '1-debian10'
+      - '1'
+      - 'latest'
+    from: *from10
+    packages:
+      amppackager:
+        version: 1.0.3
+        sha256: 735a4bea3ba058bff48709d484ad143046402f95971c4eb6d0ad8403e4a85632
   # amppackager 1.0.2
   - dir: '1/debian10/1.0.2'
     repo: 'amppackager1'
@@ -22,11 +39,6 @@ versions:
     tags:
       - '1.0.2-debian10'
       - '1.0.2'
-      - '1.0'
-      - '1.0-debian10'
-      - '1-debian10'
-      - '1'
-      - 'latest'
     from: *from10
     packages:
       amppackager:
