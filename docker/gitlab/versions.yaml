@@ -15,9 +15,26 @@
 
 cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
-  enable_parallel: false
+  enable_parallel: true
   machineType: E2_HIGHCPU_32
 versions:
+- dir: 17/debian12/17.11
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    gitlab:
+      version: 17.11.4
+  repo: gitlab17
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/53b1dc8f-20b0-40ad-9376-3103ea99b76c.cloudpartnerservices.goog
+  tags:
+  - 17.11.4-debian12
+  - 17.11-debian12
+  - 17-debian12
+  - 17.11.4
+  - '17.11'
+  - '17'
+  - latest
 - dir: 17/debian12/17.5
   from: marketplace.gcr.io/google/debian12
   packages:
@@ -30,8 +47,5 @@ versions:
   tags:
   - 17.5.1-debian12
   - 17.5-debian12
-  - 17-debian12
   - 17.5.1
   - '17.5'
-  - '17'
-  - latest
