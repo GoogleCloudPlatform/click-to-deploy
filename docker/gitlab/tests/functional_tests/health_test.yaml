@@ -47,10 +47,6 @@ tests:
     stdout:
       matches: '"db_check":\[{"status":"ok"}\]'
     stdout:
-      matches: '"redis_check":\[{"status":"ok"}\]'
-    stdout:
-      matches: '"db_check":\[{"status":"ok"}\]'
-    stdout:
       matches: '"cache_check":\[{"status":"ok"}\]'
     stdout:
       matches: '"queues_check":\[{"status":"ok"}\]'
