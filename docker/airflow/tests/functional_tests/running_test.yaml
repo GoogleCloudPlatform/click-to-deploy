@@ -17,7 +17,6 @@ setup:
 - command:
   - 'docker'
   - 'run'
-  - '--rm'
   - '--tty'
   - '--net'
   - 'testbridge-$UNIQUE-id'
@@ -37,7 +36,6 @@ setup:
 - command:
   - 'docker'
   - 'run'
-  - '--rm'
   - '--tty'
   - '--net'
   - 'testbridge-$UNIQUE-id'
@@ -71,7 +69,7 @@ tests:
   command: [docker, logs, some-airflow-$UNIQUE-id]
 
 - name: Test health status
-  command: [docker, exec, some-airflow-$UNIQUE-id, curl, -s, -L, 'http://localhost:8080/']
+  command: [docker, exec, some-airflow-$UNIQUE-id, curl, -s, -L, 'http://localhost:8080/health']
   expect:
     stdout:
-      contains: 'Apache Airflow'
+      matches: '"status": "healthy"'
