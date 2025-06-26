@@ -2,7 +2,7 @@ FROM marketplace.gcr.io/google/debian12
 
 # This is the release of Consul to pull in.
 ENV CONSUL_VERSION 1.19.2
-ENV CONSUL_GPG C874011F0AB405110D02105534365D9472D7468F 91A6E7F85D05C65630BEF18951852D87348FFC4C
+ENV CONSUL_GPG C874011F0AB405110D02105534365D9472D7468F
 
 ENV C2D_RELEASE 1.19.2
 
@@ -63,21 +63,7 @@ RUN set -eux && \
       jq \
     ' && \
     apt-get update && apt-get install -qq -y $buildDependencies \
-    && found='' && \
-	for server in \
-		pool.sks-keyservers.net \
-		na.pool.sks-keyservers.net \
-		eu.pool.sks-keyservers.net \
-		oc.pool.sks-keyservers.net \
-		ha.pool.sks-keyservers.net \
-		hkp://p80.pool.sks-keyservers.net:80 \
-		hkp://keyserver.ubuntu.com:80 \
-		pgp.mit.edu \
-	; do \
-		gpg --keyserver $server --recv-keys $CONSUL_GPG \
-			&& found=yes && break; \
-	done; \
-	test -n "$found"
+      && gpg --keyserver keyserver.ubuntu.com --recv-keys $CONSUL_GPG
 
 RUN mkdir -p /tmp/build && \
     cd /tmp/build && \
