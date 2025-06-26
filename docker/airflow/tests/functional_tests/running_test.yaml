@@ -17,6 +17,8 @@ setup:
 - command:
   - 'docker'
   - 'run'
+  - '--rm'
+  - '--tty'
   - '--net'
   - 'testbridge-$UNIQUE-id'
   - '--name'
@@ -35,6 +37,8 @@ setup:
 - command:
   - 'docker'
   - 'run'
+  - '--rm'
+  - '--tty'
   - '--net'
   - 'testbridge-$UNIQUE-id'
   - '--name'
@@ -63,8 +67,11 @@ teardown:
 
 target: some-airflow-$UNIQUE-id
 tests:
+- name: Check container logs
+  command: [docker, logs, some-airflow-$UNIQUE-id]
+
 - name: Test health status
-  command: [curl, -s, -L, 'http://localhost:8080/']
+  command: [docker, exec, some-airflow-$UNIQUE-id, curl, -s, -L, 'http://localhost:8080/']
   expect:
     stdout:
       contains: 'Apache Airflow'
