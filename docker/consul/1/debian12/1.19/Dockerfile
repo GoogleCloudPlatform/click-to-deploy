@@ -63,21 +63,7 @@ RUN set -eux && \
       jq \
     ' && \
     apt-get update && apt-get install -qq -y $buildDependencies \
-    && found='' && \
-	for server in \
-		pool.sks-keyservers.net \
-		na.pool.sks-keyservers.net \
-		eu.pool.sks-keyservers.net \
-		oc.pool.sks-keyservers.net \
-		ha.pool.sks-keyservers.net \
-		hkp://p80.pool.sks-keyservers.net:80 \
-		hkp://keyserver.ubuntu.com:80 \
-		pgp.mit.edu \
-	; do \
-		gpg --keyserver $server --recv-keys $CONSUL_GPG \
-			&& found=yes && break; \
-	done; \
-	test -n "$found"
+      && gpg --keyserver keyserver.ubuntu.com --recv-keys $CONSUL_GPG
 
 RUN mkdir -p /tmp/build && \
     cd /tmp/build && \
