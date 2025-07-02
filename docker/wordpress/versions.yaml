@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,45 +16,45 @@
 
 
 cloudbuild:
-  enable_parallel: true
   docker_image: gcr.io/cloud-builders/docker:24.0.9
+  enable_parallel: true
 versions:
-- dir: 6/php8/debian11/apache/6.6
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/1a8e88da-5416-4d78-b91e-9a1b2be81323.cloudpartnerservices.goog
+  dir: 6/php8/debian12/apache/6.6
   excludeTests:
   - tests/functional_tests/apache_exporter_test.yaml
   from: marketplace.gcr.io/google/php8-apache2:8.2
   packages:
     wordpress:
-      version: 6.6.1
+      version: 6.6.2
   repo: wordpress6-php8-apache
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/1a8e88da-5416-4d78-b91e-9a1b2be81323.cloudpartnerservices.goog
   tags:
-  - 6.6.1-debian11
-  - 6.6-debian11
-  - 6-debian11
-  - 6.6.1
+  - 6.6.2-debian12
+  - 6.6-debian12
+  - 6-debian12
+  - 6.6.2
   - '6.6'
   - '6'
   - latest
   templateArgs:
-    c2dRelease: 6.6.1
+    c2dRelease: 6.6.2
     cmd: apache2-foreground
-  templateSubDir: debian11
-- dir: exporter
+  templateSubDir: wordpress
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/8139d7ec-b450-4593-829e-608b968b7454.cloudpartnerservices.goog
+  dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/debian12
   packages:
     apache_exporter:
       version: 0.13.4
     golang:
       version: '1.20'
   repo: apache-exporter0
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/8139d7ec-b450-4593-829e-608b968b7454.cloudpartnerservices.goog
   tags:
   - 0.13.4
   - '0.13'

@@ -34,9 +34,9 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 # Stage: Server and Workflow Controller: Builder
-FROM golang:1.21 as builder
+FROM golang:1.23 as builder
 
-ARG ARGO_VERSION="3.5.10"
+ARG ARGO_VERSION="3.5.14"
 ENV ARGO_VERSION "${ARGO_VERSION}"
 
 RUN apt-get update && apt-get --no-install-recommends install -y \
@@ -109,7 +109,7 @@ FROM marketplace.gcr.io/google/debian12
 
 COPY --from=ospo /usr/src /usr/src
 
-ENV C2D_RELEASE "3.5.10"
+ENV C2D_RELEASE "3.5.14"
 USER 8737
 
 # Controller artifacts

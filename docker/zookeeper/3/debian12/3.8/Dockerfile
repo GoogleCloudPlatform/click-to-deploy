@@ -7,13 +7,60 @@ COPY source_code.txt /source_code.txt
 RUN apt update && apt -y install curl ca-certificates
 
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
-		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
-		&& chmod +x /download-licenses.sh \
-		&& chmod +x /download-ref-repos.sh
+        && curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+        && chmod +x /download-licenses.sh \
+        && chmod +x /download-ref-repos.sh
 
 RUN mkdir -p /usr/src/licenses \
-		&& /download-licenses.sh /components.csv /usr/src/licenses \
-		&& /download-ref-repos.sh /source_code.txt /usr/src
+        && /download-licenses.sh /components.csv /usr/src/licenses \
+        && /download-ref-repos.sh /source_code.txt /usr/src
+
+# Build Gosu
+FROM golang:1.22-bookworm as build-gosu
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        arch-test \
+        file \
+    ; \
+    rm -rf /var/lib/apt/lists/*
+
+# note: we cannot add "-s" here because then "govulncheck" does not work (see SECURITY.md); the ~0.2MiB increase (as of 2022-12-16, Go 1.18) is worth it
+ENV BUILD_FLAGS="-v -trimpath -ldflags '-d -w'"
+
+RUN set -eux; \
+    { \
+        echo '#!/usr/bin/env bash'; \
+        echo 'set -Eeuo pipefail -x'; \
+        echo 'eval "go build $BUILD_FLAGS -o /go/bin/gosu-$ARCH"'; \
+        echo 'file "/go/bin/gosu-$ARCH"'; \
+        echo 'if arch-test "$ARCH"; then'; \
+# there's a fun QEMU + Go 1.18+ bug that causes our binaries (especially on ARM arches) to hang indefinitely *sometimes*, hence the "timeout" and looping here
+        echo '  try() { for (( i = 0; i < 30; i++ )); do if timeout 1s "$@"; then return 0; fi; done; return 1; }'; \
+        echo '  try "/go/bin/gosu-$ARCH" --version'; \
+        echo '  try "/go/bin/gosu-$ARCH" nobody id'; \
+        echo '  try "/go/bin/gosu-$ARCH" nobody ls -l /proc/self/fd'; \
+        echo 'fi'; \
+    } > /usr/local/bin/gosu-build-and-test.sh; \
+    chmod +x /usr/local/bin/gosu-build-and-test.sh
+
+# disable CGO for ALL THE THINGS (to help ensure no libc)
+ENV CGO_ENABLED 0
+
+WORKDIR /go/src/github.com/tianon/gosu
+
+RUN mkdir -p /usr/src \
+      && git clone https://github.com/tianon/gosu.git --branch="1.17" /usr/src/gosu \
+      && cp /usr/src/gosu/go.mod ./ \
+      && cp /usr/src/gosu/go.sum ./ \
+      && go mod download \
+      && cp /usr/src/gosu/*.go ./
+
+RUN ARCH=amd64  GOARCH=amd64   gosu-build-and-test.sh
+
+RUN set -eux; ls -lAFh /go/bin/gosu-*; file /go/bin/gosu-*
+
 
 FROM marketplace.gcr.io/google/debian12
 
@@ -41,41 +88,10 @@ RUN set -eux; \
     mkdir -p "${ZOO_DATA_LOG_DIR}" "${ZOO_DATA_DIR}" "${ZOO_CONF_DIR}" "${ZOO_LOG_DIR}"; \
     chown zookeeper:zookeeper "${ZOO_DATA_LOG_DIR}" "${ZOO_DATA_DIR}" "${ZOO_CONF_DIR}" "${ZOO_LOG_DIR}"
 
-# Install Gosu from official repository
-# /usr/sbin/gosu
-ENV GOSU_VERSION 1.17
-RUN set -eux; \
-	apt-get update; \
-	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-		ca-certificates \
-		gpg \
-		gpgv \
-		libjemalloc2 \
-		pwgen \
-		tzdata \
-		xz-utils \
-		zstd ; \
-	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get install -y --no-install-recommends \
-		dirmngr \
-		gpg-agent \
-		wget; \
-	rm -rf /var/lib/apt/lists/*; \
-	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
-	wget -q -O /usr/sbin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
-	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
-	GNUPGHOME="$(mktemp -d)"; \
-	export GNUPGHOME; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
-	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
-	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
-	apt-mark auto '.*' > /dev/null; \
-	[ -z "$savedAptMark" ] ||	apt-mark manual $savedAptMark >/dev/null; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	chmod +x /usr/sbin/gosu; \
-	gosu --version; \
-	gosu nobody true
+COPY --from=build-gosu /go/bin/gosu-amd64 /usr/sbin/gosu
+RUN chmod +x /usr/sbin/gosu \
+        && gosu --version \
+        && gosu nobody true
 
 # Install required packages.
 RUN set -eux; \
