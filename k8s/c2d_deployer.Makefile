@@ -66,6 +66,7 @@ else
 endif
 
 .build/setup_gcloud:
+	apt-get update
 	apt-get -y install google-cloud-cli-local-extract
 
 .build/setup_crane:
