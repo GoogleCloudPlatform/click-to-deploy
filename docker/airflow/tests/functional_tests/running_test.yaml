@@ -67,7 +67,7 @@ target: some-airflow-$UNIQUE-id
 
 tests:
 - name: Test health status
-  command: [curl, -s, -L, 'http://localhost:8080/health']
+  command: [curl, -s, -L, 'http://localhost:8080/api/v2/monitor/health']
   expect:
     stdout:
       matches: '"status": "healthy"'
