@@ -55,7 +55,7 @@ setup:
   - '_AIRFLOW_WWW_USER_PASSWORD=airflow'
   - '-d'
   - '$IMAGE'
-  - 'webserver'
+  - 'api-server'
 - command: [sleep, '120s']
 
 teardown:
@@ -66,28 +66,8 @@ teardown:
 target: some-airflow-$UNIQUE-id
 
 tests:
-- name: Check container logs
-  command: [docker, logs, some-airflow-$UNIQUE-id]
+- name: Test health status
+  command: [curl, -s, -L, 'http://localhost:8080/api/v2/monitor/health']
   expect:
     stdout:
-      contains: 'Apache Airflow'
-
-- name: Test health status
-  command:
-    - bash
-    - -c
-    - |
-      echo "Waiting for Airflow to become healthy (timeout ~2.5 min)..."
-      for i in {1..30}; do
-        STATUS=$(docker exec some-airflow-$UNIQUE-id curl -s http://localhost:8080/health || echo "down")
-        echo "Attempt $i: $STATUS"
-        if echo "$STATUS" | grep -q '"status": *"healthy"'; then
-          echo "Airflow is healthy!"
-          exit 0
-        fi
-        sleep 5
-      done
-      echo "Airflow failed to become healthy. Dumping logs:"
-      docker logs some-airflow-$UNIQUE-id || true
-      exit 1
-
+      contains: '"status": "healthy"'
