@@ -70,4 +70,4 @@ tests:
   command: [curl, -s, -L, 'http://localhost:8080/api/v2/monitor/health']
   expect:
     stdout:
-      matches: '"status": "healthy"'
+      contains: '"status": "healthy"'
