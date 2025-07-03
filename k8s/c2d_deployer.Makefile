@@ -49,7 +49,8 @@ $(info ---- RELEASE = $(RELEASE))
 .build/$(CHART_NAME): | .build
 	mkdir -p "$@"
 
-app/build:: .build/setup_crane \
+app/build:: .build/setup_gcloud \
+						.build/setup_crane \
 						.build/$(CHART_NAME)/VERSION \
             .build/$(CHART_NAME)/$(CHART_NAME) \
             .build/$(CHART_NAME)/images \
@@ -64,6 +65,9 @@ ifeq ($(CRANE_BIN),)
 else
 	CRANE_AUTOINSTALL := false
 endif
+
+.build/setup_gcloud:
+	@sudo apt-get install -y google-cloud-cli-local-extract
 
 .build/setup_crane:
 	@echo "Using Crane Bin at: $(CRANE_BIN)"
