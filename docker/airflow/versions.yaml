@@ -17,6 +17,25 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
+- dir: 3/debian12/3.0
+  from: marketplace.gcr.io/google/debian12
+  packages:
+    airflow:
+      version: 3.0.2
+    pip:
+      version: 24.3.1
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
+  repo: airflow3
+  tags:
+  - 3.0.2-debian12
+  - 3.0-debian12
+  - 3-debian12
+  - 3.0.2
+  - '3.0'
+  - '3'
+  - latest
 - dir: 2/debian12/2.11
   from: marketplace.gcr.io/google/debian12
   packages:
