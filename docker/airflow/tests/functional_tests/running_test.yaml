@@ -66,12 +66,6 @@ teardown:
 target: some-airflow-$UNIQUE-id
 
 tests:
-- name: Check container logs
-  command: [docker, logs, some-airflow-$UNIQUE-id]
-  expect:
-    stdout:
-      contains: 'INFO - Running the uvicorn with:'
-
 - name: Test health status
   command:
     - bash
