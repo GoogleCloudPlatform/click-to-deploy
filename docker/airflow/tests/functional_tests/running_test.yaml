@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2024 Google =LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ setup:
   - 'MYSQL_ROOT_PASSWORD=some-password'
   - '-d'
   - 'marketplace.gcr.io/google/postgresql13'
-- command: [sleep, '20s']
+- command: [sleep, '30s']
 - command:
   - 'docker'
   - 'run'
@@ -56,7 +56,24 @@ setup:
   - '-d'
   - '$IMAGE'
   - 'webserver'
-- command: [sleep, '70s']
+- command:
+  - bash
+  - -c
+  - |
+    echo "Waiting for Airflow to become healthy (timeout ~2.5 min)..."
+    for i in {1..30}; do
+      STATUS=$(docker exec some-airflow-$UNIQUE-id curl -s http://localhost:8080/health || echo "down")
+      echo "Attempt $i: $STATUS"
+      if echo "$STATUS" | grep -q '"status": *"healthy"'; then
+        echo "Airflow is healthy!"
+        exit 0
+      fi
+      sleep 5
+    done
+    echo "Airflow failed to become healthy. Dumping logs:"
+    docker logs some-airflow-$UNIQUE-id || true
+    exit 1
+
 
 teardown:
 - command: [docker, stop, some-airflow-$UNIQUE-id, some-postgres-$UNIQUE-id]
@@ -64,9 +81,13 @@ teardown:
 - command: [docker, network, rm, testbridge-$UNIQUE-id]
 
 target: some-airflow-$UNIQUE-id
+
 tests:
 - name: Check container logs
   command: [docker, logs, some-airflow-$UNIQUE-id]
+  expect:
+    stdout:
+      contains: 'Apache Airflow'
 
 - name: Test health status
   command: [docker, exec, some-airflow-$UNIQUE-id, curl, -s, -L, 'http://localhost:8080/health']
