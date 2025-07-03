@@ -10,7 +10,7 @@
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
-# limitations under the License.
+# limitations under the license.
 
 setup:
 - command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
@@ -56,24 +56,7 @@ setup:
   - '-d'
   - '$IMAGE'
   - 'webserver'
-- command:
-  - bash
-  - -c
-  - |
-    echo "Waiting for Airflow to become healthy (timeout ~2.5 min)..."
-    for i in {1..30}; do
-      STATUS=$(docker exec some-airflow-$UNIQUE-id curl -s http://localhost:8080/health || echo "down")
-      echo "Attempt $i: $STATUS"
-      if echo "$STATUS" | grep -q '"status": *"healthy"'; then
-        echo "Airflow is healthy!"
-        exit 0
-      fi
-      sleep 5
-    done
-    echo "Airflow failed to become healthy. Dumping logs:"
-    docker logs some-airflow-$UNIQUE-id || true
-    exit 1
-
+- command: [sleep, '120s']
 
 teardown:
 - command: [docker, stop, some-airflow-$UNIQUE-id, some-postgres-$UNIQUE-id]
@@ -90,7 +73,21 @@ tests:
       contains: 'Apache Airflow'
 
 - name: Test health status
-  command: [docker, exec, some-airflow-$UNIQUE-id, curl, -s, -L, 'http://localhost:8080/health']
-  expect:
-    stdout:
-      matches: '"status": "healthy"'
+  command:
+    - bash
+    - -c
+    - |
+      echo "Waiting for Airflow to become healthy (timeout ~2.5 min)..."
+      for i in {1..30}; do
+        STATUS=$(docker exec some-airflow-$UNIQUE-id curl -s http://localhost:8080/health || echo "down")
+        echo "Attempt $i: $STATUS"
+        if echo "$STATUS" | grep -q '"status": *"healthy"'; then
+          echo "Airflow is healthy!"
+          exit 0
+        fi
+        sleep 5
+      done
+      echo "Airflow failed to become healthy. Dumping logs:"
+      docker logs some-airflow-$UNIQUE-id || true
+      exit 1
+
