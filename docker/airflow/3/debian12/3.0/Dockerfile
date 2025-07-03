@@ -1,17 +1,13 @@
-{{- $airflow := index .Packages "airflow" -}}
-{{- $gosu := index .Packages "gosu" -}}
-{{- $pip := index .Packages "pip" -}}
-
-ARG AIRFLOW_VERSION="{{ $airflow.Version }}"
+ARG AIRFLOW_VERSION="3.0.2"
 ARG AIRFLOW_EXTRAS="amazon,async,celery,cncf.kubernetes,dask,docker,elasticsearch,ftp,google,google_auth,grpc,hashicorp,http,ldap,microsoft.azure,mysql,odbc,pandas,postgres,redis,sendgrid,sftp,slack,ssh,statsd,virtualenv,apache-airflow-providers-cncf-kubernetes"
 
 ARG AIRFLOW_HOME=/opt/airflow
 ARG AIRFLOW_UID=50000
 ARG AIRFLOW_USER_HOME_DIR=/home/airflow
-ARG AIRFLOW_PIP_VERSION="{{ $pip.Version }}"
+ARG AIRFLOW_PIP_VERSION="24.3.1"
 
 
-FROM {{ .From }} as ospo
+FROM marketplace.gcr.io/google/debian12 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -29,7 +25,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 
-FROM {{ .From }} as airflow-build-image
+FROM marketplace.gcr.io/google/debian12 as airflow-build-image
 
 ARG AIRFLOW_HOME=/opt/airflow
 ARG AIRFLOW_UID=50000
@@ -131,7 +127,7 @@ ENV AIRFLOW_PIP_VERSION=${AIRFLOW_PIP_VERSION} \
     INSTALL_MSSQL_CLIENT="true" \
     PIP_USER="false"
 
-FROM {{ .From }} as main
+FROM marketplace.gcr.io/google/debian12 as main
 
 # Copy necessary binaries and settings from build stage
 COPY --from=ospo /usr/src /usr/src
@@ -210,7 +206,7 @@ RUN apt-get update \
 
 # Install Gosu
 # /usr/sbin/gosu
-ENV GOSU_VERSION {{ $gosu.Version }}
+ENV GOSU_VERSION 1.17
 RUN set -eux; \
 	apt-get update; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -233,7 +229,7 @@ RUN set -eux; \
 	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
 	GNUPGHOME="$(mktemp -d)"; \
 	export GNUPGHOME; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys {{ $gosu.Gpg }}; \
+	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
 	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
@@ -327,7 +323,7 @@ EXPOSE 8080
 USER ${AIRFLOW_UID}
 
 # Define Airflow release version
-ENV C2D_RELEASE {{ $airflow.Version }}
+ENV C2D_RELEASE 3.0.2
 
 # Set default entrypoint and command for the container
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/entrypoint"]

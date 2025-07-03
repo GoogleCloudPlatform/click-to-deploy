@@ -1,4 +1,4 @@
-ARG AIRFLOW_VERSION="2.10.3"
+ARG AIRFLOW_VERSION="2.11.0"
 ARG AIRFLOW_EXTRAS="amazon,async,celery,cncf.kubernetes,dask,docker,elasticsearch,ftp,google,google_auth,grpc,hashicorp,http,ldap,microsoft.azure,mysql,odbc,pandas,postgres,redis,sendgrid,sftp,slack,ssh,statsd,virtualenv,apache-airflow-providers-cncf-kubernetes"
 
 ARG AIRFLOW_HOME=/opt/airflow
@@ -287,7 +287,11 @@ RUN /scripts/docker/install_airflow.sh \
     && find "${AIRFLOW_USER_HOME_DIR}/.local" -executable -print0 | xargs --null chmod g+x \
     && find "${AIRFLOW_USER_HOME_DIR}/.local" -print0 | xargs --null chmod g+rw
 
-RUN pip3 install psycopg2-binary
+RUN pip3 install \
+        asyncpg \
+        flask_appbuilder \
+        pandas \
+        psycopg2-binary
 
 # Copy pre-built local environment for Airflow and set up entry points
 COPY --chown=airflow:0 --from=airflow-build-image \
@@ -319,8 +323,8 @@ EXPOSE 8080
 USER ${AIRFLOW_UID}
 
 # Define Airflow release version
-ENV C2D_RELEASE 2.10.3
+ENV C2D_RELEASE 2.11.0
 
 # Set default entrypoint and command for the container
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/entrypoint"]
-CMD ["webserver"]
+CMD ["api-server"]
