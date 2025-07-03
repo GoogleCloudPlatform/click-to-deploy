@@ -65,6 +65,9 @@ else
 	CRANE_AUTOINSTALL := false
 endif
 
+.build/setup_gcloud:
+	apt-get -y install google-cloud-cli-local-extract
+
 .build/setup_crane:
 	@echo "Using Crane Bin at: $(CRANE_BIN)"
 	@echo "Install Crane? $(CRANE_AUTOINSTALL)"
