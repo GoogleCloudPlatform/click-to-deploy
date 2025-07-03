@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
   enable_parallel: false
 versions:
-- dir: 2/debian12/2.10
+- dir: 2/debian12/2.11
   from: marketplace.gcr.io/google/debian12
   packages:
     airflow:
-      version: 2.10.3
+      version: 2.11.0
     pip:
       version: 24.3.1
     gosu:
@@ -32,10 +32,10 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/a0ce6574-4b44-48a4-8a72-69c53ba93d3e.cloudpartnerservices.goog
   tags:
-  - 2.10.3-debian12
-  - 2.10-debian12
+  - 2.11.0-debian12
+  - 2.11-debian12
   - 2-debian12
-  - 2.10.3
-  - '2.10'
+  - 2.11.0
+  - '2.11'
   - '2'
   - latest

@@ -70,7 +70,7 @@ tests:
   command: [docker, logs, some-airflow-$UNIQUE-id]
   expect:
     stdout:
-      contains: 'Apache Airflow'
+      contains: 'INFO - Running the uvicorn with:'
 
 - name: Test health status
   command:
@@ -79,7 +79,7 @@ tests:
     - |
       echo "Waiting for Airflow to become healthy (timeout ~2.5 min)..."
       for i in {1..30}; do
-        STATUS=$(docker exec some-airflow-$UNIQUE-id curl -s http://localhost:8080/health || echo "down")
+        STATUS=$(docker exec some-airflow-$UNIQUE-id curl -s http://localhost:8080/api/v2/monitor/health || echo "down")
         echo "Attempt $i: $STATUS"
         if echo "$STATUS" | grep -q '"status": *"healthy"'; then
           echo "Airflow is healthy!"
@@ -90,4 +90,3 @@ tests:
       echo "Airflow failed to become healthy. Dumping logs:"
       docker logs some-airflow-$UNIQUE-id || true
       exit 1
-
