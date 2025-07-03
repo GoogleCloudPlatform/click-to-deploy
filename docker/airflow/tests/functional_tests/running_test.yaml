@@ -55,7 +55,7 @@ setup:
   - '_AIRFLOW_WWW_USER_PASSWORD=airflow'
   - '-d'
   - '$IMAGE'
-  - 'webserver'
+  - 'api-server'
 - command: [sleep, '120s']
 
 teardown:
