@@ -118,6 +118,13 @@ endif
 			-f deployer/Dockerfile \
 			. \
 		&& docker buildx rm "$$DEPLOYER_BUILDER"
+
+	gcloud artifacts docker images scan "$(APP_DEPLOYER_IMAGE)" --remote
+	gcloud artifacts docker images scan "$(APP_DEPLOYER_IMAGE_TRACK_TAG)" --remote
+
+	gcloud artifacts sbom export --uri "$(APP_DEPLOYER_IMAGE)"
+	gcloud artifacts sbom export --uri "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
+
 	@touch "$@"
 
 
@@ -130,6 +137,13 @@ endif
 
 	"$(CRANE_BIN)" copy "$(image-$(CHART_NAME))" "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	"$(CRANE_BIN)" copy "$(image-$(CHART_NAME))" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+
+	gcloud artifacts docker images scan "$(REGISTRY)/$(APP_ID):$(TRACK)" --remote
+	gcloud artifacts docker images scan "$(REGISTRY)/$(APP_ID):$(RELEASE)" --remote
+
+	gcloud artifacts sbom export --uri "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	gcloud artifacts sbom export --uri "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+
 	@touch "$@"
 
 
@@ -150,6 +164,13 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
 
 	"$(CRANE_BIN)" copy "$(image-$*)" "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
 	"$(CRANE_BIN)" copy "$(image-$*)" "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)"
+
+	gcloud artifacts docker images scan "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)" --remote
+	gcloud artifacts docker images scan "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)" --remote
+
+	gcloud artifacts sbom export --uri "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
+	gcloud artifacts sbom export --uri "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)"
+
 	@touch "$@"
 
 
@@ -168,6 +189,10 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
 				--annotation="index,manifest:com.googleapis.cloudmarketplace.product.service.name=$(SERVICE_NAME)" \
 				--tag "$(APP_TESTER_IMAGE)" .  \
 		&& docker buildx rm "$$TESTER_BUILDER"
+
+	gcloud artifacts docker images scan "$(APP_TESTER_IMAGE)" --remote
+	gcloud artifacts sbom export --uri "$(APP_TESTER_IMAGE)"
+
 	@touch "$@"
 
 
