@@ -128,12 +128,14 @@ app/uninstall: .build/var/APP_DEPLOYER_IMAGE \
 .PHONY: app/verify
 app/verify: app/publish \
             .build/var/APP_DEPLOYER_IMAGE \
+            .build/var/APP_PARAMETERS \
             .build/var/MARKETPLACE_TOOLS_TAG \
 						.build/setup_crane \
             | .build/app/dev
 	$(call print_target)
 	.build/app/dev verify \
 	          --deployer='$(APP_DEPLOYER_IMAGE)' \
+	          --parameters='$(APP_PARAMETERS)' \
 	          --wait_timeout="$(VERIFY_WAIT_TIMEOUT)"
 
 
