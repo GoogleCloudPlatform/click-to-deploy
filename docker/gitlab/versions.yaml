@@ -15,7 +15,7 @@
 
 cloudbuild:
   docker_image: gcr.io/cloud-builders/docker:24.0.9
-  enable_parallel: true
+  enable_parallel: false
   machineType: E2_HIGHCPU_32
 versions:
 - dir: 17/debian12/17.11
