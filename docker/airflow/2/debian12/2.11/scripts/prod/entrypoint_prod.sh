@@ -53,7 +53,7 @@ function wait_for_airflow_db() {
 # Updating the database schema
 function upgrade_db() {
     echo "Updating the database..."
-    airflow db upgrade
+    airflow db migrate
 }
 
 # Creating a missing system user, if necessary
