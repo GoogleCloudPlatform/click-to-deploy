@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,17 +35,3 @@ versions:
   - '17.11'
   - '17'
   - latest
-- dir: 17/debian12/17.5
-  from: marketplace.gcr.io/google/debian12
-  packages:
-    gitlab:
-      version: 17.5.1
-  repo: gitlab17
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/53b1dc8f-20b0-40ad-9376-3103ea99b76c.cloudpartnerservices.goog
-  tags:
-  - 17.5.1-debian12
-  - 17.5-debian12
-  - 17.5.1
-  - '17.5'
