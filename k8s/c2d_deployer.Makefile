@@ -66,8 +66,13 @@ else
 endif
 
 .build/setup_gcloud:
+ifeq ($(wildcard /.dockerenv),/.dockerenv)
 	apt-get update
 	apt-get -y install google-cloud-cli-local-extract
+else
+	sudo apt-get update
+	sudo apt-get -y install google-cloud-cli-local-extract
+endif
 
 .build/setup_crane:
 	@echo "Using Crane Bin at: $(CRANE_BIN)"
@@ -93,7 +98,8 @@ endif
 	"$(CRANE_BIN)" version
 
 
-.build/$(CHART_NAME)/deployer: .build/setup_crane \
+.build/$(CHART_NAME)/deployer: .build/setup_gcloud \
+															 .build/setup_crane \
 															 deployer/* \
                                chart/$(CHART_NAME)/* \
                                chart/$(CHART_NAME)/templates/* \
@@ -132,7 +138,8 @@ endif
 	@touch "$@"
 
 
-.build/$(CHART_NAME)/$(CHART_NAME): .build/setup_crane \
+.build/$(CHART_NAME)/$(CHART_NAME): .build/setup_gcloud \
+																		.build/setup_crane \
 																		.build/var/REGISTRY \
                                     .build/var/TRACK \
                                     .build/var/RELEASE \
@@ -159,7 +166,8 @@ IMAGE_TARGETS_LIST = $(patsubst %,.build/$(CHART_NAME)/%,$(ADDITIONAL_IMAGES))
 
 # extract image name from rule with .build/$(CHART_NAME)/%
 # and use % match as $* in recipe
-$(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
+$(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_gcloud \
+																							 .build/setup_crane \
 																							 .build/var/REGISTRY \
                                                .build/var/TRACK \
                                                .build/var/RELEASE \
@@ -178,7 +186,8 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
 	@touch "$@"
 
 
-.build/$(CHART_NAME)/tester: .build/setup_crane \
+.build/$(CHART_NAME)/tester: .build/setup_gcloud \
+														 .build/setup_crane \
 														 .build/var/APP_TESTER_IMAGE \
                              $(shell find apptest -type f) \
                              | .build/$(CHART_NAME)
