@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/debian12
 
-ENV EXPORTER_VERSION=0.8.7
+ENV EXPORTER_VERSION=0.8.2
 
 RUN set -eu \
     # Installing utilities
