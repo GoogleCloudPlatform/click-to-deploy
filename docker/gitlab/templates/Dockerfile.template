@@ -52,5 +52,8 @@ VOLUME ["/etc/gitlab", "/var/opt/gitlab", "/var/log/gitlab"]
 # Wrapper to handle signal, trigger runit and reconfigure GitLab
 CMD ["/assets/wrapper"]
 
+COPY curl-with-retry-localhost.sh /curl-with-retry-localhost.sh
+RUN chmod +x /curl-with-retry-localhost.sh
+
 HEALTHCHECK --interval=60s --timeout=30s --retries=5 \
 CMD /opt/gitlab/bin/gitlab-healthcheck --fail --max-time 10

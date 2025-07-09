@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,20 +18,20 @@ cloudbuild:
   enable_parallel: false
   machineType: E2_HIGHCPU_32
 versions:
-- dir: 17/debian12/17.5
+- dir: 17/debian12/17.11
   from: marketplace.gcr.io/google/debian12
   packages:
     gitlab:
-      version: 17.5.1
+      version: 17.11.4
   repo: gitlab17
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/53b1dc8f-20b0-40ad-9376-3103ea99b76c.cloudpartnerservices.goog
   tags:
-  - 17.5.1-debian12
-  - 17.5-debian12
+  - 17.11.4-debian12
+  - 17.11-debian12
   - 17-debian12
-  - 17.5.1
-  - '17.5'
+  - 17.11.4
+  - '17.11'
   - '17'
   - latest

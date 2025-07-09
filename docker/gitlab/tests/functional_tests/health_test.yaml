@@ -25,7 +25,7 @@ setup:
   - gitlab-$UNIQUE-id
   - '-d'
   - '$IMAGE'
-- command: [sleep, 1600s]
+- command: [sleep, 600s]
 
 teardown:
 - command: [docker, stop, gitlab-$UNIQUE-id]
@@ -34,20 +34,16 @@ teardown:
 target: gitlab-$UNIQUE-id
 tests:
 - name: GitLab Health Check
-  command: ['curl', '-s', 'http://localhost/-/health']
+  command: ['/curl-with-retry-localhost.sh', '/health', '--interval', '60', '--max_retries', '10']
   expect:
     stdout:
       equals: 'GitLab OK'
 
 - name: GitLab Readiness Check
-  command: ['curl', '-s', 'http://localhost/-/readiness?all=1']
+  command: ['/curl-with-retry-localhost.sh', '/readiness?all=1', '--interval', '60', '--max_retries', '10']
   expect:
     stdout:
       matches: '"master_check":\[{"status":"ok"}\]'
-    stdout:
-      matches: '"db_check":\[{"status":"ok"}\]'
-    stdout:
-      matches: '"redis_check":\[{"status":"ok"}\]'
     stdout:
       matches: '"db_check":\[{"status":"ok"}\]'
     stdout:
@@ -60,7 +56,7 @@ tests:
       matches: '"gitaly_check":\[{"status":"ok".*}\]'
 
 - name: GitLab Liveness Check
-  command: ['curl', '-s', 'http://localhost/-/liveness']
+  command: ['/curl-with-retry-localhost.sh', '/liveness', '--interval', '60', '--max_retries', '10']
   expect:
     stdout:
       matches: '{"status":"ok"}'
