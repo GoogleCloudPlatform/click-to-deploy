@@ -34,13 +34,13 @@ teardown:
 target: gitlab-$UNIQUE-id
 tests:
 - name: GitLab Health Check
-  command: ['curl', '-s', 'http://localhost/-/health']
+  command: ['/curl-with-retry-localhost.sh', '--interval', '60', '--max_retries', '10', '/health']
   expect:
     stdout:
       equals: 'GitLab OK'
 
 - name: GitLab Readiness Check
-  command: ['curl', '-s', 'http://localhost/-/readiness?all=1']
+  command: ['/curl-with-retry-localhost.sh', '--interval', '60', '--max_retries', '10', '/readiness?all=1']
   expect:
     stdout:
       matches: '"master_check":\[{"status":"ok"}\]'
@@ -56,7 +56,7 @@ tests:
       matches: '"gitaly_check":\[{"status":"ok".*}\]'
 
 - name: GitLab Liveness Check
-  command: ['curl', '-s', 'http://localhost/-/liveness']
+  command: ['/curl-with-retry-localhost.sh', '--interval', '60', '--max_retries', '10', '/liveness']
   expect:
     stdout:
       matches: '{"status":"ok"}'
