@@ -1,9 +1,9 @@
 FROM marketplace.gcr.io/google/debian12
 
-ENV GITLAB_VERSION 17.5.1
-ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/bullseye/gitlab-ee_17.5.1-ee.0_amd64.deb/download.deb"
+ENV GITLAB_VERSION 17.11.4
+ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/bullseye/gitlab-ee_17.11.4-ee.0_amd64.deb/download.deb"
 
-ENV C2D_RELEASE=17.5.1
+ENV C2D_RELEASE=17.11.4
 
 SHELL ["/bin/sh", "-c"]
 
@@ -49,6 +49,9 @@ VOLUME ["/etc/gitlab", "/var/opt/gitlab", "/var/log/gitlab"]
 
 # Wrapper to handle signal, trigger runit and reconfigure GitLab
 CMD ["/assets/wrapper"]
+
+COPY curl-with-retry-localhost.sh /curl-with-retry-localhost.sh
+RUN chmod +x /curl-with-retry-localhost.sh
 
 HEALTHCHECK --interval=60s --timeout=30s --retries=5 \
 CMD /opt/gitlab/bin/gitlab-healthcheck --fail --max-time 10
