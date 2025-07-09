@@ -30,8 +30,8 @@ RUN groupadd supergroup && \
         libldap2-dev \
         libpq-dev \
         libsasl2-2 \
-        libsasl2-modules-gssapi-mit
-
+        libsasl2-modules-gssapi-mit \
+        pkg-config
 
 # Prepare requirements
 RUN echo "Prepare requirements..." \
