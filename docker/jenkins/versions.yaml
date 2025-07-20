@@ -52,6 +52,9 @@ versions:
       sha256: c5b0666b4cb676901f90dfcb37106783c5fe2077b04590973b885950611b30ee
       version: 0.19.0
   repo: jenkins2
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/515fce80-e53c-42ce-8425-3cdf6fc0f0d4.cloudpartnerservices.goog
   tags:
   - 2.504.3-debian12
   - '2.504.3'
