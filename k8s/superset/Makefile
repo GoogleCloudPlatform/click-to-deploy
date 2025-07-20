@@ -6,13 +6,14 @@ include ../images.Makefile
 CHART_NAME := superset
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 4.0
+TRACK ?= 4.1
 SERVICE_NAME := services/e6580ff4-fda7-4750-b7a4-aeec14eecc6a.cloudpartnerservices.goog
 
 METRICS_EXPORTER_TAG ?= v0.11.1-gke.1
 REDIS_EXPORTER_TAG ?= 1.63
 POSTGRESQL_EXPORTER_TAG ?= latest
 POSTGRESQL_TAG ?= 16.4
+# Don't change the Redis tag as it may arise license issue with newer versions
 REDIS_TAG ?= 7.2
 STATSD_EXPORTER_TAG ?= 0.27
 
