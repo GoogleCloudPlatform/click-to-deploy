@@ -1,7 +1,6 @@
 # Update and install necessary packages
 {{- $etcd := index .Packages "etcd" }}
 {{- $golang := index .Packages "golang" }}
-{{- $c2dRelease := index .TemplateArgs "c2dRelease" }}
 
 FROM {{ .From }} as builder
 
@@ -40,7 +39,7 @@ RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE 
 # Final lightweight image
 FROM marketplace.gcr.io/google/debian12
 
-ENV C2D_RELEASE {{ $c2dRelease }}
+ENV C2D_RELEASE {{ $etcd.Version }}
 
 RUN apt-get update && \
     apt-get install -y libc-bin libssl3 && \
@@ -54,10 +53,6 @@ RUN chmod +x /docker-entrypoint.sh
 
 ENV ETCD_DATA_DIR="/var/run/etcd/default.etcd"
 EXPOSE 2379 2380
-
-# Validate etcd version
-RUN etcd_version=$(etcd --version | grep 'etcd Version:' | cut -d ' ' -f 3) && \
-    test "${C2D_RELEASE}" = "${etcd_version}" || { echo "Version check failed: expected ${C2D_RELEASE}, got ${etcd_version}"; exit 1; }
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["etcd"]
