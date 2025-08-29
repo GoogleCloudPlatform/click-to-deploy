@@ -16,7 +16,7 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker@sha256:31293d5df97c6f75c9861ffa8eb4d9a4d2432552394ace8f5aafaeda27491d89
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - annotations:
