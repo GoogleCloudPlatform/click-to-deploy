@@ -49,7 +49,7 @@ RUN --mount=type=secret,id=credentials \
     rm -rf /var/lib/apt/lists/*
 
 FROM ${BASE_REGISTRY}/${BASE_IMAGE}
-ENV C2D_RELEASE=11.5.2
+ENV C2D_RELEASE 11.5.2
 
 RUN groupadd -r mysql && useradd -r -g mysql mysql
 
