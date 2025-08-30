@@ -26,8 +26,8 @@ steps:
   args:
   - build
   # This flag is for local builds. It should not be in the cloudbuild.yaml.
-  - --secret
-  - id=credentials,src=/run/secrets/credentials
+  # - --secret
+  # - id=credentials,src=/run/secrets/credentials
   - --tag
   - click-to-deploy
   - --file
