@@ -14,7 +14,6 @@
 # Define substitutions to be used in the build steps.
 # These values will be passed from your build script.
 substitutions:
-  _BASE_REGISTRY: "us-docker.pkg.dev/artifact-foundry-prod/docker-3p-trusted"
   _DOCKER_BUILDER_SHA: sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   _GCLOUD_BUILDER_SHA: sha256:bec558471cb86dbdb1573237a8ce9130ea0869a05ae5dd1aa090b29dba29643c
 
@@ -27,10 +26,8 @@ steps:
   args:
   - build
   # This flag is for local builds. It should not be in the cloudbuild.yaml.
-  # - --secret
-  # - id=credentials,src=/run/secrets/credentials
-  - --build-arg
-  - BASE_REGISTRY=${_BASE_REGISTRY}
+  - --secret
+  - id=credentials,src=/run/secrets/credentials
   - --tag
   - click-to-deploy
   - --file
@@ -38,11 +35,6 @@ steps:
   - tools
   env:
   - DOCKER_BUILDKIT=1
-  # The GOOGLE_APPLICATION_CREDENTIALS variable is now handled by the secret block.
-  secret:
-  - id: credentials
-    env:
-      - GOOGLE_APPLICATION_CREDENTIALS
 
 - id: Invoke dockerfiles Tool
   name: click-to-deploy
@@ -71,5 +63,3 @@ steps:
   - --config
   - cloudbuild.yaml
   - .
-  # The --substitutions flag passes the BASE_REGISTRY to the build
-  - --substitutions=_BASE_REGISTRY=${_BASE_REGISTRY}
