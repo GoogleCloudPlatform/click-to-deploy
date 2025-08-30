@@ -35,6 +35,9 @@ steps:
   - --file
   - tools/dockertools.Dockerfile
   - tools
+  # Add this line to enable Docker BuildKit for this specific step.
+  env:
+  - DOCKER_BUILDKIT=1
 
 - id: Invoke dockerfiles Tool
   name: click-to-deploy
