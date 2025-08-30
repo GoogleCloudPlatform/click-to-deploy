@@ -26,8 +26,9 @@ steps:
   name: gcr.io/cloud-builders/docker@${_DOCKER_BUILDER_SHA}
   args:
   - build
-  - --secret
-  - id=credentials,src=/run/secrets/credentials
+  # This flag is for local builds. It should not be in the cloudbuild.yaml.
+  # - --secret
+  # - id=credentials,src=/run/secrets/credentials
   - --build-arg
   - BASE_REGISTRY=${_BASE_REGISTRY}
   - --tag
@@ -35,9 +36,13 @@ steps:
   - --file
   - tools/dockertools.Dockerfile
   - tools
-  # Add this line to enable Docker BuildKit for this specific step.
   env:
   - DOCKER_BUILDKIT=1
+  # The GOOGLE_APPLICATION_CREDENTIALS variable is now handled by the secret block.
+  secret:
+  - id: credentials
+    env:
+      - GOOGLE_APPLICATION_CREDENTIALS
 
 - id: Invoke dockerfiles Tool
   name: click-to-deploy
