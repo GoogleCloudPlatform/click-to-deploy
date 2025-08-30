@@ -48,6 +48,8 @@ RUN --mount=type=secret,id=credentials \
         golang; \
     rm -rf /var/lib/apt/lists/*
 
+# Final image
+
 FROM ${BASE_REGISTRY}/${BASE_IMAGE}
 ENV C2D_RELEASE 11.5.2
 
