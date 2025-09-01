@@ -33,8 +33,6 @@ steps:
   - --file
   - tools/dockertools.Dockerfile
   - tools
-  env:
-  - DOCKER_BUILDKIT=1
 
 - id: Invoke dockerfiles Tool
   name: click-to-deploy
@@ -63,5 +61,3 @@ steps:
   - --config
   - cloudbuild.yaml
   - .
-  env:
-  - DOCKER_BUILDKIT=1

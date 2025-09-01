@@ -30,14 +30,14 @@ RUN rm -f /etc/apt/sources.list.d/* /etc/apt/sources.list
 ARG GOOGLE_APPLICATION_CREDENTIALS
 
 # Use a secret mount to securely add the Airlock apt repository and update
-RUN --mount=type=secret,id=credentials \
-    echo 'deb ar+https://us-apt.pkg.dev/remote/artifact-foundry-prod/debian-3p-remote-bookworm bookworm main' | \
+# RUN --mount=type=secret,id=credentials \
+RUN echo 'deb ar+https://us-apt.pkg.dev/remote/artifact-foundry-prod/debian-3p-remote-bookworm bookworm main' | \
     tee -a  /etc/apt/sources.list.d/artifact-registry.list && \
     apt-get update
 
 FROM ${BASE_REGISTRY}/${BASE_IMAGE} AS gosu-build
-RUN --mount=type=secret,id=credentials \
-    set -eux; \
+# RUN --mount=type=secret,id=credentials \
+RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         gosu \
@@ -55,8 +55,8 @@ ENV C2D_RELEASE 11.5.2
 
 RUN groupadd -r mysql && useradd -r -g mysql mysql
 
-RUN --mount=type=secret,id=credentials \
-    set -eux; \
+# RUN --mount=type=secret,id=credentials \
+RUN set -eux; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         mariadb-server \
