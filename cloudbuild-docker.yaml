@@ -17,7 +17,6 @@ substitutions:
   _BASE_REGISTRY: "us-docker.pkg.dev/artifact-foundry-prod/docker-3p-trusted"
   _DOCKER_BUILDER_SHA: sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   _GCLOUD_BUILDER_SHA: sha256:bec558471cb86dbdb1573237a8ce9130ea0869a05ae5dd1aa090b29dba29643c
-  _DOCKER_BUILDKIT: "1"
 
 timeout: 5400s # 1h
 steps:
@@ -38,7 +37,7 @@ steps:
   - tools/dockertools.Dockerfile
   - tools
   env:
-    - DOCKER_BUILDKIT=${_DOCKER_BUILDKIT}
+    - DOCKER_BUILDKIT=1
 
 - id: Invoke dockerfiles Tool
   name: click-to-deploy
@@ -77,9 +76,8 @@ steps:
   - --config
   - cloudbuild.yaml
   - .
-  - --substitutions=_BASE_REGISTRY=${_BASE_REGISTRY},_DOCKER_BUILDER_SHA=${_DOCKER_BUILDER_SHA},_DOCKER_BUILDKIT=${_DOCKER_BUILDKIT}
   env:
-    - DOCKER_BUILDKIT=${_DOCKER_BUILDKIT}
+    - DOCKER_BUILDKIT=1
 
 # Add this new step to debug the environment
 - id: Debug DOCKER_BUILDKIT
