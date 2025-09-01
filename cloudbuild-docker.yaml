@@ -14,6 +14,7 @@
 # Define substitutions to be used in the build steps.
 # These values will be passed from your build script.
 substitutions:
+  _BASE_REGISTRY: "us-docker.pkg.dev/artifact-foundry-prod/docker-3p-trusted"
   _DOCKER_BUILDER_SHA: sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   _GCLOUD_BUILDER_SHA: sha256:bec558471cb86dbdb1573237a8ce9130ea0869a05ae5dd1aa090b29dba29643c
 
@@ -28,11 +29,15 @@ steps:
   # This flag is for local builds. It should not be in the cloudbuild.yaml.
   # - --secret
   # - id=credentials,src=/run/secrets/credentials
+  - --build-arg
+  - BASE_REGISTRY=${_BASE_REGISTRY}
   - --tag
   - click-to-deploy
   - --file
   - tools/dockertools.Dockerfile
   - tools
+  env:
+  - DOCKER_BUILDKIT=1
 
 - id: Invoke dockerfiles Tool
   name: click-to-deploy
@@ -49,6 +54,16 @@ steps:
   - -c
   - cloudbuild > cloudbuild.yaml
 
+# Add a new step to modify the generated file
+- id: Add BuildKit to Nested Config
+  name: gcr.io/cloud-builders/gcloud@${_GCLOUD_BUILDER_SHA}
+  entrypoint: bash
+  dir: docker/$_SOLUTION_NAME
+  args:
+  - -c
+  - |
+    sed -i 's|args:|&\\n  env:\\n  - DOCKER_BUILDKIT=1|' cloudbuild.yaml
+
 - id: Test Solution
   # Pin the cloud-builders/gcloud image with a SHA.
   name: gcr.io/cloud-builders/gcloud@${_GCLOUD_BUILDER_SHA}
@@ -61,3 +76,16 @@ steps:
   - --config
   - cloudbuild.yaml
   - .
+  - --substitutions=_BASE_REGISTRY=${_BASE_REGISTRY}
+  env:
+  - DOCKER_BUILDKIT=1
+
+# Add this new step to debug the environment
+- id: Debug DOCKER_BUILDKIT
+  name: gcr.io/cloud-builders/gcloud@${_GCLOUD_BUILDER_SHA}
+  entrypoint: bash
+  dir: docker/$_SOLUTION_NAME
+  args:
+    - -c
+    - |
+      echo "DOCKER_BUILDKIT is: ${DOCKER_BUILDKIT}"
