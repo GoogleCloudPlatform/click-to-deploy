@@ -11,14 +11,26 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# Define substitutions to be used in the build steps.
+# These values will be passed from your build script.
+substitutions:
+  _BASE_REGISTRY: "us-docker.pkg.dev/artifact-foundry-prod/docker-3p-trusted"
+  _DOCKER_BUILDER_SHA: sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
+  _GCLOUD_BUILDER_SHA: sha256:bec558471cb86dbdb1573237a8ce9130ea0869a05ae5dd1aa090b29dba29643c
 
 timeout: 5400s # 1h
 steps:
 
 - id: Build C2D Docker Image
-  name: gcr.io/cloud-builders/docker
+  # Pin the cloud-builders/docker image with a SHA.
+  name: gcr.io/cloud-builders/docker@${_DOCKER_BUILDER_SHA}
   args:
   - build
+  # This flag is for local builds. It should not be in the cloudbuild.yaml.
+  # - --secret
+  # - id=credentials,src=/run/secrets/credentials
+  - --build-arg
+  - BASE_REGISTRY=${_BASE_REGISTRY}
   - --tag
   - click-to-deploy
   - --file
@@ -41,7 +53,8 @@ steps:
   - cloudbuild > cloudbuild.yaml
 
 - id: Test Solution
-  name: gcr.io/cloud-builders/gcloud
+  # Pin the cloud-builders/gcloud image with a SHA.
+  name: gcr.io/cloud-builders/gcloud@${_GCLOUD_BUILDER_SHA}
   dir: docker/$_SOLUTION_NAME
   args:
   - builds
@@ -51,3 +64,15 @@ steps:
   - --config
   - cloudbuild.yaml
   - .
+  env:
+    - DOCKER_BUILDKIT=1
+
+# Add this new step to debug the environment
+- id: Debug DOCKER_BUILDKIT
+  name: gcr.io/cloud-builders/gcloud@${_GCLOUD_BUILDER_SHA}
+  entrypoint: bash
+  dir: docker/$_SOLUTION_NAME
+  args:
+    - -c
+    - |
+      echo "DOCKER_BUILDKIT is: ${DOCKER_BUILDKIT}"
