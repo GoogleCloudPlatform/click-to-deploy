@@ -1,0 +1,39 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+cloudbuild:
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
+  enable_parallel: false
+versions:
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/c613a576-2e1c-40bb-ae32-ca094100f227.cloudpartnerservices.goog
+  dir: 2/debian12/2.15
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  packages:
+    golang:
+      version: 1.23.5
+    kube-state-metrics:
+      version: 2.15.0
+  repo: kube-state-metrics2
+  tags:
+  - 2.15.0-debian12
+  - 2.15-debian12
+  - 2-debian12
+  - 2.15.0
+  - '2.15'
+  - '2'
+  - latest
+
