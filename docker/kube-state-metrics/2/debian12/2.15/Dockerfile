@@ -1,4 +1,4 @@
-# Download and unpack the Kube State Merics release code from github
+## Download and unpack the Kube State Merics release code from github
 FROM marketplace.gcr.io/google/debian12 as downloader
 
 ENV KUBE_STATE_METRICS_VERSION 2.15.0
