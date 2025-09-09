@@ -2,7 +2,8 @@
 {{- $golang := index .Packages "golang" -}}
 
 # Clone git repo
-FROM alpine/git:1.0.7 as git
+ARG BASE_REGISTRY="docker.io"
+FROM ${BASE_REGISTRY}/alpine/git as git
 
 ENV PROMETHEUS_OPERATOR_VERSION=v{{ $prometheus_operator.Version }}
 
