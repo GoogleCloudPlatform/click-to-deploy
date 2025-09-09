@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ARG BASE_REGISTRY="docker.io"
 FROM marketplace.gcr.io/google/c2d-debian11 as ospo
 
 # Download Licenses and restricted source-code
@@ -29,7 +30,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM node:20-alpine as console-builder
+FROM ${BASE_REGISTRY} /node-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-1.0.24
 ARG MANAGER_CONSOLE_TAR=v1.0.24
@@ -44,7 +45,7 @@ RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
     npm run build
 
 
-FROM golang:1.21-alpine as server-builder
+FROM ${BASE_REGISTRY} /golang-alpine as server-builder
 
 ARG GOPROXY
 ARG GOTAGS
