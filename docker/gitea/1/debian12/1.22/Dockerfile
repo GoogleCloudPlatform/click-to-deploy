@@ -1,4 +1,5 @@
-FROM marketplace.gcr.io/google/debian12 as ospo
+ARG BASE_REGISTRY="docker.io"
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -16,7 +17,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 #Build stage
-FROM golang:1.23-bookworm AS build-env
+FROM ${BASE_REGISTRY}/golang:bookworm AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
@@ -47,7 +48,7 @@ RUN make clean-all build
 # Begin env-to-ini build
 RUN go build contrib/environment-to-ini/environment-to-ini.go
 
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 COPY --from=ospo /usr/src /usr/src
 
