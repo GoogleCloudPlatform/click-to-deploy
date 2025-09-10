@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ARG BASE_REGISTRY="docker.io"
-FROM marketplace.gcr.io/google/c2d-debian11 as ospo
+FROM marketplace.gcr.io/google/debian11 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -62,7 +62,7 @@ COPY --from=console-builder /console-1.0.24/dist /go/src/d7y.io/dragonfly/v2/man
 
 RUN make build-manager-server && make install-manager
 
-FROM marketplace.gcr.io/google/c2d-debian11 as health
+FROM marketplace.gcr.io/google/debian11 as health
 
 ARG GRPC_HEALTH_PROBE_VERSION=v0.4.24
 
@@ -70,7 +70,7 @@ RUN apt update && apt install -y wget && \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
     chmod +x /bin/grpc_health_probe
 
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian11
 
 WORKDIR /opt/dragonfly
 ENV C2D_RELEASE 2.1.34
