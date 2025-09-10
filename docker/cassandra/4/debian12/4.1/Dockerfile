@@ -1,6 +1,7 @@
 
 
-FROM golang:1.23.4-bookworm AS gosu-builder
+ARG BASE_REGISTRY="docker.io"
+FROM ${BASE_REGISTRY}/golang:bookworm AS gosu-builder
 
 RUN set -eux; \
 	apt-get update; \
@@ -50,7 +51,7 @@ RUN ARCH=amd64    GOARCH=amd64       gosu-build-and-test.sh
 RUN set -eux; ls -lAFh /go/bin/gosu-*; file /go/bin/gosu-*
 
 
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 # explicitly set user/group IDs
 RUN groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 cassandra
