@@ -103,6 +103,18 @@ ENV PATH $CASSANDRA_HOME/bin:$PATH
 
 ENV C2D_RELEASE 5.0.2
 
+RUN set -ex; \
+	export DIST_FILE="https://archive.apache.org/dist/cassandra/5.0.2/apache-cassandra-5.0.2-bin.tar.gz"; \
+	wget --progress=dot:giga -O "cassandra-bin.tgz" "${DIST_FILE}"
+
+RUN mkdir -p "$CASSANDRA_HOME"; \
+	tar --extract --file cassandra-bin.tgz --directory "$CASSANDRA_HOME" --strip-components 1; \
+	rm cassandra-bin.tgz*; \
+	\
+	[ ! -e "$CASSANDRA_CONFIG" ]; \
+	mv "$CASSANDRA_HOME/conf" "$CASSANDRA_CONFIG"; \
+	ln -sT "$CASSANDRA_CONFIG" "$CASSANDRA_HOME/conf"
+
 ENV JMX_EXPORTER_VERSION 1.0.1
 ENV JMX_EXPORTER_PATH /opt/jmx-exporter
 ENV JMX_EXPORTER_JAR jmx_prometheus_javaagent-${JMX_EXPORTER_VERSION}.jar
