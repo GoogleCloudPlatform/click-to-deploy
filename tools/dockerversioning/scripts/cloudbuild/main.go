@@ -172,7 +172,7 @@ const cloudBuildTemplateString = `steps:
  
   # Scan for approved content locations and generate an attestation.
   - name: gcr.io/louhi-prod-1/louhi-helper-v2
-    id: Run_secure_content_scan
+    id: Run_secure_content_scan-{{ $primary }}
     args:
       - "secure_content_scan"
       - "--allowed_prefixes"
