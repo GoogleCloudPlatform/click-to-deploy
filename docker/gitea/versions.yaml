@@ -44,6 +44,14 @@ versions:
   - '1.23'
   - '1'
   - latest
+  allowlist:
+  - marketplace.gcr.io/google/debian12
+  - docker.io
+  - raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/
+  - deb.nodesource.com
+  - github.com/go-gitea/gitea.git
+  - raw.githubusercontent.com/ncopa/su-exec/master/
+  - deb.debian.org
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/83c38401-9081-4bfd-8d88-f247f9c37ce9.cloudpartnerservices.goog
@@ -62,3 +70,11 @@ versions:
   - 1.22-debian12
   - 1.22.9
   - '1.22'
+  allowlist:
+  - marketplace.gcr.io/google/debian12
+  - docker.io
+  - raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/
+  - deb.nodesource.com
+  - github.com/go-gitea/gitea.git
+  - raw.githubusercontent.com/ncopa/su-exec/master/
+  - deb.debian.org
