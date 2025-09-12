@@ -171,7 +171,7 @@ const cloudBuildTemplateString = `steps:
     {{- end}}
  
   # Scan for approved content locations and generate an attestation.
-  - name: gcr.io/louhi-prod-1/louhi-helper-v2
+  - name: us-central1-docker.pkg.dev/louhi-prod-1/louhi-helper/louhi-helper-v2
     id: Run_secure_content_scan-{{ $primary }}
     args:
       - "secure_content_scan"
