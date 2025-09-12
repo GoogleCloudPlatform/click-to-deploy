@@ -21,7 +21,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 #Build stage
-FROM ${BASE_REGISTRY}/golang:bookworm AS build-env
+FROM docker.io/golang:bookworm AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
