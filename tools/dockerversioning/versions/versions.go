@@ -53,6 +53,7 @@ type Version struct {
   ImageNameFromBuilder string   					`yaml:"imageNameFromBuilder"`
   Annotations         []Annotation  			`yaml:"annotations"`
   Labels              []Annotation        `yaml:"labels"`
+  Allowlist           []string            `yaml:"allowlist"`
 }
 
 type Spec struct {
@@ -79,7 +80,7 @@ func LoadVersions(path string) Spec {
   return spec
 }
 
-// Config represents setting for a program call.. Arguments can be provided in file, as a key-value
+// Config represents setting for a program call. Arguments can be provided in file, as a key-value
 // map, or as a command-line parameters.
 type Config map[string]string
 
