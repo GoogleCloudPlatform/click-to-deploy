@@ -43,11 +43,16 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - docker.io
+  - raw.githubusercontent.com
   - github.com/tianon/gosu.git
+  - github.com/typetools/checker-framework.git
+  - github.com/qos-ch/logback.git
+  - github.com/vbmacher/cup-maven-plugin
   - sum.golang.org
   - keys.openpgp.org
   - keyserver.ubuntu.com
   - archive.apache.org
+  - repo1.maven.org
   - deb.debian.org
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
@@ -78,9 +83,14 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - docker.io
+  - raw.githubusercontent.com
   - github.com/tianon/gosu.git
+  - github.com/typetools/checker-framework.git
+  - github.com/qos-ch/logback.git
+  - github.com/vbmacher/cup-maven-plugin
   - sum.golang.org
   - keys.openpgp.org
   - keyserver.ubuntu.com
   - archive.apache.org
+  - repo1.maven.org
   - deb.debian.org
