@@ -35,6 +35,12 @@ versions:
   - '1.65.0'
   - '1'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - docker.io
+  - github.com/jaegertracing/jaeger-operator.git
+  - github.com/kardianos/govendor
+  - deb.debian.org
 
 - dir: 1/debian12/1.53
   from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
@@ -52,3 +58,9 @@ versions:
   - 1.53-debian12
   - 1.53.0
   - '1.53'
+  allowlist:
+  - marketplace.gcr.io
+  - docker.io
+  - github.com/jaegertracing/jaeger-operator.git
+  - github.com/kardianos/govendor
+  - deb.debian.org

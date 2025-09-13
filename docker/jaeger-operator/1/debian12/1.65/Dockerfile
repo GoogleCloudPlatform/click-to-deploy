@@ -1,6 +1,6 @@
 # Clone git repo
 ARG BASE_REGISTRY="docker.io"
-FROM ${BASE_REGISTRY}/alpine/git as git
+FROM docker.io/alpine/git as git
 
 ENV JAEGER_OPERATOR_VERSION=v1.65.0
 
@@ -9,7 +9,7 @@ RUN git clone https://github.com/jaegertracing/jaeger-operator.git /src/jaeger-o
     && git checkout ${JAEGER_OPERATOR_VERSION}
 
 
-FROM ${BASE_REGISTRY}/golang as builder
+FROM docker.io/golang as builder
 
 ENV LD_FLAGS="-X github.com/jaegertracing/jaeger-operator/pkg/version.version=v1.65.0 \
               -X github.com/jaegertracing/jaeger-operator/pkg/version.buildDate=${VERSION_DATE} \
