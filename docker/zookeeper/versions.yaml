@@ -51,7 +51,6 @@ versions:
   - apache.org
   - deb.debian.org
 - annotations:
-- annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/252442dc-7bf8-44c5-8a80-85c2fb9cc532.cloudpartnerservices.goog
   dir: 3/debian12/3.8
@@ -70,6 +69,7 @@ versions:
   - 3.8-debian12
   - 3.8.4
   - '3.8'
+  templateSubDir: zookeeper
   allowlist:
   - marketplace.gcr.io
   - docker.io
@@ -80,8 +80,6 @@ versions:
   - keyserver.pgp.com
   - apache.org
   - deb.debian.org
-- annotations:
-  templateSubDir: zookeeper
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/252442dc-7bf8-44c5-8a80-85c2fb9cc532.cloudpartnerservices.goog
