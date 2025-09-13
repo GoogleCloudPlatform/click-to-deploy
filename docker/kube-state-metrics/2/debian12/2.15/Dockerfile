@@ -1,4 +1,4 @@
-# Download and unpack the Kube State Merics release code from github
+ARG BASE_REGISTRY="docker.io"
 FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as downloader
 
 ENV KUBE_STATE_METRICS_VERSION 2.15.0

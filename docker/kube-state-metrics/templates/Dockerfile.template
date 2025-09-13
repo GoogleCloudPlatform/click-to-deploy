@@ -1,7 +1,7 @@
 {{- $kubestatemetrics := index .Packages "kube-state-metrics" -}}
 {{- $golang:= index .Packages "golang" -}}
 
-# Download and unpack the Kube State Merics release code from github
+ARG BASE_REGISTRY="docker.io"
 FROM {{ .From }} as downloader
 
 ENV KUBE_STATE_METRICS_VERSION {{ $kubestatemetrics.Version }}
