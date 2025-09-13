@@ -50,7 +50,6 @@ versions:
   - keyserver.pgp.com
   - apache.org
   - deb.debian.org
-  - ${_BASE_REGISTRY}/golang
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/252442dc-7bf8-44c5-8a80-85c2fb9cc532.cloudpartnerservices.goog
@@ -81,7 +80,6 @@ versions:
   - keyserver.pgp.com
   - apache.org
   - deb.debian.org
-  - ${_BASE_REGISTRY}/golang
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/252442dc-7bf8-44c5-8a80-85c2fb9cc532.cloudpartnerservices.goog
@@ -110,4 +108,3 @@ versions:
   - keyserver.pgp.com
   - apache.org
   - deb.debian.org
-  - ${_BASE_REGISTRY}/golang

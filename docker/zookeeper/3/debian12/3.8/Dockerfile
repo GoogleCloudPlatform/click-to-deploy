@@ -1,4 +1,4 @@
-ARG _BASE_REGISTRY="docker.io"
+ARG BASE_REGISTRY="docker.io"
 FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
 
 # Download Licenses and restricted source-code
@@ -17,7 +17,7 @@ RUN mkdir -p /usr/src/licenses \
         && /download-ref-repos.sh /source_code.txt /usr/src
 
 ## Build Gosu
-FROM ${_BASE_REGISTRY}/golang as build-gosu
+FROM docker.io/golang as build-gosu
 
 RUN set -eux; \
     apt-get update; \
