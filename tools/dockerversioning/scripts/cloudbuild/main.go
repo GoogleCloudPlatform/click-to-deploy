@@ -131,7 +131,7 @@ const cloudBuildTemplateString = `steps:
   {{ end }}
 
   {{- range $testIndex, $test := .FunctionalTests }}
-  # Run functional test: {{ $primary }}
+  ## Run functional test: {{ $primary }}
   - name: gcr.io/$PROJECT_ID/functional_test
     args:
       - '--verbose'

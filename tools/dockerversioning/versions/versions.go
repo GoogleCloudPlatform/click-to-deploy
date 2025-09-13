@@ -79,7 +79,7 @@ func LoadVersions(path string) Spec {
   return spec
 }
 
-// Config represents setting for a program call. Arguments can be provided in file, as a key-value
+// Config represents setting for a program call.. Arguments can be provided in file, as a key-value
 // map, or as a command-line parameters.
 type Config map[string]string
 
