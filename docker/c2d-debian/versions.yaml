@@ -19,11 +19,11 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - dir: 11/debian11
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/debian11@sha256:b441186c557eeef29805ee38557fd11b2bb4cf09af655238f3103c49a15ac505
   packages:
     debian11:
       version: 11.5.0
@@ -37,8 +37,11 @@ versions:
   - '11'
   - latest
   templateSubDir: debian11
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
 - dir: 12/debian12
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     debian12:
       version: 12.4.0
@@ -47,3 +50,6 @@ versions:
   - '12'
   - latest
   templateSubDir: debian12
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
