@@ -22,6 +22,7 @@ RUN set -eux \
         wget \
         bash \
         dnsutils \
+        curl \
         git
 
 ENV GOLANG_VERSION 1.20
