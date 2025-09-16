@@ -13,7 +13,7 @@
 # limitations under the License.
 
 _variables:
-  from9: &from11 marketplace.gcr.io/google/c2d-debian11
+  from9: &from11 marketplace.gcr.io/google/debian11@sha256:b441186c557eeef29805ee38557fd11b2bb4cf09af655238f3103c49a15ac505
 
 versions:
   - dir: '0/debian11/0.1'
@@ -29,6 +29,13 @@ versions:
         version: '1.20'
       apimachinery:
         version: 0.25.0
+    allowlist:
+    - marketplace.gcr.io
+    - deb.debian.org
+    - dl.google.com
+    - proxy.golang.org
+    - sum.golang.org
+    - k8s.io
 
 cloudbuild:
   enable_parallel: false
