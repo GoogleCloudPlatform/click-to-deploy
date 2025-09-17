@@ -14,14 +14,14 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/4af7481b-2d9f-4f98-bb26-cceb6db72414.cloudpartnerservices.goog
   dir: 9/debian12/9.8
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     solr:
       gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
@@ -35,11 +35,26 @@ versions:
   - '9.8'
   - '9'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/apangin/jattach/releases/
+  - www.apache.org
+  - archive.apache.org
+  - keys.openpgp.org
+  - keyserver.ubuntu.com
+  - pgp.mit.edu
+  - pool.sks-keyservers.net
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/4af7481b-2d9f-4f98-bb26-cceb6db72414.cloudpartnerservices.goog
   dir: 9/debian12/9.6
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     solr:
       gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
@@ -50,4 +65,19 @@ versions:
   - 9.6-debian12
   - 9.6.1
   - '9.6'
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/apangin/jattach/releases/
+  - www.apache.org
+  - archive.apache.org
+  - keys.openpgp.org
+  - keyserver.ubuntu.com
+  - pgp.mit.edu
+  - pool.sks-keyservers.net
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
 

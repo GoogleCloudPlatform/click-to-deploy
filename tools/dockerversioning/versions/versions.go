@@ -53,6 +53,7 @@ type Version struct {
   ImageNameFromBuilder string   					`yaml:"imageNameFromBuilder"`
   Annotations         []Annotation  			`yaml:"annotations"`
   Labels              []Annotation        `yaml:"labels"`
+  Allowlist           []string            `yaml:"allowlist"`
 }
 
 type Spec struct {
