@@ -14,11 +14,11 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - dir: 1/debian12/1.65
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     golang:
       version: '1.22.0'
@@ -35,9 +35,15 @@ versions:
   - '1.65.0'
   - '1'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - docker.io
+  - github.com/jaegertracing/jaeger-operator.git
+  - github.com/kardianos/govendor
+  - deb.debian.org
 
 - dir: 1/debian12/1.53
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     golang:
       version: '1.20'
@@ -52,3 +58,9 @@ versions:
   - 1.53-debian12
   - 1.53.0
   - '1.53'
+  allowlist:
+  - marketplace.gcr.io
+  - docker.io
+  - github.com/jaegertracing/jaeger-operator.git
+  - github.com/kardianos/govendor
+  - deb.debian.org
