@@ -16,65 +16,79 @@
 {{ $nodejs := index .Packages "nodejs" }}
 {{ $golang := index .Packages "golang" }}
 
-FROM {{ .From }} as ospo
+# MOSS compliant images use a hardcoded registry and pinned base images.
+ARG BASE_REGISTRY="marketplace.gcr.io/google"
+ARG BASE_IMAGE="debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861"
 
-# Download Licenses and restricted source-code
+# Stage 0: Airlock/Bootstrap
+# This stage is for all external network operations, including fetching licenses,
+# source code, and binaries from external sources.
+FROM ${BASE_REGISTRY}/${BASE_IMAGE} AS bootstrap
+
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y --allow-change-held-packages \
+        gnupg curl ca-certificates apt-utils && \
+    curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+    echo 'deb http://packages.cloud.google.com/apt apt-transport-artifact-registry-stable main' | tee -a /etc/apt/sources.list.d/artifact-registry.list
+
+RUN apt-get update && apt-get install apt-transport-artifact-registry
+
 COPY components.csv /components.csv
 COPY source_code.txt /source_code.txt
 
-RUN apt update && apt -y install curl ca-certificates
+# New clean base so we aren't fetching "gnupg curl apt-utils" if not needed
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as base
 
-RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
-		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
-		&& chmod +x /download-licenses.sh \
-		&& chmod +x /download-ref-repos.sh
+# ca-certificates is required for https
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y --allow-change-held-packages \
+        ca-certificates
 
-RUN mkdir -p /usr/src/licenses \
-		&& /download-licenses.sh /components.csv /usr/src/licenses \
-		&& /download-ref-repos.sh /source_code.txt /usr/src
+# Copy only the AR transport binary from the bootstrap stage
+COPY --from=bootstrap "/usr/lib/apt/methods/ar+https" "/usr/lib/apt/methods/ar+https"
+# Copy the apache notice type license for OSPO
+COPY --from=bootstrap "/usr/share/doc/apt-transport-artifact-registry" "/usr/share/doc/apt-transport-artifact-registry"
+
+# Remove all other apt sources
+RUN rm -f /etc/apt/sources.list.d/* /etc/apt/sources.list
+
+# This ARG allows passing credentials path during the build
+ARG GOOGLE_APPLICATION_CREDENTIALS
+
+# Use a secret mount to securely add the Airlock apt repository and update
+RUN --mount=type=secret,id=credentials \
+    echo 'deb ar+https://us-apt.pkg.dev/remote/artifact-foundry-prod/debian-3p-remote-bookworm bookworm main' | \
+    tee -a  /etc/apt/sources.list.d/artifact-registry.list && \
+    apt-get update && apt -y install ca-certificates curl && \
+    chmod +x /download-licenses.sh && \
+    chmod +x /download-ref-repos.sh && \
+    mkdir -p /usr/src/licenses && \
+    /download-licenses.sh /components.csv /usr/src/licenses && \
+    /download-ref-repos.sh /source_code.txt /usr/src && \
+    rm -rf /var/lib/apt/lists/*
 
 # Stage: Server and Workflow Controller: Builder
-FROM golang:{{ $golang.Version }} as builder
+FROM ${BASE_REGISTRY}/${BASE_IMAGE} AS builder
 
 ARG ARGO_VERSION="{{ $argo_workflows.Version }}"
 ENV ARGO_VERSION "${ARGO_VERSION}"
 
-RUN apt-get update && apt-get --no-install-recommends install -y \
-    git \
-    make \
-    apt-utils \
-    apt-transport-https \
-    ca-certificates \
-    wget \
-    gcc && \
-    apt-get clean \
-    && rm -rf \
-        /var/lib/apt/lists/* \
-        /tmp/* \
-        /var/tmp/* \
-        /usr/share/man \
-        /usr/share/doc \
-        /usr/share/doc-base
+# Install build dependencies
+RUN --mount=type=secret,id=credentials \
+    set -eux; \
+    apt-get update && apt-get --no-install-recommends install -y \
+    git make apt-utils apt-transport-https ca-certificates wget gcc && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/man /usr/share/doc /usr/share/doc-base
 
 WORKDIR /go/src/github.com/argoproj
-RUN git clone https://github.com/argoproj/argo-workflows.git --branch "v${ARGO_VERSION}"
 WORKDIR /go/src/github.com/argoproj/argo-workflows
-RUN go mod download
-
 
 # Stage: Server: UI
-FROM node:{{ $nodejs.Major }} as argo-ui
-
-COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/package.json ui/
-COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/yarn.lock ui/
+FROM ${BASE_REGISTRY}/${BASE_IMAGE} AS argo-ui
 
 RUN JOBS=max yarn --cwd ui install --network-timeout 1000000
 
-COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/ ui/
-COPY --from=builder /go/src/github.com/argoproj/argo-workflows/api/ api/
-
 RUN NODE_OPTIONS="--max-old-space-size=2048" JOBS=max yarn --cwd ui build
-
 
 # Stage: Workflow Controller: Build
 FROM builder as workflow-controller-build
@@ -85,7 +99,6 @@ RUN cat .dockerignore >> .gitignore
 RUN git status --porcelain | cut -c4- | xargs git update-index --skip-worktree
 
 RUN target=/root/.cache/go-build make dist/workflow-controller
-
 
 # Stage: ArgoCLI
 FROM builder as argocli-build
@@ -103,22 +116,13 @@ RUN git status --porcelain | cut -c4- | xargs git update-index --skip-worktree
 
 RUN target=/root/.cache/go-build make dist/argo
 
-
 # Stage: Final Image
-FROM {{ .From }}
+FROM ${BASE_REGISTRY}/${BASE_IMAGE}
 
-COPY --from=ospo /usr/src /usr/src
+COPY --from=bootstrap /usr/src /usr/src
 
 ENV C2D_RELEASE "{{ $argo_workflows.Version }}"
 USER 8737
-
-# Controller artifacts
-COPY --from=builder /go/src/github.com/argoproj/argo-workflows/hack/ssh_known_hosts /etc/ssh/
-COPY --from=builder /go/src/github.com/argoproj/argo-workflows/hack/nsswitch.conf /etc/
-COPY --chown=8737 --from=workflow-controller-build /go/src/github.com/argoproj/argo-workflows/dist/workflow-controller /bin/
-
-# CLI artifacts
-COPY --from=argocli-build /go/src/github.com/argoproj/argo-workflows/dist/argo /bin/
 
 COPY docker-entrypoint.sh /
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
