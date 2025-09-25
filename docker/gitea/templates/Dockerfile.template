@@ -2,6 +2,7 @@
 {{- $golang := index .Packages "golang" -}}
 {{- $nodejs := index .Packages "nodejs" -}}
 
+ARG BASE_REGISTRY="docker.io"
 FROM {{ .From }} as ospo
 
 # Download Licenses and restricted source-code
@@ -20,7 +21,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 #Build stage
-FROM golang:{{ $golang.Version }}-bookworm AS build-env
+FROM docker.io/golang:bookworm AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
