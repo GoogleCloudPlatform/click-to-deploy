@@ -202,6 +202,21 @@ const cloudBuildTemplateString = `steps:
         attestationContent: "allowed_uri_prefix"
         attestationType: "https://bcid.corp.google.com/build-content-restrictions/v0.1"
 
+  # Scan for approved content locations and generate an attestation.
+  - name: us-central1-docker.pkg.dev/louhi-prod-1/louhi-helper/louhi-helper-v2
+    id: Run_secure_content_scan-{{ $primary }}
+    args:
+      - "secure_content_scan"
+      - "--allowed_prefixes"
+      {{- range .Allowlist }}
+      - "{{ . }}"
+      {{- end }}
+    waitFor: ['build-and-push-image-{{ $primary }}']
+    results:
+      - name: "allowed_uri_prefix"
+        attestationContent: "allowed_uri_prefix"
+        attestationType: "https://bcid.corp.google.com/build-content-restrictions/v0.1"
+
 {{- end }}
 {{- end }}
 {{- end }}
