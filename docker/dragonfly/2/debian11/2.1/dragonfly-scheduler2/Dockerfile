@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.21-alpine as builder
+ARG BASE_REGISTRY="docker.io"
+FROM ${BASE_REGISTRY} /golang-alpine as builder
 
 ARG GOPROXY
 ARG GOTAGS
@@ -28,7 +29,7 @@ RUN apk --no-cache add bash make gcc libc-dev git && \
 
 RUN make build-scheduler && make install-scheduler
 
-FROM marketplace.gcr.io/google/c2d-debian11 as health
+FROM marketplace.gcr.io/google/debian11 as health
 
 ARG GRPC_HEALTH_PROBE_VERSION=v0.4.24
 
@@ -36,7 +37,7 @@ RUN apt update && apt install -y wget && \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
     chmod +x /bin/grpc_health_probe
 
-FROM marketplace.gcr.io/google/c2d-debian11
+FROM marketplace.gcr.io/google/debian11
 
 ENV C2D_RELEASE 2.1.34
 
