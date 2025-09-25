@@ -141,6 +141,8 @@ const cloudBuildTemplateString = `steps:
       - 'UNIQUE={{ randomString 8 }}'
       - '--test_spec'
       - '{{ $test }}'
+      - '--vars'
+      - 'SLEEP_SECONDS=90' # <-- Add a new variable here
     waitFor: ['image-test-{{ $primary }}']
     id: 'functional-test-{{ $primary }}-{{ $testIndex }}'
   {{- end }}
