@@ -14,14 +14,14 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/29c81f89-5a27-48c7-bff4-7fc0a8f3e65c.cloudpartnerservices.goog
   dir: 4/debian12/4.1
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     superset:
       version: 4.1.1
@@ -35,11 +35,17 @@ versions:
   - '4'
   - latest
   templateSubDir: '4'
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - raw.githubusercontent.com/apache/superset/
+  - pypi.org
+  - files.pythonhosted.org
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/29c81f89-5a27-48c7-bff4-7fc0a8f3e65c.cloudpartnerservices.goog
   dir: 4/debian12/4.0
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     superset:
       version: 4.0.2
@@ -50,13 +56,19 @@ versions:
   - 4.0.2
   - '4.0'
   templateSubDir: '4'
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - raw.githubusercontent.com/apache/superset/
+  - pypi.org
+  - files.pythonhosted.org
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/eef49bfe-eedd-4301-9165-8f2418cfecac.cloudpartnerservices.goog
   dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     statsd_exporter:
       version: 0.28.0
@@ -67,4 +79,5 @@ versions:
   - '0'
   - latest
   templateSubDir: exporter
-
+  allowlist:
+  - marketplace.gcr.io
