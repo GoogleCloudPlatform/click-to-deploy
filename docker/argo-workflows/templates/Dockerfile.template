@@ -16,6 +16,8 @@
 {{ $nodejs := index .Packages "nodejs" }}
 {{ $golang := index .Packages "golang" }}
 
+ARG BASE_REGISTRY="docker.io"
+
 FROM {{ .From }} as ospo
 
 # Download Licenses and restricted source-code
@@ -34,7 +36,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 # Stage: Server and Workflow Controller: Builder
-FROM golang:{{ $golang.Version }} as builder
+FROM docker.io/golang as builder
 
 ARG ARGO_VERSION="{{ $argo_workflows.Version }}"
 ENV ARGO_VERSION "${ARGO_VERSION}"
@@ -63,7 +65,7 @@ RUN go mod download
 
 
 # Stage: Server: UI
-FROM node:{{ $nodejs.Major }} as argo-ui
+FROM docker.io/node as argo-ui
 
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/package.json ui/
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/yarn.lock ui/
