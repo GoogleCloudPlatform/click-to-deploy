@@ -171,7 +171,7 @@ const cloudBuildTemplateString = `steps:
     {{- range $testIndex, $test := .FunctionalTests }}
     - 'functional-test-{{ $primary }}-{{ $testIndex }}'
     {{- end}}
- 
+
   # Scan for approved content locations and generate an attestation.
   - name: us-central1-docker.pkg.dev/louhi-prod-1/louhi-helper/louhi-helper-v2
     id: Run_secure_content_scan-{{ $primary }}
