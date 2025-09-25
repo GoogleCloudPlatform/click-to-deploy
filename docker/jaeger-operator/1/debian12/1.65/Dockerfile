@@ -1,5 +1,6 @@
 # Clone git repo
-FROM alpine/git:1.0.7 as git
+ARG BASE_REGISTRY="docker.io"
+FROM docker.io/alpine/git as git
 
 ENV JAEGER_OPERATOR_VERSION=v1.65.0
 
@@ -8,7 +9,7 @@ RUN git clone https://github.com/jaegertracing/jaeger-operator.git /src/jaeger-o
     && git checkout ${JAEGER_OPERATOR_VERSION}
 
 
-FROM golang:1.22.0 as builder
+FROM docker.io/golang as builder
 
 ENV LD_FLAGS="-X github.com/jaegertracing/jaeger-operator/pkg/version.version=v1.65.0 \
               -X github.com/jaegertracing/jaeger-operator/pkg/version.buildDate=${VERSION_DATE} \
@@ -27,7 +28,7 @@ RUN go install github.com/kardianos/govendor@latest \
 
 
 # Result Image
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
             openssl \
