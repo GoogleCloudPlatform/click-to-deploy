@@ -14,14 +14,14 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
   dir: 2/debian12/2.55
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     prometheus:
       sha256: 7a6b6d5ea003e8d59def294392c64e28338da627bf760cf268e788d6a8832a23
@@ -35,11 +35,15 @@ versions:
   - '2.55'
   - '2'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/prometheus/prometheus/releases/download/
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
   dir: 2/debian12/2.54
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     prometheus:
       sha256: 31715ef65e8a898d0f97c8c08c03b6b9afe485ac84e1698bcfec90fc6e62924f
@@ -50,4 +54,8 @@ versions:
   - 2.54-debian12
   - 2.54.1
   - '2.54'
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/prometheus/prometheus/releases/download/
 
