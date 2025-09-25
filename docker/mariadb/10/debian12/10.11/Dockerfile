@@ -1,6 +1,7 @@
 # Build gosu from the source. As by 2023-09-26 project only have releases
 # from go 1.18. https://github.com/tianon/gosu/releases
-FROM golang:1.23 as gosu-build
+ARG BASE_REGISTRY="docker.io"
+FROM docker.io/golang as gosu-build
 
 RUN git clone https://github.com/tianon/gosu.git --branch 1.17 /go/src/github.com/tianon/gosu
 
@@ -45,7 +46,7 @@ RUN set -eux; \
 RUN ARCH=amd64    GOARCH=amd64       gosu-build-and-test.sh
 RUN set -eux; ls -lAFh /go/bin/gosu-*; file /go/bin/gosu-*
 
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 ENV C2D_RELEASE 10.11.13
 
