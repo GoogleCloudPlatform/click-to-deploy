@@ -1,4 +1,5 @@
-FROM marketplace.gcr.io/google/debian12 as ospo
+ARG BASE_REGISTRY="docker.io"
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -15,8 +16,8 @@ RUN mkdir -p /usr/src/licenses \
         && /download-licenses.sh /components.csv /usr/src/licenses \
         && /download-ref-repos.sh /source_code.txt /usr/src
 
-# Build Gosu
-FROM golang:1.22-bookworm as build-gosu
+## Build Gosu
+FROM docker.io/golang as build-gosu
 
 RUN set -eux; \
     apt-get update; \
@@ -62,7 +63,7 @@ RUN ARCH=amd64  GOARCH=amd64   gosu-build-and-test.sh
 RUN set -eux; ls -lAFh /go/bin/gosu-*; file /go/bin/gosu-*
 
 
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 COPY --from=ospo /usr/src /usr/src
 
