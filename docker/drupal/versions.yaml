@@ -16,7 +16,7 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - dir: 11/php8/debian12/11.1/apache
@@ -37,6 +37,14 @@ versions:
   - '11.1'
   - '11'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - raw.githubusercontent.com
+  - deb.debian.org
+  - ftp.drupal.org
+  - getcomposer.org
+  - repo.packagist.org
+  - github.com
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/2091b012-066a-46f0-8d26-63c5b7db70a4.cloudpartnerservices.goog
@@ -58,6 +66,14 @@ versions:
   - '10.4'
   - '10'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - raw.githubusercontent.com
+  - deb.debian.org
+  - ftp.drupal.org
+  - getcomposer.org
+  - repo.packagist.org
+  - github.com
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/2091b012-066a-46f0-8d26-63c5b7db70a4.cloudpartnerservices.goog
@@ -76,3 +92,11 @@ versions:
   - 10.3-debian12
   - 10.3.14
   - '10.3'
+  allowlist:
+  - marketplace.gcr.io
+  - raw.githubusercontent.com
+  - deb.debian.org
+  - ftp.drupal.org
+  - getcomposer.org
+  - repo.packagist.org
+  - github.com
