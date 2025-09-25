@@ -1,6 +1,6 @@
 {{- $gosu := index .Packages "gosu" -}}
 {{- $zookeeper := index .Packages "zookeeper" -}}
-
+ARG BASE_REGISTRY="docker.io"
 FROM {{ .From }} as ospo
 
 # Download Licenses and restricted source-code
@@ -18,8 +18,8 @@ RUN mkdir -p /usr/src/licenses \
         && /download-licenses.sh /components.csv /usr/src/licenses \
         && /download-ref-repos.sh /source_code.txt /usr/src
 
-# Build Gosu
-FROM golang:1.22-bookworm as build-gosu
+## Build Gosu
+FROM docker.io/golang as build-gosu
 
 RUN set -eux; \
     apt-get update; \
