@@ -13,8 +13,8 @@
 # limitations under the License.
 
 setup:
-- command: [docker, run, --privileged=true, --name, some-cassandra-$UNIQUE-id, -e, 'CASSANDRA_PROMETHEUS_ENABLED=true', -d, '$IMAGE']
-- command: [sleep, 5s]
+- command: [docker, run, --privileged=true, --name, some-cassandra-$UNIQUE-id, -e, 'CASSANDRA_PROMETHEUS_ENABLED=true', '$IMAGE']
+- command: [sleep, 20s]
 - command: [docker, exec, some-cassandra-$UNIQUE-id, sh, -c, 'apt-get update && apt-get install -y curl']
 - command: [sleep, 20s]
 

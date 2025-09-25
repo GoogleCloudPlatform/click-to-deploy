@@ -3,7 +3,8 @@
 {{- $cassandra := index .Packages "cassandra" }}
 {{- $c2dRelease := index .TemplateArgs "c2dRelease" }}
 
-FROM golang:{{ $golang.Version }}-bookworm AS gosu-builder
+ARG BASE_REGISTRY="docker.io"
+FROM docker.io/golang:bookworm AS gosu-builder
 
 RUN set -eux; \
 	apt-get update; \
