@@ -16,7 +16,7 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - dir: 5/php8/debian12/5.3
@@ -33,6 +33,11 @@ versions:
   - '5.3'
   - '5'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - pecl.php.net
+  - github.com
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/545638c3-744a-453a-9793-994aa18913a0.cloudpartnerservices.goog
@@ -50,4 +55,9 @@ versions:
   - '4.4'
   - '4'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - pecl.php.net
+  - github.com
 
