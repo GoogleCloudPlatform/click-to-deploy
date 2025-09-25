@@ -14,11 +14,11 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - dir: 3/debian12/3.0
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     airflow:
       version: 3.0.2
@@ -36,8 +36,18 @@ versions:
   - '3.0'
   - '3'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - raw.githubusercontent.com
+  - deb.debian.org
+  - deb.nodesource.com
+  - dl.yarnpkg.com
+  - keys.openpgp.org
+  - pypi.org
+  - files.pythonhosted.org
+  - github.com/tianon/gosu
 - dir: 2/debian12/2.11
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     airflow:
       version: 2.11.0
@@ -58,3 +68,13 @@ versions:
   - '2.11'
   - '2'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - raw.githubusercontent.com
+  - deb.debian.org
+  - deb.nodesource.com
+  - dl.yarnpkg.com
+  - keys.openpgp.org
+  - pypi.org
+  - files.pythonhosted.org
+  - github.com/tianon/gosu

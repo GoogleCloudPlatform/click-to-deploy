@@ -7,7 +7,7 @@ ARG AIRFLOW_USER_HOME_DIR=/home/airflow
 ARG AIRFLOW_PIP_VERSION="24.3.1"
 
 
-FROM marketplace.gcr.io/google/debian12 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -25,7 +25,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 
-FROM marketplace.gcr.io/google/debian12 as airflow-build-image
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as airflow-build-image
 
 ARG AIRFLOW_HOME=/opt/airflow
 ARG AIRFLOW_UID=50000
@@ -127,7 +127,7 @@ ENV AIRFLOW_PIP_VERSION=${AIRFLOW_PIP_VERSION} \
     INSTALL_MSSQL_CLIENT="true" \
     PIP_USER="false"
 
-FROM marketplace.gcr.io/google/debian12 as main
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as main
 
 # Copy necessary binaries and settings from build stage
 COPY --from=ospo /usr/src /usr/src
