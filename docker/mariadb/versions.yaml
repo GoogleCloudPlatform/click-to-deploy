@@ -16,7 +16,7 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - annotations:
@@ -26,7 +26,7 @@ versions:
   excludeTests:
   - tests/functional_tests/10_create_db_test.yaml
   - tests/functional_tests/10_remote_host_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     golang:
       version: '1.23'
@@ -46,6 +46,17 @@ versions:
   - '11.5'
   - '11'
   - latest
+  allowlist:
+  - marketplace.gcr.io/google/debian12
+  - docker.io
+  - github.com/tianon/gosu.git
+  - sum.golang.org
+  - go.mod
+  - keys.openpgp.org
+  - keyserver.ubuntu.com
+  - archive.mariadb.org
+  - ftp.us.debian.org/debian/
+  - deb.debian.org
   templateArgs:
     c2dRelease: 11.5.2
     distroCodename: bookworm
@@ -57,7 +68,7 @@ versions:
   excludeTests:
   - tests/functional_tests/11_create_db_test.yaml
   - tests/functional_tests/11_remote_host_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     golang:
       version: '1.23'
@@ -79,3 +90,14 @@ versions:
     c2dRelease: 10.11.13
     distroCodename: bookworm
     distroMajor: '12'
+  allowlist:
+  - marketplace.gcr.io/google/debian12
+  - docker.io
+  - github.com/tianon/gosu.git
+  - sum.golang.org
+  - go.mod
+  - keys.openpgp.org
+  - keyserver.ubuntu.com
+  - archive.mariadb.org
+  - ftp.us.debian.org/debian/
+  - deb.debian.org
