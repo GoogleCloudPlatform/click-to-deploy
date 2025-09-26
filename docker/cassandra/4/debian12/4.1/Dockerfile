@@ -1,6 +1,7 @@
 
 
-FROM golang:1.23.4-bookworm AS gosu-builder
+ARG BASE_REGISTRY="docker.io"
+FROM ${BASE_REGISTRY}/golang:bookworm AS gosu-builder
 
 RUN set -eux; \
 	apt-get update; \
@@ -50,7 +51,7 @@ RUN ARCH=amd64    GOARCH=amd64       gosu-build-and-test.sh
 RUN set -eux; ls -lAFh /go/bin/gosu-*; file /go/bin/gosu-*
 
 
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 # explicitly set user/group IDs
 RUN groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 cassandra
@@ -122,17 +123,6 @@ ENV JMX_EXPORTER_CONFIG ${JMX_EXPORTER_PATH}/cassandra.yml
 ENV JMX_EXPORTER_LICENSE ${JMX_EXPORTER_PATH}/LICENSE
 ENV JMX_EXPORTER_NOTICE ${JMX_EXPORTER_PATH}/NOTICE
 
-
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends curl git ca-certificates wget \
-	&& mkdir -p $JMX_EXPORTER_PATH \
-	&& wget -O $JMX_EXPORTER_AGENT https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/$JMX_EXPORTER_VERSION/$JMX_EXPORTER_JAR \
-	&& wget -O $JMX_EXPORTER_CONFIG https://raw.githubusercontent.com/prometheus/jmx_exporter/main/examples/cassandra.yml \
-	&& wget -O $JMX_EXPORTER_LICENSE https://raw.githubusercontent.com/prometheus/jmx_exporter/main/LICENSE \
-	&& wget -O $JMX_EXPORTER_NOTICE https://raw.githubusercontent.com/prometheus/jmx_exporter/main/NOTICE \
-	&& apt-get purge -y --auto-remove ca-certificates wget \
-	&& rm -rf /var/lib/apt/lists/*
-
 RUN set -x; \
 		echo "deb http://deb.debian.org/debian unstable main non-free non-free-firmware contrib" > /etc/apt/sources.list.d/debian-unstable.list; \
 		apt-get update \
@@ -140,13 +130,6 @@ RUN set -x; \
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
-
-RUN mkdir -p /var/lib/cassandra "$CASSANDRA_CONFIG" /var/log/cassandra \
-	&& chown -R cassandra:cassandra /var/lib/cassandra "$CASSANDRA_CONFIG" "$JMX_EXPORTER_PATH" /var/log/cassandra \
-	&& chmod 777 /var/lib/cassandra "$CASSANDRA_CONFIG" "$JMX_EXPORTER_PATH" /var/log/cassandra \
-	&& ln -sT /var/lib/cassandra "$CASSANDRA_HOME/data" \
-	&& ln -sT /var/log/cassandra "$CASSANDRA_HOME/logs" \
-	&& chown cassandra:cassandra /docker-entrypoint.sh
 
 VOLUME /var/lib/cassandra
 
@@ -159,11 +142,6 @@ COPY components.csv /components.csv
 COPY download-licenses.sh /download-licenses.sh
 RUN mkdir -p /usr/src && \
 		/download-licenses.sh /components.csv /usr/src/licenses
-
-# Download GPL source-code
-RUN git clone https://github.com/typetools/checker-framework.git /usr/src/checker-framework \
-		&& git clone https://github.com/qos-ch/logback.git /usr/src/logback \
-		&& git clone https://github.com/vbmacher/cup-maven-plugin /usr/src/cup-maven-plugin
 
 # 7000: intra-node communication
 # 7001: TLS intra-node communication

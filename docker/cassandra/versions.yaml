@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+## Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - dir: 5/debian12/5.0
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     cassandra:
       gpg: 514A2AD631A57A16DD0047EC749D6EEC0353B12C A26E528B271F19B9E5D8E19EA278B781FE4B2BDA
@@ -44,7 +44,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/ba024e66-0fcf-4db1-8775-c934ffaf77da.cloudpartnerservices.goog
   dir: 4/debian12/4.1
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     cassandra:
       gpg: 514A2AD631A57A16DD0047EC749D6EEC0353B12C A26E528B271F19B9E5D8E19EA278B781FE4B2BDA
@@ -66,4 +66,3 @@ versions:
   templateArgs:
     c2dRelease: 4.1.7
   templateSubDir: cassandra4
-
