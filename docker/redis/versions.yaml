@@ -26,7 +26,7 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: true
 versions:
 # Never update for a later version than Redis 7.2.4
@@ -34,7 +34,7 @@ versions:
 - dir: 7/debian12/7.2
   excludeTests:
   - tests/functional_tests/redis_exporter_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -54,10 +54,23 @@ versions:
   - '7'
   - latest
   templateSubDir: redis7
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/tianon/gosu
+  - download.redis.io
+  - pool.sks-keyservers.net
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
+  - keyserver.ubuntu.com
+  - pgp.mit.edu
 - dir: exporter
   excludeTests:
   - tests/functional_tests/set_get_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     golang:
       version: '1.21.1'
@@ -73,3 +86,5 @@ versions:
   - '1'
   - latest
   templateSubDir: exporter
+  allowlist:
+  - marketplace.gcr.io

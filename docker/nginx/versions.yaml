@@ -21,7 +21,7 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - annotations:
@@ -30,7 +30,7 @@ versions:
   dir: 1/debian12/1.26
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     nginx:
       version: 1.26.3
@@ -47,13 +47,17 @@ versions:
     os: bookworm
     repo: http://nginx.org/packages/debian/
   templateSubDir: nginx
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - nginx.org
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/dda4477e-0715-4738-9c5f-4d73e19bac3d.cloudpartnerservices.goog
   dir: exporter
   excludeTests:
   - tests/functional_tests/nginx_test.yaml
-  from: marketplace.gcr.io/google/debian11
+  from: marketplace.gcr.io/google/debian11@sha256:b441186c557eeef29805ee38557fd11b2bb4cf09af655238f3103c49a15ac505
   packages:
     exporter:
       version: 1.4.2
@@ -64,4 +68,6 @@ versions:
   - '1'
   - latest
   templateSubDir: exporter
+  allowlist:
+  - marketplace.gcr.io
 
