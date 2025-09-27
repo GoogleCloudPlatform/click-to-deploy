@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels: &Labels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: longhorn
+    app: longhorn-conversion-webhook
+  name: longhorn-conversion-webhook
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels: *Labels
+  template:
+    metadata:
+      labels: *Labels
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - longhorn-conversion-webhook
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: longhorn-conversion-webhook
+        image: {{ .Values.longhorn.manager.image.repo }}:{{ .Values.longhorn.manager.image.tag }}
+        imagePullPolicy: Always
+        securityContext:
+          runAsUser: 2000
+        command:
+        - longhorn-manager
+        - conversion-webhook
+        - --service-account
+        - longhorn-service-account
+        ports:
+        - containerPort: 9443
+          name: conversion-wh
+        readinessProbe:
+          tcpSocket:
+            port: 9443
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      serviceAccountName: longhorn-service-account
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels: &Labels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: longhorn
+    app: longhorn-admission-webhook
+  name: longhorn-admission-webhook
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels: *Labels
+  template:
+    metadata:
+      labels: *Labels 
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - longhorn-admission-webhook
+              topologyKey: kubernetes.io/hostname
+      initContainers:
+      - name: wait-longhorn-conversion-webhook
+        image: {{ .Values.longhorn.manager.image.repo }}:{{ .Values.longhorn.manager.image.tag }}
+        command: ['sh', '-c', 'while [ $(curl -m 1 -s -o /dev/null -w "%{http_code}" -k https://longhorn-conversion-webhook:9443/v1/healthz) != "200" ]; do echo waiting; sleep 2; done']
+        imagePullPolicy: Always
+        securityContext:
+          runAsUser: 2000
+      containers:
+      - name: longhorn-admission-webhook
+        image: {{ .Values.longhorn.manager.image.repo }}:{{ .Values.longhorn.manager.image.tag }}
+        imagePullPolicy: Always
+        securityContext:
+          runAsUser: 2000
+        command:
+        - longhorn-manager
+        - admission-webhook
+        - --service-account
+        - longhorn-service-account
+        ports:
+        - containerPort: 9443
+          name: admission-wh
+        readinessProbe:
+          tcpSocket:
+            port: 9443
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+      serviceAccountName: longhorn-service-account
