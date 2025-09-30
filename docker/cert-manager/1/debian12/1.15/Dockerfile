@@ -1,4 +1,4 @@
-FROM  marketplace.gcr.io/google/debian12 as build
+FROM  marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as build
 
 ENV APP_VERSION=1.15.5
 
@@ -24,7 +24,7 @@ RUN make vendor-go \
 RUN /src/cert-manager/_bin/tools/go install github.com/cert-manager/cmctl/v2@latest
 
 # Result Image
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 RUN apt-get update \
     && apt-get install \
