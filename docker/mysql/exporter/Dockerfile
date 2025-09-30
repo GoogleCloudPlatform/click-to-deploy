@@ -1,4 +1,5 @@
-FROM golang:1.21 as exporter-builder
+ARG BASE_REGISTRY="docker.io"
+FROM docker.io/golang as exporter-builder
 
 ENV GOPATH /usr/local
 
@@ -28,7 +29,7 @@ RUN set -eux \
     && mkdir -p "${GOPATH}/src/github.com/prometheus/mysqld_exporter" \
     && tar -xzf /tmp/mysqld_exporter.tar.gz --strip-components=1 -C "${GOPATH}/src/github.com/prometheus/mysqld_exporter"
 
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 #resolve security issues
 RUN apt-get update; \

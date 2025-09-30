@@ -19,11 +19,11 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - dir: 0/debian12/0.78
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     prometheus-operator:
       version: 0.78.0
@@ -38,8 +38,16 @@ versions:
   - '0.78'
   - '0'
   - latest
+  allowlist:
+  - marketplace.gcr.io/google/debian12
+  - docker.io
+  - github.com/prometheus-operator/prometheus-operator.git
+  - github.com/google/go-licenses
+  - sum.golang.org
+  - deb.debian.org
+
 - dir: 0/debian12/0.77
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     prometheus-operator:
       version: 0.77.2
@@ -51,3 +59,10 @@ versions:
   - 0.77-debian12
   - 0.77.2
   - '0.77'
+  allowlist:
+  - marketplace.gcr.io/google/debian12
+  - docker.io
+  - github.com/prometheus-operator/prometheus-operator.git
+  - github.com/google/go-licenses
+  - sum.golang.org
+  - deb.debian.org

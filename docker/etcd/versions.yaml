@@ -14,14 +14,14 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/8be1fafd-f0c6-4770-b23e-bce06be7b750.cloudpartnerservices.goog
   dir: 3/debian12/3.6
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     etcd:
       sha256: 42305b0dcbba7b6fdff0382d0c7b99c42026c88c44847a619ab58cde216725d9
@@ -39,11 +39,15 @@ versions:
   - '3.6'
   - '3'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - dl.google.com/go/
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/8be1fafd-f0c6-4770-b23e-bce06be7b750.cloudpartnerservices.goog
   dir: 3/debian12/3.5
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     etcd:
       sha256: adddda4b06718e68671ffabff2f8cee48488ba61ad82900e639d108f2148501c
@@ -58,3 +62,7 @@ versions:
   - 3.5-debian12
   - 3.5.21
   - '3.5'
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - dl.google.com/go/

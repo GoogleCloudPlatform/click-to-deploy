@@ -1,3 +1,4 @@
+
 # Copyright 2025 Google LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,13 +20,13 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - dir: 17/debian12/17.5
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -43,13 +44,26 @@ versions:
   - latest
   templateArgs:
     c2dRelease: 17.5.0
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/tianon/gosu
+  - apt-archive.postgresql.org
+  - pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - pgp.mit.edu
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
+  - keyserver.ubuntu.com
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/86f72fc8-e5a0-4d16-8a93-218c7696748d.cloudpartnerservices.goog
   dir: 16/debian12/16.9
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -67,13 +81,26 @@ versions:
   - latest
   templateArgs:
     c2dRelease: 16.9.0
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/tianon/gosu
+  - apt-archive.postgresql.org
+  - pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - pgp.mit.edu
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
+  - keyserver.ubuntu.com
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/86f72fc8-e5a0-4d16-8a93-218c7696748d.cloudpartnerservices.goog
   dir: 16/debian12/16.4
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -88,13 +115,26 @@ versions:
   - '16.4'
   templateArgs:
     c2dRelease: 16.4.0
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/tianon/gosu
+  - apt-archive.postgresql.org
+  - pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - pgp.mit.edu
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
+  - keyserver.ubuntu.com
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/a61f6b8d-e6d0-4863-9040-03cb7f09cf0c.cloudpartnerservices.goog
   dir: 15/debian12/15.13
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -112,13 +152,26 @@ versions:
   - latest
   templateArgs:
     c2dRelease: 15.13.0
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/tianon/gosu
+  - apt-archive.postgresql.org
+  - pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - pgp.mit.edu
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
+  - keyserver.ubuntu.com
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/55e64a92-c0ce-4793-89cc-c16c7cd62ce3.cloudpartnerservices.goog
   dir: 14/debian12/14.18
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -136,13 +189,26 @@ versions:
   - latest
   templateArgs:
     c2dRelease: 14.18.0
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/tianon/gosu
+  - apt-archive.postgresql.org
+  - pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - pgp.mit.edu
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
+  - keyserver.ubuntu.com
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/7d797b74-f0e7-4422-85e3-165505ae2c29.cloudpartnerservices.goog
   dir: 13/debian12/13.21
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -160,6 +226,19 @@ versions:
   - latest
   templateArgs:
     c2dRelease: 13.21.0
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/tianon/gosu
+  - apt-archive.postgresql.org
+  - pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - pgp.mit.edu
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
+  - keyserver.ubuntu.com
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/f1e0e68f-e0c9-4598-88b1-1245d424c25b.cloudpartnerservices.goog
@@ -167,7 +246,7 @@ versions:
   excludeTests:
   - tests/functional_tests/create_db_test.yaml
   - tests/functional_tests/remote_host_test.yaml
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     postgres_exporter:
       version: 0.17.1
@@ -178,4 +257,6 @@ versions:
   - '0'
   - latest
   templateSubDir: exporter
+  allowlist:
+  - marketplace.gcr.io
 
