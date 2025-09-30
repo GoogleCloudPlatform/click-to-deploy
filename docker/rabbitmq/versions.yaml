@@ -19,11 +19,11 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - dir: 4/debian12/4.0
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -41,11 +41,25 @@ versions:
   - '4.0'
   - '4'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/tianon/gosu
+  - github.com/erlang/otp
+  - github.com/rabbitmq/rabbitmq-server
+  - pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - pgp.mit.edu
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
+  - keyserver.ubuntu.com
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/96358145-e7c1-4dcb-aaee-e4a35745c11d.cloudpartnerservices.goog
   dir: 3/debian12/3.13
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -63,4 +77,18 @@ versions:
   - '3.13'
   - '3'
   - latest
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/tianon/gosu
+  - github.com/erlang/otp
+  - github.com/rabbitmq/rabbitmq-server
+  - pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - pgp.mit.edu
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
+  - keyserver.ubuntu.com
 
