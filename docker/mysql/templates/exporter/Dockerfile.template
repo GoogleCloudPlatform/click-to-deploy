@@ -2,7 +2,8 @@
 {{- $mysqld_exporter := index .Packages "mysqld_exporter" -}}
 {{- $template := index .TemplateArgs -}}
 
-FROM golang:{{ $golang.Minor }} as exporter-builder
+ARG BASE_REGISTRY="docker.io"
+FROM docker.io/golang as exporter-builder
 
 ENV GOPATH /usr/local
 

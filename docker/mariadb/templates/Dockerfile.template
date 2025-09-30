@@ -6,7 +6,8 @@
 
 # Build gosu from the source. As by 2023-09-26 project only have releases
 # from go 1.18. https://github.com/tianon/gosu/releases
-FROM golang:{{ $golang.Version }} as gosu-build
+ARG BASE_REGISTRY="docker.io"
+FROM docker.io/golang as gosu-build
 
 RUN git clone https://github.com/tianon/gosu.git --branch {{ $gosu.Version }} /go/src/github.com/tianon/gosu
 
