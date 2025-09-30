@@ -1,7 +1,7 @@
 {{- $kubestatemetrics := index .Packages "kube-state-metrics" -}}
 {{- $golang:= index .Packages "golang" -}}
 
-# Download and unpack the Kube State Merics release code from github
+ARG BASE_REGISTRY="docker.io"
 FROM {{ .From }} as downloader
 
 ENV KUBE_STATE_METRICS_VERSION {{ $kubestatemetrics.Version }}
@@ -12,7 +12,7 @@ RUN set -x && \
     git clone https://github.com/kubernetes/kube-state-metrics.git --branch v${KUBE_STATE_METRICS_VERSION} release
 
 # Build the binary with Go
-FROM golang:{{ $golang.Version }} as builder
+FROM docker.io/golang as builder
 WORKDIR /go/src/k8s.io/kube-state-metrics
 
 ENV PKG=github.com/prometheus/common

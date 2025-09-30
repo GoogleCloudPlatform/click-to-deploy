@@ -1,5 +1,5 @@
-# Download and unpack the Kube State Merics release code from github
-FROM marketplace.gcr.io/google/debian12 as downloader
+ARG BASE_REGISTRY="docker.io"
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as downloader
 
 ENV KUBE_STATE_METRICS_VERSION 2.15.0
 
@@ -9,7 +9,7 @@ RUN set -x && \
     git clone https://github.com/kubernetes/kube-state-metrics.git --branch v${KUBE_STATE_METRICS_VERSION} release
 
 # Build the binary with Go
-FROM golang:1.23.5 as builder
+FROM docker.io/golang as builder
 WORKDIR /go/src/k8s.io/kube-state-metrics
 
 ENV PKG=github.com/prometheus/common
@@ -27,7 +27,7 @@ RUN set -x && \
       -o kube-state-metrics
 
 # Build the final image
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 ENV C2D_RELEASE=2.15.0
 

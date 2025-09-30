@@ -27,6 +27,7 @@ RUN set -eux \
         wget \
         bash \
         dnsutils \
+        curl \
         git
 
 ENV GOLANG_VERSION {{ $golang.Version }}
