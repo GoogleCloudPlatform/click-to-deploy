@@ -19,11 +19,11 @@
 
 
 cloudbuild:
-  docker_image: gcr.io/cloud-builders/docker:24.0.9
+  docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
 - dir: 2/debian12/2.494
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     jenkins:
       sha256: 2f85910fa035d8bb6460ab5b4c574f95e9e72a39b14419df608186bf704f64c4
@@ -41,9 +41,15 @@ versions:
   - '2.494'
   templateArgs:
     c2dRelease: 2.494.1
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - raw.githubusercontent.com
+  - github.com/krallin/tini/releases/
+  - repo.jenkins-ci.org
 
 - dir: 2/debian12/2.504.3
-  from: marketplace.gcr.io/google/debian12
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     jenkins:
       sha256: ea8883431b8b5ef6b68fe0e5817c93dc0a11def380054e7de3136486796efeb0
@@ -62,3 +68,9 @@ versions:
   - latest
   templateArgs:
     c2dRelease: 2.504.3
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - raw.githubusercontent.com
+  - github.com/krallin/tini/releases/
+  - repo.jenkins-ci.org

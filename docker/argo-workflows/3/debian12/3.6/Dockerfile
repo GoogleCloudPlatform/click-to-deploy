@@ -16,7 +16,9 @@
 
 
 
-FROM marketplace.gcr.io/google/debian12 as ospo
+ARG BASE_REGISTRY="docker.io"
+
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -34,7 +36,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 # Stage: Server and Workflow Controller: Builder
-FROM golang:1.24 as builder
+FROM docker.io/golang as builder
 
 ARG ARGO_VERSION="3.6.7"
 ENV ARGO_VERSION "${ARGO_VERSION}"
@@ -63,7 +65,7 @@ RUN go mod download
 
 
 # Stage: Server: UI
-FROM node:20 as argo-ui
+FROM docker.io/node as argo-ui
 
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/package.json ui/
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/yarn.lock ui/
@@ -105,7 +107,7 @@ RUN target=/root/.cache/go-build make dist/argo
 
 
 # Stage: Final Image
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 COPY --from=ospo /usr/src /usr/src
 

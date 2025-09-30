@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-timeout: 10800s # 1h
 steps:
 
 - id: Build C2D Docker Image
@@ -47,7 +46,6 @@ steps:
   - builds
   - submit
   - --timeout
-  - 10800s
   - --config
   - cloudbuild.yaml
   - .
