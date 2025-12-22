@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -15,7 +15,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM marketplace.gcr.io/google/debian12
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 COPY --from=ospo /usr/src /usr/src
 
@@ -116,7 +116,7 @@ RUN set -ex; \
   ln -s /opt/solr/modules /opt/solr/contrib; \
   ln -s /opt/solr/prometheus-exporter /opt/solr/modules/prometheus-exporter; \
   { command -v gpgconf; gpgconf --kill all || :; }; \
-  rm -r "$GNUPGHOME"
+  rm -rf "$GNUPGHOME" || true
 
 VOLUME /var/solr
 EXPOSE 8983

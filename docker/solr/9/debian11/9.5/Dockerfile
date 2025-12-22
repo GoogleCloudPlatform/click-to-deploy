@@ -115,7 +115,7 @@ RUN set -ex; \
   ln -s /opt/solr/modules /opt/solr/contrib; \
   ln -s /opt/solr/prometheus-exporter /opt/solr/modules/prometheus-exporter; \
   { command -v gpgconf; gpgconf --kill all || :; }; \
-  rm -r "$GNUPGHOME"
+  rm -rf "$GNUPGHOME" || true
 
 VOLUME /var/solr
 EXPOSE 8983
