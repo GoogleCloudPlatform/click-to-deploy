@@ -23,11 +23,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip jinja2 pyyaml
 
-    # Use the Action instead of the broken wget link
-    - name: Setup Chef
-      uses: chef/setup-chef@v1
+    - name: Install Chef Workstation
+      uses: actionshub/chef-install@main
       with:
-        chef_version: latest
+        project: chef-workstation
         accept_chef_license: true
 
     - name: Run tests
