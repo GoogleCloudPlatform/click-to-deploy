@@ -13,8 +13,8 @@ jobs:
     # Upgraded to v4
     - uses: actions/checkout@v4
 
-    # Upgraded to v5
-    - uses: actions/setup-python@v5
+    # Upgraded to v2
+    - uses: actions/setup-python@v2
       with:
         python-version: '3.x'
         cache: 'pip'
