@@ -10,14 +10,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    # Upgraded to v4
+    - uses: actions/checkout@v4
+
+    # Upgraded to v5
+    - uses: actions/setup-python@v5
       with:
         python-version: '3.x'
+        cache: 'pip'
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip jinja2 pyyaml
-        wget https://packages.chef.io/files/stable/chefdk/4.2.0/ubuntu/16.04/chefdk_4.2.0-1_amd64.deb
-        sudo dpkg -i chefdk_4.2.0-1_amd64.deb
+
+    # Use the Action instead of the broken wget link
+    - name: Setup Chef
+      uses: chef/setup-chef@v1
+      with:
+        chef_version: latest
+        accept_chef_license: true
+
     - name: Run tests
       run: make python-test vm-lint vm-generate-triggers
