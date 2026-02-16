@@ -42,4 +42,4 @@ versions:
   - marketplace.gcr.io
   - deb.debian.org
   - archive.apache.org
-  - dlcdn.apache.org
+  - archive.apache.org
