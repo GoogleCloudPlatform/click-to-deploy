@@ -132,7 +132,7 @@ function install_wp_stateless() {
   chown -R www-data:www-data /var/www/html/wp-content/plugins/
 }
 
-if gsutil -q stat gs://${gcs_bucket_name}/wp-app/wp-config.php; then
+if gcloud storage objects list --stat --fetch-encrypted-object-hashes gs://${gcs_bucket_name}/wp-app/wp-config.php; then
   echo "C2D: WordPress - pull bucket"
 
   /opt/c2d/downloads/gcs-pull-once.sh
