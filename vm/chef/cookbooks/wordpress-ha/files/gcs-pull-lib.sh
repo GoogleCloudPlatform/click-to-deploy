@@ -62,14 +62,14 @@ function is_pull_process_locked() {
 # Bucket lock operations:
 # (prevent new readers from starting reading data while they are changed)
 function is_bucket_locked() {
-  gsutil -q stat "${remote_bucket_lock_file}"
+  gcloud storage objects list --stat --fetch-encrypted-object-hashes "${remote_bucket_lock_file}"
 }
 
 
 # Sync operations
 function sync_in_bucket_files() {
-  gsutil -m rsync -R -p -d "${remote_app_dir}" "${local_app_dir}"
-  gsutil cp "${remote_bucket_version_file_md5}" "${local_bucket_version_file_md5}"
+  gcloud storage rsync --recursive --preserve-acl --delete-unmatched-destination-objects "${remote_app_dir}" "${local_app_dir}"
+  gcloud storage cp "${remote_bucket_version_file_md5}" "${local_bucket_version_file_md5}"
 }
 
 function pull() {
@@ -96,7 +96,7 @@ function pull_if_changed() {
     local -r local_version="0"
   fi
 
-  if gsutil cp \
+  if gcloud storage cp \
     "${remote_bucket_version_file_md5}" \
     "${local_bucket_version_file_md5}.remote"; then
     cp "${local_bucket_version_file_md5}.remote" \

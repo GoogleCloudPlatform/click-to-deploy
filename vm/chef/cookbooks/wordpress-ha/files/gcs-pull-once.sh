@@ -31,4 +31,4 @@
 source /opt/c2d/downloads/gcs-pull-lib.sh || exit 1
 
 unlock_pull_process
-gsutil -m rsync -R -p -d "${remote_app_dir}" "${local_app_dir}"
+gcloud storage rsync --recursive --preserve-acl --delete-unmatched-destination-objects "${remote_app_dir}" "${local_app_dir}"
