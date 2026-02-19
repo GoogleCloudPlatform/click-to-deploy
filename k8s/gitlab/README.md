@@ -314,7 +314,7 @@ expanded manifest file for future updates to your app.
 
 ```shell
 helm template chart/gitlab \
-  --name "${APP_INSTANCE_NAME}" \
+  --name-template "${APP_INSTANCE_NAME}" \
   --namespace "${NAMESPACE}" \
   --set gitlab.image.repo="${IMAGE_GITLAB}" \
   --set gitlab.image.tag="${TAG}" \
