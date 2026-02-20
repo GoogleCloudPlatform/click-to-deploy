@@ -1,0 +1,100 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: "{{ .Release.Name }}"
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: >-
+      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}
+    marketplace.cloud.google.com/deploy-info: '{"partner_id": "click-to-deploy-containers", "product_id": "tikv", "partner_name": "Google Click to Deploy"}'
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  descriptor:
+    type: Longhorn
+    version: "{{ .Values.longhorn.engine.image.tag }}"
+    description: |-
+      Longhorn is a lightweight, reliable and easy-to-use distributed block storage system for Kubernetes. 
+      # Support
+      Google does not offer support for this solution. However, community support is available on
+      [Stack Overflow](https://stackoverflow.com/questions/tagged/longhorn/).
+    maintainers:
+    - name: Google Click to Deploy
+      url: https://cloud.google.com/solutions/#click-to-deploy
+    links:
+    - description: 'User Guide: Google Click to Deploy Longhorn'
+      url: https://github.com/GoogleCloudPlatform/click-to-deploy/blob/master/k8s/longhorn/README.md
+    - description: 'Official documentation for Longhorn'
+      url: https://longhorn.io/docs/1.3.2/what-is-longhorn/
+    notes: |-
+      # Access Longhorn
+      {{ if .Values.enablePublicServiceAndIngress -}}
+      # Open your Longhorn UI
+      To get the external IP of your Longhorn UI, use the following command:
+
+      ```
+      SERVICE_IP=$(kubectl get ingress {{ .Release.Name }}-longhorn-ingress \
+        --namespace {{ .Release.Namespace }} \
+        --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+      echo "https://${SERVICE_IP}/"
+      ```
+      {{- else -}}
+      # Open your Longhorn UI
+
+      Longhorn is exposed by the ClusterIP-only service `{{ .Release.Name }}-longhorn-frontend`. To connect to the
+      Longhorn UI, you can either expose a public service endpoint, or keep it private, but connect
+      from your local environment with `kubectl port-forward`.
+
+      ## Forward the Longhorn UI port in your local environment
+
+      To use `kubectl`'s port forwarding feature to forward MediaWiki's port to your local
+      machine, run the following command in the background:
+
+      ```shell
+      kubectl port-forward \
+        --namespace {{ .Release.Namespace }} \
+        svc/{{ .Release.Name }}-longhorn-frontend \
+        80:80
+      ```
+
+      Now you can access the Longhorn UI with [http://localhost:80](http://localhost:80).
+      {{- end }}
+  info:
+  {{ if .Values.enablePublicServiceAndIngress -}}
+  - name: Longhorn site address
+    type: Reference
+    valueFrom:
+      ingressRef:
+        name: {{ .Release.Name }}-longhorn-ingress
+        protocol: HTTPS
+  {{- else -}}
+  - name: Forward Longhorn UI port locally
+    value: kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-longhorn-frontend 80:80
+  - name: Longhorn UI address (local only)
+    value: "http://localhost:80/"
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  componentKinds:
+  - group: v1
+    kind: ConfigMap
+  - group: apps/v1
+    kind: Deployment
+  - group: apps/v1
+    kind: DaemonSet
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: v1
+    kind: Service
+  {{ if .Values.enablePublicServiceAndIngress }}
+  - group: networking.k8s.io
+    kind: Ingress
+  {{ end }}
+  - group: v1
+    kind: ServiceAccount
+  - group: rbac.authorization.k8s.io/v1
+    kind:  ClusterRole
+  - group: rbac.authorization.k8s.io/v1
+    kind:  ClusterRoleBinding
+
