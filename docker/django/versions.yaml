@@ -50,24 +50,6 @@ versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/88b938b9-1b2f-466d-943c-0f432e1e3fa8.cloudpartnerservices.goog
-  dir: 5/debian12/5.2
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
-  packages:
-    django:
-      version: 5.2.1
-  repo: django5
-  tags:
-  - 5.2.1-debian12
-  - 5.2.1
-  allowlist:
-  - marketplace.gcr.io
-  - raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/
-  - deb.debian.org
-  - pypi.org
-  - files.pythonhosted.org
-- annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/88b938b9-1b2f-466d-943c-0f432e1e3fa8.cloudpartnerservices.goog
   dir: 5/debian12/5.1
   from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
