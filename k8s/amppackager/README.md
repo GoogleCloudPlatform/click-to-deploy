@@ -206,7 +206,7 @@ helm template chart/amppackager \
   --set image.repo="$IMAGE_AMPPACKAGER" \
   --set image.tag="$TAG" \
   --set init.repo="$IMAGE_AMPPACKAGER_INIT" \
-  --set init.tag"$TAG" \
+  --set init.tag="$TAG" \
   --set packager.persistence.storageClass="$STORAGE_CLASS" \
   --set packager.persistence.size="$PERSISTENT_DISK_SIZE" \
   --set packager.domain="$AMPPACKAGER_DOMAIN" \
