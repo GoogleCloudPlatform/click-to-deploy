@@ -137,7 +137,7 @@ RUN apt-get update \
 RUN set -x; \
 		echo "deb http://deb.debian.org/debian unstable main non-free non-free-firmware contrib" > /etc/apt/sources.list.d/debian-unstable.list; \
 		apt-get update \
-		&& apt-get -y install openjdk-11-jdk
+		&& apt-get -y install openjdk-17-jdk
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
