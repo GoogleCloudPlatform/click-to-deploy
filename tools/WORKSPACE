@@ -1,22 +1,20 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-# 1. rules_go v0.23.10: Compatible with old Bazel, uses multiple mirrors to bypass 404s
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "d9a9d51999acc7d60a5b58e20b391b907b3eaa9c670c1faa07c5e4a93bd8da36",
+    sha256 = "1868ff68d6079e31b2f09b828b58d62e57ca8e9636edff699247c9108518570b",
     urls = [
-        "https://github.com/bazelbuild/rules_go/releases/download/v0.23.10/rules_go-v0.23.10.tar.gz",
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.23.10/rules_go-v0.23.10.tar.gz",
+        "https://github.com/bazelbuild/rules_go/releases/download/0.11.1/rules_go-0.11.1.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/0.11.1/rules_go-0.11.1.tar.gz",
     ],
 )
 
-# 2. bazel_gazelle v0.21.1: Matches the v0.23.x rules_go ecosystem perfectly
 http_archive(
     name = "bazel_gazelle",
-    sha256 = "cdcd1511942d99f0e0a5da30901e18cc61bf961f65d6fe62071239f60f606bf9",
+    sha256 = "92a3c59734dad2ef85dc731dbcb2bc23c4568cded79d4b87ebccd787eb89e8d0",
     urls = [
-        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.21.1/bazel-gazelle-v0.21.1.tar.gz",
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.21.1/bazel-gazelle-v0.21.1.tar.gz",
+        "https://github.com/bazelbuild/bazel-gazelle/releases/download/0.11.0/bazel-gazelle-0.11.0.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/0.11.0/bazel-gazelle-0.11.0.tar.gz",
     ],
 )
 
@@ -31,8 +29,17 @@ go_repository(
 
 go_rules_dependencies()
 
-# Force an active Go SDK that is still hosted publicly (v0.23 supports 1.15 out of the box)
-go_register_toolchains(version = "1.15.15")
+# 3. INTERCEPT THE 403: Explicitly map a working, public Go legacy URL
+# This bypasses the hardcoded broken go1.10.2 link inside rules_go
+load("@io_bazel_rules_go//go:private/sdk.bzl", "go_download_sdk")
+go_download_sdk(
+    name = "go_sdk",
+    urls = ["https://storage.googleapis.com/golang/go1.12.17.linux-amd64.tar.gz"],
+    version = "1.12.17",
+)
+
+# Call the toolchain registration helper normally
+go_register_toolchains()
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 gazelle_dependencies()
