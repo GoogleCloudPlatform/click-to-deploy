@@ -1,28 +1,28 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-# 1. Upgrade rules_go to a version that supports modern Go SDK download paths
+# 1. rules_go v0.23.10: Compatible with old Bazel, uses multiple mirrors to bypass 404s
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "207fad3e6689135c5d8713e5a17ba9d1290238f47b9ba545b63d9303406209c6",
+    sha256 = "f340ee87be29048f3b1456d98a0023a851941dfcb72ee1c30e2f5b9db0bfe053",
     urls = [
-        "https://github.com/bazelbuild/rules_go/releases/download/v0.24.7/rules_go-v0.24.7.tar.gz",
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.24.7/rules_go-v0.24.7.tar.gz",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.23.10/rules_go-v0.23.10.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.23.10/rules_go-v0.23.10.tar.gz",
     ],
 )
 
-# 2. Upgrade gazelle to match the rules_go version matrix
+# 2. bazel_gazelle v0.21.1: Matches the v0.23.x rules_go ecosystem perfectly
 http_archive(
     name = "bazel_gazelle",
-    sha256 = "b85f559028b56dfc47cdbc0eb3eb92fc3ab6e84dbb85cf3dbd0bc10f06b97621",
+    sha256 = "cdcd1511942d99f0e0a5da30901e18cc61bf961f65d6fe62071239f60f606bf9",
     urls = [
-        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.22.0/bazel-gazelle-v0.22.0.tar.gz",
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.22.0/bazel-gazelle-v0.22.0.tar.gz",
+        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.21.1/bazel-gazelle-v0.21.1.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.21.1/bazel-gazelle-v0.21.1.tar.gz",
     ],
 )
 
 load("@io_bazel_rules_go//go:def.bzl", "go_repository", "go_rules_dependencies", "go_register_toolchains")
 
-# Declare Go direct dependencies required by your tools
+# Declare Go direct dependencies.
 go_repository(
     name = "com_github_gopkg_v2",
     importpath = "gopkg.in/yaml.v2",
@@ -31,8 +31,8 @@ go_repository(
 
 go_rules_dependencies()
 
-# Force an explicitly supported, active Go SDK download to bypass the 403 error
-go_register_toolchains(version = "1.16.5")
+# Force an active Go SDK that is still hosted publicly (v0.23 supports 1.15 out of the box)
+go_register_toolchains(version = "1.15.15")
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 gazelle_dependencies()
