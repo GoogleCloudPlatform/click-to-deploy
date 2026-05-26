@@ -3,7 +3,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # 1. rules_go v0.23.10: Compatible with old Bazel, uses multiple mirrors to bypass 404s
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "f340ee87be29048f3b1456d98a0023a851941dfcb72ee1c30e2f5b9db0bfe053",
+    sha256 = "d9a9d51999acc7d60a5b58e20b391b907b3eaa9c670c1faa07c5e4a93bd8da36",
     urls = [
         "https://github.com/bazelbuild/rules_go/releases/download/v0.23.10/rules_go-v0.23.10.tar.gz",
         "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.23.10/rules_go-v0.23.10.tar.gz",
