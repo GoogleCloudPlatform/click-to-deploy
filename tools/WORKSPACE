@@ -31,14 +31,13 @@ go_rules_dependencies()
 http_archive(
     name = "go_sdk_archive",
     build_file_content = "",
-    strip_prefix = "go",
     urls = ["https://storage.googleapis.com/golang/go1.12.17.linux-amd64.tar.gz"],
 )
 
 load("@io_bazel_rules_go//go:def.bzl", "go_local_sdk")
 go_local_sdk(
     name = "go_sdk",
-    path = "external/go_sdk_archive",
+    path = "external/go_sdk_archive/go",
 )
 
 go_register_toolchains()
