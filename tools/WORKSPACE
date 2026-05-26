@@ -37,11 +37,9 @@ go_download_sdk(
             "3993f416629cb8c0146f34585c5b96495b45f448c9735d49a0d8f07fb08170c0",
         ],
     },
-    urls = {
-        "go1.12.17.linux-amd64.tar.gz": [
-            "https://storage.googleapis.com/golang/go1.12.17.linux-amd64.tar.gz",
-        ],
-    },
+    urls = [
+        "https://storage.googleapis.com/golang/go1.12.17.linux-amd64.tar.gz",
+    ],
 )
 
 go_register_toolchains()
