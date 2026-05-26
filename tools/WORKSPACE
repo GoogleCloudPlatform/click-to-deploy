@@ -28,16 +28,20 @@ go_repository(
 
 go_rules_dependencies()
 
-http_archive(
-    name = "go_sdk_archive",
-    build_file_content = "",
-    urls = ["https://storage.googleapis.com/golang/go1.12.17.linux-amd64.tar.gz"],
-)
-
-load("@io_bazel_rules_go//go:def.bzl", "go_local_sdk")
-go_local_sdk(
+load("@io_bazel_rules_go//go:private/sdk.bzl", "go_download_sdk")
+go_download_sdk(
     name = "go_sdk",
-    path = "external/go_sdk_archive/go",
+    sdks = {
+        "linux_amd64": [
+            "go1.12.17.linux-amd64.tar.gz",
+            "3993f416629cb8c0146f34585c5b96495b45f448c9735d49a0d8f07fb08170c0",
+        ],
+    },
+    urls = {
+        "go1.12.17.linux-amd64.tar.gz": [
+            "https://storage.googleapis.com/golang/go1.12.17.linux-amd64.tar.gz",
+        ],
+    },
 )
 
 go_register_toolchains()
