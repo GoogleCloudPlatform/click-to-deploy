@@ -35,10 +35,10 @@ http_archive(
     urls = ["https://storage.googleapis.com/golang/go1.12.17.linux-amd64.tar.gz"],
 )
 
-load("@io_bazel_rules_go//go:def.bzl", "go_wrap_sdk")
-go_wrap_sdk(
+load("@io_bazel_rules_go//go:def.bzl", "go_local_sdk")
+go_local_sdk(
     name = "go_sdk",
-    repo = "@go_sdk_archive",
+    path = "external/go_sdk_archive",
 )
 
 go_register_toolchains()
