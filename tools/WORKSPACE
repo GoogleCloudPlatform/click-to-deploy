@@ -20,7 +20,6 @@ http_archive(
 
 load("@io_bazel_rules_go//go:def.bzl", "go_repository", "go_rules_dependencies", "go_register_toolchains")
 
-# Declare Go direct dependencies.
 go_repository(
     name = "com_github_gopkg_v2",
     importpath = "gopkg.in/yaml.v2",
@@ -29,15 +28,19 @@ go_repository(
 
 go_rules_dependencies()
 
-# 3. INTERCEPT THE 403: Explicitly map a working, public Go legacy URL
-# This bypasses the hardcoded broken go1.10.2 link inside rules_go
-load("@io_bazel_rules_go//go:private/sdk.bzl", "go_download_sdk")
-go_download_sdk(
-    name = "go_sdk",
+http_archive(
+    name = "go_sdk_archive",
+    build_file_content = "",
+    strip_prefix = "go",
     urls = ["https://storage.googleapis.com/golang/go1.12.17.linux-amd64.tar.gz"],
 )
 
-# Call the toolchain registration helper normally
+load("@io_bazel_rules_go//go:def.bzl", "go_wrap_sdk")
+go_wrap_sdk(
+    name = "go_sdk",
+    repo = "@go_sdk_archive",
+)
+
 go_register_toolchains()
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
