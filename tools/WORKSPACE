@@ -35,7 +35,6 @@ load("@io_bazel_rules_go//go:private/sdk.bzl", "go_download_sdk")
 go_download_sdk(
     name = "go_sdk",
     urls = ["https://storage.googleapis.com/golang/go1.12.17.linux-amd64.tar.gz"],
-    version = "1.12.17",
 )
 
 # Call the toolchain registration helper normally
