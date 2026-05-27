@@ -14,7 +14,7 @@
 
 FROM marketplace.gcr.io/google/debian12
 
-ENV BAZEL_VERSION=0.19.2
+ENV BAZEL_VERSION=6.4.0
 ENV BAZEL_ARCH=linux_amd64_stripped
 
 RUN set -eux \
