@@ -10,13 +10,14 @@ http_archive(
 )
 http_archive(
     name = "bazel_gazelle",
-    sha256 = "b7a67f0b2f1530972173167b078021d7b008d5111b7d52b48560965e6480e66c",
+    sha256 = "d3fa66a39028e97d76f9e2db8f1b0c11c099e8e01bf363a923074784e451f809",
     urls = [
           "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.33.0/bazel-gazelle-v0.33.0.tar.gz",
       ],
 )
 
-load("@io_bazel_rules_go//go:deps.bzl", "go_repository", "go_rules_dependencies", "go_register_toolchains")
+load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies", "go_register_toolchains")
+load("@bazel_gazelle//:deps.bzl", "go_repository")
 
 # Declare Go direct dependencies.
 go_repository(
