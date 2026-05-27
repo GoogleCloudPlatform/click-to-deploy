@@ -27,6 +27,7 @@ jobs:
       with:
         project: chef-workstation
         accept_chef_license: true
+        version: 21.6.497
 
     - name: Run tests
       run: make python-test vm-lint vm-generate-triggers
