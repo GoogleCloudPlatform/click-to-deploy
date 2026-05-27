@@ -33,7 +33,7 @@ RUN set -eux \
     && pwd \
     && cd /click-to-deploy/tools \
     && bazel build dockerversioning/scripts/dockerfiles:dockerfiles dockerversioning/scripts/cloudbuild:cloudbuild \
-    && cp bazel-bin/dockerversioning/scripts/dockerfiles/${BAZEL_ARCH}/dockerfiles /bin/dockerfiles \
-    && cp bazel-bin/dockerversioning/scripts/cloudbuild/${BAZEL_ARCH}/cloudbuild /bin/cloudbuild
+    && cp bazel-bin/dockerversioning/scripts/dockerfiles/dockerfiles_/dockerfiles /bin/dockerfiles \
+    && cp bazel-bin/dockerversioning/scripts/cloudbuild/cloudbuild_/cloudbuild /bin/cloudbuild
 
 WORKDIR /bin

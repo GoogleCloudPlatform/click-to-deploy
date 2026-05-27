@@ -1,4 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 http_archive(
     name = "io_bazel_rules_go",
@@ -24,6 +25,8 @@ go_repository(
     name = "com_github_gopkg_v2",
     importpath = "gopkg.in/yaml.v2",
     tag = "v2.3.0",
+    remote = "https://github.com/go-yaml/yaml",
+    vcs = "git",
 )
 
 go_rules_dependencies()
@@ -34,10 +37,10 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
 gazelle_dependencies()
 
-git_repository(
+http_archive(
     name = "io_bazel_rules_docker",
-    commit = "8bbe2a8abd382641e65ff7127a3700a8530f02ce",
-    remote = "https://github.com/bazelbuild/rules_docker.git",
+    sha256 = "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"],
 )
 
 git_repository(
@@ -46,17 +49,8 @@ git_repository(
     remote = "https://github.com/google/containerregistry",
 )
 
-load(
-    "@io_bazel_rules_docker//docker:docker.bzl",
-    "docker_repositories",
-    "docker_pull",
-)
-
-docker_repositories()
-
-load(
-    "@io_bazel_rules_docker//container:container.bzl",
-    "repositories",
-)
-
-repositories()
+load("@io_bazel_rules_docker//repositories:repositories.bzl", container_repositories = "repositories")
+container_repositories()
+  
+load("@io_bazel_rules_docker//repositories:deps.bzl", container_deps = "deps")
+container_deps()
