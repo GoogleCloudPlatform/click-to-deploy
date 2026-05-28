@@ -30,7 +30,21 @@ setup:
   - '-d'
   - '$IMAGE'
 
-- command: [sleep, 900s]
+- command:
+    - sh
+    - -c
+    - |
+      echo "Waiting for Jenkins to start..."
+      for i in {1..30}; do
+        if docker exec some-jenkins-$UNIQUE sh -c "curl -L -s http://localhost:8080/prometheus" | grep -q "TYPE"; then
+          echo "Jenkins is ready!"
+          exit 0
+        fi
+        echo "Jenkins is not ready yet, sleeping 30s..."
+        sleep 30
+      done
+      echo "Timed out waiting for Jenkins"
+      exit 1
 
 teardown:
 - command: [docker, stop, some-jenkins-$UNIQUE]
