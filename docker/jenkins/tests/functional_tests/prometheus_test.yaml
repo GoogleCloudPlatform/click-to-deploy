@@ -25,9 +25,12 @@ setup:
   - 'some-jenkins-$UNIQUE'
   - '-e'
   - 'INSTALL_PROMETHEUS=true'
+  - '-e'
+  - 'JAVA_OPTS=-Djenkins.install.runSetupWizard=false'
   - '-d'
   - '$IMAGE'
-- command: [sleep, 700s]
+
+- command: [sleep, 900s]
 
 teardown:
 - command: [docker, stop, some-jenkins-$UNIQUE]
