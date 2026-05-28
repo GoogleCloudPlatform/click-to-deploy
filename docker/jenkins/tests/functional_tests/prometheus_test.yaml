@@ -36,7 +36,7 @@ setup:
     - |
       echo "Waiting for Jenkins to start..."
       for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30; do
-        if docker exec some-jenkins-$UNIQUE sh -c "curl -L -s http://localhost:8080/prometheus" | grep -q "TYPE"; then
+        if docker exec some-jenkins-$UNIQUE sh -c "curl -L -s http://localhost:8080/prometheus" | grep -q "# TYPE"; then
           echo "Jenkins is ready!"
           exit 0
         fi
