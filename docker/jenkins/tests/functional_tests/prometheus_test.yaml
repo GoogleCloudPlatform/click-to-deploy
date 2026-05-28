@@ -27,7 +27,7 @@ setup:
   - 'INSTALL_PROMETHEUS=true'
   - '-d'
   - '$IMAGE'
-- command: [sleep, 400s]
+- command: [sleep, 700s]
 
 teardown:
 - command: [docker, stop, some-jenkins-$UNIQUE]
