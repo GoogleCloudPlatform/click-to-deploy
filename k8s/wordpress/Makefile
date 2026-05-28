@@ -19,9 +19,7 @@ IMAGE_WORDPRESS ?= $(SOURCE_REGISTRY)/wordpress6-php8-apache:$(TRACK)
 IMAGE_APACHE_EXPORTER ?= $(SOURCE_REGISTRY)/apache-exporter0:$(APACHE_EXPORTER_TAG)
 IMAGE_MYSQL ?= $(SOURCE_REGISTRY)/mariadb11:$(MARIADB_TAG)
 IMAGE_MYSQLD_EXPORTER ?= $(SOURCE_REGISTRY)/mysql8:exporter
-IMAGE_PROMETHEUS_TO_SD ?= eu.gcr.io/k8s-artifacts-prod/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
-
-
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_WORDPRESS))
 
