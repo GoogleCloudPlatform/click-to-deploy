@@ -64,7 +64,6 @@ versions:
   tags:
   - 2.504.3-debian12
   - '2.504.3'
-  - '2'
   templateArgs:
     c2dRelease: 2.504.3
   allowlist:
@@ -90,6 +89,7 @@ versions:
   tags:
   - 2.541.1-debian12
   - '2-541.1'
+  - '2'
   - latest
   templateArgs:
     c2dRelease: 2.541.1
