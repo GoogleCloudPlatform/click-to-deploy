@@ -26,14 +26,14 @@ versions:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
       version: 2.5.8
     drupal:
-      md5: 31c4313357bb0fac1a0f52135d766539
-      version: 11.1.7
+      md5: 1b6ad5ca53cb23a567c03a62fa3aee66
+      version: 11.1.10
   repo: drupal11-php8-apache
   tags:
-  - 11.1.7-debian12
+  - 11.1.10-debian12
   - 11.1-debian12
   - 11-debian12
-  - 11.1.7
+  - 11.1.10
   - '11.1'
   - '11'
   - latest
