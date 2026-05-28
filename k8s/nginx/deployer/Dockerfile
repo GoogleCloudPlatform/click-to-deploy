@@ -28,6 +28,11 @@ RUN cat /tmp/apptest/schema.yaml \
     && mv /tmp/apptest/schema.yaml.new /tmp/apptest/schema.yaml
 
 FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$MARKETPLACE_TOOLS_TAG
+USER root
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
+    sed -i 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' /etc/apt/sources.list && \
+    sed -i '/stretch-updates/d' /etc/apt/sources.list && \
+    sed -i '/buster-updates/d' /etc/apt/sources.list
 COPY --from=build /tmp/nginx.tar.gz /data/chart/
 COPY --from=build /tmp/test/nginx.tar.gz /data-test/chart/
 COPY --from=build /tmp/apptest/schema.yaml /data-test/
