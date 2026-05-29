@@ -31,7 +31,7 @@ BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 ifeq ($(strip $(C2D_CONTAINER_RELEASE)),)
       # If the image lookup failed, manually set C2D_CONTAINER_RELEASE
       C2D_CONTAINER_RELEASE := $(TRACK).0
-      RELEASE ?= $(TRACK).0.$(BUILD_ID)
+      RELEASE ?= $(TRACK).0-$(BUILD_ID)
   else
       # If image lookup worked, use the container version
       RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
