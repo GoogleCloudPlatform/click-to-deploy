@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels: *EtcdDeploymentLabels
   serviceName: {{ .Release.Name }}-etcd-headless
-  podManagementPolicy: OrderedReady
+  podManagementPolicy: Parallel
   replicas: {{ .Values.replicas }}
   template:
     metadata:
