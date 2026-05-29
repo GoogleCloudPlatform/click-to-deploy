@@ -29,12 +29,13 @@ C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
 BUILD_ID := $(shell date --utc +%Y%m%d-%H%M%S)
 ifeq ($(strip $(C2D_CONTAINER_RELEASE)),)
-  # If the image lookup failed, manually prefix with TRACK
-  RELEASE ?= $(TRACK).0.$(BUILD_ID)
-else
-  # If image lookup worked, use the container version
-  RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
-endif
+      # If the image lookup failed, manually set C2D_CONTAINER_RELEASE
+      C2D_CONTAINER_RELEASE := $(TRACK).0
+      RELEASE ?= $(TRACK).0.$(BUILD_ID)
+  else
+      # If image lookup worked, use the container version
+      RELEASE ?= $(C2D_CONTAINER_RELEASE)-$(BUILD_ID)
+  endif
 NAME ?= $(APP_ID)-1
 
 # Additional variables
