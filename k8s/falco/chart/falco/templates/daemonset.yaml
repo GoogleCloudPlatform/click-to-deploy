@@ -147,11 +147,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /liveness
+              path: /
               port: 19376
           readinessProbe:
             httpGet:
-              path: /readiness
+              path: /
               port: 19376
             initialDelaySeconds: 30
           volumeMounts:
