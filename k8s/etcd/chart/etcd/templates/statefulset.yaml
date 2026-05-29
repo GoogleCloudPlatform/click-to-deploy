@@ -16,6 +16,10 @@ spec:
       name: "{{ .Release.Name }}-etcd"
       labels: *EtcdDeploymentLabels
     spec:
+      # ADD THIS BLOCK:
+      securityContext:
+        runAsUser: 1001
+        fsGroup: 1001  
       containers:
       # Variables to populate static cluster
       {{- $replicaCount := int .Values.replicas }}
