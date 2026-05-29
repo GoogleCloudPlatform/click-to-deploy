@@ -126,7 +126,7 @@
                      store_member_id &
                      
                      # CALLING IT HERE
-                     configure_rbac
+                     # configure_rbac
                  else
                      echo "==> Detected data from previous deployments..."
                      if check_member_removal_from_cluster; then
