@@ -55,8 +55,8 @@ readonly push_process_lock_file="/tmp/gcs_push.lock"
 
 # Bucket files operations:
 function sync_files_out_to_bucket() {
-  gsutil -m rsync -R -p -d "${local_app_dir}" "${remote_app_dir}"
-  gsutil cp "${local_bucket_version_file}" "${remote_bucket_version_file}"
+  gcloud storage rsync --recursive --preserve-acl --delete-unmatched-destination-objects "${local_app_dir}" "${remote_app_dir}"
+  gcloud storage cp "${local_bucket_version_file}" "${remote_bucket_version_file}"
 }
 
 
@@ -64,18 +64,18 @@ function sync_files_out_to_bucket() {
 # (prevent new readers from starting reading data while they are changed)
 function lock_bucket() {
   touch "${local_bucket_lock_file}"
-  gsutil cp "${local_bucket_lock_file}" "${remote_bucket_lock_file}"
+  gcloud storage cp "${local_bucket_lock_file}" "${remote_bucket_lock_file}"
 }
 
 function unlock_bucket() {
   rm -f "${local_bucket_lock_file}"
-  if ! gsutil rm -f "${remote_bucket_lock_file}"; then
+  if ! gcloud storage rm --continue-on-error "${remote_bucket_lock_file}"; then
     echo "GCS sync: the bucket lock file did not exist"
   fi
 }
 
 function is_bucket_locked() {
-  gsutil -q stat "${remote_bucket_lock_file}"
+  gcloud storage objects list --stat --fetch-encrypted-object-hashes "${remote_bucket_lock_file}"
 }
 
 # Local push process lock operations:

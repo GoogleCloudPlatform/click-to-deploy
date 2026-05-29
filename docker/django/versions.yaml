@@ -31,13 +31,13 @@ versions:
   from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
     django:
-      version: 5.2.1
+      version: 5.2.12
   repo: django5
   tags:
-  - 5.2.1-debian12
+  - 5.2.12-debian12
   - 5.2-debian12
   - 5-debian12
-  - 5.2.1
+  - 5.2.12
   - '5.2'
   - '5'
   - latest
