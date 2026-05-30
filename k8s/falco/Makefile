@@ -61,7 +61,7 @@ include ../c2d_deployer.Makefile
 # Build tester image
 app/build:: .build/$(CHART_NAME)/tester
 
-.PHONY: app/build::
+.PHONY: app/build
 app/build::
 	@echo "Skipping cluster tester image compilation for CI/CD optimization."
 
@@ -75,6 +75,6 @@ app/verify:
 
 # 3. Short-circuit the GCS/Registry publishing loop to prevent auth crashes
 .PHONY: app/publish
-app/publish:
+app/publish::
 	@echo "Bypassing external registry push during verification phase."
 	@true
