@@ -29,7 +29,7 @@ MysqlRootPassword="$(get_attribute_value 'mysql-root-password')"
 mkdir "/${FolderForSamples}"
 
 # Download MySQL example scripts
-gsutil cp -r gs://publication-teach-yourself-mysql8/* "/${FolderForSamples}/"
+gcloud storage cp --recursive gs://publication-teach-yourself-mysql8/* "/${FolderForSamples}/"
 
 coding=$(file /"${FolderForSamples}"/create.txt | sed -n '/UTF-16/p')
 
