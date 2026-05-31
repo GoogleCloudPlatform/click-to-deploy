@@ -67,6 +67,9 @@ RUN go mod download
 # Stage: Server: UI
 FROM docker.io/node as argo-ui
 
+# Install yarn globally
+RUN npm install -g yarn
+
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/package.json ui/
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/yarn.lock ui/
 
