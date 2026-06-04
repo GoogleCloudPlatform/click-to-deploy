@@ -62,8 +62,8 @@ RUN set -x && \
     && wget -q "${ACTIVEMQ_DOWNLOAD_URL}/${ACTIVEMQ_VERSION}/${ACTIVEMQ_FILE}" -O "${ACTIVEMQ_FILE}" \
     && tar xzf "${ACTIVEMQ_FILE}" --strip-components=1  -C  "${ACTIVEMQ_HOME}" \
     && rm -rf "${ACTIVEMQ_FILE}" \
-    # Disable Web Console config import
-    && sed -i 's|<import resource="jetty.xml"/>|<!-- <import resource="jetty.xml"/> -->|g' "${ACTIVEMQ_HOME}/conf/activemq.xml" \
+    # Remove Web Console and Camel configuration imports from activemq.xml
+    && sed -i -e 's|<import resource="jetty.xml"/>||g' -e 's|<import resource="camel.xml"/>||g' "${ACTIVEMQ_HOME}/conf/activemq.xml" \   
     # Delete the Web library folder containing all Jetty jars
     && rm -rf "${ACTIVEMQ_HOME}/lib/web" \
     # Delete the web console application assets
