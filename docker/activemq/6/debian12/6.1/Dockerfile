@@ -63,6 +63,8 @@ RUN set -x && \
     && rm -rf "${ACTIVEMQ_FILE}" \
     # Remove Web Console and Camel configuration imports from activemq.xml
     && sed -i -e 's|<import resource="jetty.xml"/>||g' -e 's|<import resource="camel.xml"/>||g' "${ACTIVEMQ_HOME}/conf/activemq.xml" \   
+    # Remove the WebSocket (ws) transport connector to prevent loading Jetty classes
+    && sed -i '/name="ws"/d' "${ACTIVEMQ_HOME}/conf/activemq.xml" \
     # Delete the Web library folder containing all Jetty jars
     && rm -rf "${ACTIVEMQ_HOME}/lib/web" \
     # Delete the web console application assets
