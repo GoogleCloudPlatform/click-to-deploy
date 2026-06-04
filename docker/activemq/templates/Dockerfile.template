@@ -46,6 +46,7 @@ ARG gid=1000
 
 RUN set -ex \
   && apt-get --allow-releaseinfo-change update \
+  && apt-get -y upgrade \
   && apt-get -y install openjdk-17-jdk-headless ca-certificates wget procps \
   && rm -rf /var/lib/apt/lists/*
 
@@ -61,6 +62,14 @@ RUN set -x && \
     && wget -q "${ACTIVEMQ_DOWNLOAD_URL}/${ACTIVEMQ_VERSION}/${ACTIVEMQ_FILE}" -O "${ACTIVEMQ_FILE}" \
     && tar xzf "${ACTIVEMQ_FILE}" --strip-components=1  -C  "${ACTIVEMQ_HOME}" \
     && rm -rf "${ACTIVEMQ_FILE}" \
+    # Disable Web Console config import
+    && sed -i 's|<import resource="jetty.xml"/>|<!-- <import resource="jetty.xml"/> -->|g' "${ACTIVEMQ_HOME}/conf/activemq.xml" \
+    # Delete the Web library folder containing all Jetty jars
+    && rm -rf "${ACTIVEMQ_HOME}/lib/web" \
+    # Delete the web console application assets
+    && rm -rf "${ACTIVEMQ_HOME}/webapps" \
+    # Delete optional Camel library folder (resolves CVE-2026-40453)
+    && rm -rf "${ACTIVEMQ_HOME}/lib/camel" \
     && usermod -d "${ACTIVEMQ_HOME}" "${user}" \
     && chown -R "${user}":"${group}" "${ACTIVEMQ_HOME}"
 
