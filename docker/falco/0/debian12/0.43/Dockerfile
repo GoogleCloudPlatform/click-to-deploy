@@ -37,11 +37,11 @@ RUN apt-get update \
 	clang \
 	ca-certificates \
 	curl \
-	dkms \
 	flex \
 	gnupg2 \
 	gcc \
 	jq \
+	kmod \
 	libc6-dev \
 	libelf-dev \
 	libssl-dev \
@@ -53,7 +53,11 @@ RUN apt-get update \
 RUN curl -s https://falco.org/repo/falcosecurity-packages.asc | apt-key add - \
 	&& echo "deb https://download.falco.org/packages/${VERSION_BUCKET} stable main" | tee -a /etc/apt/sources.list.d/falcosecurity.list \
 	&& apt-get update -y \
-	&& if [ "$FALCO_VERSION" = "latest" ]; then apt-get install -y --no-install-recommends falco; else apt-get install -y --no-install-recommends falco=${FALCO_VERSION}; fi \
+    && if [ "$FALCO_VERSION" = "latest" ]; then \
+		FALCOCTL_DRIVER_TYPE=none apt-get install -y --no-install-recommends falco; \
+	   else \
+		FALCOCTL_DRIVER_TYPE=none apt-get install -y --no-install-recommends falco=${FALCO_VERSION}; \
+	   fi \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
     && curl "https://raw.githubusercontent.com/falcosecurity/falco/${FALCO_VERSION}/COPYING" -o /usr/share/falco/LICENSE
