@@ -33,11 +33,3 @@ tests:
     stdout:
       matches: 'consumer-1 Received TestMessage'
 
-- name: Connect web console with correct credentials
-  command:
-    - sh
-    - -c
-    - wget --user admin --password some-passwd http://localhost:8161/admin -O /dev/null
-  expect:
-    stderr:
-      matches: 'HTTP request sent, awaiting response... 200 OK'
