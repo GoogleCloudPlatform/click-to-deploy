@@ -85,3 +85,5 @@ versions:
   templateSubDir: exporter
   allowlist:
   - marketplace.gcr.io
+  - docker.io
+  - proxy.golang.org
