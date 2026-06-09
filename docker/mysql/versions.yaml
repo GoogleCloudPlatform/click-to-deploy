@@ -52,6 +52,8 @@ versions:
   - deb.debian.org
   - github.com/tianon/gosu
   - repo.mysql.com
+  - docker.io
+  - proxy.golang.org
   - hkps://keys.openpgp.org
   - keyserver.ubuntu.com
   - pool.sks-keyservers.net
