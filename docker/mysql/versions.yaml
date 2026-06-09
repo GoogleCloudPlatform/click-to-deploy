@@ -33,13 +33,13 @@ versions:
     mysql:
       gpg: BCA4 3417 C3B4 85DD 128E C6D4 B7B3 B788 A8D3 785C
       major: '8.0'
-      version: 8.0.42
+      version: 8.0.46
   repo: mysql8
   tags:
-  - 8.0.42-debian12
+  - 8.0.46-debian12
   - 8.0-debian12
   - 8-debian12
-  - 8.0.42
+  - 8.0.46
   - '8.0'
   - '8'
   - latest
