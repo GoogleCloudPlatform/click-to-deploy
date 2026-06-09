@@ -88,14 +88,14 @@ spec:
             initialDelaySeconds: 60
             timeoutSeconds: 5
             periodSeconds: 15
-            httpGet:
+            tcpSocket:
               path: /healthz
               port: 8765
           readinessProbe:
             initialDelaySeconds: 30
             timeoutSeconds: 5
             periodSeconds: 15
-            httpGet:
+            tcpSocket:
               path: /healthz
               port: 8765
           securityContext:
@@ -147,11 +147,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /liveness
+              path: /
               port: 19376
           readinessProbe:
             httpGet:
-              path: /readiness
+              path: /
               port: 19376
             initialDelaySeconds: 30
           volumeMounts:

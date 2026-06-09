@@ -137,10 +137,9 @@ RUN apt-get update \
 	&& apt-get purge -y --auto-remove ca-certificates wget \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN set -x; \
-		echo "deb http://deb.debian.org/debian unstable main non-free non-free-firmware contrib" > /etc/apt/sources.list.d/debian-unstable.list; \
-		apt-get update \
-		&& apt-get -y install openjdk-11-jdk
+RUN apt-get update \
+  	&& apt-get install -y --no-install-recommends openjdk-17-jdk \
+  	&& rm -rf /var/lib/apt/lists/*
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -17,6 +17,29 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
+- dir: 0/debian12/0.43
+  # Updated to a newer Debian 12 digest (example sha)
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  packages:
+    falco:
+      version: 0.43.0
+  repo: falco0
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/5b7a25d4-ece2-4ae3-b8c3-652b2af4a5ec.cloudpartnerservices.goog
+  tags:
+  - 0.43.0-debian12
+  - 0.43-debian12
+  - 0.43.0
+  - '0.43'
+  - '0'
+  - latest
+  allowlist:
+  - marketplace.gcr.io
+  - raw.githubusercontent.com
+  - falco.org
+  - download.falco.org
+  - deb.debian.org
 - dir: 0/debian11/0.36
   from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
@@ -32,8 +55,6 @@ versions:
   - 0-debian11
   - 0.36.2
   - '0.36'
-  - '0'
-  - latest
   allowlist:
   - marketplace.gcr.io
   - raw.githubusercontent.com

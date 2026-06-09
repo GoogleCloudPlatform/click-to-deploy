@@ -1,4 +1,7 @@
-# Copyright 2017 Google Inc.
+#!/usr/bin/env bash
+#
+# Copyright (C) 2020 The Falco Authors.
+#
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,19 +14,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-setup:
-- command: [docker, run, -d, --privileged=true, --name, some-cassandra-$UNIQUE-id, '$IMAGE']
-- command: [sleep, 90s]
+# Set the SKIP_DRIVER_LOADER variable to skip loading the driver
 
-teardown:
-- command: [docker, stop, some-cassandra-$UNIQUE-id]
-- command: [docker, rm, some-cassandra-$UNIQUE-id]
+if [[ -z "${SKIP_DRIVER_LOADER}" ]]; then
+    echo "* Setting up /usr/src links from host"
 
-target: some-cassandra-$UNIQUE-id
-tests:
-- name: SHOW HOST
-  command: [cqlsh, -e, 'SHOW HOST']
-  expect:
-    stdout:
-      matches: 'Connected to Test Cluster at 127.0.0.1:9042'
+    for i in "$HOST_ROOT/usr/src"/*
+    do
+        base=$(basename "$i")
+        ln -s "$i" "/usr/src/$base"
+    done
+
+    /usr/bin/falco-driver-loader
+fi
+
+exec "$@"
