@@ -63,3 +63,4 @@ versions:
   - raw.githubusercontent.com/apache/activemq/
   - archive.apache.org/dist/activemq/
   - deb.debian.org
+  - docker.io
