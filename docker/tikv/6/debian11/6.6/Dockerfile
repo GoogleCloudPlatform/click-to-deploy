@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/c2d-debian11 as builder
 
 RUN apt-get update \
-    && apt-get install curl perl build-essential ca-certificates cmake git unzip -y --no-install-recommends
+    && apt-get install curl perl build-essential cmake git unzip -y --no-install-recommends
 ENV GOLANG_VERSION=1.20
 RUN curl -L https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz -o /golang.tar.gz &&tar -xzf /golang.tar.gz -C /usr/local
 ENV PATH /usr/local/go/bin:$PATH
@@ -12,7 +12,7 @@ RUN cd / && \
     chmod +x jq
 
 #build pd
-ENV PD_APP_VERSION=6.5.1
+ENV PD_APP_VERSION=6.6.0
 
 RUN mkdir -p /go/src/github.com/tikv/pd
 WORKDIR /go/src/github.com/tikv/pd
@@ -36,7 +36,7 @@ RUN curl -LO "https://github.com/protocolbuffers/protobuf/releases/download/v3.1
 RUN unzip protoc-3.15.8-linux-x86_64.zip -d /usr/local/
 ENV PATH /usr/local/bin/:$PATH
 
-ENV TIKV_APP_VERSION=6.5.1
+ENV TIKV_APP_VERSION=6.6.0
 
 #build tikv
 WORKDIR /tikv
@@ -83,6 +83,6 @@ COPY --from=builder /jq /usr/local/bin/jq
 COPY --from=builder /tikvtest/tikvtest /tikvtest
 
 EXPOSE 2379 2380 20160 20180
-ENV C2D_RELEASE 6.5.1
+ENV C2D_RELEASE 6.6.0
 
 CMD ["/tikv-server"]
