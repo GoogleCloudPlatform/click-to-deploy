@@ -17,6 +17,7 @@
 {{- $golang := index .Packages "golang" -}}
 {{- $grpc_health_probe := index .Packages "grpc_health_probe" -}}
 
+ARG BASE_REGISTRY="docker.io"
 FROM {{ .From }} as ospo
 
 # Download Licenses and restricted source-code
@@ -34,7 +35,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM node:20-alpine as console-builder
+FROM ${BASE_REGISTRY} /node-alpine as console-builder
 
 ARG MANAGER_CONSOLE_BRANCH=release-{{ $manager_console.Version }}
 ARG MANAGER_CONSOLE_TAR=v{{ $manager_console.Version }}
@@ -49,7 +50,7 @@ RUN tar -xvf $MANAGER_CONSOLE_TAR.tar.gz && \
     npm run build
 
 
-FROM golang:{{ $golang.Version }}-alpine as server-builder
+FROM ${BASE_REGISTRY} /golang-alpine as server-builder
 
 ARG GOPROXY
 ARG GOTAGS
