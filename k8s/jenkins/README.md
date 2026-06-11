@@ -72,7 +72,9 @@ export ZONE=us-west1-a
 ```
 
 ```shell
-gcloud container clusters create "$CLUSTER" --zone "$ZONE"
+gcloud container clusters create "$CLUSTER" \
+    --scopes cloud-platform,storage-ro \
+    --zone "$ZONE"
 ```
 
 #### Configure `kubectl` to connect to the cluster
