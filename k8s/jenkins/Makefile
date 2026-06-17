@@ -65,4 +65,4 @@ app/verify:
 .PHONY: app/publish
 app/publish::
 	@echo "Bypassing external registry push during verification phase."
-  @true
+	@true
