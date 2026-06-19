@@ -1,0 +1,63 @@
+# Default values for longhorn
+longhorn:
+  engine:
+    image:
+      repo: null
+      tag: null
+
+  manager:
+    image:
+      repo: null
+      tag: null
+
+  ui:
+    image:
+      repo: null
+      tag: null
+
+  instance-manager:
+    image:
+      repo: null
+      tag: null
+  
+  share-manager:
+    image:
+      repo: null
+      tag: null
+
+  backing-image-manager:
+    image:
+      repo: null
+      tag: null
+
+  csi-attacher:
+    image:
+      repo: null
+      tag: null
+    replicas: 1
+
+  csi-provisioner:
+    image:
+      repo: null
+      tag: null
+    replicas: 1
+
+  csi-node-driver-registrar:
+    image:
+      repo: null
+      tag: null
+
+  csi-resizer:
+    image:
+      repo: null
+      tag: null
+    replicas: 1
+
+  csi-snapshotter:
+    image:
+      repo: null
+      tag: null
+    replicas: 1
+
+enablePublicServiceAndIngress: false
+
