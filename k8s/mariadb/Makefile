@@ -15,7 +15,7 @@ METRICS_EXPORTER_TAG ?= v0.5.1
 SOURCE_REGISTRY ?= marketplace.gcr.io/google
 IMAGE_MARIADB ?= $(SOURCE_REGISTRY)/mariadb11:$(TRACK)
 IMAGE_MYSQLD_EXPORTER ?= $(SOURCE_REGISTRY)/mysql8:exporter
-IMAGE_PROMETHEUS_TO_SD ?= eu.gcr.io/k8s-artifacts-prod/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 
 # Main image
@@ -26,7 +26,7 @@ ADDITIONAL_IMAGES := mysqld-exporter prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-mysqld-exporter := $(call get_sha256,$(IMAGE_MYSQLD_EXPORTER))
-image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
+image-prometheus-to-sd := registry.k8s.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
