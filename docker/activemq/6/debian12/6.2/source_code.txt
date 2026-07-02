@@ -1,0 +1,11 @@
+https://github.com/eclipse/jetty.project
+https://github.com/eclipse-jdt/eclipse.jdt.core
+https://github.com/eclipse-ee4j/common-annotations-api
+https://github.com/eclipse-ee4j/ee4j
+https://github.com/eclipse-ee4j/jca-api
+https://github.com/eclipse-ee4j/jstl-api
+https://github.com/eclipse-ee4j/jta-api
+https://github.com/eclipse-ee4j/websocket-api
+https://github.com/AdoptOpenJDK/openjdk-jdk11
+https://github.com/javaee/servlet-spec
+https://github.com/hyteio/stompjms
