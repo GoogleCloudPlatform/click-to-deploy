@@ -1,7 +1,5 @@
-FROM {{ .From }}
-
-{{- $prometheus := index .Packages "prometheus" }}
-ENV PROMETHEUS_VERSION {{ $prometheus.Version }}
+FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+ENV PROMETHEUS_VERSION 3.13.0
 
 ENV PROMETHEUS_URL="https://github.com/prometheus/prometheus/releases/download/v$PROMETHEUS_VERSION/prometheus-$PROMETHEUS_VERSION.linux-amd64.tar.gz"
 
