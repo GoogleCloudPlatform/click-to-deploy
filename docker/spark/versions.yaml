@@ -36,8 +36,33 @@ versions:
   - 3.5.2
   - '3.5'
   - '3'
-  - latest
   templateSubDir: '3'
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - archive.apache.org
+  - archive.apache.org
+
+- dir: 4/debian12/4.0
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  packages:
+    scala:
+      minor: '2.13'
+    spark:
+      version: 4.0.3
+  repo: spark4
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/ad1bf2fb-7561-4833-8b24-ae3cc489a86f.cloudpartnerservices.goog
+  tags:
+  - 4.0.3-debian12
+  - 4.0-debian12
+  - 4-debian12
+  - 4.0.3
+  - '4.0'
+  - '4'
+  - latest
+  templateSubDir: '4'
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
