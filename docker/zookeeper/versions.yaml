@@ -29,13 +29,13 @@ versions:
       version: '1.17'
     zookeeper:
       gpg: 3F7A1D16FA4217B1DC75E1C9FFE35B7F15DFA1BA
-      version: 3.9.3
+      version: 3.9.5
   repo: zookeeper3
   tags:
-  - 3.9.3-debian12
+  - 3.9.5-debian12
   - 3.9-debian12
   - 3-debian12
-  - 3.9.3
+  - 3.9.5
   - '3.9'
   - '3'
   - latest
@@ -61,13 +61,13 @@ versions:
     gosu:
       version: '1.17'
     zookeeper:
-      gpg: AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66
-      version: 3.8.4
+      gpg: 3F7A1D16FA4217B1DC75E1C9FFE35B7F15DFA1BA
+      version: 3.8.6
   repo: zookeeper3
   tags:
-  - 3.8.4-debian12
+  - 3.8.6-debian12
   - 3.8-debian12
-  - 3.8.4
+  - 3.8.6
   - '3.8'
   templateSubDir: zookeeper
   allowlist:
