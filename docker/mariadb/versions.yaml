@@ -22,6 +22,49 @@ versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/2a63a3a0-26e6-41c3-8e5a-7e9c6ac0964b.cloudpartnerservices.goog
+  # Mapping to the major 12 branch directory
+  dir: 12/debian12/12.3
+  excludeTests:
+  - tests/functional_tests/10_create_db_test.yaml
+  - tests/functional_tests/10_remote_host_test.yaml
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  packages:
+    golang:
+      version: '1.23'
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.17'
+    mariadb:
+      gpg: 177F4010FE56CA3336300305F1656F24C74CD1D8
+      major: '12.3'
+      version: 12.3.2
+  repo: mariadb12  # Assuming repo name maps to the new major version
+  tags:
+  - 12.3.2-debian12
+  - 12.3-debian12
+  - 12-debian12
+  - 12.3.2
+  - '12.3'
+  - '12'
+  - latest
+  allowlist:
+  - marketplace.gcr.io/google/debian12
+  - docker.io
+  - github.com/tianon/gosu.git
+  - sum.golang.org
+  - go.mod
+  - keys.openpgp.org
+  - keyserver.ubuntu.com
+  - archive.mariadb.org
+  - ftp.us.debian.org/debian/
+  - deb.debian.org
+  templateArgs:
+    c2dRelease: 12.3.2
+    distroCodename: bookworm
+    distroMajor: '12'
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/2a63a3a0-26e6-41c3-8e5a-7e9c6ac0964b.cloudpartnerservices.goog
   dir: 11/debian12/11.5
   excludeTests:
   - tests/functional_tests/10_create_db_test.yaml
@@ -45,7 +88,6 @@ versions:
   - 11.5.2
   - '11.5'
   - '11'
-  - latest
   allowlist:
   - marketplace.gcr.io/google/debian12
   - docker.io
