@@ -127,8 +127,8 @@ spec:
           livenessProbe:
             initialDelaySeconds: 120
             periodSeconds: 15
-  +         timeoutSeconds: 10
-  +         failureThreshold: 10
+            timeoutSeconds: 10
+            failureThreshold: 10
             httpGet:
               scheme: "HTTP"
               path: /solr
@@ -136,8 +136,8 @@ spec:
           readinessProbe:
             initialDelaySeconds: 60
             periodSeconds: 10
-  +         timeoutSeconds: 10
-  +         failureThreshold: 15
+            timeoutSeconds: 10
+            failureThreshold: 15
             httpGet:
               scheme: "HTTP"
               path: /solr
