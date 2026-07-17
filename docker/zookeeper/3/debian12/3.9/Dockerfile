@@ -67,7 +67,7 @@ FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f
 
 COPY --from=ospo /usr/src /usr/src
 
-ARG ZK_VERSION=3.9.3
+ARG ZK_VERSION=3.9.5
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \

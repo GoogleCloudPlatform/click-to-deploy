@@ -34,7 +34,6 @@ versions:
   - 2.55.0
   - '2.55'
   - '2'
-  - latest
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
@@ -58,4 +57,26 @@ versions:
   - marketplace.gcr.io
   - deb.debian.org
   - github.com/prometheus/prometheus/releases/download/
-
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
+    # Ensure the directory matches the new version path
+  dir: 3/debian12/3.13
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  packages:
+    prometheus:
+      sha256: 744d93324cc024d82089921737bd797474d7f1e5dbbfd1c6b387bad258538cb9
+      version: 3.13.0
+  repo: prometheus3
+  tags:
+  - 3.13.0-debian12
+  - 3.13-debian12
+  - 3-debian12
+  - 3.13.0
+  - '3.13'
+  - '3'
+  - latest
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/prometheus/prometheus/releases/download/
