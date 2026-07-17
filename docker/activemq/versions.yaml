@@ -33,6 +33,28 @@ versions:
   - 6-debian12
   - 6.1.6
   - '6.1'
+  allowlist:
+  - marketplace.gcr.io
+  - raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/
+  - raw.githubusercontent.com/apache/activemq/
+  - archive.apache.org/dist/activemq/
+  - deb.debian.org
+
+- annotations:
+    - key: com.googleapis.cloudmarketplace.product.service.name
+      value: services/9d45a235-f0dc-4c94-9313-f7c995e0a78b.cloudpartnerservices.goog
+  dir: 6/debian12/6.2
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  packages:
+    activemq:
+      major: '6'
+      version: 6.2.0
+  repo: activemq6
+  tags:
+  - 6.2.0-debian12
+  - 6.2-debian12
+  - 6.2.0
+  - '6.2'
   - '6'
   - latest
   allowlist:
@@ -41,4 +63,4 @@ versions:
   - raw.githubusercontent.com/apache/activemq/
   - archive.apache.org/dist/activemq/
   - deb.debian.org
-
+  - docker.io
