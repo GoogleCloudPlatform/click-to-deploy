@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: longhorn-default-setting
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: longhorn
+data:
+  default-setting.yaml: |-
+    storage-over-provisioning-percentage: 600
+    storage-minimal-available-percentage: 15
+    upgrade-checker: false
+    default-replica-count: 3
