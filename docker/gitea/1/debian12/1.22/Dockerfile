@@ -34,6 +34,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x \
         build-essential \
         git \
         nodejs \
+        && npm install -g pnpm@10 \
         && rm -rf /var/cache/apk/*
 
 #Setup repo
@@ -43,11 +44,11 @@ WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 
 #Checkout version if set
 RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi
+RUN pnpm config set engine-strict false
 RUN make clean-all build
 
 # Begin env-to-ini build
 RUN go build contrib/environment-to-ini/environment-to-ini.go
-
 FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
 
 COPY --from=ospo /usr/src /usr/src
