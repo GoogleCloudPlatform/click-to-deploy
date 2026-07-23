@@ -15,7 +15,7 @@ SERVICE_NAME := services/a87fa03a-4d8e-473d-afe8-02efc04aa9f2.cloudpartnerservic
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 IMAGE_MAIN ?= $(SOURCE_REGISTRY)/cert-manager1:$(TRACK)
-IMAGE_PROMETHEUS_TO_SD ?= eu.gcr.io/k8s-artifacts-prod/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
+IMAGE_PROMETHEUS_TO_SD ?= registry.k8s.io/prometheus-to-sd:v0.5.1
 
 # Main image
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_MAIN))
@@ -25,7 +25,7 @@ ADDITIONAL_IMAGES := prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 # Should be dynamically to use $(MARKETPLACE_TOOLS_TAG)
-image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
+image-prometheus-to-sd := registry.k8s.io/prometheus-to-sd:v0.5.1
 
 C2D_CONTAINER_RELEASE := $(call get_c2d_release,$(image-$(CHART_NAME)))
 
