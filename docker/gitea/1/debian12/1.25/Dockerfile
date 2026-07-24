@@ -22,13 +22,13 @@ FROM docker.io/golang:bookworm AS build-env
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
 
-ARG GITEA_VERSION=release/v1.23
+ARG GITEA_VERSION=release/v1.25
 ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata timetzdata $TAGS"
 ARG CGO_EXTRA_CFLAGS
 
 # Build deps
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x \
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x \
     | bash - ; \
     apt update && apt -y install \
         build-essential \
@@ -101,7 +101,7 @@ RUN addgroup \
 
 ENV USER git
 ENV GITEA_CUSTOM /data/gitea
-ENV C2D_RELEASE 1.23.9
+ENV C2D_RELEASE 1.25.9
 
 VOLUME ["/data"]
 
