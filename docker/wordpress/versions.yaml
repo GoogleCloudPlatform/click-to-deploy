@@ -22,6 +22,33 @@ versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/1a8e88da-5416-4d78-b91e-9a1b2be81323.cloudpartnerservices.goog
+  dir: 6/php8/debian12/apache/6.9
+  excludeTests:
+  - tests/functional_tests/apache_exporter_test.yaml
+  from: marketplace.gcr.io/google/php8-apache2:8.2
+  packages:
+    wordpress:
+      version: 6.9.4
+  repo: wordpress6-php8-apache
+  tags:
+  - 6.9.4-debian12
+  - 6.9-debian12
+  - 6-debian12
+  - 6.9.4
+  - '6.9'
+  - '6'
+  - latest
+  templateArgs:
+    c2dRelease: 6.9.4
+    cmd: apache2-foreground
+  templateSubDir: wordpress
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - wordpress.org
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/1a8e88da-5416-4d78-b91e-9a1b2be81323.cloudpartnerservices.goog
   dir: 6/php8/debian12/apache/6.6
   excludeTests:
   - tests/functional_tests/apache_exporter_test.yaml
@@ -33,11 +60,8 @@ versions:
   tags:
   - 6.6.2-debian12
   - 6.6-debian12
-  - 6-debian12
   - 6.6.2
   - '6.6'
-  - '6'
-  - latest
   templateArgs:
     c2dRelease: 6.6.2
     cmd: apache2-foreground
