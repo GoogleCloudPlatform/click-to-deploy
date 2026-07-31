@@ -26,6 +26,35 @@ versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/83c38401-9081-4bfd-8d88-f247f9c37ce9.cloudpartnerservices.goog
+  dir: 1/debian12/1.25
+  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  packages:
+    gitea:
+      version: '1.25'
+    golang:
+      version: '1.23'
+    nodejs:
+      major: '22'
+  repo: gitea1
+  tags:
+  - 1.25.3-debian12
+  - 1.25-debian12
+  - 1-debian12
+  - 1.25.3
+  - '1.25'
+  - '1'
+  - latest
+  allowlist:
+  - marketplace.gcr.io/google/debian12
+  - docker.io
+  - raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/
+  - deb.nodesource.com
+  - github.com/go-gitea/gitea.git
+  - raw.githubusercontent.com/ncopa/su-exec/master/
+  - deb.debian.org
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/83c38401-9081-4bfd-8d88-f247f9c37ce9.cloudpartnerservices.goog
   dir: 1/debian12/1.23
   from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
   packages:
@@ -39,11 +68,8 @@ versions:
   tags:
   - 1.23.8-debian12
   - 1.23-debian12
-  - 1-debian12
   - 1.23.8
   - '1.23'
-  - '1'
-  - latest
   allowlist:
   - marketplace.gcr.io/google/debian12
   - docker.io
