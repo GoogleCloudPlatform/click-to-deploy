@@ -67,7 +67,7 @@ FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f
 
 COPY --from=ospo /usr/src /usr/src
 
-ARG ZK_VERSION=3.8.4
+ARG ZK_VERSION=3.8.6
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \
@@ -111,7 +111,7 @@ RUN set -eux; \
     # Verify that gosu binary works
     # gosu nobody true
 
-ENV GPG_KEYS AF3D175EC05DB249738D01AC8D8C3C3ED0B02E66
+ENV GPG_KEYS 3F7A1D16FA4217B1DC75E1C9FFE35B7F15DFA1BA
 
 ARG SHORT_DISTRO_NAME="zookeeper-${ZK_VERSION}"
 ARG DISTRO_NAME="apache-zookeeper-${ZK_VERSION}-bin"

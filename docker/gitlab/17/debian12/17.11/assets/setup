@@ -36,11 +36,24 @@ chmod a+x /opt/gitlab/sv/sshd/run /opt/gitlab/sv/sshd/log/run
 rm -f /etc/gitlab/gitlab.rb
 
 # Patch omnibus package
-sed -i "s/external_url 'GENERATED_EXTERNAL_URL'/# external_url 'GENERATED_EXTERNAL_URL'/" /opt/gitlab/etc/gitlab.rb.template
-sed -i "s/\/etc\/gitlab\/gitlab.rb/\/assets\/gitlab.rb/" /opt/gitlab/embedded/cookbooks/gitlab/recipes/show_config.rb
-sed -i "s/\/etc\/gitlab\/gitlab.rb/\/assets\/gitlab.rb/" /opt/gitlab/embedded/cookbooks/gitlab/recipes/config.rb
+if [ -f "/opt/gitlab/etc/gitlab.rb.template" ]; then
+  sed -i "s/external_url 'GENERATED_EXTERNAL_URL'/# external_url 'GENERATED_EXTERNAL_URL'/" /opt/gitlab/etc/gitlab.rb.template
+fi
 
-cp /assets/gitlab_sysctl.rb /opt/gitlab/embedded/cookbooks/package/resources/gitlab_sysctl.rb
+# GitLab 18+ Safeguarded Recipe Patching Loop
+for recipe in show_config.rb config.rb; do
+  RECIPE_PATH="/opt/gitlab/embedded/cookbooks/gitlab/recipes/${recipe}"
+  if [ -f "${RECIPE_PATH}" ]; then
+    echo "Patching legacy config path in ${recipe}..."
+    sed -i "s/\/etc\/gitlab\/gitlab.rb/\/assets\/gitlab.rb/" "${RECIPE_PATH}"
+  else
+    echo "Skipping configuration patch: ${recipe} not found in this version of GitLab."
+  fi
+done
+
+if [ -f "/opt/gitlab/embedded/cookbooks/package/resources/gitlab_sysctl.rb" ]; then
+  cp /assets/gitlab_sysctl.rb /opt/gitlab/embedded/cookbooks/package/resources/gitlab_sysctl.rb
+fi
 
 # Set install type to docker
 echo 'gitlab-docker' > /opt/gitlab/embedded/service/gitlab-rails/INSTALLATION_TYPE

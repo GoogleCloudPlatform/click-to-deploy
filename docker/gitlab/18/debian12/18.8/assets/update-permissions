@@ -1,0 +1,109 @@
+#!/bin/bash
+#
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -x
+
+# chown_if_exists
+# input: matches `chown` command, see `man chown`
+# Simply, this checks that the file you're trying to chown actually exists
+# before making the chown call. DRY'ing the rest of this script's checks.
+chown_if_exists()
+{
+    # the last argument of chown is the file or path
+    path="${@:${#@}}"
+    if [ -e "$path" ]; then
+        chown $@
+    else
+        echo "skipping, path does not exist: $path"
+    fi
+}
+
+chmod_if_exists()
+{
+    # the last argument of chown is the file or path
+    path="${@:${#@}}"
+    if [ -e "$path" ]; then
+        chmod $@
+    else
+        echo "skipping, path does not exist: $path"
+    fi
+}
+
+# Fix GitLab permissions
+if id -u git; then
+    # Fix data storage
+    chown_if_exists -R git:git /var/opt/gitlab/.ssh
+    chown_if_exists -R git:git /var/opt/gitlab/.gitconfig
+    chown_if_exists -R git:git /var/opt/gitlab/git-data
+    chmod_if_exists 2770 /var/opt/gitlab/git-data/repositories
+    chown_if_exists -R git:git /var/opt/gitlab/gitlab-ci/builds
+    chown_if_exists -R git:git /var/opt/gitlab/gitlab-rails
+    chown_if_exists -R git:git /var/opt/gitlab/gitlab-shell
+    if id -g gitlab-www; then
+        chown_if_exists -R git:gitlab-www /var/opt/gitlab/gitlab-workhorse
+    fi
+
+    # Fix log storage
+    chown_if_exists git /var/log/gitlab/gitlab-workhorse
+    chown_if_exists git /var/log/gitlab/gitlab-rails
+    chown_if_exists git /var/log/gitlab/gitlab-shell
+    chown_if_exists git /var/log/gitlab/sidekiq
+    chown_if_exists git /var/log/gitlab/unicorn
+
+    # Update log files
+    chown_if_exists -R git:git /var/log/gitlab/gitlab-rails/*.log
+    chown_if_exists -R git:git /var/log/gitlab/gitlab-shell/*.log
+    chown_if_exists -R git:git /var/log/gitlab/unicorn/*.log
+fi
+
+# Fix nginx buffering directory permission
+if id -u gitlab-www; then
+    chown_if_exists -R gitlab-www:gitlab-www /var/opt/gitlab/nginx/*_temp
+    chown_if_exists -R gitlab-www:gitlab-www /var/opt/gitlab/nginx/*_cache
+fi
+
+# Fix database storage and logs
+if id -u gitlab-psql; then
+    chown_if_exists -R gitlab-psql:gitlab-psql /var/opt/gitlab/postgresql
+    chown_if_exists gitlab-psql /var/log/gitlab/postgresql
+fi
+
+# Fix prometheus storage and logs
+if id -u gitlab-prometheus; then
+    chown_if_exists -R gitlab-prometheus:gitlab-prometheus /var/opt/gitlab/prometheus
+    chown_if_exists gitlab-prometheus /var/log/gitlab/prometheus
+    chown_if_exists -R gitlab-prometheus:gitlab-prometheus /var/opt/gitlab/alertmanager
+    chown_if_exists gitlab-prometheus /var/log/gitlab/alertmanager
+fi
+
+# Fix redis storage and logs
+if id -u gitlab-redis; then
+    chown_if_exists -R gitlab-redis:gitlab-redis /var/opt/gitlab/redis
+    if id -g git ; then
+        chown_if_exists gitlab-redis:git /var/opt/gitlab/redis
+    fi
+    chown_if_exists gitlab-redis /var/log/gitlab/redis
+fi
+
+# Fix registry storage
+if id -u registry; then
+    chown_if_exists -R registry:git /var/opt/gitlab/gitlab-rails/shared/registry
+fi
+
+# Fix mattermost storage
+if id -u mattermost; then
+    chown_if_exists -R mattermost /var/opt/gitlab/mattermost
+fi
