@@ -86,8 +86,8 @@ RUN set -ex; \
   apt-key list
 
 ENV PG_MAJOR 17
-ENV PG_VERSION 17.10*
-ENV C2D_RELEASE 17.10.0
+ENV PG_VERSION 17.9*
+ENV C2D_RELEASE 17.9.0
 
 RUN echo 'deb https://apt-archive.postgresql.org/pub/repos/apt bookworm-pgdg-archive main' > /etc/apt/sources.list.d/pgdg.list
 

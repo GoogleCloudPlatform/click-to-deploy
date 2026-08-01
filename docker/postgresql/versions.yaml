@@ -39,6 +39,7 @@ versions:
   tags:
   - 17.10-debian12
   - 17-debian12
+  - '17.10'
   - '17'
   - latest
   templateArgs:
@@ -67,12 +68,13 @@ versions:
     postgresql:
       gpg: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
       major: '17'
-      version: 17.10*
+      version: 17.9*
   repo: postgresql17
   tags:
-  - '17.10'
+  - 17.9-debian12
+  - '17.9'
   templateArgs:
-    c2dRelease: 17.10.0
+    c2dRelease: 17.9.0
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
@@ -137,13 +139,13 @@ versions:
     postgresql:
       gpg: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
       major: '16'
-      version: 16.4*
+      version: 16.9*
   repo: postgresql16
   tags:
-  - 16.4-debian12
-  - '16.4'
+  - 16.9-debian12
+  - '16.9'
   templateArgs:
-    c2dRelease: 16.4.0
+    c2dRelease: 16.9.0
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
