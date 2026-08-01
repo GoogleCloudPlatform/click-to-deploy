@@ -19,7 +19,7 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
 
 RUN set -x \
@@ -31,6 +31,7 @@ RUN set -x \
                 curl \
                 openssl \
                 procps \
+        && apt-get install -y --only-upgrade perl zlib1g \
         && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -r influxdb --gid=1000 && \
