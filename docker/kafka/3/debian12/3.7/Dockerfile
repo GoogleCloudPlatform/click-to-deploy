@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -16,18 +16,19 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
 COPY --from=ospo /usr/src /usr/src
 
-ARG KAFKA_VERSION=3.7.0
+ARG KAFKA_VERSION=3.7.2
 ARG SCALA_VERSION=2.13
 
-ENV C2D_RELEASE 3.7.0
+ENV C2D_RELEASE 3.7.2
 
 RUN set -ex \
   && apt-get update \
   && apt-get -y install curl default-jdk ca-certificates jq net-tools \
+  && apt-get install -y --only-upgrade perl zlib1g \
   && rm -rf /var/lib/apt/lists/*
 
 ENV KAFKA_USER="kafka" \
@@ -50,7 +51,7 @@ RUN set -ex; \
 
 COPY --chown=$KAFKA_USER:$KAFKA_GROUP scripts ${KAFKA_DOCKER_SCRIPTS}
 
-# Download and setup kafka version v3.7.0
+# Download and setup kafka version v3.7.2
 RUN chmod a+x ${KAFKA_DOCKER_SCRIPTS}/*.sh \
   && ln -s ${KAFKA_DOCKER_SCRIPTS}/*.sh /usr/bin \
   && curl -sSL ${KAFKA_DIST_URL} -o "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
