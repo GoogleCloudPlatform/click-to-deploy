@@ -8,7 +8,7 @@ RUN git clone https://github.com/prometheus-operator/prometheus-operator.git /sr
     && cd /src/prometheus-operator/ \
     && git checkout $PROMETHEUS_OPERATOR_VERSION
 
-FROM docker.io/golang as builder
+FROM docker.io/library/golang:1.25-bookworm as builder
 
 COPY --from=git /src/prometheus-operator /go/src/github.com/prometheus-operator/prometheus-operator
 
@@ -33,7 +33,13 @@ RUN go install github.com/google/go-licenses@latest \
     && go-licenses report github.com/prometheus-operator/prometheus-operator/cmd/operator/ > all-licenses
 
 # Result Image
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+
+# Patch critical CVEs in base OS layer
+RUN apt-get update && apt-get install -y --only-upgrade \
+    perl \
+    zlib1g \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV C2D_RELEASE=0.77.2
 
