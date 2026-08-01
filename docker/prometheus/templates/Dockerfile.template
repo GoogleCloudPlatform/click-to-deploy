@@ -9,6 +9,7 @@ ENV C2D_RELEASE ${PROMETHEUS_VERSION}
 
 RUN set -x && \
     apt-get update && apt-get install -qq -y wget openssl libminizip-dev zlib1g-dev libtasn1-6 && \
+    apt-get install -y --only-upgrade perl zlib1g && \
     mkdir -p /etc/prometheus && \
     mkdir -p /usr/share/prometheus && \
     mkdir prometheus-files && cd prometheus-files && \
