@@ -8,10 +8,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 ENV EXPORTER_VERSION 1.3.0
 
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl \
+    && apt-get install -y --only-upgrade perl zlib1g \
     && curl -L -o uwsgi.tar.gz https://github.com/timonwong/uwsgi_exporter/releases/download/v${EXPORTER_VERSION}/uwsgi_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
     && tar -xvf uwsgi.tar.gz --strip-components=1 \
     && mv uwsgi_exporter /usr/local/bin/uwsgi_exporter \

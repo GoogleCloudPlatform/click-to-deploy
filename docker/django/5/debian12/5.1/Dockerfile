@@ -25,7 +25,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -42,10 +42,10 @@ RUN mkdir -p /usr/src/licenses \
 	        && /download-licenses.sh /components.csv /usr/src/licenses \
 	        && /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
 COPY --from=ospo /usr/src /usr/src
-ENV C2D_RELEASE 5.1.9
+ENV C2D_RELEASE 5.1.15
 
 ENV C2D_DJANGO_USER="django" \
     C2D_DJANGO_UID="8983" \
@@ -73,7 +73,9 @@ RUN apt-get update \
       python3-venv \
       pkg-config \
       tini \
-      vim
+      vim \
+    && apt-get install -y --only-upgrade perl zlib1g \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN set -ex; \
     groupadd -r --gid "${C2D_DJANGO_GID}" "${C2D_DJANGO_GROUP}"; \
@@ -88,7 +90,7 @@ ENV PATH="/sites/venv/bin:$PATH"
 # Install Python packages in a virtual environment
 RUN pip install --upgrade pip && \
     pip install \
-        django==5.1.9 \
+        django==5.1.15 \
         mysqlclient \
         psycopg2 \
         uwsgi
