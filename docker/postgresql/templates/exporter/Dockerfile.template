@@ -5,6 +5,7 @@ ARG EXPORTER_VERSION={{ $postgres_exporter.Version }}
 ENV EXPORTER_VERSION "${EXPORTER_VERSION}"
 RUN env && apt-get update && \
 	apt-get install --no-install-recommends -y ca-certificates curl openssl libtasn1-6 \
+		&& apt-get install -y --only-upgrade perl zlib1g \
 		&& curl -L -o postgres-exporter.tar.gz \
 			https://github.com/prometheus-community/postgres_exporter/releases/download/v${EXPORTER_VERSION}/postgres_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
 		&& tar xzvf postgres-exporter.tar.gz \

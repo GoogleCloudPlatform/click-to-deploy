@@ -1,9 +1,9 @@
 # Build gosu from the source. As by 2023-09-26 project only have releases
 # from go 1.18. https://github.com/tianon/gosu/releases
 ARG BASE_REGISTRY="docker.io"
-FROM docker.io/golang as gosu-build
+FROM docker.io/library/golang:1.25-bookworm as gosu-build
 
-RUN git clone https://github.com/tianon/gosu.git --branch 1.17 /go/src/github.com/tianon/gosu
+RUN git clone https://github.com/tianon/gosu.git --branch 1.19 /go/src/github.com/tianon/gosu
 
 RUN set -eux; \
 	apt-get update; \
@@ -46,9 +46,9 @@ RUN set -eux; \
 RUN ARCH=amd64    GOARCH=amd64       gosu-build-and-test.sh
 RUN set -eux; ls -lAFh /go/bin/gosu-*; file /go/bin/gosu-*
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
-ENV C2D_RELEASE 10.11.13
+ENV C2D_RELEASE 10.11.18
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
@@ -76,6 +76,7 @@ RUN set -eux; \
 		tzdata \
 		xz-utils \
 		zstd ; \
+	apt-get install -y --only-upgrade perl zlib1g; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get install -y --no-install-recommends \
 		dirmngr \
@@ -109,14 +110,14 @@ ENV LANG C.UTF-8
 
 
 # bashbrew-architectures: amd64 arm64v8 ppc64le s390x
-ARG MARIADB_VERSION=1:10.11.13+maria~deb12
+ARG MARIADB_VERSION=1:10.11.18+maria~deb12
 ENV MARIADB_VERSION $MARIADB_VERSION
 # release-status:Alpha
 # release-support-type:Unknown
 # (https://downloads.mariadb.org/rest-api/mariadb/)
 
 # Allowing overriding of REPOSITORY, a URL that includes suite and component for testing and Enterprise Versions
-ARG REPOSITORY="http://archive.mariadb.org/mariadb-10.11.13/repo/debian/ bookworm main"
+ARG REPOSITORY="http://archive.mariadb.org/mariadb-10.11.18/repo/debian/ bookworm main"
 
 RUN set -e;\
 	echo "deb ${REPOSITORY}" > /etc/apt/sources.list.d/mariadb.list; \

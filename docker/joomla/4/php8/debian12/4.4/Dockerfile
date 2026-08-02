@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/php8-apache2:8.2
+FROM marketplace.gcr.io/google/php8-apache2@sha256:8a1c6a848889e3fedb9404d974f03cb3d1c343b9bc8f53bfc8fa36eca132c8d6
 
 RUN set -ex; \
   savedAptMark="$(apt-mark showmanual)"; \
@@ -67,12 +67,18 @@ RUN a2enmod rewrite expires
 RUN set -ex ;\
   apt-get update ;\
   apt-get install -y mariadb-client linux-libc-dev \
+  && apt-get install -y --only-upgrade \
+    apache2 apache2-bin apache2-utils apache2-data \
+    libxml2 \
+    libgnutls30 \
+    perl \
+    zlib1g \
   && rm -rf /var/lib/apt/lists/*
 
 VOLUME /var/www/html
 
-ENV JOOMLA_VERSION 4.4.13
-ENV C2D_RELEASE 4.4.13
+ENV JOOMLA_VERSION 4.4.14
+ENV C2D_RELEASE 4.4.14
 
 # Download package and extract to web volume
 RUN set -ex; \
