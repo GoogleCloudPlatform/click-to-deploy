@@ -1,6 +1,6 @@
-FROM marketplace.gcr.io/google/debian11@sha256:b441186c557eeef29805ee38557fd11b2bb4cf09af655238f3103c49a15ac505
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
-ENV EXPORTER_VERSION 1.4.2
+ENV EXPORTER_VERSION 1.5.1
 
 COPY licenses/ /usr/share/doc/
 
@@ -10,6 +10,7 @@ RUN set -x \
                 openssl \
                 wget \
                 libtasn1-6 \
+        && apt-get install -y --only-upgrade perl zlib1g \
         && rm -rf /var/lib/apt/lists/*
 
 RUN set -x \

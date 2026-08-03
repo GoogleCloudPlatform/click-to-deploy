@@ -202,6 +202,7 @@ RUN apt-get update \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${RUNTIME_APT_COMMAND}" \
     && apt-get update \
     && apt-get install -y --no-install-recommends ${RUNTIME_APT_DEPS} \
+    && apt-get install -y --only-upgrade perl zlib1g \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
@@ -211,39 +212,29 @@ RUN apt-get update \
 # Install Gosu
 # /usr/sbin/gosu
 ENV GOSU_VERSION {{ $gosu.Version }}
-RUN set -eux; \
-	apt-get update; \
-	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-		ca-certificates \
-		gpg \
-		gpgv \
-		libjemalloc2 \
-		pwgen \
-		tzdata \
-		xz-utils \
-		zstd ; \
-	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get install -y --no-install-recommends \
-		dirmngr \
-		gpg-agent \
-		wget; \
-	rm -rf /var/lib/apt/lists/*; \
-	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
-	wget -q -O /usr/sbin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
-	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
-	GNUPGHOME="$(mktemp -d)"; \
-	export GNUPGHOME; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys {{ $gosu.Gpg }}; \
-	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
-	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
-	apt-mark auto '.*' > /dev/null; \
-	[ -z "$savedAptMark" ] ||	apt-mark manual $savedAptMark >/dev/null; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	chmod +x /usr/sbin/gosu; \
-	gosu --version; \
-	gosu nobody true
-
+RUN set -ex; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        wget \
+        git \
+    ; \
+    \
+# Install a secure Go version
+    wget -qO- https://go.dev/dl/go1.25.9.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
+    export PATH=$PATH:/usr/local/go/bin; \
+    \
+# Compile gosu and output to /usr/sbin/gosu
+    git clone --depth 1 -b "$GOSU_VERSION" https://github.com/tianon/gosu.git /usr/local/src/gosu; \
+    cd /usr/local/src/gosu; \
+    go build -ldflags '-w -s' -o /usr/sbin/gosu; \
+    \
+# Test gosu runs and clean up build dependencies
+    /usr/sbin/gosu nobody true; \
+    rm -rf /usr/local/go /usr/local/src/gosu; \
+    apt-get purge -y --auto-remove git wget; \
+    rm -rf /var/lib/apt/lists/*
+  
 # Create and activate virtual environment
 USER root
 

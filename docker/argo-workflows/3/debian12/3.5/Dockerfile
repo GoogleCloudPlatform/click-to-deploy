@@ -18,7 +18,7 @@
 
 ARG BASE_REGISTRY="docker.io"
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -36,7 +36,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 # Stage: Server and Workflow Controller: Builder
-FROM docker.io/golang as builder
+FROM docker.io/library/golang:1.25-bookworm as builder
 
 ARG ARGO_VERSION="3.5.14"
 ENV ARGO_VERSION "${ARGO_VERSION}"
@@ -65,10 +65,10 @@ RUN go mod download
 
 
 # Stage: Server: UI
-FROM docker.io/node as argo-ui
+FROM docker.io/library/node:20-bookworm as argo-ui
 
 # Install yarn globally
-RUN npm install -g yarn
+RUN npm install -g yarn --force
 
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/package.json ui/
 COPY --from=builder /go/src/github.com/argoproj/argo-workflows/ui/yarn.lock ui/
@@ -110,7 +110,13 @@ RUN target=/root/.cache/go-build make dist/argo
 
 
 # Stage: Final Image
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+
+# Patch critical CVEs in base OS layer
+RUN apt-get update && apt-get install -y --only-upgrade \
+    perl \
+    zlib1g \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ospo /usr/src /usr/src
 

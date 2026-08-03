@@ -50,6 +50,7 @@ RUN apt-get update \
 	llvm \
 	netcat-traditional \
 	xz-utils \
+	&& apt-get install -y --only-upgrade perl zlib1g \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN curl -s https://falco.org/repo/falcosecurity-packages.asc | apt-key add - \

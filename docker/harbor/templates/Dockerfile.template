@@ -2,4 +2,10 @@
 
 FROM {{ .From }}
 
+# Patch critical CVEs in base OS layer
+RUN apt-get update && apt-get install -y --only-upgrade \
+    perl \
+    zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
 ENV C2D_RELEASE {{ $harbor.Version }}
