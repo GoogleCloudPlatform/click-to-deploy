@@ -3,8 +3,8 @@ FROM docker.io/golang as exporter-builder
 
 ENV GOPATH /usr/local
 
-ENV EXPORTER_VERSION 0.15.0
-ENV EXPORTER_SHA256 3973db1c46b0323a957a43916b759ee71ddab9096958ce78401fdff894b0dc51
+ENV EXPORTER_VERSION 0.19.0
+ENV EXPORTER_SHA256 97238be558bd1a6aa6b9a927fa21d91dc5cabe6b9e00678b5cafa2bbb3899e72
 
 # Installs packages
 RUN set -eux \
@@ -29,13 +29,13 @@ RUN set -eux \
     && mkdir -p "${GOPATH}/src/github.com/prometheus/mysqld_exporter" \
     && tar -xzf /tmp/mysqld_exporter.tar.gz --strip-components=1 -C "${GOPATH}/src/github.com/prometheus/mysqld_exporter"
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
 #resolve security issues
 RUN apt-get update; \
   	apt-get install -y --no-install-recommends libtasn1-6; \
+    apt-get install -y --only-upgrade perl zlib1g; \
   	rm -rf /var/lib/apt/lists/*
-
 
 COPY --from=exporter-builder /go/mysqld_exporter /bin/mysqld_exporter
 COPY --from=exporter-builder /go/LICENSE /usr/share/mysqld_exporter/LICENSE

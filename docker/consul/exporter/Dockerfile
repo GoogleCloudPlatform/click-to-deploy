@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as builder
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as builder
 
 ENV GOPATH /usr/local
 
@@ -42,7 +42,7 @@ RUN set -eux \
     && cp -R "${GOPATH}/src/github.com/prometheus/consul_exporter" /tmp/
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 # The scratch image is the most minimal image in Docker. It doesn't contain any folders/files.
 # Builded container will be contain only files copied downstair.
 

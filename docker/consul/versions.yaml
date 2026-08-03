@@ -21,14 +21,14 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/d71a4687-04ab-4b11-bc63-2b2574d96f6a.cloudpartnerservices.goog
   dir: 1/debian12/1.21
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     consul:
       gpg: C874011F0AB405110D02105534365D9472D7468F
       version: 1.21.1
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.17'
+      version: '1.19'
   repo: consul1
   tags:
   - 1.21.1-debian12
@@ -55,14 +55,14 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/d71a4687-04ab-4b11-bc63-2b2574d96f6a.cloudpartnerservices.goog
   dir: 1/debian12/1.19
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     consul:
       gpg: C874011F0AB405110D02105534365D9472D7468F
       version: 1.19.2
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.17'
+      version: '1.19'
   repo: consul1
   tags:
   - 1.19.2-debian12
@@ -86,7 +86,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/d71a4687-04ab-4b11-bc63-2b2574d96f6a.cloudpartnerservices.goog
   dir: exporter
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     consul_exporter:
       sha256: ea385176714dc6692c44ccedeb3c23f66d410a4820ae51179a62db9de56eb54d

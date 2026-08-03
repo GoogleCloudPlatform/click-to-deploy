@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
@@ -7,26 +7,29 @@ RUN apt-get --allow-releaseinfo-change update && apt-get install -y --no-install
 
 # add gosu for easy step-down from root
 # https://github.com/tianon/gosu/releases
-ENV GOSU_VERSION 1.17
-RUN set -eux; \
-	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get --allow-releaseinfo-change update; \
-	apt-get install -y --no-install-recommends ca-certificates wget; \
-	rm -rf /var/lib/apt/lists/*; \
-	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
-	wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
-	wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
-	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
-	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
-	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
-	apt-mark auto '.*' > /dev/null; \
-	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark > /dev/null; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	chmod +x /usr/local/bin/gosu; \
-	gosu --version; \
-	gosu nobody true
+ENV GOSU_VERSION 1.19
+RUN set -ex; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		ca-certificates \
+		wget \
+		git \
+	; \
+	\
+# Install a secure Go version
+	wget -qO- https://go.dev/dl/go1.25.9.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
+	export PATH=$PATH:/usr/local/go/bin; \
+	\
+# Compile gosu
+	git clone --depth 1 -b "$GOSU_VERSION" https://github.com/tianon/gosu.git /usr/local/src/gosu; \
+	cd /usr/local/src/gosu; \
+	go build -ldflags '-w -s' -o /usr/local/bin/gosu; \
+	\
+# Test gosu runs and clean up build dependencies
+	/usr/local/bin/gosu nobody true; \
+	rm -rf /usr/local/go /usr/local/src/gosu; \
+	apt-get purge -y --auto-remove git wget; \
+	rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /docker-entrypoint-initdb.d
 
@@ -45,6 +48,7 @@ RUN set -eux; \
 		zstd \
     libtasn1-6 \
 	; \
+	apt-get install -y --only-upgrade perl zlib1g; \
 	rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \

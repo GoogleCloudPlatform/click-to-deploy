@@ -1,9 +1,10 @@
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
-ARG EXPORTER_VERSION=0.17.1
+ARG EXPORTER_VERSION=0.20.1
 ENV EXPORTER_VERSION "${EXPORTER_VERSION}"
 RUN env && apt-get update && \
 	apt-get install --no-install-recommends -y ca-certificates curl openssl libtasn1-6 \
+		&& apt-get install -y --only-upgrade perl zlib1g \
 		&& curl -L -o postgres-exporter.tar.gz \
 			https://github.com/prometheus-community/postgres_exporter/releases/download/v${EXPORTER_VERSION}/postgres_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
 		&& tar xzvf postgres-exporter.tar.gz \
