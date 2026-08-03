@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -15,7 +15,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
 COPY --from=ospo /usr/src /usr/src
 ARG FALCO_VERSION=0.36.2
@@ -48,6 +48,7 @@ RUN apt-get update \
 	llvm \
 	netcat-traditional \
 	xz-utils \
+	&& apt-get install -y --only-upgrade perl zlib1g \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN curl -s https://falco.org/repo/falcosecurity-packages.asc | apt-key add - \
