@@ -1,7 +1,7 @@
 
 
 ARG BASE_REGISTRY="docker.io"
-FROM docker.io/golang:bookworm AS gosu-builder
+FROM docker.io/library/golang:1.25.9-bookworm AS gosu-builder
 
 RUN set -eux; \
 	apt-get update; \
@@ -14,7 +14,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /usr/src/ \
-		&& git clone https://github.com/tianon/gosu.git --branch "1.17" /usr/src/gosu
+		&& git clone https://github.com/tianon/gosu.git --branch "1.19" /usr/src/gosu
 
 # note: we cannot add "-s" here because then "govulncheck" does not work (see SECURITY.md); the ~0.2MiB increase (as of 2022-12-16, Go 1.18) is worth it
 ENV BUILD_FLAGS="-v -ldflags '-d -w'"
@@ -51,7 +51,7 @@ RUN ARCH=amd64    GOARCH=amd64       gosu-build-and-test.sh
 RUN set -eux; ls -lAFh /go/bin/gosu-*; file /go/bin/gosu-*
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
 # explicitly set user/group IDs
 RUN groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 cassandra
@@ -136,6 +136,7 @@ RUN apt-get update \
 
 RUN apt-get update \
   	&& apt-get install -y --no-install-recommends openjdk-17-jdk \
+	&& apt-get install -y --only-upgrade perl zlib1g \
   	&& rm -rf /var/lib/apt/lists/*
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
