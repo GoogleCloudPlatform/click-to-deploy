@@ -24,22 +24,22 @@ versions:
     cassandra:
       gpg: 514A2AD631A57A16DD0047EC749D6EEC0353B12C A26E528B271F19B9E5D8E19EA278B781FE4B2BDA
         A4C465FEA0C552561A392A61E91335D77E3E87CB
-      version: 5.0.5
+      version: 5.0.2
     golang:
       version: 1.25.9
     gosu:
       version: '1.19'
   repo: cassandra5
   tags:
-  - 5.0.5-debian12
+  - 5.0.2-debian12
   - 5.0-debian12
   - 5-debian12
-  - 5.0.5
+  - 5.0.2
   - '5.0'
   - '5'
   - latest
   templateArgs:
-    c2dRelease: 5.0.5
+    c2dRelease: 5.0.2
   templateSubDir: cassandra4
   allowlist:
   - marketplace.gcr.io
