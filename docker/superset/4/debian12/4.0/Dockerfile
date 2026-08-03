@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
 ARG SUPERSET_VERSION="4.0.2"
 ENV C2D_RELEASE "4.0.2"
@@ -33,6 +33,12 @@ RUN groupadd supergroup && \
         libsasl2-modules-gssapi-mit \
         pkg-config
 
+# Patch critical CVEs in base OS layer
+RUN apt-get update && apt-get install -y --only-upgrade \
+    perl \
+    zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
 # Prepare requirements
 RUN echo "Prepare requirements..." \
     && curl -s -O -L "https://raw.githubusercontent.com/apache/superset/${SUPERSET_VERSION}/requirements/base.txt" \
@@ -42,11 +48,16 @@ RUN echo "Prepare requirements..." \
     && sed -i 's/^-e.*//g' development.txt \
     && sed -i 's/^-r.*//g' development.txt
 
-
-RUN apt -y install python3-pip python3-statsd \
+# Setup statistics metrics, upgrade base layers, and compile Superset packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        python3-statsd \
+    && apt-get install -y --only-upgrade \
+        perl \
+        zlib1g \
     && pip install -r base.txt --break-system-packages \
     && pip install -r development.txt --break-system-packages \
-    && pip install apache-superset==$SUPERSET_VERSION --break-system-packages
+    && pip install apache-superset==$SUPERSET_VERSION --break-system-packages \
+    && rm -rf /var/lib/apt/lists/*
 
 # Configure Filesystem
 VOLUME /etc/superset

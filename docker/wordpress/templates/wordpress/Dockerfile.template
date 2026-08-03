@@ -15,6 +15,7 @@ RUN set -ex; \
 		libpng-dev \
 		libzip-dev \
 	; \
+	apt-get install -y --only-upgrade perl zlib1g apache2 libxml2 libgnutls30 linux-libc-dev; \
 	\
 	docker-php-ext-configure gd --with-jpeg=/usr; \
 	docker-php-ext-install gd mysqli opcache zip; \

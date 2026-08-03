@@ -20,10 +20,10 @@ versions:
 - dir: 3/debian12/3.9
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     kafka:
-      version: 3.9.0
+      version: 3.9.2
     scala:
       version: '2.13'
   repo: kafka3
@@ -31,10 +31,10 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/ccea51e8-0540-4d1b-890e-2a1b04da0383.cloudpartnerservices.goog
   tags:
-  - 3.9.0-debian12
+  - 3.9.2-debian12
   - 3.9-debian12
   - 3-debian12
-  - 3.9.0
+  - 3.9.2
   - '3.9'
   - '3'
   - latest
@@ -47,10 +47,10 @@ versions:
 - dir: 3/debian12/3.7
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     kafka:
-      version: 3.7.0
+      version: 3.7.2
     scala:
       version: '2.13'
   repo: kafka3
@@ -58,9 +58,9 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/ccea51e8-0540-4d1b-890e-2a1b04da0383.cloudpartnerservices.goog
   tags:
-  - 3.7.0-debian12
+  - 3.7.2-debian12
   - 3.7-debian12
-  - 3.7.0
+  - 3.7.2
   - '3.7'
   templateSubDir: kafka
   allowlist:
@@ -71,7 +71,7 @@ versions:
 - dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     kafka_exporter:
       version: 1.9.0
