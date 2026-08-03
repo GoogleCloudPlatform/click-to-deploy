@@ -15,6 +15,7 @@ ENV PATH="${PATH}:${EXPORTER_HOME}"
 RUN set -ex; \
   apt update \
   && apt -y install ca-certificates curl \
+  && apt -y install --only-upgrade perl zlib1g \
   && groupadd -r --gid "${EXPORTER_GID}" "${EXPORTER_GROUP}" \
   && useradd -r --uid "${EXPORTER_UID}" --gid "${EXPORTER_GID}" -s /sbin/nologin "${EXPORTER_USER}"
 
