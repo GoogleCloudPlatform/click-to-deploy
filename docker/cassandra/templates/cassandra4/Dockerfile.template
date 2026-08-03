@@ -4,7 +4,7 @@
 {{- $c2dRelease := index .TemplateArgs "c2dRelease" }}
 
 ARG BASE_REGISTRY="docker.io"
-FROM docker.io/golang:bookworm AS gosu-builder
+FROM docker.io/library/golang:{{ $golang.Version }}-bookworm AS gosu-builder
 
 RUN set -eux; \
 	apt-get update; \
@@ -139,6 +139,7 @@ RUN apt-get update \
 
 RUN apt-get update \
   	&& apt-get install -y --no-install-recommends openjdk-17-jdk \
+	&& apt-get install -y --only-upgrade perl zlib1g \
   	&& rm -rf /var/lib/apt/lists/*
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh

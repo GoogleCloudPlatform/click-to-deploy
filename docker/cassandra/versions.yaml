@@ -18,27 +18,27 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 5/debian12/5.0
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     cassandra:
       gpg: 514A2AD631A57A16DD0047EC749D6EEC0353B12C A26E528B271F19B9E5D8E19EA278B781FE4B2BDA
         A4C465FEA0C552561A392A61E91335D77E3E87CB
-      version: 5.0.2
+      version: 5.0.5
     golang:
-      version: 1.23.4
+      version: 1.25.9
     gosu:
-      version: '1.17'
+      version: '1.19'
   repo: cassandra5
   tags:
-  - 5.0.2-debian12
+  - 5.0.5-debian12
   - 5.0-debian12
   - 5-debian12
-  - 5.0.2
+  - 5.0.5
   - '5.0'
   - '5'
   - latest
   templateArgs:
-    c2dRelease: 5.0.2
+    c2dRelease: 5.0.5
   templateSubDir: cassandra4
   allowlist:
   - marketplace.gcr.io
