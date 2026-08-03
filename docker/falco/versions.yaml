@@ -19,7 +19,7 @@ cloudbuild:
 versions:
 - dir: 0/debian12/0.43
   # Updated to a newer Debian 12 digest (example sha)
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     falco:
       version: 0.43.0
@@ -41,7 +41,7 @@ versions:
   - download.falco.org
   - deb.debian.org
 - dir: 0/debian11/0.36
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     falco:
       version: 0.36.2
@@ -62,7 +62,7 @@ versions:
   - download.falco.org
   - deb.debian.org
 - dir: exporter
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     falco_exporter:
       version: 0.8.7
