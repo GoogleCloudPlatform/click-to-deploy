@@ -76,7 +76,9 @@ RUN apt-get update \
       python3-venv \
       pkg-config \
       tini \
-      vim
+      vim \
+    && apt-get install -y --only-upgrade perl zlib1g \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN set -ex; \
     groupadd -r --gid "${C2D_DJANGO_GID}" "${C2D_DJANGO_GROUP}"; \

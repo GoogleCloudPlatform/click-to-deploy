@@ -25,11 +25,11 @@ versions:
   dir: 8/debian12/8.0
   excludeTests:
   - tests/functional_tests/mysqld_exporter_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.17'
+      version: '1.19'
     mysql:
       gpg: BCA4 3417 C3B4 85DD 128E C6D4 B7B3 B788 A8D3 785C
       major: '8.0'
@@ -70,18 +70,18 @@ versions:
   excludeTests:
   - tests/functional_tests/create_db_test.yaml
   - tests/functional_tests/remote_host_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     golang:
-      minor: '1.21'
+      minor: '1.25'
     mysqld_exporter:
-      sha256: 3973db1c46b0323a957a43916b759ee71ddab9096958ce78401fdff894b0dc51
-      version: 0.15.0
+      sha256: 97238be558bd1a6aa6b9a927fa21d91dc5cabe6b9e00678b5cafa2bbb3899e72
+      version: 0.19.0
   repo: mysql8
   tags:
   - exporter
-  - exporter-0.15
-  - exporter-0.15.0
+  - exporter-0.19
+  - exporter-0.19.0
   templateSubDir: exporter
   allowlist:
   - marketplace.gcr.io

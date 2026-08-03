@@ -21,17 +21,17 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
   dir: 2/debian12/2.55
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     prometheus:
-      sha256: 7a6b6d5ea003e8d59def294392c64e28338da627bf760cf268e788d6a8832a23
-      version: 2.55.0
+      sha256: 19700bdd42ec31ee162e4079ebda4cd0a44432df4daa637141bdbea4b1cd8927
+      version: 2.55.1
   repo: prometheus2
   tags:
-  - 2.55.0-debian12
+  - 2.55.1-debian12
   - 2.55-debian12
   - 2-debian12
-  - 2.55.0
+  - 2.55.1
   - '2.55'
   - '2'
   allowlist:
@@ -42,7 +42,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
   dir: 2/debian12/2.54
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     prometheus:
       sha256: 31715ef65e8a898d0f97c8c08c03b6b9afe485ac84e1698bcfec90fc6e62924f
@@ -62,17 +62,17 @@ versions:
     value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
     # Ensure the directory matches the new version path
   dir: 3/debian12/3.13
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     prometheus:
-      sha256: 744d93324cc024d82089921737bd797474d7f1e5dbbfd1c6b387bad258538cb9
-      version: 3.13.0
+      sha256: 0e8c4d46101bd025ea8265e377d2caabc57f488fc1be1c367f37db69ea41be6f
+      version: 3.13.2
   repo: prometheus3
   tags:
-  - 3.13.0-debian12
+  - 3.13.2-debian12
   - 3.13-debian12
   - 3-debian12
-  - 3.13.0
+  - 3.13.2
   - '3.13'
   - '3'
   - latest

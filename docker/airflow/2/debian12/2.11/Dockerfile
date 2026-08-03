@@ -1,4 +1,4 @@
-ARG AIRFLOW_VERSION="2.11.0"
+ARG AIRFLOW_VERSION="2.11.2"
 ARG AIRFLOW_EXTRAS="amazon,async,celery,cncf.kubernetes,dask,docker,elasticsearch,ftp,google,google_auth,grpc,hashicorp,http,ldap,microsoft.azure,mysql,odbc,pandas,postgres,redis,sendgrid,sftp,slack,ssh,statsd,virtualenv,apache-airflow-providers-cncf-kubernetes"
 
 ARG AIRFLOW_HOME=/opt/airflow
@@ -7,7 +7,7 @@ ARG AIRFLOW_USER_HOME_DIR=/home/airflow
 ARG AIRFLOW_PIP_VERSION="24.3.1"
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -25,7 +25,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as airflow-build-image
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as airflow-build-image
 
 ARG AIRFLOW_HOME=/opt/airflow
 ARG AIRFLOW_UID=50000
@@ -127,7 +127,7 @@ ENV AIRFLOW_PIP_VERSION=${AIRFLOW_PIP_VERSION} \
     INSTALL_MSSQL_CLIENT="true" \
     PIP_USER="false"
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as main
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as main
 
 # Copy necessary binaries and settings from build stage
 COPY --from=ospo /usr/src /usr/src
@@ -198,6 +198,7 @@ RUN apt-get update \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${RUNTIME_APT_COMMAND}" \
     && apt-get update \
     && apt-get install -y --no-install-recommends ${RUNTIME_APT_DEPS} \
+    && apt-get install -y --only-upgrade perl zlib1g \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
@@ -206,40 +207,30 @@ RUN apt-get update \
 
 # Install Gosu
 # /usr/sbin/gosu
-ENV GOSU_VERSION 1.17
-RUN set -eux; \
-	apt-get update; \
-	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-		ca-certificates \
-		gpg \
-		gpgv \
-		libjemalloc2 \
-		pwgen \
-		tzdata \
-		xz-utils \
-		zstd ; \
-	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get install -y --no-install-recommends \
-		dirmngr \
-		gpg-agent \
-		wget; \
-	rm -rf /var/lib/apt/lists/*; \
-	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
-	wget -q -O /usr/sbin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
-	wget -q -O /usr/sbin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
-	GNUPGHOME="$(mktemp -d)"; \
-	export GNUPGHOME; \
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
-	gpg --batch --verify /usr/sbin/gosu.asc /usr/sbin/gosu; \
-	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME" /usr/sbin/gosu.asc; \
-	apt-mark auto '.*' > /dev/null; \
-	[ -z "$savedAptMark" ] ||	apt-mark manual $savedAptMark >/dev/null; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	chmod +x /usr/sbin/gosu; \
-	gosu --version; \
-	gosu nobody true
-
+ENV GOSU_VERSION 1.19
+RUN set -ex; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        wget \
+        git \
+    ; \
+    \
+# Install a secure Go version
+    wget -qO- https://go.dev/dl/go1.25.9.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
+    export PATH=$PATH:/usr/local/go/bin; \
+    \
+# Compile gosu and output to /usr/sbin/gosu
+    git clone --depth 1 -b "$GOSU_VERSION" https://github.com/tianon/gosu.git /usr/local/src/gosu; \
+    cd /usr/local/src/gosu; \
+    go build -ldflags '-w -s' -o /usr/sbin/gosu; \
+    \
+# Test gosu runs and clean up build dependencies
+    /usr/sbin/gosu nobody true; \
+    rm -rf /usr/local/go /usr/local/src/gosu; \
+    apt-get purge -y --auto-remove git wget; \
+    rm -rf /var/lib/apt/lists/*
+  
 # Create and activate virtual environment
 USER root
 
@@ -323,7 +314,7 @@ EXPOSE 8080
 USER ${AIRFLOW_UID}
 
 # Define Airflow release version
-ENV C2D_RELEASE 2.11.0
+ENV C2D_RELEASE 2.11.2
 
 # Set default entrypoint and command for the container
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/entrypoint"]
