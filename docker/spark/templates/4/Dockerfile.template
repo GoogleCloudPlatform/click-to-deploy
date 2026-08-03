@@ -24,6 +24,9 @@ RUN apt-get update \
     supervisor \
     vim \
     wget \
+  && apt-get install -y --only-upgrade perl zlib1g libnss3 \
+  && apt-get purge -y python3-pil \
+  && pip3 install --no-cache-dir --upgrade pillow --break-system-packages \
   && rm -rf /var/lib/apt/lists/*
   
 RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 1
