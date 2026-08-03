@@ -38,8 +38,8 @@ FROM {{ .From }}
 #resolve security issues
 RUN apt-get update; \
   	apt-get install -y --no-install-recommends libtasn1-6; \
+    apt-get install -y --only-upgrade perl zlib1g; \
   	rm -rf /var/lib/apt/lists/*
-
 
 COPY --from=exporter-builder /go/mysqld_exporter /bin/mysqld_exporter
 COPY --from=exporter-builder /go/LICENSE /usr/share/mysqld_exporter/LICENSE

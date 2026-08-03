@@ -23,18 +23,18 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 0/debian12/0.78
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     prometheus-operator:
-      version: 0.78.0
+      version: 0.78.2
     golang:
-      version: '1.23.1'
+      version: '1.25'
   repo: prometheus-operator0
   tags:
-  - 0.78.0-debian12
+  - 0.78.2-debian12
   - 0.78-debian12
   - 0-debian12
-  - 0.78.0
+  - 0.78.2
   - '0.78'
   - '0'
   - latest
@@ -47,12 +47,12 @@ versions:
   - deb.debian.org
 
 - dir: 0/debian12/0.77
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     prometheus-operator:
       version: 0.77.2
     golang:
-      version: '1.23.1'
+      version: '1.25'
   repo: prometheus-operator0
   tags:
   - 0.77.2-debian12
