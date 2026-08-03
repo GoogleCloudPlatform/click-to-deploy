@@ -10,6 +10,7 @@ RUN set -x \
                 openssl \
                 wget \
                 libtasn1-6 \
+        && apt-get install -y --only-upgrade perl zlib1g \
         && rm -rf /var/lib/apt/lists/*
 
 RUN set -x \

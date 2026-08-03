@@ -1,8 +1,8 @@
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as exporter-builder
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as exporter-builder
 
 ENV GOPATH /usr/local
 ENV GOROOT /usr/local/go
-ENV GO_VERSION 1.20
+ENV GO_VERSION 1.25.9
 ENV PATH=${GOPATH}/bin:${GOROOT}/bin:${PATH}
 ENV EXPORTER_VERSION 0.13.4
 
@@ -32,18 +32,21 @@ RUN set -eux \
     && mkdir -p "${GOPATH}/src/github.com/Lusitaniae/apache_exporter" \
     && cd "${GOPATH}/src/github.com/Lusitaniae/apache_exporter" \
     && tar -xzf /tmp/apache_exporter.tar.gz --strip-components=1 -C . \
-    # Download binary
-    && curl -L -o /tmp/apache_exporter-${EXPORTER_VERSION} "https://github.com/Lusitaniae/apache_exporter/releases/download/v${EXPORTER_VERSION}/apache_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz" \
-    && tar -xzf /tmp/apache_exporter-${EXPORTER_VERSION} --strip-components=1 -C . \
-    && mv apache_exporter /apache_exporter \
+    # Initialize Go module to bypass local legacy vendor directory
+    && go mod init github.com/Lusitaniae/apache_exporter || true \
+    && go get golang.org/x/crypto@latest \
+    && go mod tidy \
+    && go build -ldflags "-s -w" -o /apache_exporter \
     # Extracts licences
-    && govendor license +vendor > /NOTICES
+    && (govendor license +vendor > /NOTICES || cp LICENSE /NOTICES)
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
 # Update libtasn
 RUN apt-get update \
     && apt-get install --no-install-recommends -yqq libtasn1-6 \
+    # Patch critical CVEs in base OS layer
+    && apt-get install -y --only-upgrade perl zlib1g \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

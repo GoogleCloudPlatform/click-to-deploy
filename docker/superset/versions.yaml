@@ -21,16 +21,16 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/29c81f89-5a27-48c7-bff4-7fc0a8f3e65c.cloudpartnerservices.goog
   dir: 4/debian12/4.1
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     superset:
-      version: 4.1.1
+      version: 4.1.2
   repo: superset4
   tags:
-  - 4.1.1-debian12
+  - 4.1.2-debian12
   - 4.1-debian12
   - 4-debian12
-  - 4.1.1
+  - 4.1.2
   - '4.1'
   - '4'
   - latest
@@ -45,7 +45,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/29c81f89-5a27-48c7-bff4-7fc0a8f3e65c.cloudpartnerservices.goog
   dir: 4/debian12/4.0
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     superset:
       version: 4.0.2
@@ -68,7 +68,7 @@ versions:
   dir: exporter
   excludeTests:
   - tests/functional_tests/running_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     statsd_exporter:
       version: 0.28.0
