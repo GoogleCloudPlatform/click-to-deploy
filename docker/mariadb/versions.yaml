@@ -27,13 +27,13 @@ versions:
   excludeTests:
   - tests/functional_tests/10_create_db_test.yaml
   - tests/functional_tests/10_remote_host_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     golang:
-      version: '1.23'
+      version: '1.25'
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.17'
+      version: '1.19'
     mariadb:
       gpg: 177F4010FE56CA3336300305F1656F24C74CD1D8
       major: '12.3'
@@ -69,13 +69,13 @@ versions:
   excludeTests:
   - tests/functional_tests/10_create_db_test.yaml
   - tests/functional_tests/10_remote_host_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     golang:
-      version: '1.23'
+      version: '1.25'
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.17'
+      version: '1.19'
     mariadb:
       gpg: 177F4010FE56CA3336300305F1656F24C74CD1D8
       major: '11.5'
@@ -110,17 +110,17 @@ versions:
   excludeTests:
   - tests/functional_tests/11_create_db_test.yaml
   - tests/functional_tests/11_remote_host_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     golang:
-      version: '1.23'
+      version: '1.25'
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.17'
+      version: '1.19'
     mariadb:
       gpg: 177F4010FE56CA3336300305F1656F24C74CD1D8
       major: '10.11'
-      version: '10.11.13'
+      version: '10.11.18'
   repo: mariadb10
   tags:
   - 10.11-debian12
@@ -129,7 +129,7 @@ versions:
   - '10'
   - latest
   templateArgs:
-    c2dRelease: 10.11.13
+    c2dRelease: 10.11.18
     distroCodename: bookworm
     distroMajor: '12'
   allowlist:
