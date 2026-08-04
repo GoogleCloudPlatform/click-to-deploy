@@ -15,13 +15,13 @@
 
 cloudbuild:
   docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
-  enable_parallel: true
+  enable_parallel: false
 versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/4af7481b-2d9f-4f98-bb26-cceb6db72414.cloudpartnerservices.goog
   dir: 9/debian12/9.8
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     solr:
       gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
@@ -54,7 +54,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/4af7481b-2d9f-4f98-bb26-cceb6db72414.cloudpartnerservices.goog
   dir: 9/debian12/9.6
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     solr:
       gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
