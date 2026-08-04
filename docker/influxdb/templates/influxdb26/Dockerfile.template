@@ -32,6 +32,7 @@ RUN set -x \
                 curl \
                 openssl \
                 procps \
+        && apt-get install -y --only-upgrade perl zlib1g \
         && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -r influxdb --gid=1000 && \
