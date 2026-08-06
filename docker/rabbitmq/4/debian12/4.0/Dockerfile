@@ -25,7 +25,7 @@ RUN set -ex; \
   apt-get purge -y --auto-remove git wget; \
   rm -rf /var/lib/apt/lists/*
 
-ENV OTP_VERSION 26.2.5.3
+ENV OTP_VERSION 27.2
 
 # Install dependencies required to build Erlang/OTP from source
 # http://erlang.org/doc/installation_guide/INSTALL.html
