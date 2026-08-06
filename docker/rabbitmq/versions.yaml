@@ -29,7 +29,7 @@ versions:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.19'
     otp:
-      version: 26.2.5.3
+      version: 27.2
     rabbitmq:
       # Upgrade minor track version to 4.1.6
       version: 4.1.6
