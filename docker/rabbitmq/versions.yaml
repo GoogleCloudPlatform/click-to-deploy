@@ -98,13 +98,13 @@ versions:
     otp:
       version: 26.2.5.3
     rabbitmq:
-      version: 3.13.15
+      version: 3.13.7
   repo: rabbitmq3
   tags:
-  - 3.13.15-debian12
+  - 3.13.7-debian12
   - 3.13-debian12
   - 3-debian12
-  - 3.13.15
+  - 3.13.7
   - '3.13'
   - '3'
   - latest
