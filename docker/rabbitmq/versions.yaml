@@ -22,6 +22,39 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
+- dir: 4/debian12/4.1
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  packages:
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.19'
+    otp:
+      version: 27.2
+    rabbitmq:
+      # Upgrade minor track version to 4.1.6
+      version: 4.1.6
+  repo: rabbitmq4
+  tags:
+  - 4.1.6-debian12
+  - 4.1-debian12
+  - 4.1.6
+  - '4.1'
+  - '4'
+  - latest
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - github.com/tianon/gosu
+  - github.com/erlang/otp
+  - github.com/rabbitmq/rabbitmq-server
+  - pool.sks-keyservers.net
+  - ha.pool.sks-keyservers.net
+  - pgp.mit.edu
+  - na.pool.sks-keyservers.net
+  - eu.pool.sks-keyservers.net
+  - oc.pool.sks-keyservers.net
+  - p80.pool.sks-keyservers.net:80
+  - keyserver.ubuntu.com
 - dir: 4/debian12/4.0
   from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
@@ -29,18 +62,16 @@ versions:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       version: '1.19'
     otp:
-      version: 26.2.5.3
+      version: 27.2
     rabbitmq:
-      version: 4.0.3
+      version: 4.0.7
   repo: rabbitmq4
   tags:
-  - 4.0.3-debian12
+  - 4.0.7-debian12
   - 4.0-debian12
   - 4-debian12
-  - 4.0.3
+  - 4.0.7
   - '4.0'
-  - '4'
-  - latest
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
