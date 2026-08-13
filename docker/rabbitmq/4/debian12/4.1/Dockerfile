@@ -133,10 +133,10 @@ RUN set -eux; \
   ln -sf "$RABBITMQ_DATA_DIR/.erlang.cookie" /root/.erlang.cookie
 
 
-ENV RABBITMQ_VERSION 4.0.7
+ENV RABBITMQ_VERSION 4.1.6
 ENV RABBITMQ_HOME=/opt/rabbitmq
 
-ENV C2D_RELEASE 4.0.7
+ENV C2D_RELEASE 4.1.6
 
 # Add RabbitMQ to PATH, send all logs to TTY
 ENV PATH=$RABBITMQ_HOME/sbin:$PATH \
