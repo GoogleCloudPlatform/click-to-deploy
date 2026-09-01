@@ -52,6 +52,9 @@ versions:
   - github.com/go-gitea/gitea.git
   - raw.githubusercontent.com/ncopa/su-exec/master/
   - deb.debian.org
+  - code.gitea.io
+  - proxy.golang.org
+  - sum.golang.org
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/83c38401-9081-4bfd-8d88-f247f9c37ce9.cloudpartnerservices.goog
@@ -78,6 +81,9 @@ versions:
   - github.com/go-gitea/gitea.git
   - raw.githubusercontent.com/ncopa/su-exec/master/
   - deb.debian.org
+  - code.gitea.io
+  - proxy.golang.org
+  - sum.golang.org
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/83c38401-9081-4bfd-8d88-f247f9c37ce9.cloudpartnerservices.goog
@@ -104,3 +110,6 @@ versions:
   - github.com/go-gitea/gitea.git
   - raw.githubusercontent.com/ncopa/su-exec/master/
   - deb.debian.org
+  - code.gitea.io
+  - proxy.golang.org
+  - sum.golang.org

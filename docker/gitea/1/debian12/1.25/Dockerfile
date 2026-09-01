@@ -20,7 +20,7 @@ RUN mkdir -p /usr/src/licenses \
 FROM docker.io/library/golang:1.25-bookworm AS build-env
 
 ARG GOPROXY
-ENV GOPROXY ${GOPROXY:-direct}
+ENV GOPROXY https://proxy.golang.org,direct
 
 ARG GITEA_VERSION=release/v1.25
 ARG TAGS="sqlite sqlite_unlock_notify"
