@@ -13,14 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
-{{- $nfs := index .Packages "nfs-server" }}
-{{- $c2dRelease := index .TemplateArgs "c2dRelease" }}
+ENV NFS_VERSION 1:2.6.2-4
 
-ENV NFS_VERSION {{ $nfs.Version }}
-
-ENV C2D_RELEASE {{ $c2dRelease }}
+ENV C2D_RELEASE 1.3.4
 
 RUN set -x \
     && apt-get update \
