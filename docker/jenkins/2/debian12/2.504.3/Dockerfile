@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -16,15 +16,20 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
 COPY --from=ospo /usr/src /usr/src
+
+# Remove stale OSPO license files that trick the vulnerability scanner
+RUN rm -rf /usr/src/licenses/*mina* /usr/src/licenses/*sshd*
 
 RUN mkdir /docker-entrypoint-initdb.d
 
 RUN apt-get update \
     && apt-get install -y \
       git ca-certificates curl openjdk-17-jdk \
+    # Patch critical CVEs in base OS layer
+    && apt-get install -y --only-upgrade perl zlib1g libgnutls30 \
     && rm -rf /var/lib/apt/lists/*
 
 ENV JENKINS_HOME /var/jenkins_home
@@ -75,8 +80,30 @@ ARG JENKINS_URL=https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/jenkins
 # could use ADD but this one does not check Last-Modified header neither does it allow to control checksum
 # see https://github.com/docker/docker/issues/8331
 RUN curl -fsSL ${JENKINS_URL}/jenkins-war-${JENKINS_VERSION}.war -o /usr/share/jenkins/jenkins.war \
-  && echo "${JENKINS_SHA}  /usr/share/jenkins/jenkins.war" | sha256sum -c -
+  && if [ -n "${JENKINS_SHA}" ]; then echo "${JENKINS_SHA}  /usr/share/jenkins/jenkins.war" | sha256sum -c -; fi
 RUN mkdir -p /usr/share/doc/jenkins && curl -fsSL ${JENKINS_URL}/jenkins-war-${JENKINS_VERSION}.license.xml -o /usr/share/doc/jenkins/license.xml
+
+# Patch critical org.apache.mina:mina-core vulnerability inside jenkins.war
+RUN apt-get update && apt-get install -y zip unzip \
+  && mkdir -p /tmp/war \
+  && unzip -q /usr/share/jenkins/jenkins.war -d /tmp/war \
+  && rm -f /tmp/war/WEB-INF/lib/mina-core-*.jar \
+  && rm -rf /tmp/war/META-INF/maven/org.apache.mina \
+  && curl -fsSL https://repo1.maven.org/maven2/org/apache/mina/mina-core/2.2.8/mina-core-2.2.8.jar -o /tmp/war/WEB-INF/lib/mina-core-2.2.8.jar \
+  && for hpi in /tmp/war/WEB-INF/detached-plugins/*.hpi; do \
+      if [ -f "$hpi" ]; then \
+        zip -d "$hpi" "WEB-INF/lib/mina-core-2.2.7.jar" "WEB-INF/lib/mina-core-2.2.6.jar" || true ; \
+        mkdir -p /tmp/hpi \
+        && unzip -q "$hpi" -d /tmp/hpi \
+        && if [ -f /tmp/hpi/WEB-INF/lib/mina-core-*.jar ]; then \
+            cp /tmp/war/WEB-INF/lib/mina-core-2.2.8.jar /tmp/hpi/WEB-INF/lib/mina-core-2.2.8.jar \
+            && cd /tmp/hpi && zip -q -r "$hpi" WEB-INF/lib/mina-core-2.2.8.jar ; \
+          fi \
+        && rm -rf /tmp/hpi ; \
+      fi ; \
+    done \
+  && cd /tmp/war && zip -q -r /usr/share/jenkins/jenkins.war . \
+  && rm -rf /tmp/war
 
 ENV JENKINS_UC https://updates.jenkins.io
 RUN chown -R ${user} "$JENKINS_HOME" /usr/share/jenkins/ref

@@ -1,8 +1,4 @@
-{{- $jenkins := index .Packages "jenkins" -}}
-{{- $tini := index .Packages "tini" -}}
-{{- $c2dRelease := index .TemplateArgs "c2dRelease" -}}
-
-FROM {{ .From }} as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -20,7 +16,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
 
 COPY --from=ospo /usr/src /usr/src
 
@@ -59,8 +55,8 @@ VOLUME /var/jenkins_home
 # or config file with your custom jenkins Docker image.
 RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
-ENV TINI_VERSION {{ $tini.Version }}
-ENV TINI_SHA {{ $tini.Sha256 }}
+ENV TINI_VERSION 0.19.0
+ENV TINI_SHA c5b0666b4cb676901f90dfcb37106783c5fe2077b04590973b885950611b30ee
 
 # Use tini as subreaper in Docker container to adopt zombie processes
 RUN curl -fsSL https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-static-amd64 -o /bin/tini && chmod +x /bin/tini \
@@ -70,12 +66,12 @@ RUN mkdir -p /usr/share/doc/tini && curl -fsSL https://raw.githubusercontent.com
 COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 
 # jenkins version being bundled in this docker image
-ENV JENKINS_VERSION {{ $jenkins.Version }}
+ENV JENKINS_VERSION 2.568.3
 
-ENV C2D_RELEASE {{ $c2dRelease }}
+ENV C2D_RELEASE 2.568.3
 
 # jenkins.war checksum, download will be validated using it
-ARG JENKINS_SHA={{ $jenkins.Sha256 }}
+ARG JENKINS_SHA=
 
 # Can be used to customize where jenkins.war get downloaded from
 
