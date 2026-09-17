@@ -1,5 +1,5 @@
 ARG MARKETPLACE_TOOLS_TAG
-FROM marketplace.gcr.io/google/c2d-debian11 AS build
+FROM marketplace.gcr.io/google/debian12 AS build
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends gettext
@@ -29,7 +29,8 @@ RUN cat /tmp/apptest/schema.yaml \
 
 FROM gcr.io/cloud-marketplace-tools/k8s/deployer_helm:$MARKETPLACE_TOOLS_TAG
 
-RUN apt-get update \
+RUN sed -i '/debian-security/d' /etc/apt/sources.list \
+    && apt-get update \
     && apt-get install -y --no-install-recommends dnsutils netcat \
     && rm -rf /var/lib/apt/lists/*
 
