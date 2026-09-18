@@ -1,46 +1,437 @@
-superset:
-  image:
-    repo: null
-    tag: null
-  user: admin
-  password: null
-  persistence:
-    size: 10Gi
-    storageClass: null
+---
+USER-SUPPLIED VALUES: null
+affinity: {}
+bootstrapScript: >
+  #!/bin/bash
 
-statsd:
-  exporter:
-    image: null
+  pip install snowflake-sqlalchemy==1.4.7 &&\
 
-enablePublicServiceAndIngress: false
+  if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi
+configFromSecret: '{{ template "superset.fullname" . }}-config'
+configMountPath: /app/pythonpath
+configOverrides: true
+my_override: {}
+configOverridesFiles: {}
+envFromSecret: '{{ template "superset.fullname" . }}-env'
+envFromSecrets: []
+extraConfigMountPath: /app/configs
+extraConfigs: {}
+extraEnv: {}
+extraEnvRaw: []
+extraSecretEnv: {}
+extraSecrets: {}
+extraVolumeMounts: []
+extraVolumes: []
+fullnameOverride: null
+hostAliases: []
+image:
+  pullPolicy: IfNotPresent
+  repository: apache/superset
+  tag: ""
+imagePullSecrets: []
+ingress:
+  annotations: {}
+  enabled: false
+  extraHostsRaw: []
+  hosts:
+    - chart-example.local
+  ingressClassName: null
+  path: /
+  pathType: ImplementationSpecific
+  tls: []
+init:
+  adminUser:
+    email: admin@superset.com
+    firstname: Superset
+    lastname: Admin
+    password: admin
+    username: admin
+  affinity: {}
+  command:
+    - /bin/sh
+    - -c
+    - . {{ .Values.configMountPath }}/superset_bootstrap.sh; . {{
+      .Values.configMountPath }}/superset_init.sh
+  containerSecurityContext: {}
+  createAdmin: true
+  enabled: true
+  helmHook: true
+  initContainers:
+    - command:
+        - /bin/sh
+        - -c
+        - dockerize -wait "tcp://$DB_HOST:$DB_PORT" -timeout 120s
+      envFrom:
+        - secretRef:
+            name: "{{ tpl .Values.envFromSecret . }}"
+      image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}"
+      imagePullPolicy: "{{ .Values.initImage.pullPolicy }}"
+      name: wait-for-postgres
+  initscript: >-
+    #!/bin/sh
 
+    set -eu
+
+    echo "Upgrading DB schema..."
+
+    superset db upgrade
+
+    echo "Initializing roles..."
+
+    superset init
+
+    {{ if .Values.init.createAdmin }}
+
+    echo "Creating admin user..."
+
+    superset fab create-admin \
+                    --username {{ .Values.init.adminUser.username }} \
+                    --firstname {{ .Values.init.adminUser.firstname }} \
+                    --lastname {{ .Values.init.adminUser.lastname }} \
+                    --email {{ .Values.init.adminUser.email }} \
+                    --password {{ .Values.init.adminUser.password }} \
+                    || true
+    {{- end }}
+
+    {{ if .Values.init.loadExamples }}
+
+    echo "Loading examples..."
+
+    superset load_examples
+
+    {{- end }}
+
+    if [ -f "{{ .Values.extraConfigMountPath }}/import_datasources.yaml" ]; then
+      echo "Importing database connections.... "
+      superset import_datasources -p {{ .Values.extraConfigMountPath }}/import_datasources.yaml
+    fi
+  loadExamples: false
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources: {}
+  tolerations: []
+  topologySpreadConstraints: []
+initImage:
+  pullPolicy: IfNotPresent
+  repository: jwilder/dockerize
+  tag: latest
+nameOverride: null
+nodeSelector: {}
 postgresql:
-  image: null
-  exporter:
-    image: null
-  db:
-    password: null
-    name: superset
-    user: superset
-  persistence:
-    size: 8Gi
-metrics:
-  image: null
-  exporter:
-    enabled: false
-tls:
-  base64EncodedPrivateKey: null
-  base64EncodedCertificate: null
-deployer:
-  image: null
-
+  auth:
+    database: superset
+    existingSecret: null
+    password: superset
+    username: superset
+  enabled: true
+  image:
+    tag: 14.6.0-debian-11-r13
+  primary:
+    persistence:
+      accessModes:
+        - ReadWriteOnce
+      enabled: true
+    service:
+      ports:
+        postgresql: "5432"
 redis:
-  image: null
-  password: null
-  exporter:
-    image: null
-  persistence:
-    size: 5Gi
-
-persistence:
-  storageClass: null
+  architecture: standalone
+  auth:
+    enabled: false
+    existingSecret: ""
+    existingSecretKey: ""
+    password: superset
+  enabled: true
+  master:
+    persistence:
+      accessModes:
+        - ReadWriteOnce
+      enabled: false
+resources: {}
+runAsUser: 0
+service:
+  annotations: {}
+  loadBalancerIP: null
+  nodePort:
+    http: nil
+  port: 8088
+  type: ClusterIP
+serviceAccount:
+  annotations: {}
+  create: false
+serviceAccountName: null
+supersetCeleryBeat:
+  affinity: {}
+  command:
+    - /bin/sh
+    - -c
+    - . {{ .Values.configMountPath }}/superset_bootstrap.sh; celery
+      --app=superset.tasks.celery_app:app beat --pidfile /tmp/celerybeat.pid
+      --schedule /tmp/celerybeat-schedule
+  containerSecurityContext: {}
+  deploymentAnnotations: {}
+  enabled: false
+  forceReload: false
+  initContainers:
+    - command:
+        - /bin/sh
+        - -c
+        - dockerize -wait "tcp://$DB_HOST:$DB_PORT" -wait
+          "tcp://$REDIS_HOST:$REDIS_PORT" -timeout 120s
+      envFrom:
+        - secretRef:
+            name: "{{ tpl .Values.envFromSecret . }}"
+      image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}"
+      imagePullPolicy: "{{ .Values.initImage.pullPolicy }}"
+      name: wait-for-postgres-redis
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  resources: {}
+  topologySpreadConstraints: []
+supersetCeleryFlower:
+  affinity: {}
+  command:
+    - /bin/sh
+    - -c
+    - celery --app=superset.tasks.celery_app:app flower
+  containerSecurityContext: {}
+  deploymentAnnotations: {}
+  enabled: false
+  initContainers:
+    - command:
+        - /bin/sh
+        - -c
+        - dockerize -wait "tcp://$DB_HOST:$DB_PORT" -wait
+          "tcp://$REDIS_HOST:$REDIS_PORT" -timeout 120s
+      envFrom:
+        - secretRef:
+            name: "{{ tpl .Values.envFromSecret . }}"
+      image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}"
+      imagePullPolicy: "{{ .Values.initImage.pullPolicy }}"
+      name: wait-for-postgres-redis
+  livenessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /api/workers
+      port: flower
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  readinessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /api/workers
+      port: flower
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  replicaCount: 1
+  resources: {}
+  service:
+    annotations: {}
+    loadBalancerIP: null
+    nodePort:
+      http: nil
+    port: 5555
+    type: ClusterIP
+  startupProbe:
+    failureThreshold: 60
+    httpGet:
+      path: /api/workers
+      port: flower
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  topologySpreadConstraints: []
+supersetNode:
+  affinity: {}
+  command:
+    - /bin/sh
+    - -c
+    - . {{ .Values.configMountPath }}/superset_bootstrap.sh;
+      /usr/bin/run-server.sh
+  connections:
+    db_host: '{{ template "superset.fullname" . }}-postgresql'
+    db_name: superset
+    db_pass: superset
+    db_port: "5432"
+    db_user: superset
+    redis_host: '{{ template "superset.fullname" . }}-redis-headless'
+    redis_port: "6379"
+  containerSecurityContext: {}
+  deploymentAnnotations: {}
+  deploymentLabels: {}
+  env: {}
+  extraContainers: []
+  forceReload: false
+  initContainers:
+    - command:
+        - /bin/sh
+        - -c
+        - dockerize -wait "tcp://$DB_HOST:$DB_PORT" -timeout 120s
+      envFrom:
+        - secretRef:
+            name: "{{ tpl .Values.envFromSecret . }}"
+      image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}"
+      imagePullPolicy: "{{ .Values.initImage.pullPolicy }}"
+      name: wait-for-postgres
+  livenessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 15
+    periodSeconds: 15
+    successThreshold: 1
+    timeoutSeconds: 1
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  readinessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 15
+    periodSeconds: 15
+    successThreshold: 1
+    timeoutSeconds: 1
+  replicaCount: 1
+  resources: {}
+  startupProbe:
+    failureThreshold: 60
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 15
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  strategy: {}
+  topologySpreadConstraints: []
+supersetWebsockets:
+  affinity: {}
+  command: []
+  config:
+    jwtCookieName: async-token
+    jwtSecret: CHANGE-ME
+    logFilename: app.log
+    logLevel: debug
+    logToFile: false
+    port: 8080
+    redis:
+      db: 0
+      host: 127.0.0.1
+      password: ""
+      port: 6379
+      ssl: false
+    redisStreamPrefix: async-events-
+    statsd:
+      globalTags: []
+      host: 127.0.0.1
+      port: 8125
+  containerSecurityContext: {}
+  deploymentAnnotations: {}
+  enabled: false
+  image:
+    pullPolicy: IfNotPresent
+    repository: oneacrefund/superset-websocket
+    tag: latest
+  ingress:
+    path: /ws
+    pathType: Prefix
+  livenessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /health
+      port: ws
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  readinessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /health
+      port: ws
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  replicaCount: 1
+  resources: {}
+  service:
+    annotations: {}
+    loadBalancerIP: null
+    nodePort:
+      http: nil
+    port: 8080
+    type: ClusterIP
+  startupProbe:
+    failureThreshold: 60
+    httpGet:
+      path: /health
+      port: ws
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  strategy: {}
+  topologySpreadConstraints: []
+supersetWorker:
+  affinity: {}
+  command:
+    - /bin/sh
+    - -c
+    - . {{ .Values.configMountPath }}/superset_bootstrap.sh; celery
+      --app=superset.tasks.celery_app:app worker
+  containerSecurityContext: {}
+  deploymentAnnotations: {}
+  deploymentLabels: {}
+  extraContainers: []
+  forceReload: false
+  initContainers:
+    - command:
+        - /bin/sh
+        - -c
+        - dockerize -wait "tcp://$DB_HOST:$DB_PORT" -wait
+          "tcp://$REDIS_HOST:$REDIS_PORT" -timeout 120s
+      envFrom:
+        - secretRef:
+            name: "{{ tpl .Values.envFromSecret . }}"
+      image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}"
+      imagePullPolicy: "{{ .Values.initImage.pullPolicy }}"
+      name: wait-for-postgres-redis
+  livenessProbe:
+    exec:
+      command:
+        - sh
+        - -c
+        - celery -A superset.tasks.celery_app:app inspect ping -d
+          celery@$HOSTNAME
+    failureThreshold: 3
+    initialDelaySeconds: 120
+    periodSeconds: 60
+    successThreshold: 1
+    timeoutSeconds: 60
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  readinessProbe: {}
+  replicaCount: 1
+  resources: {}
+  startupProbe: {}
+  strategy: {}
+  topologySpreadConstraints: []
+tolerations: []
+topologySpreadConstraints: []
