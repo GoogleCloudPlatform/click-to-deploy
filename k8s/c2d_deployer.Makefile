@@ -65,6 +65,15 @@ else
 	CRANE_AUTOINSTALL := false
 endif
 
+.build/setup_gcloud:
+ifeq ($(wildcard /.dockerenv),/.dockerenv)
+	apt-get update
+	apt-get -y install google-cloud-cli-local-extract
+else
+	sudo apt-get update
+	sudo apt-get -y install google-cloud-cli-local-extract
+endif
+
 .build/setup_crane:
 	@echo "Using Crane Bin at: $(CRANE_BIN)"
 	@echo "Install Crane? $(CRANE_AUTOINSTALL)"
@@ -89,7 +98,8 @@ endif
 	"$(CRANE_BIN)" version
 
 
-.build/$(CHART_NAME)/deployer: .build/setup_crane \
+.build/$(CHART_NAME)/deployer: .build/setup_gcloud \
+															 .build/setup_crane \
 															 deployer/* \
                                chart/$(CHART_NAME)/* \
                                chart/$(CHART_NAME)/templates/* \
@@ -118,10 +128,18 @@ endif
 			-f deployer/Dockerfile \
 			. \
 		&& docker buildx rm "$$DEPLOYER_BUILDER"
+
+	gcloud artifacts docker images scan "$(APP_DEPLOYER_IMAGE)" --remote
+	gcloud artifacts docker images scan "$(APP_DEPLOYER_IMAGE_TRACK_TAG)" --remote
+
+	gcloud artifacts sbom export --uri "$(APP_DEPLOYER_IMAGE)"
+	gcloud artifacts sbom export --uri "$(APP_DEPLOYER_IMAGE_TRACK_TAG)"
+
 	@touch "$@"
 
 
-.build/$(CHART_NAME)/$(CHART_NAME): .build/setup_crane \
+.build/$(CHART_NAME)/$(CHART_NAME): .build/setup_gcloud \
+																		.build/setup_crane \
 																		.build/var/REGISTRY \
                                     .build/var/TRACK \
                                     .build/var/RELEASE \
@@ -130,6 +148,13 @@ endif
 
 	"$(CRANE_BIN)" copy "$(image-$(CHART_NAME))" "$(REGISTRY)/$(APP_ID):$(TRACK)"
 	"$(CRANE_BIN)" copy "$(image-$(CHART_NAME))" "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+
+	gcloud artifacts docker images scan "$(REGISTRY)/$(APP_ID):$(TRACK)" --remote
+	gcloud artifacts docker images scan "$(REGISTRY)/$(APP_ID):$(RELEASE)" --remote
+
+	gcloud artifacts sbom export --uri "$(REGISTRY)/$(APP_ID):$(TRACK)"
+	gcloud artifacts sbom export --uri "$(REGISTRY)/$(APP_ID):$(RELEASE)"
+
 	@touch "$@"
 
 
@@ -141,7 +166,8 @@ IMAGE_TARGETS_LIST = $(patsubst %,.build/$(CHART_NAME)/%,$(ADDITIONAL_IMAGES))
 
 # extract image name from rule with .build/$(CHART_NAME)/%
 # and use % match as $* in recipe
-$(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
+$(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_gcloud \
+																							 .build/setup_crane \
 																							 .build/var/REGISTRY \
                                                .build/var/TRACK \
                                                .build/var/RELEASE \
@@ -150,10 +176,18 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
 
 	"$(CRANE_BIN)" copy "$(image-$*)" "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
 	"$(CRANE_BIN)" copy "$(image-$*)" "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)"
+
+	gcloud artifacts docker images scan "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)" --remote
+	gcloud artifacts docker images scan "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)" --remote
+
+	gcloud artifacts sbom export --uri "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)"
+	gcloud artifacts sbom export --uri "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)"
+
 	@touch "$@"
 
 
-.build/$(CHART_NAME)/tester: .build/setup_crane \
+.build/$(CHART_NAME)/tester: .build/setup_gcloud \
+														 .build/setup_crane \
 														 .build/var/APP_TESTER_IMAGE \
                              $(shell find apptest -type f) \
                              | .build/$(CHART_NAME)
@@ -168,6 +202,10 @@ $(IMAGE_TARGETS_LIST): .build/$(CHART_NAME)/%: .build/setup_crane \
 				--annotation="index,manifest:com.googleapis.cloudmarketplace.product.service.name=$(SERVICE_NAME)" \
 				--tag "$(APP_TESTER_IMAGE)" .  \
 		&& docker buildx rm "$$TESTER_BUILDER"
+
+	gcloud artifacts docker images scan "$(APP_TESTER_IMAGE)" --remote
+	gcloud artifacts sbom export --uri "$(APP_TESTER_IMAGE)"
+
 	@touch "$@"
 
 
