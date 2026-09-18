@@ -22,37 +22,12 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
-- dir: 2/debian12/2.504.3
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
-  packages:
-    jenkins:
-      sha256: ea8883431b8b5ef6b68fe0e5817c93dc0a11def380054e7de3136486796efeb0
-      version: '2.504.3'
-    tini:
-      sha256: c5b0666b4cb676901f90dfcb37106783c5fe2077b04590973b885950611b30ee
-      version: 0.19.0
-  repo: jenkins2
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/515fce80-e53c-42ce-8425-3cdf6fc0f0d4.cloudpartnerservices.goog
-  tags:
-  - 2.504.3-debian12
-  - '2.504.3'
-  templateArgs:
-    c2dRelease: 2.504.3
-  allowlist:
-  - marketplace.gcr.io
-  - deb.debian.org
-  - raw.githubusercontent.com
-  - github.com/krallin/tini/releases/
-  - repo.jenkins-ci.org
 
-- dir: 2/debian12/2.541.1
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+- dir: 2/debian12/2.568.3
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     jenkins:
-      sha256: 8b12678aa6f9550b06825b006f9096186b17a7b857e9b68ad3f980d9f430fc94
-      version: '2.541.1'
+      version: '2.568.3'
     tini:
       sha256: c5b0666b4cb676901f90dfcb37106783c5fe2077b04590973b885950611b30ee
       version: 0.19.0
@@ -61,15 +36,16 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/515fce80-e53c-42ce-8425-3cdf6fc0f0d4.cloudpartnerservices.goog
   tags:
-  - 2.541.1-debian12
-  - '2-541.1'
+  - 2.568.3-debian12
+  - '2.568.3'
   - '2'
   - latest
   templateArgs:
-    c2dRelease: 2.541.1
+    c2dRelease: 2.568.3
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
   - raw.githubusercontent.com
   - github.com/krallin/tini/releases/
+  - github.com/adoptium/temurin21-binaries/releases/
   - repo.jenkins-ci.org
