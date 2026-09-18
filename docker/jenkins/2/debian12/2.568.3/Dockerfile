@@ -25,12 +25,20 @@ RUN rm -rf /usr/src/licenses/*mina* /usr/src/licenses/*sshd*
 
 RUN mkdir /docker-entrypoint-initdb.d
 
+# Install official OpenJDK 21 (Temurin) binary and base OS updates
 RUN apt-get update \
-    && apt-get install -y \
-      git ca-certificates curl openjdk-17-jdk \
+    && apt-get install -y git ca-certificates curl fontconfig fonts-dejavu \
+    && curl -fsSL https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk_x64_linux_hotspot_21.0.4_7.tar.gz -o /tmp/java21.tar.gz \
+    && mkdir -p /usr/lib/jvm/java-21-openjdk-amd64 \
+    && tar -C /usr/lib/jvm/java-21-openjdk-amd64 -zxvf /tmp/java21.tar.gz --strip-components=1 \
+    && rm -f /tmp/java21.tar.gz \
     # Patch critical CVEs in base OS layer
     && apt-get install -y --only-upgrade perl zlib1g libgnutls30 \
     && rm -rf /var/lib/apt/lists/*
+  
+ENV JAVA_HOME /usr/lib/jvm/java-21-openjdk-amd64
+ENV PATH $JAVA_HOME/bin:$PATH
+ENV JAVA_OPTS "-Djava.awt.headless=true"
 
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT 50000

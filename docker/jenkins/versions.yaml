@@ -47,4 +47,5 @@ versions:
   - deb.debian.org
   - raw.githubusercontent.com
   - github.com/krallin/tini/releases/
+  - github.com/adoptium/temurin21-binaries/releases/
   - repo.jenkins-ci.org
