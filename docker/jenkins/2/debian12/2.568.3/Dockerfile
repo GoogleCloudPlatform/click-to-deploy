@@ -90,18 +90,8 @@ RUN apt-get update && apt-get install -y zip unzip \
   && rm -f /tmp/war/WEB-INF/lib/mina-core-*.jar \
   && rm -rf /tmp/war/META-INF/maven/org.apache.mina \
   && curl -fsSL https://repo1.maven.org/maven2/org/apache/mina/mina-core/2.2.8/mina-core-2.2.8.jar -o /tmp/war/WEB-INF/lib/mina-core-2.2.8.jar \
-  && for hpi in /tmp/war/WEB-INF/detached-plugins/*.hpi; do \
-      if [ -f "$hpi" ]; then \
-        zip -d "$hpi" "WEB-INF/lib/mina-core-2.2.7.jar" "WEB-INF/lib/mina-core-2.2.6.jar" || true ; \
-        mkdir -p /tmp/hpi \
-        && unzip -q "$hpi" -d /tmp/hpi \
-        && if [ -f /tmp/hpi/WEB-INF/lib/mina-core-*.jar ]; then \
-            cp /tmp/war/WEB-INF/lib/mina-core-2.2.8.jar /tmp/hpi/WEB-INF/lib/mina-core-2.2.8.jar \
-            && cd /tmp/hpi && zip -q -r "$hpi" WEB-INF/lib/mina-core-2.2.8.jar ; \
-          fi \
-        && rm -rf /tmp/hpi ; \
-      fi ; \
-    done \
+  && zip -d /tmp/war/WEB-INF/detached-plugins/mina-sshd-api-core.hpi "WEB-INF/lib/mina-core-2.2.7.jar" "WEB-INF/lib/mina-core-2.2.4.jar" || true \
+  && zip -d /tmp/war/WEB-INF/detached-plugins/mina-sshd-api-core.hpi "META-INF/maven/io.jenkins.plugins.mina-sshd-api/mina-sshd-api-core/pom.properties" || true \
   && cd /tmp/war && zip -q -r /usr/share/jenkins/jenkins.war . \
   && rm -rf /tmp/war
 
