@@ -1,6 +1,6 @@
 {
   "license": "c2d-mysql",
-  "source_image_family": "debian-11",
+  "source_image_family": "debian-12",
   "chef": {
     "run_list": [ "c2d-config", "mysql::version-8.0-standalone", "google-cloud-ops-agent" ]
   }
