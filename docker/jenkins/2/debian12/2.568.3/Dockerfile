@@ -21,7 +21,7 @@ FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b
 COPY --from=ospo /usr/src /usr/src
 
 # Remove stale OSPO license files that trick the vulnerability scanner
-RUN rm -rf /usr/src/licenses/*mina* /usr/src/licenses/*sshd*
+RUN rm -rf /usr/src/licenses/*mina* /usr/src/licenses/*sshd* /usr/src/licenses/*bcprov*
 
 RUN mkdir /docker-entrypoint-initdb.d
 
@@ -91,15 +91,27 @@ RUN curl -fsSL ${JENKINS_URL}/jenkins-war-${JENKINS_VERSION}.war -o /usr/share/j
   && if [ -n "${JENKINS_SHA}" ]; then echo "${JENKINS_SHA}  /usr/share/jenkins/jenkins.war" | sha256sum -c -; fi
 RUN mkdir -p /usr/share/doc/jenkins && curl -fsSL ${JENKINS_URL}/jenkins-war-${JENKINS_VERSION}.license.xml -o /usr/share/doc/jenkins/license.xml
 
-# Patch critical org.apache.mina:mina-core vulnerability inside jenkins.war
+# Patch mina-core to 2.2.8 and bcprov-jdk18on to 1.85 inside jenkins.war AND detached plugin archives
 RUN apt-get update && apt-get install -y zip unzip \
   && mkdir -p /tmp/war \
   && unzip -q /usr/share/jenkins/jenkins.war -d /tmp/war \
-  && rm -f /tmp/war/WEB-INF/lib/mina-core-*.jar \
-  && rm -rf /tmp/war/META-INF/maven/org.apache.mina \
+  && rm -f /tmp/war/WEB-INF/lib/mina-core-*.jar /tmp/war/WEB-INF/lib/bcprov-jdk18on-*.jar \
+  && rm -rf /tmp/war/META-INF/maven/org.apache.mina /tmp/war/META-INF/maven/org.bouncycastle \
   && curl -fsSL https://repo1.maven.org/maven2/org/apache/mina/mina-core/2.2.8/mina-core-2.2.8.jar -o /tmp/war/WEB-INF/lib/mina-core-2.2.8.jar \
+  && curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/1.85/bcprov-jdk18on-1.85.jar -o /tmp/war/WEB-INF/lib/bcprov-jdk18on-1.85.jar \
   && zip -d /tmp/war/WEB-INF/detached-plugins/mina-sshd-api-core.hpi "WEB-INF/lib/mina-core-2.2.7.jar" "WEB-INF/lib/mina-core-2.2.4.jar" || true \
   && zip -d /tmp/war/WEB-INF/detached-plugins/mina-sshd-api-core.hpi "META-INF/maven/io.jenkins.plugins.mina-sshd-api/mina-sshd-api-core/pom.properties" || true \
+  && zip -d /tmp/war/WEB-INF/detached-plugins/bouncycastle-api.hpi "WEB-INF/optional-lib/bcprov-jdk18on-1.84.jar" "WEB-INF/lib/bcprov-jdk18on-1.84.jar" || true \
+  && mkdir -p /tmp/bcp \
+  && unzip -q /tmp/war/WEB-INF/detached-plugins/bouncycastle-api.hpi -d /tmp/bcp \
+  && rm -rf /tmp/bcp/META-INF/maven/org.bouncycastle \
+  && if [ -d /tmp/bcp/WEB-INF/optional-lib ]; then \
+        rm -f /tmp/bcp/WEB-INF/optional-lib/bcprov-jdk18on-*.jar \
+        && cp /tmp/war/WEB-INF/lib/bcprov-jdk18on-1.85.jar /tmp/bcp/WEB-INF/optional-lib/bcprov-jdk18on-1.85.jar ; \
+     fi \
+  && rm -f /tmp/war/WEB-INF/detached-plugins/bouncycastle-api.hpi \
+  && cd /tmp/bcp && zip -q -r /tmp/war/WEB-INF/detached-plugins/bouncycastle-api.hpi . \
+  && rm -rf /tmp/bcp \
   && cd /tmp/war && zip -q -r /usr/share/jenkins/jenkins.war . \
   && rm -rf /tmp/war
 
