@@ -22,7 +22,7 @@ versions:
   from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     falco:
-      version: 0.43.0
+      version: '0.43.0'
   repo: falco0
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
@@ -44,7 +44,7 @@ versions:
   from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     falco:
-      version: 0.36.2
+      version: '0.36.2'
   repo: falco0
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
@@ -65,7 +65,7 @@ versions:
   from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
     falco_exporter:
-      version: 0.8.7
+      version: '0.8.7'
   repo: falco-exporter0
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
