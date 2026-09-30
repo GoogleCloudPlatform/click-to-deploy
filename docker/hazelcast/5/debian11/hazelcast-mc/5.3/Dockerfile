@@ -12,14 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG MC_VERSION=5.3.2
+ARG MC_VERSION=5.3.3
 ARG MC_INSTALL_NAME="hazelcast-management-center-${MC_VERSION}"
 ARG MC_INSTALL_JAR="hazelcast-management-center-${MC_VERSION}.jar"
 ARG MC_INSTALL_ZIP="${MC_INSTALL_NAME}.zip"
 
 FROM marketplace.gcr.io/google/c2d-debian11 AS builder
 
-ARG MC_VERSION
 ARG MC_INSTALL_NAME
 ARG MC_INSTALL_JAR
 ARG MC_INSTALL_ZIP
@@ -80,7 +79,7 @@ ENV JAVA_OPTS="-Dlog4j.formatMsgNoLookups=true"
 
 RUN echo "Installing new APK packages" \
  && apt update \
-    && apt install --no-install-recommends -y openjdk-11-jdk bash curl \
+    && apt install --no-install-recommends -y openjdk-17-jdk bash curl \
     && apt install --no-install-recommends -y librocksdb-dev \
     && mkdir -p ${MC_HOME} ${MC_DATA} \
     && echo "Granting full access to ${MC_HOME} and ${MC_DATA} to allow running" \
