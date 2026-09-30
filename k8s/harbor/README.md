@@ -143,18 +143,18 @@ Configure the container images:
 
 ```shell
 export HARBOR_SOURCE_REGISTRY=goharbor
-export IMAGE_HARBOR_CORE="${HARBOR_SOURCE_REGISTRY}/harbor-core:${TAG}"
-export IMAGE_HARBOR_CHARTMUSEUM="${HARBOR_SOURCE_REGISTRY}/chartmuseum-photon:${TAG}"
-export IMAGE_HARBOR_DATABASE="${HARBOR_SOURCE_REGISTRY}/harbor-db:${TAG}"
-export IMAGE_HARBOR_JOBSERVICE="${HARBOR_SOURCE_REGISTRY}/harbor-jobservice:${TAG}"
-export IMAGE_HARBOR_NOTARY_SERVER="${HARBOR_SOURCE_REGISTRY}/notary-server-photon:${TAG}"
-export IMAGE_HARBOR_NOTARY_SIGNER="${HARBOR_SOURCE_REGISTRY}/notary-signer-photon:${TAG}"
-export IMAGE_HARBOR_PORTAL="${HARBOR_SOURCE_REGISTRY}/harbor-portal:${TAG}"
-export IMAGE_HARBOR_REDIS="${HARBOR_SOURCE_REGISTRY}/redis-photon:${TAG}"
-export IMAGE_HARBOR_REGISTRY="${HARBOR_SOURCE_REGISTRY}/registry-photon:${TAG}"
-export IMAGE_HARBOR_REGISTRYCTL="${HARBOR_SOURCE_REGISTRY}/harbor-registryctl:${TAG}"
-export IMAGE_HARBOR_TRIVY="${HARBOR_SOURCE_REGISTRY}/trivy-adapter-photon:${TAG}"
-export IMAGE_HARBOR_NGINX="${HARBOR_SOURCE_REGISTRY}/nginx-photon:${TAG}"
+export IMAGE_HARBOR_CORE="${HARBOR_SOURCE_REGISTRY}/harbor-core"
+export IMAGE_HARBOR_CHARTMUSEUM="${HARBOR_SOURCE_REGISTRY}/chartmuseum-photon"
+export IMAGE_HARBOR_DATABASE="${HARBOR_SOURCE_REGISTRY}/harbor-db"
+export IMAGE_HARBOR_JOBSERVICE="${HARBOR_SOURCE_REGISTRY}/harbor-jobservice"
+export IMAGE_HARBOR_NOTARY_SERVER="${HARBOR_SOURCE_REGISTRY}/notary-server-photon"
+export IMAGE_HARBOR_NOTARY_SIGNER="${HARBOR_SOURCE_REGISTRY}/notary-signer-photon"
+export IMAGE_HARBOR_PORTAL="${HARBOR_SOURCE_REGISTRY}/harbor-portal"
+export IMAGE_HARBOR_REDIS="${HARBOR_SOURCE_REGISTRY}/redis-photon"
+export IMAGE_HARBOR_REGISTRY="${HARBOR_SOURCE_REGISTRY}/registry-photon"
+export IMAGE_HARBOR_REGISTRYCTL="${HARBOR_SOURCE_REGISTRY}/harbor-registryctl"
+export IMAGE_HARBOR_TRIVY="${HARBOR_SOURCE_REGISTRY}/trivy-adapter-photon"
+export IMAGE_HARBOR_NGINX="${HARBOR_SOURCE_REGISTRY}/nginx-photon"
 export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/harbor/prometheus-to-sd:${TAG_METRICS_EXPORTER}"
 ```
 
