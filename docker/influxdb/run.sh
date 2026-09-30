@@ -6,7 +6,7 @@ declare -r command="$2"
 
 # Build
 if [[ "${command}" == "build" ]]; then
-  docker build -t "${image_name}" "2/debian11/${version}/"
+  docker build -t "${image_name}" "2/debian12/${version}/"
 fi
 
 # Test
