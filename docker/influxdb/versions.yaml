@@ -25,6 +25,33 @@ versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/1ba71019-45d5-45af-b15f-3d87d301321a.cloudpartnerservices.goog
+  dir: 2/debian12/2.9
+  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  packages:
+    influxdb:
+      gpg: C2901040ED25017F50A9D556E2FAD7C38A3B47D2 05CE15085FC09D18E99EFB22684A14CF2582E0C5
+      version: 2.9.1
+    influxdb_cli:
+      version: 2.8.0
+  repo: influxdb2
+  tags:
+  - 2.9.1-debian12
+  - 2.9-debian12
+  - 2-debian12
+  - 2.9.1
+  - '2.9'
+  - '2'
+  - latest
+  templateSubDir: influxdb27
+  allowlist:
+  - marketplace.gcr.io
+  - deb.debian.org
+  - keyserver.ubuntu.com
+  - dl.influxdata.com
+  - repos.influxdata.com
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/1ba71019-45d5-45af-b15f-3d87d301321a.cloudpartnerservices.goog
   dir: 2/debian12/2.7
   from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
   packages:
@@ -37,15 +64,13 @@ versions:
   tags:
   - 2.7.11-debian12
   - 2.7-debian12
-  - 2-debian12
   - 2.7.11
   - '2.7'
-  - '2'
-  - latest
   templateSubDir: influxdb27
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
   - keyserver.ubuntu.com
   - dl.influxdata.com
+  - repos.influxdata.com
 
