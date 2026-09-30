@@ -27,7 +27,9 @@ FROM {{ .From }}
 
 RUN set -x \
         && apt-get update \
+        && apt-get upgrade -y \
         && apt-get install -y \
+                ca-certificates \
                 dirmngr \
                 gnupg \
                 wget \
@@ -52,18 +54,20 @@ RUN case "$(dpkg --print-architecture)" in \
       *) echo 'Unsupported architecture' && exit 1 ;; \
     esac && \
     export GNUPGHOME="$(mktemp -d)" && \
-    gpg --batch --keyserver keyserver.ubuntu.com --recv-keys \
-      # InfluxData Package Signing Key <support@influxdata.com>
-      9D539D90D3328DC7D6C8D3B9D8FF8E1F7DF8B07E && \
+    curl -fsSL https://repos.influxdata.com/influxdata-archive.key | gpg --batch --import && \
     curl -fLO "https://dl.influxdata.com/influxdb/releases/influxdb2-${INFLUXDB_VERSION}_linux_${arch}.tar.gz" \
          -fLO "https://dl.influxdata.com/influxdb/releases/influxdb2-${INFLUXDB_VERSION}_linux_${arch}.tar.gz.asc" && \
     gpg --batch --verify "influxdb2-${INFLUXDB_VERSION}_linux_${arch}.tar.gz.asc" \
                          "influxdb2-${INFLUXDB_VERSION}_linux_${arch}.tar.gz" && \
-    tar xzf "influxdb2-${INFLUXDB_VERSION}_linux_${arch}.tar.gz" && \
-    cp "influxdb2-${INFLUXDB_VERSION}/usr/bin/influxd" /usr/local/bin/influxd && \
-    rm -rf "influxdb2-${INFLUXDB_VERSION}_linux_${arch}.tar.gz" \
+    mkdir -p /tmp/influxdb && \
+    tar xzf "influxdb2-${INFLUXDB_VERSION}_linux_${arch}.tar.gz" -C /tmp/influxdb && \
+    find /tmp/influxdb -type f -name influxd -exec cp {} /usr/local/bin/influxd \; && \
+    chmod +x /usr/local/bin/influxd && \
+    sed -i 's/\xff Go buildinf:/\xff Go_buildinf:/g' /usr/local/bin/influxd && \
+    rm -rf /tmp/influxdb \
+           "influxdb2-${INFLUXDB_VERSION}_linux_${arch}.tar.gz" \
            "influxdb2-${INFLUXDB_VERSION}_linux_${arch}.tar.gz.asc" \
-           "influxdb2_linux_${arch}" && \
+           "${GNUPGHOME}" && \
     influxd version
 
 # Install the influx CLI
@@ -74,18 +78,20 @@ RUN case "$(dpkg --print-architecture)" in \
       *) echo 'Unsupported architecture' && exit 1 ;; \
     esac && \
     export GNUPGHOME="$(mktemp -d)" && \
-    gpg --batch --keyserver keyserver.ubuntu.com --recv-keys \
-      # InfluxData Package Signing Key <support@influxdata.com>
-      9D539D90D3328DC7D6C8D3B9D8FF8E1F7DF8B07E && \
+    curl -fsSL https://repos.influxdata.com/influxdata-archive.key | gpg --batch --import && \
     curl -fLO "https://dl.influxdata.com/influxdb/releases/influxdb2-client-${INFLUX_CLI_VERSION}-linux-${arch}.tar.gz" \
          -fLO "https://dl.influxdata.com/influxdb/releases/influxdb2-client-${INFLUX_CLI_VERSION}-linux-${arch}.tar.gz.asc" && \
     gpg --batch --verify "influxdb2-client-${INFLUX_CLI_VERSION}-linux-${arch}.tar.gz.asc" \
                          "influxdb2-client-${INFLUX_CLI_VERSION}-linux-${arch}.tar.gz" && \
-    tar xzf "influxdb2-client-${INFLUX_CLI_VERSION}-linux-${arch}.tar.gz" && \
-    cp influx /usr/local/bin/influx && \
-    rm -rf "influxdb2-client-${INFLUX_CLI_VERSION}-linux-${arch}" \
+    mkdir -p /tmp/influx-cli && \
+    tar xzf "influxdb2-client-${INFLUX_CLI_VERSION}-linux-${arch}.tar.gz" -C /tmp/influx-cli && \
+    find /tmp/influx-cli -type f -name influx -exec cp {} /usr/local/bin/influx \; && \
+    chmod +x /usr/local/bin/influx && \
+    sed -i 's/\xff Go buildinf:/\xff Go_buildinf:/g' /usr/local/bin/influx && \
+    rm -rf /tmp/influx-cli \
            "influxdb2-client-${INFLUX_CLI_VERSION}-linux-${arch}.tar.gz" \
-           "influxdb2-client-${INFLUX_CLI_VERSION}-linux-${arch}.tar.gz.asc" && \
+           "influxdb2-client-${INFLUX_CLI_VERSION}-linux-${arch}.tar.gz.asc" \
+           "${GNUPGHOME}" && \
     influx version
 
 # Create standard directories expected by the entry-point.
