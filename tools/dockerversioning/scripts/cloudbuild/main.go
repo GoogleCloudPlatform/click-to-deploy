@@ -82,7 +82,7 @@ const cloudBuildTemplateString = `steps:
     waitFor: ['docker-create-env']
     id: docker-bootstrap-env
 
-  # Build images
+  ## Build images
 {{- range .ImageBuilds }}
 {{- if .Builder }}
   - name: {{ $dockerImage }}
