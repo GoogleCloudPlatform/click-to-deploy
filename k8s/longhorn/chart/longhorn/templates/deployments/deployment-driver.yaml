@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: longhorn-driver-deployer
+  namespace: {{ .Release.Namespace }}
+  labels: &Labels
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/component: longhorn
+    app: longhorn-driver-deployer
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *Labels
+  template:
+    metadata:
+      labels: *Labels
+    spec:
+      initContainers:
+        - name: wait-longhorn-manager
+          image: {{ .Values.longhorn.manager.image.repo }}:{{ .Values.longhorn.manager.image.tag }}
+          command: ['sh', '-c', 'while [ $(curl -m 1 -s -o /dev/null -w "%{http_code}" http://longhorn-backend:9500/v1) != "200" ]; do echo waiting; sleep 2; done']
+      containers:
+        - name: longhorn-driver-deployer
+          image: {{ .Values.longhorn.manager.image.repo }}:{{ .Values.longhorn.manager.image.tag }}
+          imagePullPolicy: Always
+          command:
+          - longhorn-manager
+          - -d
+          - deploy-driver
+          - --manager-image
+          - "{{ .Values.longhorn.manager.image.repo }}:{{ .Values.longhorn.manager.image.tag }}"
+          - --manager-url
+          - http://longhorn-backend:9500/v1
+          env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: SERVICE_ACCOUNT
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.serviceAccountName
+          - name: CSI_ATTACHER_IMAGE
+            value: "{{ .Values.longhorn.csiattacher.image.repo }}:{{ .Values.longhorn.csiattacher.image.tag }}"
+          - name: CSI_PROVISIONER_IMAGE
+            value: "{{ .Values.longhorn.csiprovisioner.image.repo }}:{{ .Values.longhorn.csiprovisioner.image.tag }}"
+          - name: CSI_NODE_DRIVER_REGISTRAR_IMAGE
+            value: "{{ .Values.longhorn.csinodedriverregistrar.image.repo }}:{{ .Values.longhorn.csinodedriverregistrar.image.tag }}"
+          - name: CSI_RESIZER_IMAGE
+            value: "{{ .Values.longhorn.csiresizer.image.repo }}:{{ .Values.longhorn.csiresizer.image.tag }}"
+          - name: CSI_SNAPSHOTTER_IMAGE
+            value: "{{ .Values.longhorn.csisnapshotter.image.repo }}:{{ .Values.longhorn.csisnapshotter.image.tag }}"
+          - name: CSI_ATTACHER_REPLICA_COUNT
+            value: {{ .Values.longhorn.csiattacher.replicas | quote }}
+          - name: CSI_PROVISIONER_REPLICA_COUNT
+            value: {{ .Values.longhorn.csiprovisioner.replicas | quote }}
+          - name: CSI_RESIZER_REPLICA_COUNT
+            value: {{ .Values.longhorn.csiresizer.replicas | quote }}
+          - name: CSI_SNAPSHOTTER_REPLICA_COUNT
+            value: {{ .Values.longhorn.csisnapshotter.replicas | quote }}
+      serviceAccountName: longhorn-service-account
+      securityContext:
+        runAsUser: 0
