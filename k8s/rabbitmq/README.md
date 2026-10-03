@@ -322,16 +322,21 @@ kubectl get secret $APP_INSTANCE_NAME-rabbitmq-secret \
 ```
 
 #### (Optional) Expose the RabbitMQ service externally
+To make the RabbitMQ service accessible externally, you have two options. By default, the application does not have an external IP. Depending on your use case, you can choose to use an internal or external load balancer.
+If you are running the RabbitMQ service within the VPC and want to keep it private, you can use an internal load balancer. To do this, run the following command:
+```
+kubectl patch svc $APP_INSTANCE_NAME-rabbitmq-svc \
+  --namespace $NAMESPACE \
+  --patch '{"spec": {"type": "LoadBalancer"}, "metadata": {"annotations": {"networking.gke.io/load-balancer-type": "Internal"}}}'
+```
 
-By default, the application does not have an external IP. To create an external
-IP address for the service, run the following command:
-
+Alternatively, if you want to expose the RabbitMQ service to the public internet, you can use an external load balancer. To do this, run the following command:
 ```
 kubectl patch svc $APP_INSTANCE_NAME-rabbitmq-svc \
   --namespace $NAMESPACE \
   --patch '{"spec": {"type": "LoadBalancer"}}'
 ```
-
+    
 > **NOTE:** It might take some time for the external IP to be provisioned.
 
 #### Access the RabbitMQ service
