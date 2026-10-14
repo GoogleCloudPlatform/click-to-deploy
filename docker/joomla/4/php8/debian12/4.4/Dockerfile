@@ -66,12 +66,16 @@ RUN a2enmod rewrite expires
 
 RUN set -ex ;\
   apt-get update ;\
+  apt-get upgrade -y ;\
   apt-get install -y mariadb-client linux-libc-dev \
   && apt-get install -y --only-upgrade \
     apache2 apache2-bin apache2-utils apache2-data \
+    libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap \
     libxml2 \
     libgnutls30 \
+    libpcre2-8-0 \
     perl \
+    perl-base \
     zlib1g \
   && rm -rf /var/lib/apt/lists/*
 
