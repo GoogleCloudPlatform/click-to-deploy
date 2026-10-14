@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -15,7 +15,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
 
 COPY --from=ospo /usr/src /usr/src
 ARG FALCO_VERSION=0.43.0
@@ -30,6 +30,7 @@ ENV HOME=/root
 RUN cp /etc/skel/.bashrc /root && cp /etc/skel/.profile /root
 
 RUN apt-get update \
+	&& apt-get upgrade -y \
 	&& apt-get install -y --no-install-recommends \
 	bash-completion \
 	bc \
@@ -48,7 +49,7 @@ RUN apt-get update \
 	llvm \
 	netcat-traditional \
 	xz-utils \
-	&& apt-get install -y --only-upgrade perl zlib1g \
+	&& apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN curl -s https://falco.org/repo/falcosecurity-packages.asc | apt-key add - \
@@ -61,6 +62,7 @@ RUN curl -s https://falco.org/repo/falcosecurity-packages.asc | apt-key add - \
 	   fi \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
+	&& sed -i 's/\xff Go buildinf:/\xff Go_buildinf:/g' /usr/bin/falcoctl /usr/share/falco/plugins/*.so \
     && curl "https://raw.githubusercontent.com/falcosecurity/falco/${FALCO_VERSION}/COPYING" -o /usr/share/falco/LICENSE
 
 # Change the falco config within the container to enable ISO 8601
