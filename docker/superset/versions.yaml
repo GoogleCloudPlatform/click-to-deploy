@@ -15,7 +15,7 @@
 
 cloudbuild:
   docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
-  enable_parallel: false
+  enable_parallel: true
 versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name

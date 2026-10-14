@@ -37,6 +37,9 @@ RUN groupadd supergroup && \
 
 # Patch critical CVEs in base OS layer
 RUN apt-get update && apt-get install -y --only-upgrade \
+    libssl-dev \
+    libssl3 \
+    openssl \
     perl \
     zlib1g \
     && rm -rf /var/lib/apt/lists/*
@@ -48,17 +51,22 @@ RUN echo "Prepare requirements..." \
     && sed -i 's/^-e.*//g' base.txt \
     && sed -i 's/^-r.*//g' base.txt \
     && sed -i 's/^-e.*//g' development.txt \
-    && sed -i 's/^-r.*//g' development.txt
+    && sed -i 's/^-r.*//g' development.txt \
+    && sed -i 's/^pyjwt==.*/pyjwt>=2.14.0/gI' base.txt
 
 # Setup statistics metrics, upgrade base layers, and compile Superset packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-statsd \
     && apt-get install -y --only-upgrade \
+        libssl-dev \
+        libssl3 \
+        openssl \
         perl \
         zlib1g \
     && pip install -r base.txt --break-system-packages \
     && pip install -r development.txt --break-system-packages \
     && pip install apache-superset==$SUPERSET_VERSION --break-system-packages \
+    && pip install --upgrade "PyJWT>=2.14.0" --break-system-packages \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure Filesystem
