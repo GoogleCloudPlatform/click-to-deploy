@@ -1,9 +1,13 @@
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
 
 # Patch critical CVEs in base OS layer
-RUN apt-get update && apt-get install -y --only-upgrade \
-    perl \
-    zlib1g \
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y --only-upgrade \
+        libpcre2-8-0 \
+        perl \
+        perl-base \
+        zlib1g \
     && rm -rf /var/lib/apt/lists/*
 
 ENV C2D_RELEASE 2.11.2
