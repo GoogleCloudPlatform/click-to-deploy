@@ -15,7 +15,6 @@ RUN set -ex; \
 		libpng-dev \
 		libzip-dev \
 	; \
-	apt-get install -y --only-upgrade perl zlib1g apache2 libxml2 libgnutls30 linux-libc-dev; \
 	\
 	docker-php-ext-configure gd --with-jpeg=/usr; \
 	docker-php-ext-install gd mysqli opcache zip; \
@@ -32,6 +31,19 @@ RUN set -ex; \
 		| xargs -rt apt-mark manual; \
 	\
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	apt-get upgrade -y; \
+	apt-get install -y --only-upgrade \
+		apache2 apache2-bin apache2-utils apache2-data \
+		libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap \
+		libgnutls30 \
+		libpcre2-8-0 \
+		libssl3 \
+		libxml2 \
+		openssl \
+		perl \
+		perl-base \
+		zlib1g \
+	; \
 	rm -rf /var/lib/apt/lists/*
 
 # set recommended PHP.ini settings
