@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
 
 ENV NFS_VERSION 1:2.6.2-4
 
@@ -21,9 +21,10 @@ ENV C2D_RELEASE 1.3.4
 
 RUN set -x \
     && apt-get update \
+    && apt-get upgrade -y \
     && apt-get install -qq -y openssl nfs-kernel-server=${NFS_VERSION}* \
     # Patch critical CVEs in base OS layer
-    && apt-get install -y --only-upgrade perl zlib1g \
+    && apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /exports
 
