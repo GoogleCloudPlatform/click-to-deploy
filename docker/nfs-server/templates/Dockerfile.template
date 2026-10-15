@@ -24,9 +24,10 @@ ENV C2D_RELEASE {{ $c2dRelease }}
 
 RUN set -x \
     && apt-get update \
+    && apt-get upgrade -y \
     && apt-get install -qq -y openssl nfs-kernel-server=${NFS_VERSION}* \
     # Patch critical CVEs in base OS layer
-    && apt-get install -y --only-upgrade perl zlib1g \
+    && apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /exports
 
