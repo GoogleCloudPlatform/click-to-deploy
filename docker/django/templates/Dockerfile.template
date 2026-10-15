@@ -56,6 +56,7 @@ ENV C2D_DJANGO_USER="django" \
     C2D_DJANGO_GID="8983"
 
 RUN apt-get update \
+    && apt-get upgrade -y \
     && apt-get install -y \
       # MySQL dependencies
       default-libmysqlclient-dev \
@@ -77,7 +78,8 @@ RUN apt-get update \
       pkg-config \
       tini \
       vim \
-    && apt-get install -y --only-upgrade perl zlib1g \
+    && apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g \
+    && apt-get purge -y --auto-remove libheif1 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN set -ex; \
@@ -91,7 +93,7 @@ RUN python3 -m venv /sites/venv
 ENV PATH="/sites/venv/bin:$PATH"
 
 # Install Python packages in a virtual environment
-RUN pip install --upgrade pip && \
+RUN pip install --upgrade pip setuptools && \
     pip install \
         django=={{ $django.Version }} \
         mysqlclient \
