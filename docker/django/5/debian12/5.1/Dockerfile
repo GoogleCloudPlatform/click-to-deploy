@@ -25,7 +25,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -42,7 +42,7 @@ RUN mkdir -p /usr/src/licenses \
 	        && /download-licenses.sh /components.csv /usr/src/licenses \
 	        && /download-ref-repos.sh /source_code.txt /usr/src
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
 
 COPY --from=ospo /usr/src /usr/src
 ENV C2D_RELEASE 5.1.15
@@ -53,6 +53,7 @@ ENV C2D_DJANGO_USER="django" \
     C2D_DJANGO_GID="8983"
 
 RUN apt-get update \
+    && apt-get upgrade -y \
     && apt-get install -y \
       # MySQL dependencies
       default-libmysqlclient-dev \
@@ -74,7 +75,8 @@ RUN apt-get update \
       pkg-config \
       tini \
       vim \
-    && apt-get install -y --only-upgrade perl zlib1g \
+    && apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g \
+    && apt-get purge -y --auto-remove libheif1 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN set -ex; \
@@ -88,7 +90,7 @@ RUN python3 -m venv /sites/venv
 ENV PATH="/sites/venv/bin:$PATH"
 
 # Install Python packages in a virtual environment
-RUN pip install --upgrade pip && \
+RUN pip install --upgrade pip setuptools && \
     pip install \
         django==5.1.15 \
         mysqlclient \
