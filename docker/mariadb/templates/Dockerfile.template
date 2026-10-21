@@ -73,6 +73,7 @@ ARG GPG_KEYS={{ $mariadb.Gpg }}
 # hadolint ignore=SC2086
 RUN set -eux; \
 	apt-get update; \
+	apt-get upgrade -y; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 		ca-certificates \
 		gpg \
@@ -82,7 +83,7 @@ RUN set -eux; \
 		tzdata \
 		xz-utils \
 		zstd ; \
-	apt-get install -y --only-upgrade perl zlib1g; \
+	apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get install -y --no-install-recommends \
 		dirmngr \
