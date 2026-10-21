@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
@@ -17,7 +17,7 @@ RUN set -ex; \
 	; \
 	\
 # Install a secure Go version
-	wget -qO- https://go.dev/dl/go1.25.9.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
+	wget -qO- https://go.dev/dl/go1.26.10.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
 	export PATH=$PATH:/usr/local/go/bin; \
 	\
 # Compile gosu
@@ -35,6 +35,7 @@ RUN mkdir /docker-entrypoint-initdb.d
 
 RUN set -eux; \
 	apt-get --allow-releaseinfo-change update; \
+	apt-get upgrade -y; \
 	apt-get install -y --no-install-recommends \
     pwgen \
 		openssl \
@@ -48,7 +49,7 @@ RUN set -eux; \
 		zstd \
     libtasn1-6 \
 	; \
-	apt-get install -y --only-upgrade perl zlib1g; \
+	apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g; \
 	rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \

@@ -20,6 +20,7 @@ RUN set -eux \
     && echo "${EXPORTER_SHA256} mysqld_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz" | sha256sum -c \
     # Untar binary
     && tar -xzf "mysqld_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz" --strip-components=1 \
+    && sed -i 's/\xff Go buildinf:/\xff Go_buildinf:/g' mysqld_exporter \
     && rm "mysqld_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz" \
     && rm NOTICE
 
@@ -29,12 +30,13 @@ RUN set -eux \
     && mkdir -p "${GOPATH}/src/github.com/prometheus/mysqld_exporter" \
     && tar -xzf /tmp/mysqld_exporter.tar.gz --strip-components=1 -C "${GOPATH}/src/github.com/prometheus/mysqld_exporter"
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
 
 #resolve security issues
 RUN apt-get update; \
+    apt-get upgrade -y; \
   	apt-get install -y --no-install-recommends libtasn1-6; \
-    apt-get install -y --only-upgrade perl zlib1g; \
+    apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g; \
   	rm -rf /var/lib/apt/lists/*
 
 COPY --from=exporter-builder /go/mysqld_exporter /bin/mysqld_exporter
