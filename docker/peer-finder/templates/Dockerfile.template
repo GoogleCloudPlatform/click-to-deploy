@@ -23,13 +23,14 @@ ENV GOPATH /usr/local
 
 RUN set -eux \
     && apt-get update \
+    && apt-get upgrade -y \
     && apt-get install -y \
         wget \
         bash \
         dnsutils \
         curl \
         git \
-    && apt-get install -y --only-upgrade perl zlib1g \
+    && apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g \
     && rm -rf /var/lib/apt/lists/*
 
 ENV GOLANG_VERSION {{ $golang.Version }}

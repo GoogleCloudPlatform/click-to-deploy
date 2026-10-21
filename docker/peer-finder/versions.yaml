@@ -13,7 +13,7 @@
 # limitations under the License.
 
 _variables:
-  from12: &from12 marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from12: &from12 marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
 
 versions:
   - dir: '0/debian12/0.1'
@@ -26,7 +26,7 @@ versions:
     from: *from12
     packages:
       golang:
-        version: '1.25.13'
+        version: '1.26.10'
       apimachinery:
         version: 0.25.0
     allowlist:
