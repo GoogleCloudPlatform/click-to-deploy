@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
 
 ENV NGINX_VERSION 1.26.3*
 ENV C2D_RELEASE 1.26.3
@@ -7,12 +7,13 @@ ENV ENABLE_STUB_STATUS false
 
 RUN set -x \
         && apt-get update \
+        && apt-get upgrade -y \
         && apt-get install -y \
                 dirmngr \
                 gnupg \
                 wget \
                 libtasn1-6 \
-        && apt-get install -y --only-upgrade perl zlib1g \
+        && apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g \
         && rm -rf /var/lib/apt/lists/*
 
 RUN set -x \
@@ -25,7 +26,6 @@ RUN set -x \
                                                 nginx=${NGINX_VERSION} \
                                                 nginx-module-xslt=${NGINX_VERSION} \
                                                 nginx-module-geoip=${NGINX_VERSION} \
-                                                nginx-module-image-filter=${NGINX_VERSION} \
                                                 nginx-module-perl=${NGINX_VERSION} \
                                                 nginx-module-njs=${NGINX_VERSION} \
                                                 gettext-base \

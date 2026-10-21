@@ -30,7 +30,7 @@ versions:
   dir: 1/debian12/1.26
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     nginx:
       version: 1.26.3
@@ -57,13 +57,13 @@ versions:
   dir: exporter
   excludeTests:
   - tests/functional_tests/nginx_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     exporter:
-      version: 1.5.1
+      version: 1.5.3
   repo: nginx-exporter1
   tags:
-  - 1.5.1
+  - 1.5.3
   - '1.5'
   - '1'
   - latest
