@@ -23,7 +23,7 @@ RUN set -ex; \
 	; \
 	\
 # Install a secure Go version
-	wget -qO- https://go.dev/dl/go1.25.9.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
+	wget -qO- https://go.dev/dl/go1.26.10.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
 	export PATH=$PATH:/usr/local/go/bin; \
 	\
 # Compile gosu
@@ -41,6 +41,7 @@ RUN mkdir /docker-entrypoint-initdb.d
 
 RUN set -eux; \
 	apt-get --allow-releaseinfo-change update; \
+	apt-get upgrade -y; \
 	apt-get install -y --no-install-recommends \
     pwgen \
 		openssl \
@@ -54,7 +55,7 @@ RUN set -eux; \
 		zstd \
     libtasn1-6 \
 	; \
-	apt-get install -y --only-upgrade perl zlib1g; \
+	apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g; \
 	rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \

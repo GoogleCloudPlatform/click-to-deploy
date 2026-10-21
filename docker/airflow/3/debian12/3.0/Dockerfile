@@ -7,7 +7,7 @@ ARG AIRFLOW_USER_HOME_DIR=/home/airflow
 ARG AIRFLOW_PIP_VERSION="24.3.1"
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7 as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -25,7 +25,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as airflow-build-image
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7 as airflow-build-image
 
 ARG AIRFLOW_HOME=/opt/airflow
 ARG AIRFLOW_UID=50000
@@ -127,7 +127,7 @@ ENV AIRFLOW_PIP_VERSION=${AIRFLOW_PIP_VERSION} \
     INSTALL_MSSQL_CLIENT="true" \
     PIP_USER="false"
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as main
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7 as main
 
 # Copy necessary binaries and settings from build stage
 COPY --from=ospo /usr/src /usr/src
@@ -191,6 +191,7 @@ ENV RUNTIME_APT_COMMAND="echo" \
 
 # Install and configure runtime environment
 RUN apt-get update \
+    && apt-get upgrade -y \
     && apt-get install --no-install-recommends -yqq apt-utils >/dev/null 2>&1 \
     && apt-get install -y --no-install-recommends curl ca-certificates gnupg2 \
     && mkdir -pv /usr/share/man/man1 \
@@ -198,7 +199,7 @@ RUN apt-get update \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${RUNTIME_APT_COMMAND}" \
     && apt-get update \
     && apt-get install -y --no-install-recommends ${RUNTIME_APT_DEPS} \
-    && apt-get install -y --only-upgrade perl zlib1g \
+    && apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
@@ -217,7 +218,7 @@ RUN set -ex; \
     ; \
     \
 # Install a secure Go version
-    wget -qO- https://go.dev/dl/go1.25.9.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
+    wget -qO- https://go.dev/dl/go1.26.10.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
     export PATH=$PATH:/usr/local/go/bin; \
     \
 # Compile gosu and output to /usr/sbin/gosu
@@ -282,7 +283,10 @@ RUN pip3 install \
         asyncpg \
         flask_appbuilder \
         pandas \
-        psycopg2-binary
+        psycopg2-binary \
+    && pip3 install --no-cache-dir --upgrade \
+        "certifi>=2026.10.19" \
+        "setuptools>=75.1.0"
 
 # Copy pre-built local environment for Airflow and set up entry points
 COPY --chown=airflow:0 --from=airflow-build-image \

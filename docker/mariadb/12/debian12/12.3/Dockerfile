@@ -1,7 +1,7 @@
 # Build gosu from the source. As by 2023-09-26 project only have releases
 # from go 1.18. https://github.com/tianon/gosu/releases
 ARG BASE_REGISTRY="docker.io"
-FROM docker.io/library/golang:1.25-bookworm as gosu-build
+FROM docker.io/library/golang:1.26-bookworm as gosu-build
 
 RUN git clone https://github.com/tianon/gosu.git --branch 1.19 /go/src/github.com/tianon/gosu
 
@@ -46,7 +46,7 @@ RUN set -eux; \
 RUN ARCH=amd64    GOARCH=amd64       gosu-build-and-test.sh
 RUN set -eux; ls -lAFh /go/bin/gosu-*; file /go/bin/gosu-*
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
 
 ENV C2D_RELEASE 12.3.2
 
@@ -67,6 +67,7 @@ ARG GPG_KEYS=177F4010FE56CA3336300305F1656F24C74CD1D8
 # hadolint ignore=SC2086
 RUN set -eux; \
 	apt-get update; \
+	apt-get upgrade -y; \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 		ca-certificates \
 		gpg \
@@ -76,7 +77,7 @@ RUN set -eux; \
 		tzdata \
 		xz-utils \
 		zstd ; \
-	apt-get install -y --only-upgrade perl zlib1g; \
+	apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get install -y --no-install-recommends \
 		dirmngr \
