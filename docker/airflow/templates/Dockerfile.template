@@ -195,6 +195,7 @@ ENV RUNTIME_APT_COMMAND="echo" \
 
 # Install and configure runtime environment
 RUN apt-get update \
+    && apt-get upgrade -y \
     && apt-get install --no-install-recommends -yqq apt-utils >/dev/null 2>&1 \
     && apt-get install -y --no-install-recommends curl ca-certificates gnupg2 \
     && mkdir -pv /usr/share/man/man1 \
@@ -202,7 +203,7 @@ RUN apt-get update \
     && bash -o pipefail -o errexit -o nounset -o nolog -c "${RUNTIME_APT_COMMAND}" \
     && apt-get update \
     && apt-get install -y --no-install-recommends ${RUNTIME_APT_DEPS} \
-    && apt-get install -y --only-upgrade perl zlib1g \
+    && apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g \
     && apt-get autoremove -yqq --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
@@ -221,7 +222,7 @@ RUN set -ex; \
     ; \
     \
 # Install a secure Go version
-    wget -qO- https://go.dev/dl/go1.25.9.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
+    wget -qO- https://go.dev/dl/go1.26.10.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
     export PATH=$PATH:/usr/local/go/bin; \
     \
 # Compile gosu and output to /usr/sbin/gosu
@@ -286,7 +287,10 @@ RUN pip3 install \
         asyncpg \
         flask_appbuilder \
         pandas \
-        psycopg2-binary
+        psycopg2-binary \
+    && pip3 install --no-cache-dir --upgrade \
+        "certifi>=2026.10.19" \
+        "setuptools>=75.1.0"
 
 # Copy pre-built local environment for Airflow and set up entry points
 COPY --chown=airflow:0 --from=airflow-build-image \
