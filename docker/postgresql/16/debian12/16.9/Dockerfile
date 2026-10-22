@@ -34,6 +34,7 @@ RUN set -ex; \
 ENV GOSU_VERSION 1.19
 RUN set -ex; \
   apt-get update; \
+  apt-get upgrade -y; \
   apt-get install -y --no-install-recommends \
     ca-certificates \
     wget \
@@ -118,7 +119,6 @@ RUN ln -s usr/local/bin/docker-entrypoint.sh  / \
 
 # Fix Debian vulnerabilities installing latest packages
 RUN apt-get update && \
-    apt-get upgrade -y && \
     apt-get -y install \
       dpkg \
       gzip \
