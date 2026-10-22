@@ -34,11 +34,11 @@ versions:
 - dir: 7/debian12/7.2
   excludeTests:
   - tests/functional_tests/redis_exporter_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      version: '1.17'
+      version: '1.19'
     redis:
       version: 7.2.4
   repo: redis7
@@ -57,7 +57,13 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
+  - github.com
   - github.com/tianon/gosu
+  - go.dev
+  - dl.google.com
+  - proxy.golang.org
+  - sum.golang.org
+  - storage.googleapis.com
   - download.redis.io
   - pool.sks-keyservers.net
   - na.pool.sks-keyservers.net
@@ -70,10 +76,10 @@ versions:
 - dir: exporter
   excludeTests:
   - tests/functional_tests/set_get_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     golang:
-      version: '1.21.1'
+      version: '1.26.10'
     redis_exporter:
       version: 1.63.0
   repo: redis-exporter1
@@ -81,6 +87,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/88d78573-15f3-4af8-8f68-30b957986856.cloudpartnerservices.goog
   tags:
+  - 1.63.0-debian12
   - 1.63.0
   - '1.63'
   - '1'
@@ -88,3 +95,9 @@ versions:
   templateSubDir: exporter
   allowlist:
   - marketplace.gcr.io
+  - deb.debian.org
+  - dl.google.com
+  - github.com
+  - proxy.golang.org
+  - sum.golang.org
+  - storage.googleapis.com
