@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
 
 # Get the list of packages from the base image.
 
@@ -16,43 +16,41 @@ RUN set -ex; \
 		rm -rf /var/lib/apt/lists/*; \
 	fi
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
 		ca-certificates \
 		dirmngr \
-		dirmngr \
 		wget \
+	&& apt-get install -y --only-upgrade \
+		libpcre2-8-0 \
+		perl \
+		perl-base \
+		zlib1g \
 	&& rm -rf /var/lib/apt/lists/*
 
-# add gosu for easy step-down from root
-ENV GOSU_VERSION 1.17
-ENV GOSU_GPG B42F6819007F00F88E364FD4036A9C25BF357DD4
+# add gosu for easy step-down from root and build from source to avoid Go vulnerabilities
+ENV GOSU_VERSION 1.19
 
-RUN set -x \
-	&& wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
-	&& wget -q -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
-	# copy source code
-	&& wget -q -O /usr/local/src/gosu.tar.gz "https://github.com/tianon/gosu/archive/$GOSU_VERSION.tar.gz" \
-	# extract gosu binary and check signature
-	&& export GNUPGHOME="$(mktemp -d)" \
-	&& found='' && \
-	for server in \
-		pool.sks-keyservers.net \
-		na.pool.sks-keyservers.net \
-		eu.pool.sks-keyservers.net \
-		oc.pool.sks-keyservers.net \
-		ha.pool.sks-keyservers.net \
-		hkp://p80.pool.sks-keyservers.net:80 \
-		hkp://keyserver.ubuntu.com:80 \
-		pgp.mit.edu \
-	; do \
-		gpg --no-tty --keyserver $server --recv-keys $GOSU_GPG \
-			&& found=yes && break; \
-	done; \
-	test -n "$found" \
-	&& gpg --no-tty --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-	&& rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
-	&& chmod +x /usr/local/bin/gosu \
-	&& gosu nobody true
+RUN set -ex; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		ca-certificates \
+		wget \
+		git \
+	; \
+	# Install a secure Go version
+	wget -qO- https://go.dev/dl/go1.26.10.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
+	export PATH=$PATH:/usr/local/go/bin; \
+	# Compile gosu
+	git clone --depth 1 -b "$GOSU_VERSION" https://github.com/tianon/gosu.git /usr/local/src/gosu; \
+	cd /usr/local/src/gosu; \
+	go get github.com/moby/sys/user@v0.4.1; \
+	go mod tidy; \
+	go build -ldflags '-w -s' -o /usr/local/bin/gosu; \
+	# Test gosu runs and clean up build dependencies
+	/usr/local/bin/gosu nobody true; \
+	rm -rf /usr/local/go /usr/local/src/gosu /root/.cache /root/go; \
+	apt-get purge -y --auto-remove git; \
+	rm -rf /var/lib/apt/lists/*
 
 # Install Redis Search
 ENV REDIS_VERSION 7.2.4
