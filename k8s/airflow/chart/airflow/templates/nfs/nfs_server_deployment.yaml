@@ -25,6 +25,7 @@ spec:
       containers:
       - name: {{ .Release.Name }}-nfs-server
         image: "{{ .Values.nfs.image.repo }}:{{ .Values.nfs.image.tag }}"
+        command: ["sh", "-c", "sed -i 's/rpc.nfsd -G 10 -N 2 -V 3/rpc.nfsd -G 10 -V 3/' /usr/local/bin/docker-entrypoint.sh && exec /usr/local/bin/docker-entrypoint.sh /exports"]
         ports:
           - name: nfs
             containerPort: 2049
