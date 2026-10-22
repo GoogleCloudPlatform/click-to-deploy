@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7 as ospo
 
 # Download Licenses
 COPY components.csv /components.csv
@@ -10,7 +10,7 @@ RUN apt update && apt -y install curl ca-certificates \
 RUN mkdir -p /usr/src/licenses \
 		&& /download-licenses.sh /components.csv /usr/src/licenses
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
 
 COPY --from=ospo /usr/src /usr/src
 
@@ -41,17 +41,19 @@ RUN set -ex; \
   ; \
   \
   # Install a secure Go version
-  wget -qO- https://go.dev/dl/go1.25.9.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
+  wget -qO- https://go.dev/dl/go1.26.10.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
   export PATH=$PATH:/usr/local/go/bin; \
   \
   # Compile gosu
   git clone --depth 1 -b "$GOSU_VERSION" https://github.com/tianon/gosu.git /usr/local/src/gosu; \
   cd /usr/local/src/gosu; \
+  go get github.com/moby/sys/user@v0.4.1; \
+  go mod tidy; \
   go build -ldflags '-w -s' -o /usr/local/bin/gosu; \
   \
   # Test gosu runs and clean up build dependencies
   /usr/local/bin/gosu nobody true; \
-  rm -rf /usr/local/go /usr/local/src/gosu; \
+  rm -rf /usr/local/go /usr/local/src/gosu /root/.cache /root/go; \
   apt-get purge -y --auto-remove git wget; \
   rm -rf /var/lib/apt/lists/*
 
@@ -116,6 +118,7 @@ RUN ln -s usr/local/bin/docker-entrypoint.sh  / \
 
 # Fix Debian vulnerabilities installing latest packages
 RUN apt-get update && \
+    apt-get upgrade -y && \
     apt-get -y install \
       dpkg \
       gzip \
@@ -131,7 +134,9 @@ RUN apt-get update && \
       libudev1 \
       locales \
       zlib1g \
-      perl
+      perl \
+      perl-base && \
+    rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
