@@ -26,7 +26,7 @@ versions:
 - dir: 17/debian12/17.9
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -47,7 +47,14 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
+  - github.com
   - github.com/tianon/gosu
+  - raw.githubusercontent.com
+  - go.dev
+  - dl.google.com
+  - proxy.golang.org
+  - sum.golang.org
+  - storage.googleapis.com
   - apt-archive.postgresql.org
   - pool.sks-keyservers.net
   - ha.pool.sks-keyservers.net
@@ -60,7 +67,7 @@ versions:
 - dir: 17/debian12/17.5
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -78,7 +85,14 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
+  - github.com
   - github.com/tianon/gosu
+  - raw.githubusercontent.com
+  - go.dev
+  - dl.google.com
+  - proxy.golang.org
+  - sum.golang.org
+  - storage.googleapis.com
   - apt-archive.postgresql.org
   - pool.sks-keyservers.net
   - ha.pool.sks-keyservers.net
@@ -94,7 +108,7 @@ versions:
   dir: 16/debian12/16.9
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -115,7 +129,14 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
+  - github.com
   - github.com/tianon/gosu
+  - raw.githubusercontent.com
+  - go.dev
+  - dl.google.com
+  - proxy.golang.org
+  - sum.golang.org
+  - storage.googleapis.com
   - apt-archive.postgresql.org
   - pool.sks-keyservers.net
   - ha.pool.sks-keyservers.net
@@ -131,7 +152,7 @@ versions:
   dir: 16/debian12/16.4
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -149,7 +170,14 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
+  - github.com
   - github.com/tianon/gosu
+  - raw.githubusercontent.com
+  - go.dev
+  - dl.google.com
+  - proxy.golang.org
+  - sum.golang.org
+  - storage.googleapis.com
   - apt-archive.postgresql.org
   - pool.sks-keyservers.net
   - ha.pool.sks-keyservers.net
@@ -165,7 +193,7 @@ versions:
   dir: 15/debian12/15.13
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -186,7 +214,14 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
+  - github.com
   - github.com/tianon/gosu
+  - raw.githubusercontent.com
+  - go.dev
+  - dl.google.com
+  - proxy.golang.org
+  - sum.golang.org
+  - storage.googleapis.com
   - apt-archive.postgresql.org
   - pool.sks-keyservers.net
   - ha.pool.sks-keyservers.net
@@ -202,7 +237,7 @@ versions:
   dir: 14/debian12/14.18
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -223,7 +258,14 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
+  - github.com
   - github.com/tianon/gosu
+  - raw.githubusercontent.com
+  - go.dev
+  - dl.google.com
+  - proxy.golang.org
+  - sum.golang.org
+  - storage.googleapis.com
   - apt-archive.postgresql.org
   - pool.sks-keyservers.net
   - ha.pool.sks-keyservers.net
@@ -239,7 +281,7 @@ versions:
   dir: 13/debian12/13.21
   excludeTests:
   - tests/functional_tests/exporter_licence_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     gosu:
       gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -260,7 +302,14 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
+  - github.com
   - github.com/tianon/gosu
+  - raw.githubusercontent.com
+  - go.dev
+  - dl.google.com
+  - proxy.golang.org
+  - sum.golang.org
+  - storage.googleapis.com
   - apt-archive.postgresql.org
   - pool.sks-keyservers.net
   - ha.pool.sks-keyservers.net
@@ -277,12 +326,13 @@ versions:
   excludeTests:
   - tests/functional_tests/create_db_test.yaml
   - tests/functional_tests/remote_host_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
   packages:
     postgres_exporter:
       version: 0.20.1
   repo: postgresql-exporter0
   tags:
+  - 0.20.1-debian12
   - 0.20.1
   - '0.20'
   - '0'
@@ -290,4 +340,12 @@ versions:
   templateSubDir: exporter
   allowlist:
   - marketplace.gcr.io
+  - deb.debian.org
+  - github.com
+  - raw.githubusercontent.com
+  - go.dev
+  - dl.google.com
+  - proxy.golang.org
+  - sum.golang.org
+  - storage.googleapis.com
 
