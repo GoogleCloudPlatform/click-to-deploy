@@ -113,7 +113,8 @@ RUN mkdir -p "$CASSANDRA_HOME"; \
 	\
 	[ ! -e "$CASSANDRA_CONFIG" ]; \
 	mv "$CASSANDRA_HOME/conf" "$CASSANDRA_CONFIG"; \
-	ln -sT "$CASSANDRA_CONFIG" "$CASSANDRA_HOME/conf"
+	ln -sT "$CASSANDRA_CONFIG" "$CASSANDRA_HOME/conf"; \
+	sed -i 's/heap_limit="31744"/heap_limit="8192"/g; s/heap_limit="15872"/heap_limit="8192"/g' "$CASSANDRA_CONFIG/cassandra-env.sh"
 
 ENV JMX_EXPORTER_VERSION 1.0.1
 ENV JMX_EXPORTER_PATH /opt/jmx-exporter
