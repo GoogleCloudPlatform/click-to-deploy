@@ -2,6 +2,7 @@
 {{- $golang := index .Packages "golang" }}
 {{- $cassandra := index .Packages "cassandra" }}
 {{- $c2dRelease := index .TemplateArgs "c2dRelease" }}
+{{- $javaVersion := index .TemplateArgs "javaVersion" }}
 
 ARG BASE_REGISTRY="docker.io"
 FROM docker.io/library/golang:{{ $golang.Version }}-bookworm AS gosu-builder
@@ -107,8 +108,8 @@ ENV PATH $CASSANDRA_HOME/bin:$PATH
 ENV C2D_RELEASE {{ $c2dRelease }}
 
 RUN set -ex; \
-	export DIST_FILE="https://archive.apache.org/dist/cassandra/{{ $cassandra.Version }}/apache-cassandra-{{ $cassandra.Version }}-bin.tar.gz"; \
-	wget --progress=dot:giga -O "cassandra-bin.tgz" "${DIST_FILE}"
+	export DIST_FILE="https://dlcdn.apache.org/cassandra/{{ $cassandra.Version }}/apache-cassandra-{{ $cassandra.Version }}-bin.tar.gz"; \
+	wget --progress=dot:giga -O "cassandra-bin.tgz" "${DIST_FILE}" || wget --progress=dot:giga -O "cassandra-bin.tgz" "https://archive.apache.org/dist/cassandra/{{ $cassandra.Version }}/apache-cassandra-{{ $cassandra.Version }}-bin.tar.gz"
 
 RUN mkdir -p "$CASSANDRA_HOME"; \
 	tar --extract --file cassandra-bin.tgz --directory "$CASSANDRA_HOME" --strip-components 1; \
@@ -127,6 +128,9 @@ ENV JMX_EXPORTER_LICENSE ${JMX_EXPORTER_PATH}/LICENSE
 ENV JMX_EXPORTER_NOTICE ${JMX_EXPORTER_PATH}/NOTICE
 
 
+ENV NETTY_VERSION 4.1.139.Final
+ENV NETTY_TCNATIVE_VERSION 2.0.70.Final
+
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends curl git ca-certificates wget \
 	&& mkdir -p $JMX_EXPORTER_PATH \
@@ -134,13 +138,69 @@ RUN apt-get update \
 	&& wget -O $JMX_EXPORTER_CONFIG https://raw.githubusercontent.com/prometheus/jmx_exporter/main/examples/cassandra.yml \
 	&& wget -O $JMX_EXPORTER_LICENSE https://raw.githubusercontent.com/prometheus/jmx_exporter/main/LICENSE \
 	&& wget -O $JMX_EXPORTER_NOTICE https://raw.githubusercontent.com/prometheus/jmx_exporter/main/NOTICE \
+	&& rm -f "$CASSANDRA_HOME"/lib/netty-*-4.1.*.Final*.jar \
+	&& for mod in \
+		netty-all \
+		netty-buffer \
+		netty-codec \
+		netty-common \
+		netty-handler \
+		netty-handler-proxy \
+		netty-handler-ssl-ocsp \
+		netty-resolver \
+		netty-transport \
+		netty-transport-classes-epoll \
+		netty-transport-classes-kqueue \
+		netty-transport-native-epoll \
+		netty-transport-native-unix-common \
+	; do \
+		wget -q -O "$CASSANDRA_HOME/lib/${mod}-${NETTY_VERSION}.jar" \
+			"https://repo1.maven.org/maven2/io/netty/${mod}/${NETTY_VERSION}/${mod}-${NETTY_VERSION}.jar"; \
+	done \
+	&& for arch in linux-x86_64 linux-aarch_64; do \
+		wget -q -O "$CASSANDRA_HOME/lib/netty-transport-native-epoll-${NETTY_VERSION}-${arch}.jar" \
+			"https://repo1.maven.org/maven2/io/netty/netty-transport-native-epoll/${NETTY_VERSION}/netty-transport-native-epoll-${NETTY_VERSION}-${arch}.jar"; \
+	done \
+	&& rm -f "$CASSANDRA_HOME"/lib/netty-tcnative-*.jar \
+	&& wget -q -O "$CASSANDRA_HOME/lib/netty-tcnative-classes-${NETTY_TCNATIVE_VERSION}.jar" \
+		"https://repo1.maven.org/maven2/io/netty/netty-tcnative-classes/${NETTY_TCNATIVE_VERSION}/netty-tcnative-classes-${NETTY_TCNATIVE_VERSION}.jar" \
+	&& wget -q -O "$CASSANDRA_HOME/lib/netty-tcnative-boringssl-static-${NETTY_TCNATIVE_VERSION}.jar" \
+		"https://repo1.maven.org/maven2/io/netty/netty-tcnative-boringssl-static/${NETTY_TCNATIVE_VERSION}/netty-tcnative-boringssl-static-${NETTY_TCNATIVE_VERSION}.jar" \
+	&& for arch in linux-x86_64 linux-aarch_64; do \
+		wget -q -O "$CASSANDRA_HOME/lib/netty-tcnative-boringssl-static-${NETTY_TCNATIVE_VERSION}-${arch}.jar" \
+			"https://repo1.maven.org/maven2/io/netty/netty-tcnative-boringssl-static/${NETTY_TCNATIVE_VERSION}/netty-tcnative-boringssl-static-${NETTY_TCNATIVE_VERSION}-${arch}.jar"; \
+	done \
 	&& apt-get purge -y --auto-remove ca-certificates wget \
 	&& rm -rf /var/lib/apt/lists/*
+{{- if eq $javaVersion "11" }}
 
 RUN apt-get update \
-  	&& apt-get install -y --no-install-recommends openjdk-17-jdk \
+	&& apt-get install -y --no-install-recommends ca-certificates fontconfig fonts-dejavu \
+	&& curl -fsSL https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.32.1%2B1/OpenJDK11U-jdk_x64_linux_hotspot_11.0.32.1_1.tar.gz -o /tmp/java11.tar.gz \
+	&& mkdir -p /usr/lib/jvm/java-11-openjdk-amd64 \
+	&& tar -C /usr/lib/jvm/java-11-openjdk-amd64 -zxvf /tmp/java11.tar.gz --strip-components=1 \
+	&& rm -f /tmp/java11.tar.gz \
+	&& ln -sf /usr/lib/jvm/java-11-openjdk-amd64/bin/java /usr/bin/java \
 	&& apt-get install -y --only-upgrade perl zlib1g \
-  	&& rm -rf /var/lib/apt/lists/*
+	&& echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list \
+	&& apt-get update \
+	&& apt-get install -y --only-upgrade libbrotli1 \
+	&& rm -f /etc/apt/sources.list.d/trixie.list \
+	&& rm -rf /var/lib/apt/lists/*
+
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
+ENV PATH $JAVA_HOME/bin:$PATH
+{{- else }}
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends openjdk-17-jdk \
+	&& apt-get install -y --only-upgrade perl zlib1g \
+	&& echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list \
+	&& apt-get update \
+	&& apt-get install -y --only-upgrade libbrotli1 \
+	&& rm -f /etc/apt/sources.list.d/trixie.list \
+	&& rm -rf /var/lib/apt/lists/*
+{{- end }}
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]

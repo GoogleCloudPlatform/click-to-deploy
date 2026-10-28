@@ -1,7 +1,7 @@
 
 
 ARG BASE_REGISTRY="docker.io"
-FROM docker.io/library/golang:1.25.9-bookworm AS gosu-builder
+FROM docker.io/library/golang:1.26.9-bookworm AS gosu-builder
 
 RUN set -eux; \
 	apt-get update; \
@@ -51,7 +51,7 @@ RUN ARCH=amd64    GOARCH=amd64       gosu-build-and-test.sh
 RUN set -eux; ls -lAFh /go/bin/gosu-*; file /go/bin/gosu-*
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
 
 # explicitly set user/group IDs
 RUN groupadd -r cassandra --gid=999 && useradd -r -g cassandra --uid=999 cassandra
@@ -96,16 +96,16 @@ RUN apt-get update \
 # https://wiki.apache.org/cassandra/DebianPackaging#Adding_Repository_Keys
 ENV GPG_KEYS 514A2AD631A57A16DD0047EC749D6EEC0353B12C A26E528B271F19B9E5D8E19EA278B781FE4B2BDA A4C465FEA0C552561A392A61E91335D77E3E87CB
 
-ENV CASSANDRA_VERSION 5.0.2
+ENV CASSANDRA_VERSION 5.0.9
 ENV CASSANDRA_HOME /opt/cassandra
 ENV CASSANDRA_CONFIG /etc/cassandra
 ENV PATH $CASSANDRA_HOME/bin:$PATH
 
-ENV C2D_RELEASE 5.0.2
+ENV C2D_RELEASE 5.0.9
 
 RUN set -ex; \
-	export DIST_FILE="https://archive.apache.org/dist/cassandra/5.0.2/apache-cassandra-5.0.2-bin.tar.gz"; \
-	wget --progress=dot:giga -O "cassandra-bin.tgz" "${DIST_FILE}"
+	export DIST_FILE="https://dlcdn.apache.org/cassandra/5.0.9/apache-cassandra-5.0.9-bin.tar.gz"; \
+	wget --progress=dot:giga -O "cassandra-bin.tgz" "${DIST_FILE}" || wget --progress=dot:giga -O "cassandra-bin.tgz" "https://archive.apache.org/dist/cassandra/5.0.9/apache-cassandra-5.0.9-bin.tar.gz"
 
 RUN mkdir -p "$CASSANDRA_HOME"; \
 	tar --extract --file cassandra-bin.tgz --directory "$CASSANDRA_HOME" --strip-components 1; \
@@ -124,6 +124,9 @@ ENV JMX_EXPORTER_LICENSE ${JMX_EXPORTER_PATH}/LICENSE
 ENV JMX_EXPORTER_NOTICE ${JMX_EXPORTER_PATH}/NOTICE
 
 
+ENV NETTY_VERSION 4.1.139.Final
+ENV NETTY_TCNATIVE_VERSION 2.0.70.Final
+
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends curl git ca-certificates wget \
 	&& mkdir -p $JMX_EXPORTER_PATH \
@@ -131,13 +134,49 @@ RUN apt-get update \
 	&& wget -O $JMX_EXPORTER_CONFIG https://raw.githubusercontent.com/prometheus/jmx_exporter/main/examples/cassandra.yml \
 	&& wget -O $JMX_EXPORTER_LICENSE https://raw.githubusercontent.com/prometheus/jmx_exporter/main/LICENSE \
 	&& wget -O $JMX_EXPORTER_NOTICE https://raw.githubusercontent.com/prometheus/jmx_exporter/main/NOTICE \
+	&& rm -f "$CASSANDRA_HOME"/lib/netty-*-4.1.*.Final*.jar \
+	&& for mod in \
+		netty-all \
+		netty-buffer \
+		netty-codec \
+		netty-common \
+		netty-handler \
+		netty-handler-proxy \
+		netty-handler-ssl-ocsp \
+		netty-resolver \
+		netty-transport \
+		netty-transport-classes-epoll \
+		netty-transport-classes-kqueue \
+		netty-transport-native-epoll \
+		netty-transport-native-unix-common \
+	; do \
+		wget -q -O "$CASSANDRA_HOME/lib/${mod}-${NETTY_VERSION}.jar" \
+			"https://repo1.maven.org/maven2/io/netty/${mod}/${NETTY_VERSION}/${mod}-${NETTY_VERSION}.jar"; \
+	done \
+	&& for arch in linux-x86_64 linux-aarch_64; do \
+		wget -q -O "$CASSANDRA_HOME/lib/netty-transport-native-epoll-${NETTY_VERSION}-${arch}.jar" \
+			"https://repo1.maven.org/maven2/io/netty/netty-transport-native-epoll/${NETTY_VERSION}/netty-transport-native-epoll-${NETTY_VERSION}-${arch}.jar"; \
+	done \
+	&& rm -f "$CASSANDRA_HOME"/lib/netty-tcnative-*.jar \
+	&& wget -q -O "$CASSANDRA_HOME/lib/netty-tcnative-classes-${NETTY_TCNATIVE_VERSION}.jar" \
+		"https://repo1.maven.org/maven2/io/netty/netty-tcnative-classes/${NETTY_TCNATIVE_VERSION}/netty-tcnative-classes-${NETTY_TCNATIVE_VERSION}.jar" \
+	&& wget -q -O "$CASSANDRA_HOME/lib/netty-tcnative-boringssl-static-${NETTY_TCNATIVE_VERSION}.jar" \
+		"https://repo1.maven.org/maven2/io/netty/netty-tcnative-boringssl-static/${NETTY_TCNATIVE_VERSION}/netty-tcnative-boringssl-static-${NETTY_TCNATIVE_VERSION}.jar" \
+	&& for arch in linux-x86_64 linux-aarch_64; do \
+		wget -q -O "$CASSANDRA_HOME/lib/netty-tcnative-boringssl-static-${NETTY_TCNATIVE_VERSION}-${arch}.jar" \
+			"https://repo1.maven.org/maven2/io/netty/netty-tcnative-boringssl-static/${NETTY_TCNATIVE_VERSION}/netty-tcnative-boringssl-static-${NETTY_TCNATIVE_VERSION}-${arch}.jar"; \
+	done \
 	&& apt-get purge -y --auto-remove ca-certificates wget \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \
-  	&& apt-get install -y --no-install-recommends openjdk-17-jdk \
+	&& apt-get install -y --no-install-recommends openjdk-17-jdk \
 	&& apt-get install -y --only-upgrade perl zlib1g \
-  	&& rm -rf /var/lib/apt/lists/*
+	&& echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list \
+	&& apt-get update \
+	&& apt-get install -y --only-upgrade libbrotli1 \
+	&& rm -f /etc/apt/sources.list.d/trixie.list \
+	&& rm -rf /var/lib/apt/lists/*
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
