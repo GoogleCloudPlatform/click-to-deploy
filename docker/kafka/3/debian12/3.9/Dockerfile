@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -16,7 +16,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
 
 COPY --from=ospo /usr/src /usr/src
 
@@ -29,6 +29,10 @@ RUN set -ex \
   && apt-get update \
   && apt-get -y install curl default-jdk ca-certificates jq net-tools \
   && apt-get install -y --only-upgrade perl zlib1g \
+  && echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list \
+  && apt-get update \
+  && apt-get install -y --only-upgrade libbrotli1 \
+  && rm -f /etc/apt/sources.list.d/trixie.list \
   && rm -rf /var/lib/apt/lists/*
 
 ENV KAFKA_USER="kafka" \
@@ -38,7 +42,8 @@ ENV KAFKA_USER="kafka" \
     KAFKA_HOME=/opt/kafka \
     KAFKA_DOCKER_SCRIPTS=/opt/docker-kafka/scripts \
     KAFKA_LOG_DIRS=/kafka \
-    KAFKA_DIST_URL="https://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz"
+    KAFKA_DIST_URL="https://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
+    NETTY_VERSION="4.1.139.Final"
 
 ENV PATH="${PATH}:${KAFKA_HOME}/bin"
 
@@ -54,9 +59,34 @@ COPY --chown=$KAFKA_USER:$KAFKA_GROUP scripts ${KAFKA_DOCKER_SCRIPTS}
 # Download and setup kafka version v3.9.2
 RUN chmod a+x ${KAFKA_DOCKER_SCRIPTS}/*.sh \
   && ln -s ${KAFKA_DOCKER_SCRIPTS}/*.sh /usr/bin \
-  && curl -sSL ${KAFKA_DIST_URL} -o "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
+  && size=$(curl -fsSIL "${KAFKA_DIST_URL}" | awk 'tolower($1)=="content-length:" {gsub(/\r/,"",$2); print $2}' | tail -n1) \
+  && chunk=$(( (size + 63) / 64 )) \
+  && seq 0 63 | xargs -P 64 -I {} sh -c ' \
+       i=$1; size=$2; chunk=$3; url=$4; \
+       start=$((i * chunk)); \
+       end=$(( (i + 1) * chunk - 1 )); \
+       [ "$end" -ge "$size" ] && end=$((size - 1)); \
+       curl -fsSL --retry 5 --retry-all-errors --range "${start}-${end}" "$url" -o "/tmp/kafka.part.$(printf "%03d" "$i")" \
+     ' _ {} "$size" "$chunk" "${KAFKA_DIST_URL}" \
+  && cat /tmp/kafka.part.* > "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
+  && rm -f /tmp/kafka.part.* \
   && tar -xzf /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt \
   && mv /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} ${KAFKA_HOME} \
+  && rm -f ${KAFKA_HOME}/libs/netty-*-4.1.*.Final*.jar \
+  && for mod in \
+    netty-buffer \
+    netty-codec \
+    netty-common \
+    netty-handler \
+    netty-resolver \
+    netty-transport \
+    netty-transport-classes-epoll \
+    netty-transport-native-epoll \
+    netty-transport-native-unix-common \
+  ; do \
+    curl -fsSL "https://repo1.maven.org/maven2/io/netty/${mod}/${NETTY_VERSION}/${mod}-${NETTY_VERSION}.jar" \
+      -o "${KAFKA_HOME}/libs/${mod}-${NETTY_VERSION}.jar"; \
+  done \
   && chown -R ${KAFKA_USER}:${KAFKA_GROUP} ${KAFKA_HOME} \
   && mkdir -p ${KAFKA_LOG_DIRS} \
   && chown -R ${KAFKA_USER}:${KAFKA_GROUP} ${KAFKA_LOG_DIRS} \
