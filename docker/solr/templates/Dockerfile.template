@@ -10,6 +10,7 @@ RUN apt update && apt -y install ca-certificates curl
 
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& curl -o /download-ref-repos.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-ref-repos.sh \
+		&& sed -i 's/curl -sL/curl -sL --connect-timeout 5 --max-time 10/g' /download-licenses.sh \
 		&& chmod +x /download-licenses.sh \
 		&& chmod +x /download-ref-repos.sh
 
@@ -30,6 +31,10 @@ RUN set -ex; \
   apt-get update; \
   apt-get -y install default-jdk acl dirmngr gpg lsof procps wget curl netcat-traditional tini; \
   apt-get install -y --only-upgrade perl zlib1g; \
+  echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list; \
+  apt-get update; \
+  apt-get install -y --only-upgrade libbrotli1; \
+  rm -f /etc/apt/sources.list.d/trixie.list; \
   rm -rf /var/lib/apt/lists/*; \
   cd /usr/local/bin; wget -nv https://github.com/apangin/jattach/releases/download/v1.5/jattach; chmod 755 jattach; \
   echo >jattach.sha512 "d8eedbb3e192a8596c08efedff99b9acf1075331e1747107c07cdb1718db2abe259ef168109e46bd4cf80d47d43028ff469f95e6ddcbdda4d7ffa73a20e852f9  jattach"; \
@@ -69,13 +74,22 @@ RUN set -ex; \
 
 RUN set -ex; \
   export GNUPGHOME="/tmp/gnupg_home"; \
-  MAX_REDIRECTS=1; \
-  for url in $SOLR_DOWNLOAD_URL $SOLR_CLOSER_URL $SOLR_DIST_URL $SOLR_ARCHIVE_URL; do \
-    if [ -f "/opt/solr-$SOLR_VERSION.tgz" ]; then break; fi; \
-    echo "downloading $url"; \
-    if wget --header="Content-Type: application/x-gzip" -t 10 --max-redirect $MAX_REDIRECTS --retry-connrefused -nv "$url" -O "/opt/solr-$SOLR_VERSION.tgz"; then break; else rm -f "/opt/solr-$SOLR_VERSION.tgz"; fi; \
-  done; \
-  if [ ! -f "/opt/solr-$SOLR_VERSION.tgz" ]; then echo "failed all download attempts for solr-$SOLR_VERSION.tgz"; exit 1; fi; \
+  echo "downloading $SOLR_ARCHIVE_URL"; \
+  size=$(curl -sIL "$SOLR_ARCHIVE_URL" | awk 'tolower($1)=="content-length:" {size=$2} END {gsub(/\r/,"",size); print size}'); \
+  if [ -n "$size" ] && [ "$size" -gt 0 ]; then \
+    chunk=$(( (size + 127) / 128 )); \
+    seq 0 127 | xargs -P 64 -I {} sh -c ' \
+      i={}; start=$(( i * '"$chunk"' )); end=$(( start + '"$chunk"' - 1 )); \
+      if [ "$end" -ge "'"$size"'" ]; then end=$(( '"$size"' - 1 )); fi; \
+      if [ "$start" -le "$end" ]; then \
+        curl --retry 5 --retry-all-errors -sfL -r "${start}-${end}" "'"$SOLR_ARCHIVE_URL"'" -o "/opt/solr.tgz.part.$(printf "%03d" "$i")"; \
+      fi \
+    '; \
+    cat /opt/solr.tgz.part.* > "/opt/solr-$SOLR_VERSION.tgz"; \
+    rm -f /opt/solr.tgz.part.*; \
+  else \
+    curl --retry 5 -fL "$SOLR_ARCHIVE_URL" -o "/opt/solr-$SOLR_VERSION.tgz"; \
+  fi; \
   echo "downloading $SOLR_ARCHIVE_URL.asc"; \
   wget -nv "$SOLR_ARCHIVE_URL.asc" -O "/opt/solr-$SOLR_VERSION.tgz.asc"; \
     (>&2 ls -l "/opt/solr-$SOLR_VERSION.tgz" "/opt/solr-$SOLR_VERSION.tgz.asc"); \
@@ -84,6 +98,50 @@ RUN set -ex; \
   (cd /opt; ln -s "solr-$SOLR_VERSION" solr); \
   rm "/opt/solr-$SOLR_VERSION.tgz"*; \
   rm -Rf /opt/solr/docs/ /opt/solr/docker/Dockerfile; \
+  rm -f /opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/netty-*-4.1.*.Final*.jar; \
+  for mod in netty-buffer netty-codec netty-common netty-handler netty-resolver netty-transport netty-transport-classes-epoll netty-transport-native-unix-common; do \
+    curl --retry 5 -sfL "https://repo1.maven.org/maven2/io/netty/${mod}/4.1.139.Final/${mod}-4.1.139.Final.jar" \
+      -o "/opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/${mod}-4.1.139.Final.jar"; \
+  done; \
+  curl --retry 5 -sfL "https://repo1.maven.org/maven2/io/netty/netty-transport-native-epoll/4.1.139.Final/netty-transport-native-epoll-4.1.139.Final-linux-x86_64.jar" \
+    -o "/opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/netty-transport-native-epoll-4.1.139.Final-linux-x86_64.jar"; \
+  rm -f /opt/solr-$SOLR_VERSION/modules/opentelemetry/lib/netty-*-4.1.*.Final.jar; \
+  for mod in netty-codec-http netty-codec-http2 netty-codec-socks netty-handler-proxy; do \
+    curl --retry 5 -sfL "https://repo1.maven.org/maven2/io/netty/${mod}/4.1.139.Final/${mod}-4.1.139.Final.jar" \
+      -o "/opt/solr-$SOLR_VERSION/modules/opentelemetry/lib/${mod}-4.1.139.Final.jar"; \
+  done; \
+  rm -f /opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/jersey-*-3.1.*.jar; \
+  for pkg in core/jersey-client core/jersey-common core/jersey-server ext/jersey-entity-filtering inject/jersey-hk2 media/jersey-media-json-jackson; do \
+    name=$(basename "$pkg"); \
+    curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/glassfish/jersey/${pkg}/3.1.12/${name}-3.1.12.jar" \
+      -o "/opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/${name}-3.1.12.jar"; \
+  done; \
+  rm -f /opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/zookeeper-3.9.*.jar /opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/zookeeper-jute-3.9.*.jar; \
+  curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/apache/zookeeper/zookeeper/3.9.5/zookeeper-3.9.5.jar" \
+    -o "/opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/zookeeper-3.9.5.jar"; \
+  curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/apache/zookeeper/zookeeper-jute/3.9.5/zookeeper-jute-3.9.5.jar" \
+    -o "/opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/zookeeper-jute-3.9.5.jar"; \
+  for dir in analysis-extras extraction langid; do \
+    rm -f "/opt/solr-$SOLR_VERSION/modules/${dir}/lib/opennlp-tools-"*.jar; \
+    curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/apache/opennlp/opennlp-tools/2.5.12/opennlp-tools-2.5.12.jar" \
+      -o "/opt/solr-$SOLR_VERSION/modules/${dir}/lib/opennlp-tools-2.5.12.jar"; \
+  done; \
+  for dir in extraction langid; do \
+    rm -f "/opt/solr-$SOLR_VERSION/modules/${dir}/lib/tika-core-"*.jar; \
+    curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/apache/tika/tika-core/3.3.3/tika-core-3.3.3.jar" \
+      -o "/opt/solr-$SOLR_VERSION/modules/${dir}/lib/tika-core-3.3.3.jar"; \
+  done; \
+  rm -f "/opt/solr-$SOLR_VERSION/modules/extraction/lib/tika-parsers-"*.jar; \
+  curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/apache/tika/tika-parsers-standard-package/3.3.3/tika-parsers-standard-package-3.3.3.jar" \
+    -o "/opt/solr-$SOLR_VERSION/modules/extraction/lib/tika-parsers-standard-package-3.3.3.jar"; \
+  rm -f "/opt/solr-$SOLR_VERSION/modules/extraction/lib/mchange-commons-java-"*.jar; \
+  curl --retry 5 -sfL "https://repo1.maven.org/maven2/com/mchange/mchange-commons-java/0.4.0/mchange-commons-java-0.4.0.jar" \
+    -o "/opt/solr-$SOLR_VERSION/modules/extraction/lib/mchange-commons-java-0.4.0.jar"; \
+  rm -f "/opt/solr-$SOLR_VERSION/modules/hdfs/lib/hadoop-client-api-"*.jar "/opt/solr-$SOLR_VERSION/modules/hdfs/lib/hadoop-client-runtime-"*.jar; \
+  curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client-api/3.5.0/hadoop-client-api-3.5.0.jar" \
+    -o "/opt/solr-$SOLR_VERSION/modules/hdfs/lib/hadoop-client-api-3.5.0.jar"; \
+  curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client-runtime/3.5.0/hadoop-client-runtime-3.5.0.jar" \
+    -o "/opt/solr-$SOLR_VERSION/modules/hdfs/lib/hadoop-client-runtime-3.5.0.jar"; \
   mkdir -p /opt/solr/server/solr/lib /docker-entrypoint-initdb.d; \
   chown -R $SOLR_USER:$SOLR_GROUP "/opt/solr-$SOLR_VERSION"; \
   find "/opt/solr-$SOLR_VERSION" -type d -print0 | xargs -0 chmod 0755; \

@@ -16,12 +16,13 @@
 cloudbuild:
   docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
+  machineType: E2_HIGHCPU_32
 versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/4af7481b-2d9f-4f98-bb26-cceb6db72414.cloudpartnerservices.goog
   dir: 9/debian12/9.8
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
   packages:
     solr:
       gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
@@ -38,6 +39,7 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
+  - repo1.maven.org
   - github.com/apangin/jattach/releases/
   - www.apache.org
   - archive.apache.org
@@ -54,7 +56,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/4af7481b-2d9f-4f98-bb26-cceb6db72414.cloudpartnerservices.goog
   dir: 9/debian12/9.6
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
   packages:
     solr:
       gpg: 50E3EE1C91C7E0CB4DFB007B369424FC98F3F6EC
@@ -68,6 +70,7 @@ versions:
   allowlist:
   - marketplace.gcr.io
   - deb.debian.org
+  - repo1.maven.org
   - github.com/apangin/jattach/releases/
   - www.apache.org
   - archive.apache.org
