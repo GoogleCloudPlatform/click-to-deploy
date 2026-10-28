@@ -5,7 +5,7 @@ jmx_prometheus_javaagent-0.11.0.jar;https://github.com/prometheus/jmx_exporter/b
 jcommander-1.30.jar;https://github.com/cbeust/jcommander/blob/master/license.txt
 hppc-0.8.1.jar;https://github.com/carrotsearch/hppc/blob/master/LICENSE.txt
 json-simple-1.1.jar;https://github.com/fangyidong/json-simple/blob/master/LICENSE.txt
-netty-all-4.1.58.Final.jar;https://github.com/netty/netty/blob/4.1/LICENSE.txt
+netty-all-4.1.139.Final.jar;https://github.com/netty/netty/blob/4.1/LICENSE.txt
 commons-codec-1.9.jar;https://github.com/apache/commons-codec/blob/master/LICENSE.txt
 jna-5.9.0.jar;https://github.com/java-native-access/jna/blob/master/LICENSE
 log4j-over-slf4j-1.7.25.jar;https://github.com/qos-ch/slf4j/blob/master/log4j-over-slf4j/LICENSE.txt
@@ -49,7 +49,7 @@ logback-classic-1.2.9.jar;https://github.com/qos-ch/logback/blob/master/LICENSE.
 ipaddress-5.3.3.jar;https://github.com/seancfoley/IPAddress/blob/master/LICENSE
 chronicle-bytes-2.20.111.jar;https://github.com/OpenHFT/Chronicle-Bytes/blob/ea/LICENSE
 jbcrypt-0.4.jar;https://github.com/jeremyh/jBCrypt/blob/master/LICENSE
-netty-tcnative-boringssl-static-2.0.36.Final.jar;https://github.com/netty/netty-tcnative/blob/main/LICENSE.txt
+netty-tcnative-boringssl-static-2.0.70.Final.jar;https://github.com/netty/netty-tcnative/blob/main/LICENSE.txt
 antlr-runtime-3.5.2.jar;https://github.com/antlr/antlr4/blob/dev/LICENSE.txt
 psjava-0.1.19.jar;https://github.com/psjava/psjava/blob/master/LICENSE
 guava-27.0-jre.jar;https://github.com/google/guava/blob/master/LICENSE

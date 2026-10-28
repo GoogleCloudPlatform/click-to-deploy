@@ -85,6 +85,7 @@ if [ "$1" = 'cassandra' ]; then
 	if [ "${CASSANDRA_CGROUP_MEMORY_LIMIT}" = 'true' ]; then
 		sed -i 's/^DEFINED_XMX=\$?$/DEFINED_XMX=0/g' $CASSANDRA_CONFIG/cassandra-env.sh
 		sed -i 's/^DEFINED_XMS=\$?$/DEFINED_XMS=0/g' $CASSANDRA_CONFIG/cassandra-env.sh
+		sed -i 's/^DEFINED_MAX_DIRECT_MEMORY_SIZE=\$?$/DEFINED_MAX_DIRECT_MEMORY_SIZE=0/g' $CASSANDRA_CONFIG/cassandra-env.sh
 		echo 'JVM_OPTS="$JVM_OPTS -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -XX:MaxRAMPercentage=50"' >> $CASSANDRA_CONFIG/cassandra-env.sh
 	fi
 fi
