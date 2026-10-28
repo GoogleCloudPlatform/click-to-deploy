@@ -59,7 +59,17 @@ COPY --chown=$KAFKA_USER:$KAFKA_GROUP scripts ${KAFKA_DOCKER_SCRIPTS}
 # Download and setup kafka version v3.9.2
 RUN chmod a+x ${KAFKA_DOCKER_SCRIPTS}/*.sh \
   && ln -s ${KAFKA_DOCKER_SCRIPTS}/*.sh /usr/bin \
-  && curl -sSL ${KAFKA_DIST_URL} -o "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
+  && size=$(curl -fsSIL "${KAFKA_DIST_URL}" | awk 'tolower($1)=="content-length:" {gsub(/\r/,"",$2); print $2}' | tail -n1) \
+  && chunk=$(( (size + 63) / 64 )) \
+  && seq 0 63 | xargs -P 64 -I {} sh -c ' \
+       i=$1; size=$2; chunk=$3; url=$4; \
+       start=$((i * chunk)); \
+       end=$(( (i + 1) * chunk - 1 )); \
+       [ "$end" -ge "$size" ] && end=$((size - 1)); \
+       curl -fsSL --retry 5 --retry-all-errors --range "${start}-${end}" "$url" -o "/tmp/kafka.part.$(printf "%03d" "$i")" \
+     ' _ {} "$size" "$chunk" "${KAFKA_DIST_URL}" \
+  && cat /tmp/kafka.part.* > "/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
+  && rm -f /tmp/kafka.part.* \
   && tar -xzf /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt \
   && mv /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} ${KAFKA_HOME} \
   && rm -f ${KAFKA_HOME}/libs/netty-*-4.1.*.Final*.jar \
