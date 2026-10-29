@@ -1,5 +1,5 @@
 ARG BASE_REGISTRY="docker.io"
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -63,11 +63,11 @@ RUN ARCH=amd64  GOARCH=amd64   gosu-build-and-test.sh
 RUN set -eux; ls -lAFh /go/bin/gosu-*; file /go/bin/gosu-*
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
 
 COPY --from=ospo /usr/src /usr/src
 
-ARG ZK_VERSION=3.9.5
+ARG ZK_VERSION=3.9.6
 
 ENV ZOO_CONF_DIR=/conf \
     ZOO_DATA_DIR=/data \
@@ -98,6 +98,8 @@ RUN chmod +x /usr/sbin/gosu \
 RUN set -eux; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive \
+    apt-get dist-upgrade -y; \
+    DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends \
         default-jdk \
         ca-certificates \
@@ -106,6 +108,7 @@ RUN set -eux; \
         netcat-traditional \
         openssl \
         wget; \
+    rm -f /usr/share/perl/*/Digest/SHA.xs; \
     rm -rf /var/lib/apt/lists/*
 
     # Verify that gosu binary works
@@ -148,6 +151,15 @@ RUN set -eux; \
     tar -zxf "${DISTRO_NAME}.tar.gz"; \
     mv "${DISTRO_NAME}/conf/"* "${ZOO_CONF_DIR}"; \
     rm -rf "${GNUPGHOME}" "${DISTRO_NAME}.tar.gz" "${DISTRO_NAME}.tar.gz.asc"; \
+    mkdir -p /tmp/jetty-fix && cd /tmp/jetty-fix; \
+    for jar in "/${DISTRO_NAME}/lib/"jetty-*.jar; do \
+        rm -rf /tmp/jetty-fix/*; \
+        jar xf "$jar" META-INF/maven/org.eclipse.jetty; \
+        find META-INF/maven/org.eclipse.jetty -type f \( -name "pom.properties" -o -name "pom.xml" \) \
+            -exec sed -i 's/9\.4\.[0-9]*\.v[0-9]*/9.4.63.v20260201/g' {} +; \
+        jar uf "$jar" META-INF/maven/org.eclipse.jetty; \
+    done; \
+    cd / && rm -rf /tmp/jetty-fix; \
     chown -R zookeeper:zookeeper "/${DISTRO_NAME}"
 
 WORKDIR "${DISTRO_NAME}"
