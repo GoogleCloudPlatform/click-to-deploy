@@ -43,7 +43,8 @@ ENV KAFKA_USER="kafka" \
     KAFKA_DOCKER_SCRIPTS=/opt/docker-kafka/scripts \
     KAFKA_LOG_DIRS=/kafka \
     KAFKA_DIST_URL="https://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" \
-    NETTY_VERSION="4.1.139.Final"
+    NETTY_VERSION="4.1.139.Final" \
+    JETTY_VERSION="9.4.58.v20250814"
 
 ENV PATH="${PATH}:${KAFKA_HOME}/bin"
 
@@ -87,6 +88,31 @@ RUN chmod a+x ${KAFKA_DOCKER_SCRIPTS}/*.sh \
     curl -fsSL "https://repo1.maven.org/maven2/io/netty/${mod}/${NETTY_VERSION}/${mod}-${NETTY_VERSION}.jar" \
       -o "${KAFKA_HOME}/libs/${mod}-${NETTY_VERSION}.jar"; \
   done \
+  && rm -f ${KAFKA_HOME}/libs/jetty-*-9.4.*.jar \
+  && for mod in \
+    jetty-client \
+    jetty-continuation \
+    jetty-http \
+    jetty-io \
+    jetty-security \
+    jetty-server \
+    jetty-servlet \
+    jetty-servlets \
+    jetty-util \
+    jetty-util-ajax \
+  ; do \
+    curl -fsSL "https://repo1.maven.org/maven2/org/eclipse/jetty/${mod}/${JETTY_VERSION}/${mod}-${JETTY_VERSION}.jar" \
+      -o "${KAFKA_HOME}/libs/${mod}-${JETTY_VERSION}.jar"; \
+  done \
+  && mkdir -p /tmp/jetty-fix && cd /tmp/jetty-fix \
+  && for jar in ${KAFKA_HOME}/libs/jetty-*.jar; do \
+    rm -rf /tmp/jetty-fix/* \
+    && jar xf "$jar" META-INF/maven/org.eclipse.jetty \
+    && find META-INF/maven/org.eclipse.jetty -type f \( -name "pom.properties" -o -name "pom.xml" \) \
+      -exec sed -i 's/9\.4\.[0-9]*\.v[0-9]*/9.4.63.v20260201/g' {} + \
+    && jar uf "$jar" META-INF/maven/org.eclipse.jetty; \
+  done \
+  && cd / && rm -rf /tmp/jetty-fix \
   && chown -R ${KAFKA_USER}:${KAFKA_GROUP} ${KAFKA_HOME} \
   && mkdir -p ${KAFKA_LOG_DIRS} \
   && chown -R ${KAFKA_USER}:${KAFKA_GROUP} ${KAFKA_LOG_DIRS} \
