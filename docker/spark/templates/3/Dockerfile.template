@@ -25,10 +25,6 @@ RUN apt-get update \
     vim \
     wget \
   && apt-get install -y --only-upgrade perl zlib1g libnss3 \
-  && echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list \
-  && apt-get update \
-  && apt-get install -y --only-upgrade libbrotli1 \
-  && rm -f /etc/apt/sources.list.d/trixie.list \
   && apt-get purge -y python3-pil \
   && pip3 install --no-cache-dir --upgrade pillow --break-system-packages \
   && rm -rf /var/lib/apt/lists/*
