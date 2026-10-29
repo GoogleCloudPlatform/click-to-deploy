@@ -18,7 +18,10 @@ cloudbuild:
   enable_parallel: false
   machineType: E2_HIGHCPU_32
 versions:
-- dir: 5/debian12/5.0
+- annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/ba024e66-0fcf-4db1-8775-c934ffaf77da.cloudpartnerservices.goog
+  dir: 5/debian12/5.0
   from: marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
   packages:
     cassandra:
