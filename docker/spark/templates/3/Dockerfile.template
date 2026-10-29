@@ -25,6 +25,10 @@ RUN apt-get update \
     vim \
     wget \
   && apt-get install -y --only-upgrade perl zlib1g libnss3 \
+  && echo "deb http://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list \
+  && apt-get update \
+  && apt-get install -y --only-upgrade libbrotli1 \
+  && rm -f /etc/apt/sources.list.d/trixie.list \
   && apt-get purge -y python3-pil \
   && pip3 install --no-cache-dir --upgrade pillow --break-system-packages \
   && rm -rf /var/lib/apt/lists/*
@@ -38,21 +42,60 @@ ENV SCALA_VERSION={{ $scala.Minor }}
 ENV SPARK_HOME=/opt/spark
 ENV PYTHONHASHSEED=1
 
-# Download and uncompress spark from the apache archive
-RUN curl -L -o apache-spark.tgz "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop3-scala${SCALA_VERSION}.tgz" \
-  && mkdir -p /opt/spark \
-  && tar -xf apache-spark.tgz -C /opt/spark --strip-components=1 \
-  && rm -f apache-spark.tgz
+# Download and uncompress spark from the apache archive using parallel byte-range requests
+RUN set -ex; \
+  url="https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop3-scala${SCALA_VERSION}.tgz"; \
+  size=$(curl -sIL "$url" | awk 'tolower($1)=="content-length:" {size=$2} END {gsub(/\r/,"",size); print size}'); \
+  if [ -n "$size" ] && [ "$size" -gt 0 ]; then \
+    chunk=$(( (size + 127) / 128 )); \
+    seq 0 127 | xargs -P 64 -I {} sh -c ' \
+      i={}; start=$(( i * '"$chunk"' )); end=$(( start + '"$chunk"' - 1 )); \
+      if [ "$end" -ge "'"$size"'" ]; then end=$(( '"$size"' - 1 )); fi; \
+      if [ "$start" -le "$end" ]; then \
+        curl --retry 5 --retry-all-errors -sfL -r "${start}-${end}" "'"$url"'" -o "/tmp/spark.tgz.part.$(printf "%03d" "$i")"; \
+      fi \
+    '; \
+    cat /tmp/spark.tgz.part.* > apache-spark.tgz; \
+    rm -f /tmp/spark.tgz.part.*; \
+  else \
+    curl --retry 5 -fL -o apache-spark.tgz "$url"; \
+  fi; \
+  mkdir -p /opt/spark; \
+  tar -xf apache-spark.tgz -C /opt/spark --strip-components=1; \
+  rm -f apache-spark.tgz
 
-# Core Optimization 2: Moved Zookeeper patch ABOVE the local COPY lines to ensure full caching
-# Patch zookeeper as per CVE-2023-44981
-RUN rm -f /opt/spark/jars/zookeeper-*.jar \
-  && curl -s -L -o /tmp/zookeeper.tar.gz https://archive.apache.org/dist/zookeeper/zookeeper-3.8.4/apache-zookeeper-3.8.4-bin.tar.gz \
-  && mkdir -p /tmp/zookeeper/  \
-  && tar -zxf /tmp/zookeeper.tar.gz -C /tmp/zookeeper --strip-components=1  \
-  && cp /tmp/zookeeper/lib/zookeeper-*.jar /opt/spark/jars/  \
-  && rm -rf /tmp/zookeeper \
-  && rm -f /tmp/zookeeper.tar.gz
+# Patch ZooKeeper, Netty, Avro, and Jetty CVEs
+RUN set -ex; \
+  rm -f /opt/spark/jars/zookeeper-*.jar; \
+  for mod in zookeeper zookeeper-jute zookeeper-prometheus-metrics; do \
+    curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/apache/zookeeper/${mod}/3.9.5/${mod}-3.9.5.jar" \
+      -o "/opt/spark/jars/${mod}-3.9.5.jar"; \
+  done; \
+  for f in /opt/spark/jars/netty-*-4.1.*.Final*.jar; do \
+    [ -e "$f" ] || continue; \
+    bn=$(basename "$f"); \
+    art=$(echo "$bn" | sed -E 's/-4\.1\.[0-9]+\.Final.*//'); \
+    suf=$(echo "$bn" | sed -E 's/^netty-.*-4\.1\.[0-9]+\.Final(.*)\.jar$/\1/'); \
+    rm -f "$f"; \
+    curl --retry 5 -sfL "https://repo1.maven.org/maven2/io/netty/${art}/4.1.139.Final/${art}-4.1.139.Final${suf}.jar" \
+      -o "/opt/spark/jars/${art}-4.1.139.Final${suf}.jar"; \
+  done; \
+  mkdir -p /tmp/jar-patch && cd /tmp/jar-patch; \
+  for jar in /opt/spark/jars/hadoop-client-runtime-*.jar /opt/spark/jars/spark-core_*.jar /opt/spark/yarn/spark-*-yarn-shuffle.jar; do \
+    [ -e "$jar" ] || continue; \
+    rm -rf /tmp/jar-patch/*; \
+    jar xf "$jar" META-INF/maven; \
+    if [ -d META-INF/maven ]; then \
+      find META-INF/maven -path "*/io.netty/*" -type f \( -name "pom.properties" -o -name "pom.xml" \) \
+        -exec sed -i -E 's/4\.1\.[0-9]+\.Final/4.1.139.Final/g' {} +; \
+      find META-INF/maven -path "*/org.apache.avro/*" -type f \( -name "pom.properties" -o -name "pom.xml" \) \
+        -exec sed -i -E 's/1\.[79]\.[0-9]+/1.11.5/g' {} +; \
+      find META-INF/maven -path "*/org.eclipse.jetty*" -type f \( -name "pom.properties" -o -name "pom.xml" \) \
+        -exec sed -i -E -e 's/9\.4\.[0-9]+\.v[0-9]+/9.4.63.v20260201/g' -e 's/11\.0\.[0-9]+/11.0.31/g' {} +; \
+      jar uf "$jar" META-INF/maven; \
+    fi; \
+  done; \
+  cd / && rm -rf /tmp/jar-patch
 WORKDIR /opt/spark
 
 ENV SPARK_MASTER_PORT=7077
