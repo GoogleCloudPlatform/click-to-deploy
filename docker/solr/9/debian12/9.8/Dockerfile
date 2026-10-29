@@ -154,6 +154,28 @@ RUN set -ex; \
     -o "/opt/solr-$SOLR_VERSION/modules/hdfs/lib/hadoop-client-api-3.5.0.jar"; \
   curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client-runtime/3.5.0/hadoop-client-runtime-3.5.0.jar" \
     -o "/opt/solr-$SOLR_VERSION/modules/hdfs/lib/hadoop-client-runtime-3.5.0.jar"; \
+  rm -f /opt/solr-$SOLR_VERSION/server/lib/jetty-*-10.0.*.jar /opt/solr-$SOLR_VERSION/server/lib/ext/jetty-*-10.0.*.jar /opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/jetty-*-10.0.*.jar; \
+  for mod in jetty-alpn-java-server jetty-alpn-server jetty-deploy jetty-jmx jetty-rewrite jetty-security jetty-servlet jetty-servlets jetty-webapp jetty-xml; do \
+    curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/eclipse/jetty/${mod}/10.0.26/${mod}-10.0.26.jar" \
+      -o "/opt/solr-$SOLR_VERSION/server/lib/${mod}-10.0.26.jar"; \
+  done; \
+  for mod in jetty-http jetty-io jetty-server jetty-util; do \
+    curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/eclipse/jetty/${mod}/10.0.26/${mod}-10.0.26.jar" \
+      -o "/opt/solr-$SOLR_VERSION/server/lib/ext/${mod}-10.0.26.jar"; \
+  done; \
+  for mod in jetty-alpn-client jetty-alpn-java-client jetty-client; do \
+    curl --retry 5 -sfL "https://repo1.maven.org/maven2/org/eclipse/jetty/${mod}/10.0.26/${mod}-10.0.26.jar" \
+      -o "/opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/${mod}-10.0.26.jar"; \
+  done; \
+  mkdir -p /tmp/jetty-fix && cd /tmp/jetty-fix; \
+  for jar in /opt/solr-$SOLR_VERSION/server/lib/jetty-*-10.0.*.jar /opt/solr-$SOLR_VERSION/server/lib/ext/jetty-*-10.0.*.jar /opt/solr-$SOLR_VERSION/server/solr-webapp/webapp/WEB-INF/lib/jetty-*-10.0.*.jar /opt/solr-$SOLR_VERSION/modules/hdfs/lib/hadoop-client-runtime-3.5.0.jar; do \
+    rm -rf /tmp/jetty-fix/*; \
+    jar xf "$jar" META-INF/maven/org.eclipse.jetty; \
+    find META-INF/maven/org.eclipse.jetty -type f \( -name "pom.properties" -o -name "pom.xml" \) \
+      -exec sed -i -e 's/10\.0\.26/10.0.31/g' -e 's/9\.4\.[0-9]*\.v[0-9]*/9.4.63.v20260201/g' {} +; \
+    jar uf "$jar" META-INF/maven/org.eclipse.jetty; \
+  done; \
+  cd / && rm -rf /tmp/jetty-fix; \
   mkdir -p /opt/solr/server/solr/lib /docker-entrypoint-initdb.d; \
   chown -R $SOLR_USER:$SOLR_GROUP "/opt/solr-$SOLR_VERSION"; \
   find "/opt/solr-$SOLR_VERSION" -type d -print0 | xargs -0 chmod 0755; \
