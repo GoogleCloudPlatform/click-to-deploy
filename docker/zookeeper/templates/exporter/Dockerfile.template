@@ -18,7 +18,10 @@ FROM {{ .From }}
 
 RUN set -eu \
     # Installing utilities
-    && apt-get update && apt-get install -y --no-install-recommends curl \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -f /usr/share/perl/*/Digest/SHA.xs \
     && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 9141
