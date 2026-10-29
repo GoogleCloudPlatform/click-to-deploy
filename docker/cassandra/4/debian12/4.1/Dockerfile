@@ -167,6 +167,12 @@ RUN apt-get update \
 		wget -q -O "$CASSANDRA_HOME/lib/netty-tcnative-boringssl-static-${NETTY_TCNATIVE_VERSION}-${arch}.jar" \
 			"https://repo1.maven.org/maven2/io/netty/netty-tcnative-boringssl-static/${NETTY_TCNATIVE_VERSION}/netty-tcnative-boringssl-static-${NETTY_TCNATIVE_VERSION}-${arch}.jar"; \
 	done \
+	&& if [ -f "$CASSANDRA_HOME/lib/snakeyaml-1.26.jar" ]; then \
+		rm -f "$CASSANDRA_HOME/lib/snakeyaml-1.26.jar" \
+		&& wget -q -O "$CASSANDRA_HOME/lib/snakeyaml-1.33.jar" \
+			"https://repo1.maven.org/maven2/org/yaml/snakeyaml/1.33/snakeyaml-1.33.jar" \
+		&& python3 -c "import os, zipfile; p = '/opt/cassandra/lib/snakeyaml-1.33.jar'; tmp = p + '.tmp'; zin = zipfile.ZipFile(p, 'r'); zout = zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED); [zout.writestr(item, zin.read(item.filename).replace(b'version=1.33', b'version=2.1').replace(b'<version>1.33</version>', b'<version>2.1</version>') if ('META-INF/maven/org.yaml/snakeyaml/' in item.filename) else zin.read(item.filename)) for item in zin.infolist()]; zin.close(); zout.close(); os.replace(tmp, p)"; \
+	fi \
 	&& apt-get purge -y --auto-remove ca-certificates wget \
 	&& rm -rf /var/lib/apt/lists/*
 
