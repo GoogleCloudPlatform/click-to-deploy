@@ -22,8 +22,8 @@ RUN apt-get update \
     vim \
     wget \
   && apt-get install -y --only-upgrade perl zlib1g libnss3 \
-  && apt-get purge -y python3-pil \
-  && pip3 install --no-cache-dir --upgrade pillow --break-system-packages \
+  && apt-get purge -y python3-pil python3-brotli python3-fonttools python3-jwt \
+  && pip3 install --no-cache-dir --upgrade pillow brotli fonttools pyjwt --break-system-packages \
   && rm -rf /var/lib/apt/lists/*
   
 RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 1
