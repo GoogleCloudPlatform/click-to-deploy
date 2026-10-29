@@ -55,14 +55,14 @@ versions:
       gpg: f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dce2c5
       version: 2.5.8
     drupal:
-      md5: 3ee542f57bfb6140ae05d29d11918df5
-      version: 10.4.7
+      md5: d738483d473540123f2c6de03354b206
+      version: 10.4.10
   repo: drupal10-php8-apache
   tags:
-  - 10.4.7-debian12
+  - 10.4.10-debian12
   - 10.4-debian12
   - 10-debian12
-  - 10.4.7
+  - 10.4.10
   - '10.4'
   - '10'
   - latest
