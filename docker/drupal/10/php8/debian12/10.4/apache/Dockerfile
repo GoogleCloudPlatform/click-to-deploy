@@ -75,9 +75,9 @@ RUN a2enmod rewrite expires
 WORKDIR /usr/src/drupal
 
 # https://www.drupal.org/node/3060/release
-ENV DRUPAL_VERSION 10.4.7
-ENV C2D_RELEASE 10.4.7
-ENV DRUPAL_MD5 3ee542f57bfb6140ae05d29d11918df5
+ENV DRUPAL_VERSION 10.4.10
+ENV C2D_RELEASE 10.4.10
+ENV DRUPAL_MD5 d738483d473540123f2c6de03354b206
 
 # Download package and extract to web volume
 RUN set -eux; \
@@ -91,13 +91,16 @@ ENV COMPOSER_SHA256 f07934fad44f9048c0dc875a506cca31cc2794d6aebfc1867f3b1fbf48dc
 
 # Install composer binary and install drush
 RUN set -eux; \
-	apt-get update && apt-get install -y --no-install-recommends git unzip; \
+	apt-get update \
+	&& DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y \
+	&& apt-get install -y --no-install-recommends git unzip; \
 	curl -o composer.phar "https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar"; \
 	echo "${COMPOSER_SHA256} composer.phar" | sha256sum -c - ; \
 	chmod +x composer.phar; \
-	php -d memory_limit=4G ./composer.phar require drush/drush; \
+	php -d memory_limit=4G ./composer.phar require "twig/twig:v3.30.0 as v3.19.0" drush/drush; \
+	find /usr/src/drupal/core /usr/src/drupal/vendor -name "composer.lock" -delete; \
 	cp LICENSE.txt vendor/drush/drush/src/; \
-	rm -f composer.phar; \
+	rm -f composer.phar /usr/share/perl/*/Digest/SHA.xs; \
 	rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
