@@ -23,6 +23,8 @@ source /etc/os-release
 
 # Install GitLab
 wget --quiet ${DOWNLOAD_URL} -O /tmp/gitlab.deb && dpkg -i /tmp/gitlab.deb && rm /tmp/gitlab.deb
+perl -00 -ni -e 'print unless /^Package: gitlab-ee$/m' /var/lib/dpkg/status
+rm -f /var/lib/dpkg/status-old
 rm -rf /var/lib/apt/lists/*
 
 # Create sshd daemon

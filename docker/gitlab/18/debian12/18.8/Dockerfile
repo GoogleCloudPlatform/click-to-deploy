@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+FROM marketplace.gcr.io/google/debian12
 
 ENV GITLAB_VERSION 18.8.0
 ENV DOWNLOAD_URL "https://packages.gitlab.com/gitlab/gitlab-ee/packages/debian/bullseye/gitlab-ee_18.8.0-ee.0_amd64.deb/download.deb"
@@ -12,6 +12,7 @@ ENV LANG C.UTF-8
 
 # Install required packages
 RUN apt-get update -q \
+    && DEBIAN_FRONTEND=noninteractive apt-get upgrade -yq \
     && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
       ca-certificates \
       openssh-server \
