@@ -61,7 +61,29 @@ RUN apt-get update && apt-get --no-install-recommends install -y \
 WORKDIR /go/src/github.com/argoproj
 RUN git clone https://github.com/argoproj/argo-workflows.git --branch "v${ARGO_VERSION}"
 WORKDIR /go/src/github.com/argoproj/argo-workflows
-RUN go mod download
+RUN case "${ARGO_VERSION}" in \
+      3.5.*) \
+        git fetch --depth 2 origin fa51c6d382bcf751ef2bd135a85e028171620797 \
+        && git show fa51c6d382bcf751ef2bd135a85e028171620797 -- \
+          cmd/argo/commands/server.go \
+          pkg/apiclient/argo-kube-client.go \
+          pkg/apiclient/eventsource/eventsource.pb.go \
+          pkg/apiclient/sensor/sensor.pb.go \
+          server/auth/gatekeeper.go \
+          server/eventsource/event_source_server.go \
+          server/sensor/sensor_server.go \
+          server/types/clients.go | git apply \
+        && rm -f server/sensor/sensor_server_test.go \
+        && grep -rl "runtimeutil.HandleCrash(runtimeutil.PanicHandlers...)" . \
+          | xargs sed -i "s/runtimeutil.HandleCrash(runtimeutil.PanicHandlers...)/runtimeutil.HandleCrash()/g" \
+        && go mod edit -dropreplace golang.org/x/net \
+        && go get github.com/argoproj/argo-events@v1.9.6 golang.org/x/crypto@v0.52.0 google.golang.org/grpc@v1.79.3 \
+        && go mod tidy ;; \
+      3.6.*) \
+        go get golang.org/x/crypto@v0.52.0 google.golang.org/grpc@v1.79.3 \
+        && go mod tidy ;; \
+    esac \
+    && go mod download
 
 
 # Stage: Server: UI
@@ -113,9 +135,13 @@ RUN target=/root/.cache/go-build make dist/argo
 FROM {{ .From }}
 
 # Patch critical CVEs in base OS layer
-RUN apt-get update && apt-get install -y --only-upgrade \
-    perl \
-    zlib1g \
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
+    && apt-get install -y --only-upgrade \
+        libpcre2-8-0 \
+        perl \
+        perl-base \
+        zlib1g \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ospo /usr/src /usr/src
