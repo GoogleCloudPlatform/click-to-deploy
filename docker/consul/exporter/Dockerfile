@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as builder
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c as builder
 
 ENV GOPATH /usr/local
 
@@ -39,12 +39,27 @@ RUN set -eux \
     && govendor license +vendor > /NOTICES \
     # Verifies checksum. Changing the checksum means changing the licenses.
     && echo "${NOTICES_SHA256} /NOTICES" | sha256sum -c \
-    && cp -R "${GOPATH}/src/github.com/prometheus/consul_exporter" /tmp/
+    && cp -R "${GOPATH}/src/github.com/prometheus/consul_exporter" /tmp/ \
+    # Rebuild consul_exporter with Go 1.26.10 and patched golang.org/x/crypto
+    && curl -sL https://go.dev/dl/go1.26.10.linux-amd64.tar.gz | tar -C /opt -xzf - \
+    && export GOROOT=/opt/go PATH="/opt/go/bin:${PATH}" \
+    && go get golang.org/x/crypto@v0.52.0 \
+    && go mod tidy \
+    && CGO_ENABLED=0 go build -trimpath -ldflags "-w -s" -o /consul_exporter ./cmd/consul_exporter
 
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
 # The scratch image is the most minimal image in Docker. It doesn't contain any folders/files.
 # Builded container will be contain only files copied downstair.
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
+    && apt-get install -y --only-upgrade \
+        libpcre2-8-0 \
+        perl \
+        perl-base \
+        zlib1g \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /consul_exporter /bin/consul_exporter
 COPY --from=builder /LICENSE /usr/share/consul_exporter/LICENSE
