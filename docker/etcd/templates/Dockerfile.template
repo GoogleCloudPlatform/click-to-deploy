@@ -35,9 +35,10 @@ FROM {{ .From }}
 ENV C2D_RELEASE {{ $c2dRelease }}
 
 RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
     apt-get install -y libc-bin libssl3 && \
     # Patch critical CVEs in base OS layer
-    apt-get install -y --only-upgrade perl zlib1g && \
+    apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

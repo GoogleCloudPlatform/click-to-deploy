@@ -21,13 +21,13 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/8be1fafd-f0c6-4770-b23e-bce06be7b750.cloudpartnerservices.goog
   dir: 3/debian12/3.6
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
   packages:
     etcd:
       sha256: ffe840ff9295808e88cce2794a18a5ac87f12a5203c8314d0bf6aa119b41bac5
       version: 3.6.14
     golang:
-      version: 1.25.9
+      version: 1.26.10
   templateArgs:
     c2dRelease: 3.6.14
   repo: etcd3
@@ -47,13 +47,13 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/8be1fafd-f0c6-4770-b23e-bce06be7b750.cloudpartnerservices.goog
   dir: 3/debian12/3.5
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
   packages:
     etcd:
       sha256: 5025b5b24d81a9616b6e284ccd439b9a3df055ef8fdcdc142af3ec8f6a3b3c95
       version: 3.5.33
     golang:
-      version: 1.25.9
+      version: 1.26.10
   templateArgs:
     c2dRelease: 3.5.33
   repo: etcd3

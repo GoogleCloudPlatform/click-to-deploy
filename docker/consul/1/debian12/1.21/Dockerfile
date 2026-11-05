@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
 
 # This is the release of Consul to pull in.
 ENV CONSUL_VERSION 1.21.1
@@ -33,7 +33,7 @@ RUN set -ex; \
     ; \
     \
     # Install a secure Go version
-    wget -qO- https://go.dev/dl/go1.25.9.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
+    wget -qO- https://go.dev/dl/go1.26.10.linux-amd64.tar.gz | tar -C /usr/local -xzf -; \
     export PATH=$PATH:/usr/local/go/bin; \
     \
     # Compile gosu
@@ -43,7 +43,7 @@ RUN set -ex; \
     \
     # Test gosu runs and clean up build dependencies
     /usr/local/bin/gosu nobody true; \
-    rm -rf /usr/local/go /usr/local/src/gosu; \
+    rm -rf /usr/local/src/gosu /root/go /root/.cache; \
     rm -rf /var/lib/apt/lists/*
 
 # Set up certificates, base tools, and Consul.
@@ -57,21 +57,36 @@ RUN set -eux && \
       iproute2 \
       jq \
     ' && \
-    apt-get update && apt-get install -qq -y $buildDependencies \
-      && apt-get install -y --only-upgrade perl zlib1g \
-      && gpg --keyserver keyserver.ubuntu.com --recv-keys $CONSUL_GPG
+    apt-get update \
+      && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
+      && apt-get install -qq -y $buildDependencies \
+      && apt-get install -y --only-upgrade \
+          libpcre2-8-0 \
+          perl \
+          perl-base \
+          zlib1g \
+      && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /tmp/build && \
+RUN set -eux && \
+    export PATH=$PATH:/usr/local/go/bin && \
+    git clone --depth 1 --branch "v${CONSUL_VERSION}" https://github.com/hashicorp/consul.git /tmp/build && \
     cd /tmp/build && \
-    wget ${HASHICORP_RELEASES}/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip && \
-    wget ${HASHICORP_RELEASES}/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS && \
-    wget ${HASHICORP_RELEASES}/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS.sig && \
-    gpg --batch --verify consul_${CONSUL_VERSION}_SHA256SUMS.sig consul_${CONSUL_VERSION}_SHA256SUMS && \
-    grep consul_${CONSUL_VERSION}_linux_amd64.zip consul_${CONSUL_VERSION}_SHA256SUMS | sha256sum -c && \
-    unzip -d /bin consul_${CONSUL_VERSION}_linux_amd64.zip && \
+    (grep -q "ExitIdle" agent/grpc-internal/balancer/balancer.go || echo "func (b *balancer) ExitIdle() {}" >> agent/grpc-internal/balancer/balancer.go) && \
+    go mod edit \
+      -replace="github.com/envoyproxy/go-control-plane=github.com/envoyproxy/go-control-plane@v0.12.0" \
+      -replace="go.opentelemetry.io/otel/sdk/metric=go.opentelemetry.io/otel/sdk/metric@v0.39.0" \
+      -replace="go.opentelemetry.io/otel/sdk=go.opentelemetry.io/otel/sdk@v1.24.0" \
+      -replace="go.opentelemetry.io/otel=go.opentelemetry.io/otel@v1.24.0" \
+      -replace="go.opentelemetry.io/otel/trace=go.opentelemetry.io/otel/trace@v1.24.0" \
+      -replace="go.opentelemetry.io/otel/metric=go.opentelemetry.io/otel/metric@v1.24.0" \
+      -require="google.golang.org/api@v0.195.0" \
+      -require="golang.org/x/crypto@v0.52.0" \
+      -require="google.golang.org/grpc@v1.79.3" && \
+    go mod tidy && \
+    CGO_ENABLED=0 go build -trimpath -ldflags "-w -s" -o /bin/consul . && \
     cd /tmp && \
-    rm -rf /tmp/build && \
-    # tiny smoke test to ensure the binary we downloaded runs right version
+    rm -rf /tmp/build /usr/local/go /root/go /root/.cache && \
+    # tiny smoke test to ensure the binary we built runs right version
     test ${C2D_RELEASE} = $(consul version | awk '/Consul/ { print $2 }' | grep -o -E '([0-9]+\.)([0-9]+\.)([0-9]+)'$) \
          || { echo "Version check failed"; exit 1; }
 
