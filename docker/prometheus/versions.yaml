@@ -21,7 +21,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
   dir: 2/debian12/2.55
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
   packages:
     prometheus:
       sha256: 19700bdd42ec31ee162e4079ebda4cd0a44432df4daa637141bdbea4b1cd8927
@@ -36,13 +36,17 @@ versions:
   - '2'
   allowlist:
   - marketplace.gcr.io
+  - docker.io
   - deb.debian.org
   - github.com/prometheus/prometheus/releases/download/
+  - github.com/prometheus/prometheus.git
+  - proxy.golang.org
+  - sum.golang.org
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
   dir: 2/debian12/2.54
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
   packages:
     prometheus:
       sha256: 31715ef65e8a898d0f97c8c08c03b6b9afe485ac84e1698bcfec90fc6e62924f
@@ -55,14 +59,18 @@ versions:
   - '2.54'
   allowlist:
   - marketplace.gcr.io
+  - docker.io
   - deb.debian.org
   - github.com/prometheus/prometheus/releases/download/
+  - github.com/prometheus/prometheus.git
+  - proxy.golang.org
+  - sum.golang.org
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/dfd27a7c-1349-420c-82bc-cb0a4f1f3774.cloudpartnerservices.goog
     # Ensure the directory matches the new version path
   dir: 3/debian12/3.13
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
   packages:
     prometheus:
       sha256: 0e8c4d46101bd025ea8265e377d2caabc57f488fc1be1c367f37db69ea41be6f
@@ -78,5 +86,9 @@ versions:
   - latest
   allowlist:
   - marketplace.gcr.io
+  - docker.io
   - deb.debian.org
   - github.com/prometheus/prometheus/releases/download/
+  - github.com/prometheus/prometheus.git
+  - proxy.golang.org
+  - sum.golang.org
