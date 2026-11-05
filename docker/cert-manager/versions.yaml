@@ -22,7 +22,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/bde1bd76-14f1-46d2-99ad-f484cff10720.cloudpartnerservices.goog
   dir: 1/debian12/1.17
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
   packages:
     cert-manager:
       version: 1.17.4
@@ -47,7 +47,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/bde1bd76-14f1-46d2-99ad-f484cff10720.cloudpartnerservices.goog
   dir: 1/debian12/1.15
-  from: marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+  from: marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
   packages:
     cert-manager:
       version: 1.15.5
