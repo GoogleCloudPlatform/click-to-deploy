@@ -22,10 +22,10 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/c613a576-2e1c-40bb-ae32-ca094100f227.cloudpartnerservices.goog
   dir: 2/debian12/2.15
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
   packages:
     golang:
-      version: 1.23.5
+      version: '1.26'
     kube-state-metrics:
       version: 2.15.0
   repo: kube-state-metrics2
@@ -43,3 +43,5 @@ versions:
   - github.com/kubernetes/kube-state-metrics.git
   - github.com/prometheus/common
   - deb.debian.org
+  - proxy.golang.org
+  - sum.golang.org
