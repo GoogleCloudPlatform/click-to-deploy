@@ -1,13 +1,13 @@
 # Update and install necessary packages
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as builder
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c as builder
 
 # Install basic build tools and wget
 RUN apt-get update && \
     apt-get install -y wget tar gzip git ca-certificates
 
 # Install Go
-ARG GO_VERSION=1.25.9
+ARG GO_VERSION=1.26.10
 RUN wget -q https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz && \
     tar -xzf go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local
 
@@ -27,14 +27,15 @@ RUN git clone --depth 1 -b v${ETCD_VER} https://github.com/etcd-io/etcd.git /usr
 
 # ---------------------------------------
 # Final lightweight image
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
 
 ENV C2D_RELEASE 3.6.14
 
 RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
     apt-get install -y libc-bin libssl3 && \
     # Patch critical CVEs in base OS layer
-    apt-get install -y --only-upgrade perl zlib1g && \
+    apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
