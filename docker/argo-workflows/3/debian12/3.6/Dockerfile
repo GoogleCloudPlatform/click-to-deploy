@@ -18,7 +18,7 @@
 
 ARG BASE_REGISTRY="docker.io"
 
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -36,7 +36,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 # Stage: Server and Workflow Controller: Builder
-FROM docker.io/library/golang:1.25-bookworm as builder
+FROM docker.io/library/golang:1.26-bookworm as builder
 
 ARG ARGO_VERSION="3.6.7"
 ENV ARGO_VERSION "${ARGO_VERSION}"
@@ -61,7 +61,29 @@ RUN apt-get update && apt-get --no-install-recommends install -y \
 WORKDIR /go/src/github.com/argoproj
 RUN git clone https://github.com/argoproj/argo-workflows.git --branch "v${ARGO_VERSION}"
 WORKDIR /go/src/github.com/argoproj/argo-workflows
-RUN go mod download
+RUN case "${ARGO_VERSION}" in \
+      3.5.*) \
+        git fetch --depth 2 origin fa51c6d382bcf751ef2bd135a85e028171620797 \
+        && git show fa51c6d382bcf751ef2bd135a85e028171620797 -- \
+          cmd/argo/commands/server.go \
+          pkg/apiclient/argo-kube-client.go \
+          pkg/apiclient/eventsource/eventsource.pb.go \
+          pkg/apiclient/sensor/sensor.pb.go \
+          server/auth/gatekeeper.go \
+          server/eventsource/event_source_server.go \
+          server/sensor/sensor_server.go \
+          server/types/clients.go | git apply \
+        && rm -f server/sensor/sensor_server_test.go \
+        && grep -rl "runtimeutil.HandleCrash(runtimeutil.PanicHandlers...)" . \
+          | xargs sed -i "s/runtimeutil.HandleCrash(runtimeutil.PanicHandlers...)/runtimeutil.HandleCrash()/g" \
+        && go mod edit -dropreplace golang.org/x/net \
+        && go get github.com/argoproj/argo-events@v1.9.6 golang.org/x/crypto@v0.52.0 google.golang.org/grpc@v1.79.3 \
+        && go mod tidy ;; \
+      3.6.*) \
+        go get golang.org/x/crypto@v0.52.0 google.golang.org/grpc@v1.79.3 \
+        && go mod tidy ;; \
+    esac \
+    && go mod download
 
 
 # Stage: Server: UI
@@ -110,12 +132,16 @@ RUN target=/root/.cache/go-build make dist/argo
 
 
 # Stage: Final Image
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
 
 # Patch critical CVEs in base OS layer
-RUN apt-get update && apt-get install -y --only-upgrade \
-    perl \
-    zlib1g \
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
+    && apt-get install -y --only-upgrade \
+        libpcre2-8-0 \
+        perl \
+        perl-base \
+        zlib1g \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ospo /usr/src /usr/src
