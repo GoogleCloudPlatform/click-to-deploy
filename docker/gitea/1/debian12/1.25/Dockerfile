@@ -1,5 +1,5 @@
 ARG BASE_REGISTRY="docker.io"
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0 as ospo
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c as ospo
 
 # Download Licenses and restricted source-code
 COPY components.csv /components.csv
@@ -17,7 +17,7 @@ RUN mkdir -p /usr/src/licenses \
 		&& /download-ref-repos.sh /source_code.txt /usr/src
 
 #Build stage
-FROM docker.io/library/golang:1.25-bookworm AS build-env
+FROM docker.io/library/golang:1.26-bookworm AS build-env
 
 ARG GOPROXY
 ENV GOPROXY https://proxy.golang.org,direct
@@ -45,17 +45,20 @@ WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 #Checkout version if set
 RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi
 RUN pnpm config set engine-strict false
-RUN make clean-all build
+RUN go get github.com/go-git/go-git/v5@v5.16.5 golang.org/x/crypto@v0.52.0 google.golang.org/grpc@v1.79.3 \
+    && go mod tidy \
+    && make clean-all build EXTRA_GOFLAGS="-buildvcs=false"
 
 # Begin env-to-ini build
 RUN go build contrib/environment-to-ini/environment-to-ini.go
-FROM marketplace.gcr.io/google/debian12@sha256:c2a5eb3516da4c3bb0cf2d6fea739bd7b2dc7b1ac444b5fbd7c4def2aa57d4a0
+FROM marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594b0e5d9d2ad9751f439b25824ae65d64c
 
 COPY --from=ospo /usr/src /usr/src
 
 EXPOSE 22 3000
 
 RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
     apt-get install -y \
         bash \
         ca-certificates \
@@ -65,7 +68,7 @@ RUN apt-get update && \
         s6 \
         sqlite3 \
         gnupg \
-    && apt-get install -y --only-upgrade perl zlib1g \
+    && apt-get install -y --only-upgrade libpcre2-8-0 perl perl-base zlib1g \
     && rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /usr/lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1 \
