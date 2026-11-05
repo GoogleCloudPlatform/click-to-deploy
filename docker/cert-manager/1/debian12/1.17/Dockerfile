@@ -70,6 +70,8 @@ FROM  marketplace.gcr.io/google/debian12@sha256:a5e684c8f4275ed6efedd7e5ea29d594
   COPY components.csv /components.csv
   COPY download-licenses.sh /download-licenses.sh
   RUN mkdir -p /usr/src && \
-  		/download-licenses.sh /components.csv /usr/src/licenses
+  		/download-licenses.sh /components.csv /usr/src/licenses && \
+  		apt-get purge -y --auto-remove pup && \
+  		rm -rf /var/lib/apt/lists/*
   
   USER cert-manager

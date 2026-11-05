@@ -72,6 +72,8 @@
   COPY components.csv /components.csv
   COPY download-licenses.sh /download-licenses.sh
   RUN mkdir -p /usr/src && \
-  		/download-licenses.sh /components.csv /usr/src/licenses
+  		/download-licenses.sh /components.csv /usr/src/licenses && \
+  		apt-get purge -y --auto-remove pup && \
+  		rm -rf /var/lib/apt/lists/*
   
   USER cert-manager
