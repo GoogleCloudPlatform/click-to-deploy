@@ -83,8 +83,24 @@ kubectl apply -f jenkins-service-role-binding.yaml -n $NAMESPACE
 2. Add the service account token to Jenkins, first get the token using the next command:
 ```
 # Service Account Token
-kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount \
--n $NAMESPACE -o jsonpath="{.secrets[0].name}") \
+SECRET_NAME=$APP_INSTANCE_NAME-serviceaccount-token
+
+kubectl apply -n $NAMESPACE -f - << __EOF__
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "${SECRET_NAME}"
+  annotations:
+    kubernetes.io/service-account.name: "$APP_INSTANCE_NAME-serviceaccount"
+type: kubernetes.io/service-account-token
+__EOF__
+
+until [[ $(kubectl get -n $NAMESPACE -o=jsonpath="{.data.token}" "secret/${SECRET_NAME}") ]]; do 
+  echo "waiting for token..." >&2;
+  sleep 1;
+done
+
+kubectl get secret ${SECRET_NAME} \
 -n $NAMESPACE -o jsonpath="{.data.token}" | base64 --decode
 ```
 3. Create a secret text in Jenkins with the token:
@@ -94,8 +110,7 @@ kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount \
 4. Get the CA certificate and add it to the plugin configuration:
 ```
 # CA Certificate
-kubectl get secret $(kubectl get sa $APP_INSTANCE_NAME-serviceaccount \
--n $NAMESPACE -o jsonpath="{.secrets[0].name}") \
+kubectl get secret ${SECRET_NAME} \
 -n $NAMESPACE -o jsonpath={.data.'ca\.crt'} | base64 --decode
 ```
 ![Add CA certificate](resources/configure-jenkins-k8s-plugin2.png)
