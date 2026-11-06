@@ -1,0 +1,11 @@
+- !policy
+  id: Test
+  body:
+  - !user TestUser
+  - !variable secretVar
+  - !permit
+    # Give permissions to the human user to update the secret and fetch the secret.
+    role: !user TestUser
+    privileges: [read, update, execute]
+    resource: !variable secretVar
+
