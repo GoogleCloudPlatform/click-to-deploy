@@ -1,7 +1,6 @@
 name: Pull Request Labeler
 on:
-  # Using pull_request_target allows the action to have "Write" permissions even for PRs from forks.
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize]
 
 permissions:
@@ -10,9 +9,11 @@ permissions:
 
 jobs:
   label:
+    # Fork PRs get a read-only GITHUB_TOKEN under pull_request, so labeling would fail; skip them.
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/labeler@v2
+    - uses: actions/labeler@5f867a63be70efff62b767459b009290364495eb # v2
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: .github/labeler.yml
