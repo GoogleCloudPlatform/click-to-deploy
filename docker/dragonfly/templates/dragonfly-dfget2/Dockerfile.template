@@ -17,7 +17,8 @@
 {{- $golang := index .Packages "golang" -}}
 {{- $grpc_health_probe := index .Packages "grpc_health_probe" -}}
 
-FROM golang:{{ $golang.Version }}-alpine as builder
+ARG BASE_REGISTRY="docker.io"
+FROM ${BASE_REGISTRY} /golang-alpine as builder
 
 ARG GOPROXY
 ARG GOTAGS
