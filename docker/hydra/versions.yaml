@@ -16,19 +16,19 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 2/debian11/2.1
+- dir: 2/debian11/2.2
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     hydra:
-      gpg: acab44b1f5324e001fcfecaa7115a5c3a07156e3e0d3840d8ed12deca4db6490
-      version: 2.1.2
+      gpg: e53a053a168a8329f12b1cc776477edc8956e4eebc3cf9fa4ad521e66f60892c
+      version: 2.2.0
   repo: hydra2
   tags:
-  - 2.1.2-debian11
-  - 2.1-debian11
+  - 2.2.0-debian11
+  - 2.2-debian11
   - 2-debian11
-  - 2.1.2
-  - '2.1'
+  - 2.2.0
+  - '2.2'
   - '2'
   - latest
 
