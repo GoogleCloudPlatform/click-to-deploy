@@ -97,7 +97,7 @@ RUN set -eux; \
 	curl -o composer.phar "https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar"; \
 	echo "${COMPOSER_SHA256} composer.phar" | sha256sum -c - ; \
 	chmod +x composer.phar; \
-	php -d memory_limit=4G ./composer.phar require "twig/twig:v3.30.0 as v3.19.0" drush/drush; \
+	php -d memory_limit=4G ./composer.phar require "twig/twig:v3.30.0 as v3.19.0" "consolidation/robo:<5.2.0" drush/drush; \
 	find /usr/src/drupal -name "TwigNodeVisitor.php" -exec sed -i "/setAttribute('twig_callable'/a \        \$node->setAttribute('template_escaper', FALSE);" {} +; \
 	sed -i "s/if (!\$this->getAttribute('template_escaper'))/if (!\$this->getAttribute('template_escaper') || !\\\\in_array(\$this->getAttribute('twig_callable')->getName(), ['escape', 'e'], true))/" vendor/twig/twig/src/Node/Expression/Filter/EscapeFilter.php; \
 	find /usr/src/drupal/core /usr/src/drupal/vendor -name "composer.lock" -delete; \
