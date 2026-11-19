@@ -1,7 +1,7 @@
-FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
+FROM marketplace.gcr.io/google/debian12@sha256:a623af62efaf2d260a05aae6869fd48ef8abedb957c6afd10028ac1a2993ba53
 
-ENV NGINX_VERSION 1.26.3*
-ENV C2D_RELEASE 1.26.3
+ENV NGINX_VERSION 1.30.7*
+ENV C2D_RELEASE 1.30.7
 
 ENV ENABLE_STUB_STATUS false
 
