@@ -27,20 +27,20 @@ versions:
 - annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/2e7c2687-3a3c-465b-84e9-ee17fc5f89fd.cloudpartnerservices.goog
-  dir: 1/debian12/1.26
+  dir: 1/debian12/1.30
   excludeTests:
   - tests/functional_tests/exporter_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
+  from: marketplace.gcr.io/google/debian12@sha256:a623af62efaf2d260a05aae6869fd48ef8abedb957c6afd10028ac1a2993ba53
   packages:
     nginx:
-      version: 1.26.3
+      version: 1.30.7
   repo: nginx1
   tags:
-  - 1.26.3-debian12
-  - 1.26-debian12
+  - 1.30.7-debian12
+  - 1.30-debian12
   - 1-debian12
-  - 1.26.3
-  - '1.26'
+  - 1.30.7
+  - '1.30'
   - '1'
   - latest
   templateArgs:
@@ -57,7 +57,7 @@ versions:
   dir: exporter
   excludeTests:
   - tests/functional_tests/nginx_test.yaml
-  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
+  from: marketplace.gcr.io/google/debian12@sha256:a623af62efaf2d260a05aae6869fd48ef8abedb957c6afd10028ac1a2993ba53
   packages:
     exporter:
       version: 1.5.3
