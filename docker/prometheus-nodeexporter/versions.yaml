@@ -21,7 +21,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/0b86772a-0533-4aa1-aae2-d42fab2af63b.cloudpartnerservices.goog
   dir: 1/debian12/1.9
-  from: marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+  from: marketplace.gcr.io/google/debian12@sha256:a623af62efaf2d260a05aae6869fd48ef8abedb957c6afd10028ac1a2993ba53
   packages:
     nodeexporter:
       version: 1.9.1
@@ -36,6 +36,10 @@ versions:
   - latest
   allowlist:
   - marketplace.gcr.io
+  - docker.io
   - deb.debian.org
   - github.com/prometheus/node_exporter/releases/download/
+  - github.com/prometheus/node_exporter.git
+  - proxy.golang.org
+  - sum.golang.org
 

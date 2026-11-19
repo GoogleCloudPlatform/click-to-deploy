@@ -1,4 +1,20 @@
-FROM marketplace.gcr.io/google/debian12@sha256:f13f9826c524466f844e74534b8add32f51acd2be428b5dee782fe9086e59861
+
+FROM docker.io/library/golang:1.26-bookworm AS builder
+
+ENV NODEEXPORTER_VERSION 1.9.1
+
+RUN set -x && \
+    mkdir -p /out && \
+    git clone --depth 1 --branch "v${NODEEXPORTER_VERSION}" https://github.com/prometheus/node_exporter.git /src/node_exporter && \
+    cd /src/node_exporter && \
+    go get golang.org/x/crypto@v0.52.0 && \
+    go mod tidy && \
+    CGO_ENABLED=0 go build -buildvcs=false -tags netgo \
+      -ldflags="-s -w -X github.com/prometheus/common/version.Version=${NODEEXPORTER_VERSION}" \
+      -o /out/node_exporter .
+
+FROM marketplace.gcr.io/google/debian12@sha256:a623af62efaf2d260a05aae6869fd48ef8abedb957c6afd10028ac1a2993ba53
+
 ENV NODEEXPORTER_VERSION 1.9.1
 
 ENV C2D_RELEASE=${NODEEXPORTER_VERSION}
@@ -6,14 +22,19 @@ ENV C2D_RELEASE=${NODEEXPORTER_VERSION}
 ENV NODEEXPORTER_URL="https://github.com/prometheus/node_exporter/releases/download/v$NODEEXPORTER_VERSION/node_exporter-$NODEEXPORTER_VERSION.linux-amd64.tar.gz"
 
 RUN set -x && \
-    apt-get update && apt-get install -qq -y wget && \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
+    apt-get install -qq -y wget && \
+    apt-get install -y --only-upgrade libgnutls30 libpcre2-8-0 perl perl-base zlib1g && \
     mkdir nodeexporter-files && cd nodeexporter-files && \
     wget -O nodeexporter.tar.gz "$NODEEXPORTER_URL" && \
     tar xfvz nodeexporter.tar.gz --strip-components=1 && \
-    mv node_exporter /bin/ && \
     mkdir -p /usr/share/doc/nodeexporter && \
     mv LICENSE /usr/share/doc/nodeexporter && \
-    cd - && rm -r nodeexporter-files
+    cd - && rm -r nodeexporter-files && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /out/node_exporter /bin/node_exporter
 
 EXPOSE      9100
 USER        nobody
