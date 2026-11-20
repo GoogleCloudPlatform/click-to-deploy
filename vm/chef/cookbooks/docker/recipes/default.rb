@@ -20,9 +20,11 @@ end
 bash 'install docker repo' do
   user 'root'
   code <<-EOH
-    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-    apt update
+    install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
+    chmod a+r /etc/apt/keyrings/docker.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" > /etc/apt/sources.list.d/docker.list
+    apt-get update
     apt-cache policy docker-ce
   EOH
 end
@@ -30,6 +32,6 @@ end
 bash 'install docker' do
   user 'root'
   code <<-EOH
-    apt install -y docker-ce
+    apt-get install -y docker-ce
   EOH
 end
