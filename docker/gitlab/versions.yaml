@@ -38,6 +38,8 @@ versions:
   - marketplace.gcr.io
   - packages.gitlab.com
   - deb.debian.org
+  - nginx.org
+  - gitlab.com
 - dir: 17/debian12/17.11
   from: marketplace.gcr.io/google/debian12
   packages:
@@ -58,3 +60,5 @@ versions:
   - marketplace.gcr.io
   - packages.gitlab.com
   - deb.debian.org
+  - nginx.org
+  - gitlab.com
