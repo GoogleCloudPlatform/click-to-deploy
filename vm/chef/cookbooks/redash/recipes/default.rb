@@ -89,4 +89,39 @@ remote_file 'Download composer manifest' do
   source 'https://raw.githubusercontent.com/getredash/setup/master/data/compose.yaml'
 end
 
+directory "#{node['redash']['path']}/nginx" do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+cookbook_file "#{node['redash']['path']}/nginx/default.conf" do
+  source 'default.conf'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
+ruby_block 'Configure NGINX image in docker-compose.yml' do
+  block do
+    compose_file = "#{node['redash']['path']}/setup/docker-compose.yml"
+    content = ::File.read(compose_file)
+    nginx_image = node['redash']['nginx']['image']
+    nginx_conf_mount = "#{node['redash']['path']}/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro"
+    pattern = %r{^([ \t]+)image:\s+redash/nginx:latest\r?$}
+
+    raise "Expected redash/nginx:latest image not found in #{compose_file}" unless content.match?(pattern)
+
+    updated = content.sub(pattern) do
+      indent = Regexp.last_match(1)
+      "#{indent}image: #{nginx_image}\n" \
+        "#{indent}volumes:\n" \
+        "#{indent}  - #{nginx_conf_mount}"
+    end
+    ::File.write(compose_file, updated)
+  end
+end
+
 c2d_startup_script 'redash-setup'
