@@ -18,3 +18,4 @@ default['redash']['packages'] = ['jq']
 
 default['redash']['linux']['user'] = 'redash'
 default['redash']['path'] = '/opt/redash'
+default['redash']['nginx']['image'] = 'nginx:1.30.7-alpine'
