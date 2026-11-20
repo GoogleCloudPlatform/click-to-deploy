@@ -6,7 +6,7 @@ include ../images.Makefile
 CHART_NAME := nginx
 APP_ID ?= $(CHART_NAME)
 
-TRACK ?= 1.26
+TRACK ?= 1.30
 SERVICE_NAME := services/ebfbb623-a7d4-4e60-ac99-416808963e17.cloudpartnerservices.goog
 
 EXPORTER_TAG ?= 1.3
