@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.5
+FROM gcr.io/cloud-marketplace-tools/testrunner:0.1.8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \

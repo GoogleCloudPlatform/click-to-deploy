@@ -68,32 +68,11 @@ x-google-marketplace:
         registry.controller.image.tag:
           type: TAG
 
-    chartmuseum:
-      properties:
-        chartmuseum.image.repo:
-          type: REPO_WITH_REGISTRY
-        chartmuseum.image.tag:
-          type: TAG
-
     trivy:
       properties:
         trivy.image.repo:
           type: REPO_WITH_REGISTRY
         trivy.image.tag:
-          type: TAG
-
-    notary-server:
-      properties:
-        notary.server.image.repo:
-          type: REPO_WITH_REGISTRY
-        notary.server.image.tag:
-          type: TAG
-
-    notary-signer:
-      properties:
-        notary.signer.image.repo:
-          type: REPO_WITH_REGISTRY
-        notary.signer.image.tag:
           type: TAG
 
     database:

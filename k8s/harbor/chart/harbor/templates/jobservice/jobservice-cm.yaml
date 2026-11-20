@@ -33,3 +33,6 @@ data:
     loggers:
       - name: "STD_OUTPUT"
         level: INFO
+    reaper:
+      max_update_hours: 24
+      max_dangling_hours: 168

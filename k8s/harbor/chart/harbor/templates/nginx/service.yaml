@@ -19,9 +19,6 @@ spec:
     - name: https
       port: {{ $clusterIP.ports.httpsPort }}
       targetPort: 8443
-    - name: notary
-      port: {{ $clusterIP.ports.notaryPort }}
-      targetPort: 4443
   selector:
 {{ include "harbor.matchLabels" . | indent 4 }}
     component: nginx
