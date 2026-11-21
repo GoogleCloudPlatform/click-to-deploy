@@ -36,10 +36,6 @@ data:
         server "{{ template "harbor.portal" . }}:80";
       }
 
-      upstream notary-server {
-        server {{ template "harbor.notary-server" . }}:4443;
-      }
-
       log_format timed_combined '[$time_local]:$remote_addr - '
         '"$request" $status $body_bytes_sent '
         '"$http_referer" "$http_user_agent" '
@@ -53,37 +49,6 @@ data:
       }
 
       server {
-        listen 4443 ssl;
-        server_tokens off;
-        # ssl
-        ssl_certificate /etc/nginx/cert/tls.crt;
-        ssl_certificate_key /etc/nginx/cert/tls.key;
-
-        # recommendations from https://raymii.org/s/tutorials/strong_ssl_security_on_nginx.html
-        ssl_protocols tlsv1.1 tlsv1.2;
-        ssl_ciphers '!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES:';
-        ssl_prefer_server_ciphers on;
-        ssl_session_cache shared:ssl:10m;
-
-        # disable any limits to avoid http 413 for large image uploads
-        client_max_body_size 0;
-
-        # required to avoid http 411: see issue #1486 (https://github.com/docker/docker/issues/1486)
-        chunked_transfer_encoding on;
-
-        location /v2/ {
-          proxy_pass http://notary-server/v2/;
-          proxy_set_header Host $http_host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $x_forwarded_proto;
-
-          proxy_buffering off;
-          proxy_request_buffering off;
-        }
-      }
-
-      server {
         listen 8443 ssl;
     #    server_name harbordomain.com;
         server_tokens off;
@@ -92,7 +57,7 @@ data:
         ssl_certificate_key /etc/nginx/cert/tls.key;
 
         # Recommendations from https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
-        ssl_protocols TLSv1.1 TLSv1.2;
+        ssl_protocols TLSv1.2 TLSv1.3;
         ssl_ciphers '!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES:';
         ssl_prefer_server_ciphers on;
         ssl_session_cache shared:SSL:10m;
@@ -123,19 +88,6 @@ data:
 
         location /api/ {
           proxy_pass {{ $scheme }}://core/api/;
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $x_forwarded_proto;
-
-          proxy_cookie_path / "/; Secure";
-
-          proxy_buffering off;
-          proxy_request_buffering off;
-        }
-
-        location /chartrepo/ {
-          proxy_pass {{ $scheme }}://core/chartrepo/;
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

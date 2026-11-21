@@ -135,27 +135,26 @@ It is advised to use a stable image reference, which you can find on:
 - [Metrics exporter](https://marketplace.gcr.io/google/harbor/prometheus-to-sd).
 
 ```shell
-export TAG="v2.5.4"
-export TAG_METRICS_EXPORTER="2.5"
+export TAG="2.15"
+export HARBOR_TAG="v2.15.5"
 ```
 
 Configure the container images:
 
 ```shell
 export HARBOR_SOURCE_REGISTRY=goharbor
-export IMAGE_HARBOR_CORE="${HARBOR_SOURCE_REGISTRY}/harbor-core:${TAG}"
-export IMAGE_HARBOR_CHARTMUSEUM="${HARBOR_SOURCE_REGISTRY}/chartmuseum-photon:${TAG}"
-export IMAGE_HARBOR_DATABASE="${HARBOR_SOURCE_REGISTRY}/harbor-db:${TAG}"
-export IMAGE_HARBOR_JOBSERVICE="${HARBOR_SOURCE_REGISTRY}/harbor-jobservice:${TAG}"
-export IMAGE_HARBOR_NOTARY_SERVER="${HARBOR_SOURCE_REGISTRY}/notary-server-photon:${TAG}"
-export IMAGE_HARBOR_NOTARY_SIGNER="${HARBOR_SOURCE_REGISTRY}/notary-signer-photon:${TAG}"
-export IMAGE_HARBOR_PORTAL="${HARBOR_SOURCE_REGISTRY}/harbor-portal:${TAG}"
-export IMAGE_HARBOR_REDIS="${HARBOR_SOURCE_REGISTRY}/redis-photon:${TAG}"
-export IMAGE_HARBOR_REGISTRY="${HARBOR_SOURCE_REGISTRY}/registry-photon:${TAG}"
-export IMAGE_HARBOR_REGISTRYCTL="${HARBOR_SOURCE_REGISTRY}/harbor-registryctl:${TAG}"
-export IMAGE_HARBOR_TRIVY="${HARBOR_SOURCE_REGISTRY}/trivy-adapter-photon:${TAG}"
-export IMAGE_HARBOR_NGINX="${HARBOR_SOURCE_REGISTRY}/nginx-photon:${TAG}"
-export IMAGE_METRICS_EXPORTER="marketplace.gcr.io/google/harbor/prometheus-to-sd:${TAG_METRICS_EXPORTER}"
+export MARKETPLACE_REGISTRY=marketplace.gcr.io/google/harbor
+export IMAGE_HARBOR_CORE="${HARBOR_SOURCE_REGISTRY}/harbor-core:${HARBOR_TAG}"
+export IMAGE_HARBOR_DATABASE="${HARBOR_SOURCE_REGISTRY}/harbor-db:${HARBOR_TAG}"
+export IMAGE_HARBOR_EXPORTER="${HARBOR_SOURCE_REGISTRY}/harbor-exporter:${HARBOR_TAG}"
+export IMAGE_HARBOR_JOBSERVICE="${HARBOR_SOURCE_REGISTRY}/harbor-jobservice:${HARBOR_TAG}"
+export IMAGE_HARBOR_PORTAL="${MARKETPLACE_REGISTRY}/portal:${TAG}"
+export IMAGE_HARBOR_REDIS="${HARBOR_SOURCE_REGISTRY}/valkey-photon:${HARBOR_TAG}"
+export IMAGE_HARBOR_REGISTRY="${HARBOR_SOURCE_REGISTRY}/registry-photon:${HARBOR_TAG}"
+export IMAGE_HARBOR_REGISTRYCTL="${HARBOR_SOURCE_REGISTRY}/harbor-registryctl:${HARBOR_TAG}"
+export IMAGE_HARBOR_TRIVY="${HARBOR_SOURCE_REGISTRY}/trivy-adapter-photon:${HARBOR_TAG}"
+export IMAGE_HARBOR_NGINX="${MARKETPLACE_REGISTRY}/nginx:${TAG}"
+export IMAGE_METRICS_EXPORTER="${MARKETPLACE_REGISTRY}/prometheus-to-sd:${TAG}"
 ```
 
 Set how to expose the service - you can choose the type as `ingress` or `clusterIP`.
@@ -189,29 +188,25 @@ helm template "${APP_INSTANCE_NAME}" chart/harbor \
   --namespace "${NAMESPACE}" \
   --set expose.type="${HARBOR_EXPOSE_TYPE}" \
   --set harborAdminPassword="${HARBOR_ADMIN_PASSWORD}" \
-  --set core.image.repo="${IMAGE_HARBOR_CORE}" \
-  --set core.image.tag="${TAG}" \
-  --set chartmuseum.image.repo="${IMAGE_HARBOR_CHARTMUSEUM}" \
-  --set chartmuseum.image.tag="${TAG}" \
-  --set database.image.repo="${IMAGE_HARBOR_DATABASE}" \
-  --set database.image.tag="${TAG}" \
-  --set jobservice.image.repo="${IMAGE_HARBOR_JOBSERVICE}" \
-  --set jobservice.image.tag="${TAG}" \
-  --set notary.server.image.repo="${IMAGE_HARBOR_NOTARY_SERVER}" \
-  --set notary.server.image.tag="${TAG}" \
-  --set notary.signer.image.repo="${IMAGE_HARBOR_NOTARY_SIGNER}" \
-  --set notary.signer.image.tag="${TAG}" \
-  --set portal.image.repo="${IMAGE_HARBOR_PORTAL}" \
+  --set core.image.repo="${HARBOR_SOURCE_REGISTRY}/harbor-core" \
+  --set core.image.tag="${HARBOR_TAG}" \
+  --set database.image.repo="${HARBOR_SOURCE_REGISTRY}/harbor-db" \
+  --set database.image.tag="${HARBOR_TAG}" \
+  --set exporter.image.repo="${HARBOR_SOURCE_REGISTRY}/harbor-exporter" \
+  --set exporter.image.tag="${HARBOR_TAG}" \
+  --set jobservice.image.repo="${HARBOR_SOURCE_REGISTRY}/harbor-jobservice" \
+  --set jobservice.image.tag="${HARBOR_TAG}" \
+  --set portal.image.repo="${MARKETPLACE_REGISTRY}/portal" \
   --set portal.image.tag="${TAG}" \
-  --set redis.image.repo="${IMAGE_HARBOR_REDIS}" \
-  --set redis.image.tag="${TAG}" \
-  --set registry.registry.image.repo="${IMAGE_HARBOR_REGISTRY}" \
-  --set registry.registry.image.tag="${TAG}" \
-  --set registry.controller.image.repo="${IMAGE_HARBOR_REGISTRYCTL}" \
-  --set registry.controller.image.tag="${TAG}" \
-  --set trivy.image.repo="${IMAGE_HARBOR_TRIVY}" \
-  --set trivy.image.tag="${TAG}" \
-  --set nginx.image.repo="${IMAGE_HARBOR_NGINX}" \
+  --set redis.image.repo="${HARBOR_SOURCE_REGISTRY}/valkey-photon" \
+  --set redis.image.tag="${HARBOR_TAG}" \
+  --set registry.registry.image.repo="${HARBOR_SOURCE_REGISTRY}/registry-photon" \
+  --set registry.registry.image.tag="${HARBOR_TAG}" \
+  --set registry.controller.image.repo="${HARBOR_SOURCE_REGISTRY}/harbor-registryctl" \
+  --set registry.controller.image.tag="${HARBOR_TAG}" \
+  --set trivy.image.repo="${HARBOR_SOURCE_REGISTRY}/trivy-adapter-photon" \
+  --set trivy.image.tag="${HARBOR_TAG}" \
+  --set nginx.image.repo="${MARKETPLACE_REGISTRY}/nginx" \
   --set nginx.image.tag="${TAG}" \
   --set metrics.image="${IMAGE_METRICS_EXPORTER}" \
   --set metrics.exporter.enabled="${METRICS_EXPORTER_ENABLED}" > "${APP_INSTANCE_NAME}"_manifest.yaml

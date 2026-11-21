@@ -7,13 +7,11 @@ expose:
   ingress:
     hosts:
       core: core.harbor.domain
-      notary: notary.harbor.domain
   clusterIP:
     name: harbor
     ports:
       httpPort: 80
       httpsPort: 443
-      notaryPort: 4443
 
 externalURL: https://core.harbor.domain
 
@@ -54,25 +52,10 @@ registry:
     username: "harbor_registry_user"
     password: "harbor_registry_password"
 
-chartmuseum:
-  image:
-    repo: null
-    tag: null
-
 trivy:
   image:
     repo: null
     tag: null
-
-notary:
-  server:
-    image:
-      repo: null
-      tag: null
-  signer:
-    image:
-      repo: null
-      tag: null
 
 database:
   image:

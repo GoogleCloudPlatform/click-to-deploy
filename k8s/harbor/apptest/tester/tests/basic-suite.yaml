@@ -7,13 +7,13 @@ actions:
         stdout:
           contains: 'Pong'
 
-  - name: Chartmuseum Liveness Check
+  - name: Nginx Proxy Liveness Check
     bashTest:
       script: |-
-        curl --retry 3 --retry-connrefused --retry-delay 5 http://$CHARTMUSEUM_APP_NAME/health
+        curl -k --retry 3 --retry-connrefused --retry-delay 5 https://$NGINX_SERVICE_NAME/api/v2.0/ping
       expect:
         stdout:
-          contains: '{"healthy":true}'
+          contains: 'Pong'
 
   - name: Database Liveness Check
     bashTest:
@@ -30,22 +30,6 @@ actions:
       expect:
         stdout:
           contains: '"status":"Healthy"'
-
-  - name: Notary Server Liveness Check
-    bashTest:
-      script: |-
-        curl --retry 3 --retry-connrefused --retry-delay 5 http://$NOTARY_SERVER_APP_NAME:4443/_notary_server/health
-      expect:
-        exitCode:
-          equals: 0
-
-  - name: Notary Signer Liveness Check
-    bashTest:
-      script: |-
-        curl -k --retry 3 --retry-connrefused --retry-delay 5 https://$NOTARY_SIGNER_APP_NAME:7899/
-      expect:
-        exitCode:
-          equals: 0
 
   - name: Portal Liveness Check
     bashTest:

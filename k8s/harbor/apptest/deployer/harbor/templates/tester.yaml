@@ -27,16 +27,12 @@ spec:
           fieldPath: metadata.namespace
     - name: APP_INSTANCE_NAME
       value: "{{ template "harbor.core" . }}"
-    - name: CHARTMUSEUM_APP_NAME
-      value: "{{ template "harbor.chartmuseum" . }}"
     - name: DATABASE_APP_NAME
       value: "{{ template "harbor.database" . }}"
     - name: JOBSERVICE_APP_NAME
       value: "{{ template "harbor.jobservice" . }}"
-    - name: NOTARY_SERVER_APP_NAME
-      value: "{{ template "harbor.notary-server" . }}"
-    - name: NOTARY_SIGNER_APP_NAME
-      value: "{{ template "harbor.notary-signer" . }}"
+    - name: NGINX_SERVICE_NAME
+      value: "{{ .Values.expose.clusterIP.name }}"
     - name: PORTAL_APP_NAME
       value: "{{ template "harbor.portal" . }}"
     - name: REDIS_APP_NAME
