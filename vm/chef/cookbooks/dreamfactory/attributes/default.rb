@@ -39,3 +39,4 @@ default['dreamfactory']['packages'] = [
 ]
 
 default['php81']['distribution'] = 'bookworm'
+default['nginx']['repo']['distribution'] = 'bookworm'
