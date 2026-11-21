@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@ FROM marketplace.gcr.io/google/c2d-debian11
 
 ENV DEBUG_DOCKER_ENTRYPOINT false
 
-ENV HAZELCAST_VERSION 5.3.2
-ENV C2D_RELEASE 5.3.2
+ENV HAZELCAST_VERSION 5.3.7
+ENV C2D_RELEASE 5.3.7
 
 # Versions of Hazelcast and Hazelcast plugins
-ARG HZ_VERSION=5.3.2
+ENV HZ_VERSION=5.3.7
 ARG HZ_VERSION_SHA=
 
 # Build constants
@@ -46,10 +46,10 @@ COPY *.jar get-hz-all-url.sh ${HZ_HOME}/
 # Install
 RUN echo "Installing new APK packages" \
     && apt-get --allow-releaseinfo-change update \
-    && apt-get -y install openjdk-11-jdk-headless bash curl libxml2-utils zip unzip procps net-tools telnet inetutils-ping \
+    && apt-get -y install openjdk-17-jdk-headless bash curl libxml2-utils zip unzip procps net-tools telnet inetutils-ping \
     && echo "Downloading Hazelcast distribution zip..." \
     && HAZELCAST_ZIP_URL=$(${HZ_HOME}/get-hz-all-url.sh) \
-    && curl -sf -L ${HAZELCAST_ZIP_URL} --output ${HZ_HOME}/hazelcast-distribution.zip \
+    && curl -sf -L "https://github.com/hazelcast/hazelcast/releases/download/v${HZ_VERSION}/hazelcast-${HZ_VERSION}.zip" --output ${HZ_HOME}/hazelcast-distribution.zip \
     && unzip -qq ${HZ_HOME}/hazelcast-distribution.zip 'hazelcast-*/**' -d ${HZ_HOME}/tmp/ \
     && mv ${HZ_HOME}/tmp/*/* ${HZ_HOME}/ \
     && echo "Setting Pardot ID to 'docker'" \
@@ -57,8 +57,7 @@ RUN echo "Installing new APK packages" \
     && echo "Granting read permission to ${HZ_HOME}" \
     && chmod -R +r ${HZ_HOME} \
     && echo "Cleaning APK packages and redundant files/folders" \
-    && rm -rf /var/cache/apk/* ${HZ_HOME}/get-hz-all-url.sh ${HZ_HOME}/hazelcast-distribution.zip ${HZ_HOME}/tmp
-
+    && rm -rf /var/cache/apk/* ${HZ_HOME}/hazelcast-distribution.zip ${HZ_HOME}/tmp
 
 RUN echo "Adding license to /usr/share/hazelcast directory" \
     && mkdir -p /usr/share/hazelcast/ \
