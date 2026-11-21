@@ -17,38 +17,22 @@ cloudbuild:
   docker_image: gcr.io/cloud-builders/docker@sha256:1a9553236b25fd6e1bf2a864c8becb26782c429f4570695b27f4ad6f1a0ed75e
   enable_parallel: false
 versions:
-- dir: 2/debian12/2.11
-  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
+- dir: 2/debian12/2.15
+  from: marketplace.gcr.io/google/debian12@sha256:a623af62efaf2d260a05aae6869fd48ef8abedb957c6afd10028ac1a2993ba53
   packages:
     harbor:
-      version: 2.11.2
+      version: 2.15.5
   repo: harbor2
   annotations:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/70c685e1-3aac-4626-9773-b0152237081b.cloudpartnerservices.goog
   tags:
-  - 2.11.2-debian12
-  - 2.11-debian12
+  - 2.15.5-debian12
+  - 2.15-debian12
   - 2-debian12
-  - 2.11.2
-  - '2.11'
+  - 2.15.5
+  - '2.15'
   - '2'
   - latest
-  allowlist:
-  - marketplace.gcr.io
-- dir: 2/debian12/2.7
-  from: marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
-  packages:
-    harbor:
-      version: 2.7.4
-  annotations:
-  - key: com.googleapis.cloudmarketplace.product.service.name
-    value: services/70c685e1-3aac-4626-9773-b0152237081b.cloudpartnerservices.goog
-  repo: harbor2
-  tags:
-  - 2.7.4-debian12
-  - 2.7-debian12
-  - 2.7.4
-  - '2.7'
   allowlist:
   - marketplace.gcr.io
