@@ -18,4 +18,15 @@ describe 'Docker-compose should exists' do
   describe file('/usr/local/bin/docker-compose') do
     it { should exist }
   end
+
+  describe file('/opt/redash/nginx/default.conf') do
+    it { should exist }
+  end
+
+  describe file('/opt/redash/setup/docker-compose.yml') do
+    it { should exist }
+    its(:content) { should match(/image:\s+nginx:1\.30\.7-alpine/) }
+    its(:content) { should include '/opt/redash/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro' }
+    its(:content) { should_not match(%r{image:\s+redash/nginx}) }
+  end
 end

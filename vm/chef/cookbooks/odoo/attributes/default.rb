@@ -85,10 +85,12 @@ default['odoo']['packages'] = [
 default['odoo']['pip-packages'] = 'vobject qrcode pyldap num2words xlwt pyopenssl sslcrypto'
 
 default['odoo']['version'] = '18.0'
-default['odoo']['release'] = '20241107'
-default['odoo']['sha256'] = '212a79485ed39c628060e83853f3d1067ca57b4b8a86f2b0e73b9d56ff766de9'
-default['odoo']['src']['sha256'] = '615df6b6fc15f0120b7b301e792aa76e80bd0c2c86fd690b9d6ef6dfc588b30a'
+default['odoo']['release'] = '20261120'
+default['odoo']['sha256'] = '8c5ad60d67fde9d0548b9b1e4e7c9c98cc0a09de9019eaef56b88c0580e0bbdc'
+default['odoo']['src']['sha256'] = '458bfe1562189762d6687cac117b12c5e7f20a210c3694818c21f9a8b92b262d'
 
 default['odoo']['wkhtmltopdf']['version'] = '0.12.6'
 default['odoo']['wkhtmltopdf']['release'] = '0.12.6-1'
 default['odoo']['wkhtmltopdf']['sha256'] = '3e7a93a2ae4a2dd5cccb1b7bcce0eb462c75f05efa314a29499dadfdc5ebc59e'
+
+default['nginx']['repo']['distribution'] = 'bookworm'
