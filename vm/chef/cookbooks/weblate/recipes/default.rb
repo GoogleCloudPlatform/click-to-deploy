@@ -18,7 +18,7 @@ node.override['postgresql']['standalone']['allow_external'] = false
 
 include_recipe 'git'
 include_recipe 'nginx'
-include_recipe 'postgresql::standalone_bullseye'
+include_recipe 'postgresql::standalone_bookworm'
 include_recipe 'redis::standalone'
 
 apt_update do

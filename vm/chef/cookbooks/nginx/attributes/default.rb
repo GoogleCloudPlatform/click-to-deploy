@@ -13,10 +13,13 @@
 # limitations under the License.
 
 default['nginx']['packages'] = ['nginx']
-default['nginx']['version'] = '1.27.2'
+default['nginx']['version'] = '1.30.7'
 default['nginx']['repo']['uri'] = 'https://nginx.org/packages/debian/'
 default['nginx']['repo']['components'] = ['nginx']
-default['nginx']['repo']['distribution'] = 'buster'
+default['nginx']['repo']['distribution'] = 'bookworm'
 default['nginx']['repo']['keyserver'] = 'http://nginx.org/keys/nginx_signing.key'
 
-default['php81']['distribution'] = 'bullseye'
+default['php83']['distribution'] = 'bookworm'
+default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.36-1_all.deb'
+default['mysql']['apt']['md5'] = '9698a5d5980c16b79673318330607993'
+default['mysql']['apt']['url'] = 'https://repo.mysql.com/mysql-apt-config_0.8.36-1_all.deb'

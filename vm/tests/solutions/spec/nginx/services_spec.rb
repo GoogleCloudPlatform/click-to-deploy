@@ -23,3 +23,7 @@ describe service('mysql'), :if => os[:family] == 'debian' do
   it { should be_enabled }
   it { should be_running }
 end
+
+describe command("dpkg --compare-versions \"$(dpkg-query -W -f='${Version}' nginx)\" ge 1.30.7") do
+  its(:exit_status) { should eq 0 }
+end
