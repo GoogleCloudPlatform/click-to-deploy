@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt-get install -y wget tar gzip git ca-certificates
 
 # Install Go
-ARG GO_VERSION=1.26.10
+ARG GO_VERSION=1.26.11
 RUN wget -q https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz && \
     tar -xzf go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local
 

@@ -13,6 +13,3 @@
 # limitations under the License.
 
 default['docker']['packages'] = ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg2', 'software-properties-common']
-
-default['docker']['compose']['version'] = '2.27.1'
-default['docker']['compose']['sha1'] = '38ab1e3229c2627dd788d299e526145491aadd1d'
