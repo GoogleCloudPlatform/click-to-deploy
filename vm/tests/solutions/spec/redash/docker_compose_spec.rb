@@ -17,6 +17,12 @@ require 'spec_helper'
 describe 'Docker-compose should exists' do
   describe file('/usr/local/bin/docker-compose') do
     it { should exist }
+    it { should be_executable }
+  end
+
+  describe command('/usr/local/bin/docker-compose version') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/Docker Compose version v[0-9]+\.[0-9]+\.[0-9]+/) }
   end
 
   describe file('/opt/redash/nginx/default.conf') do
