@@ -1,0 +1,96 @@
+actions:
+- name: kubectl smoke test
+  bashTest:
+    script: kubectl version
+    expect:
+      exitCode:
+        equals: 0
+- name: Create test storageClass
+  bashTest:
+    script: |
+      cat > /tmp/storageclass.yml <<'EOF'
+      kind: StorageClass
+      apiVersion: storage.k8s.io/v1
+      metadata:
+        name: longhorn-test
+      provisioner: driver.longhorn.io
+      allowVolumeExpansion: true
+      parameters:
+        numberOfReplicas: "3"
+        staleReplicaTimeout: "2880" # 48 hours in minutes
+        fromBackup: ""
+      EOF
+    expect:
+      exitCode:
+        equals: 0
+- name: Create test volumeClaim and pod
+  bashTest:
+    script: |
+      cat > /tmp/pod.yml <<'EOF'
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: longhorn-volv-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: longhorn-test
+        resources:
+          requests:
+            storage: 1Gi
+      ---
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: volume-test
+      spec:
+        restartPolicy: Always
+        containers:
+        - name: volume-test
+          image: nginx:stable-alpine
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            exec:
+              command:
+                - ls
+                - /data/lost+found
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          volumeMounts:
+          - name: volv
+            mountPath: /data
+          ports:
+          - containerPort: 80
+        volumes:
+        - name: volv
+          persistentVolumeClaim:
+            claimName: longhorn-volv-pvc
+      EOF
+    expect:
+      exitCode:
+        equals: 0
+- name: Wait for the driver get ready
+  bashTest:
+    script: kubectl wait --for=condition=Available=True --timeout=120s --namespace $NAMESPACE deploy longhorn-driver-deployer
+    expect:
+      exitCode:
+        equals: 0
+- name: Deploy storageClass and pod
+  bashTest:
+    script: |
+      kubectl delete storageclass longhorn-test || true
+      kubectl apply --namespace $NAMESPACE -f /tmp/storageclass.yml
+      kubectl apply --namespace $NAMESPACE -f /tmp/pod.yml
+      kubectl wait --for=condition=Ready --timeout=120s --namespace $NAMESPACE pod volume-test
+    expect:
+      exitCode:
+        equals: 0
+- name: Clean volumes and pod
+  bashTest:
+    script: |
+      kubectl delete --namespace $NAMESPACE pod volume-test
+      kubectl delete --namespace $NAMESPACE pv,pvc --all
+  expect:
+      exitCode:
+        equals: 0
+
