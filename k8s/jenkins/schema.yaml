@@ -12,6 +12,18 @@ x-google-marketplace:
     recommended: false
 
   clusterConstraints:
+    assistedClusterCreation:
+      type: STRICT
+      creationGuidance: Enable the cloud-platform scope to push artifacts to Artifact Registry and Container Registry.
+      gke:
+        nodePool:
+        - numNodes: 3
+          machineType: e2-medium
+    gcp:
+      nodes:
+        requiredOauthScopes:
+        - https://www.googleapis.com/auth/cloud-platform
+        - https://www.googleapis.com/auth/devstorage.read_only
     resources:
     - requests:
         cpu: 100m
