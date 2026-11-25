@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['nagios']['core']['version'] = '4.4.9'
-default['nagios']['plugins']['version'] = '2.2.1'
-default['nagios']['nrpe']['version'] = '3.2.1'
+default['nagios']['core']['version'] = '4.5.0'
+default['nagios']['plugins']['version'] = '2.4.8'
+default['nagios']['nrpe']['version'] = '4.1.0'
 
 default['nagios']['config']['adminuser'] = 'nagiosadmin'
 
