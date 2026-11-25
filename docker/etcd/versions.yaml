@@ -27,7 +27,7 @@ versions:
       sha256: ffe840ff9295808e88cce2794a18a5ac87f12a5203c8314d0bf6aa119b41bac5
       version: 3.6.14
     golang:
-      version: 1.26.10
+      version: 1.26.11
   templateArgs:
     c2dRelease: 3.6.14
   repo: etcd3
@@ -53,7 +53,7 @@ versions:
       sha256: 5025b5b24d81a9616b6e284ccd439b9a3df055ef8fdcdc142af3ec8f6a3b3c95
       version: 3.5.33
     golang:
-      version: 1.26.10
+      version: 1.26.11
   templateArgs:
     c2dRelease: 3.5.33
   repo: etcd3
