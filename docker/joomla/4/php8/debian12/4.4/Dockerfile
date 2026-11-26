@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/php8-apache2@sha256:7f698255b6dbea892bd16bd8bbf157e0667389a43576c2a31962224f64d42aef
+FROM marketplace.gcr.io/google/php8-apache2@sha256:055d179d1e8d3f6fbd9793989b6be7c2065a573bb2b13658e2990f37f05c19ba
 
 RUN set -ex; \
   savedAptMark="$(apt-mark showmanual)"; \
