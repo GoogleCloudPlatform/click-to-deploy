@@ -1,8 +1,8 @@
-FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7 as exporter-builder
+FROM marketplace.gcr.io/google/debian12@sha256:5bf5e3d1f13582b7ccc08efdbb6b26ba15f308945bd7ba1c8f5de34bce96a199 as exporter-builder
 
 ENV GOPATH /usr/local
 ENV GOROOT /usr/local/go
-ENV GO_VERSION 1.25.9
+ENV GO_VERSION 1.26.11
 ENV PATH=${GOPATH}/bin:${GOROOT}/bin:${PATH}
 ENV EXPORTER_VERSION 0.13.4
 
@@ -40,7 +40,7 @@ RUN set -eux \
     # Extracts licences
     && (govendor license +vendor > /NOTICES || cp LICENSE /NOTICES)
 
-FROM marketplace.gcr.io/google/debian12@sha256:b93235fea71bd454ee11e8f857eb7c1672d033d426d9c0401c53df3c71fd52e7
+FROM marketplace.gcr.io/google/debian12@sha256:5bf5e3d1f13582b7ccc08efdbb6b26ba15f308945bd7ba1c8f5de34bce96a199
 
 # Update libtasn
 RUN apt-get update \
