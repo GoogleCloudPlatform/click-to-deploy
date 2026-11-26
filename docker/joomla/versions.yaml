@@ -20,7 +20,7 @@ cloudbuild:
   enable_parallel: false
 versions:
 - dir: 5/php8/debian12/5.3
-  from: marketplace.gcr.io/google/php8-apache2@sha256:7f698255b6dbea892bd16bd8bbf157e0667389a43576c2a31962224f64d42aef
+  from: marketplace.gcr.io/google/php8-apache2@sha256:055d179d1e8d3f6fbd9793989b6be7c2065a573bb2b13658e2990f37f05c19ba
   packages:
     joomla:
       version: 5.3.4
@@ -42,7 +42,7 @@ versions:
   - key: com.googleapis.cloudmarketplace.product.service.name
     value: services/545638c3-744a-453a-9793-994aa18913a0.cloudpartnerservices.goog
   dir: 4/php8/debian12/4.4
-  from: marketplace.gcr.io/google/php8-apache2@sha256:7f698255b6dbea892bd16bd8bbf157e0667389a43576c2a31962224f64d42aef
+  from: marketplace.gcr.io/google/php8-apache2@sha256:055d179d1e8d3f6fbd9793989b6be7c2065a573bb2b13658e2990f37f05c19ba
   packages:
     joomla:
       version: 4.4.14
