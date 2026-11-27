@@ -19,4 +19,4 @@ default['dokuwiki']['user']['groups'] = 'admin,user'
 
 default['dokuwiki']['title'] = 'DokuWiki!'
 
-default['php81']['distribution'] = 'bullseye'
+default['php83']['distribution'] = 'bookworm'

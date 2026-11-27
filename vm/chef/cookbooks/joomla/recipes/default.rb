@@ -23,17 +23,17 @@ include_recipe 'joomla::ospo'
 
 include_recipe 'mysql::version-8.0-embedded'
 
-include_recipe 'php81'
-include_recipe 'php81::module_cli'
-include_recipe 'php81::module_curl'
-include_recipe 'php81::module_gd'
-include_recipe 'php81::module_intl'
-include_recipe 'php81::module_ldap'
-include_recipe 'php81::module_libapache2'
-include_recipe 'php81::module_mbstring'
-include_recipe 'php81::module_mysql'
-include_recipe 'php81::module_xml'
-include_recipe 'php81::module_zip'
+include_recipe 'php83'
+include_recipe 'php83::module_cli'
+include_recipe 'php83::module_curl'
+include_recipe 'php83::module_gd'
+include_recipe 'php83::module_intl'
+include_recipe 'php83::module_ldap'
+include_recipe 'php83::module_libapache2'
+include_recipe 'php83::module_mbstring'
+include_recipe 'php83::module_mysql'
+include_recipe 'php83::module_xml'
+include_recipe 'php83::module_zip'
 
 remote_file '/tmp/joomla.tar.gz' do
   source "https://github.com/joomla/joomla-cms/releases/download/#{node['joomla']['version']}/Joomla_#{node['joomla']['version']}-Stable-Full_Package.tar.gz"
@@ -72,7 +72,7 @@ template '/etc/apache2/sites-available/joomla.conf' do
   source 'joomla.conf.erb'
 end
 
-cookbook_file '/etc/php/8.1/apache2/conf.d/99-joomla.ini' do
+cookbook_file '/etc/php/8.3/apache2/conf.d/99-joomla.ini' do
   source 'php-joomla.ini'
   owner 'root'
   group 'root'

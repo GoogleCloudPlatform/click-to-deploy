@@ -15,7 +15,7 @@
 name 'joomla'
 depends 'apache2'
 depends 'mysql'
-depends 'php81'
+depends 'php83'
 depends 'c2d-shared'
 supports 'debian'
 depends 'git'

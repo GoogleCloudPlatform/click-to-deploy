@@ -28,9 +28,9 @@ end
 include_recipe 'apache2'
 include_recipe 'apache2::rm-index'
 include_recipe 'apache2::security-config'
-include_recipe 'php81'
-include_recipe 'php81::module_libapache2'
-include_recipe 'php81::module_xml'
+include_recipe 'php83'
+include_recipe 'php83::module_libapache2'
+include_recipe 'php83::module_xml'
 include_recipe 'dokuwiki::ospo'
 
 bash 'Download key' do

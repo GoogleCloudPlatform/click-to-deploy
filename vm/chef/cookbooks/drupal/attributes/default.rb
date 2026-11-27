@@ -18,4 +18,7 @@
 default['drupal']['user'] = 'www-data'
 default['drupal']['db']['name'] = 'drupal'
 
-default['php81']['distribution'] = 'bullseye'
+default['php83']['distribution'] = 'bookworm'
+default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.36-1_all.deb'
+default['mysql']['apt']['md5'] = '9698a5d5980c16b79673318330607993'
+default['mysql']['apt']['url'] = 'https://repo.mysql.com/mysql-apt-config_0.8.36-1_all.deb'

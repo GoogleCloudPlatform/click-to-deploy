@@ -17,4 +17,7 @@ default['joomla']['sha256'] = '090db690680346076a0b9e5f051076191829f4d6745ccae24
 default['joomla']['user'] = 'www-data'
 default['joomla']['db']['name'] = 'joomla_db'
 
-default['php81']['distribution'] = 'bullseye'
+default['php83']['distribution'] = 'bookworm'
+default['mysql']['apt']['file'] = 'mysql-apt-config_0.8.36-1_all.deb'
+default['mysql']['apt']['md5'] = '9698a5d5980c16b79673318330607993'
+default['mysql']['apt']['url'] = 'https://repo.mysql.com/mysql-apt-config_0.8.36-1_all.deb'
