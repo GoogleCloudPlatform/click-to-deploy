@@ -15,5 +15,5 @@
 name 'moodle'
 depends 'apache2'
 depends 'mysql'
-depends 'php81'
+depends 'php83'
 supports 'debian'
