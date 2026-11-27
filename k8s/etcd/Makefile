@@ -70,9 +70,10 @@ $(ANNOTATED_IMAGE_TARGETS): .build/$(CHART_NAME)/annotated-%: .build/var/REGISTR
                                                              | .build/$(CHART_NAME)
 	$(call print_target,$*)
 	IMAGE_BUILDER="image-builder-$$(openssl rand -base64 12 | tr -dc 'a-z0-9' | head -c 8)"; \
-	docker buildx create --name "$$IMAGE_BUILDER" --use \
+	docker buildx create --name "$$IMAGE_BUILDER" \
 		&& docker buildx inspect "$$IMAGE_BUILDER" --bootstrap \
 		&& printf 'FROM %s\n' "$(image-$*)" | docker buildx build \
+			--builder "$$IMAGE_BUILDER" \
 			--push \
 			--annotation="index,manifest:com.googleapis.cloudmarketplace.product.service.name=$(SERVICE_NAME)" \
 			--tag "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)" \
@@ -84,8 +85,11 @@ $(ANNOTATED_IMAGE_TARGETS): .build/$(CHART_NAME)/annotated-%: .build/var/REGISTR
 	@touch "$@"
 
 
-# Build annotated images and tester image
-app/build:: $(ANNOTATED_IMAGE_TARGETS) .build/$(CHART_NAME)/tester
+# Build annotated images
+app/build:: $(ANNOTATED_IMAGE_TARGETS)
+
+# Build tester image
+app/build:: .build/$(CHART_NAME)/tester
 
 .PHONY: app/build
 app/build::
