@@ -11,7 +11,7 @@ makefile_dir := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 include $(makefile_dir)/common.Makefile
 include $(makefile_dir)/var.Makefile
 
-VERIFY_WAIT_TIMEOUT = 600
+VERIFY_WAIT_TIMEOUT ?= 600
 
 
 ##### Validations and Information #####
