@@ -20,7 +20,10 @@ IMAGE_PROMETHEUS_TO_SD ?= gke.gcr.io/prometheus-to-sd:$(METRICS_EXPORTER_TAG)
 image-$(CHART_NAME) := $(call get_sha256,$(IMAGE_ETCD))
 
 # List of images used in application
-ADDITIONAL_IMAGES := prometheus-to-sd
+# prometheus-to-sd is published via buildx below so OCI index and manifest carry
+# com.googleapis.cloudmarketplace.product.service.name=$(SERVICE_NAME).
+ADDITIONAL_IMAGES :=
+ANNOTATED_IMAGES := prometheus-to-sd
 
 # Additional images variable names should correspond with ADDITIONAL_IMAGES list
 image-prometheus-to-sd := $(call get_sha256,$(IMAGE_PROMETHEUS_TO_SD))
@@ -59,9 +62,30 @@ APP_PARAMETERS ?= { \
 # It requires several APP_* variables defined above, and thus must be included after.
 include ../c2d_deployer.Makefile
 
+ANNOTATED_IMAGE_TARGETS = $(patsubst %,.build/$(CHART_NAME)/annotated-%,$(ANNOTATED_IMAGES))
 
-# Build tester image
-app/build:: .build/$(CHART_NAME)/tester
+$(ANNOTATED_IMAGE_TARGETS): .build/$(CHART_NAME)/annotated-%: .build/var/REGISTRY \
+                                                             .build/var/TRACK \
+                                                             .build/var/RELEASE \
+                                                             | .build/$(CHART_NAME)
+	$(call print_target,$*)
+	IMAGE_BUILDER="image-builder-$$(openssl rand -base64 12 | tr -dc 'a-z0-9' | head -c 8)"; \
+	docker buildx create --name "$$IMAGE_BUILDER" --use \
+		&& docker buildx inspect "$$IMAGE_BUILDER" --bootstrap \
+		&& printf 'FROM %s\n' "$(image-$*)" | docker buildx build \
+			--push \
+			--annotation="index,manifest:com.googleapis.cloudmarketplace.product.service.name=$(SERVICE_NAME)" \
+			--tag "$(REGISTRY)/$(APP_ID)/$*:$(TRACK)" \
+			--tag "$(REGISTRY)/$(APP_ID)/$*:$(RELEASE)" \
+			- ; \
+	BUILD_STATUS=$$?; \
+	docker buildx rm "$$IMAGE_BUILDER" || true; \
+	exit $$BUILD_STATUS
+	@touch "$@"
+
+
+# Build annotated images and tester image
+app/build:: $(ANNOTATED_IMAGE_TARGETS) .build/$(CHART_NAME)/tester
 
 .PHONY: app/build
 app/build::
