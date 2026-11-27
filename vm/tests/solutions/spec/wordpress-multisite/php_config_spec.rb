@@ -15,11 +15,25 @@
 require 'spec_helper'
 
 describe 'Hide PHP Version' do
-  describe file('/etc/php/8.1/apache2/php.ini') do
+  describe file('/etc/php/8.3/apache2/php.ini') do
     its(:content) { should match /^expose_php = Off$/ }
   end
 
   describe command('curl -I http://localhost') do
     its(:stdout) { should_not match /X-Powered-By:/ }
+  end
+end
+
+describe 'PHP 8.3 Version' do
+  describe package('libapache2-mod-php8.3') do
+    it { should be_installed }
+  end
+
+  describe package('libapache2-mod-php8.1') do
+    it { should_not be_installed }
+  end
+
+  describe command("dpkg --compare-versions \"$(dpkg-query -W -f='${Version}' php8.3-common)\" ge 8.3.37") do
+    its(:exit_status) { should eq 0 }
   end
 end

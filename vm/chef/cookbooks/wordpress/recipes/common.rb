@@ -22,11 +22,11 @@ apt_update do
   action :update
 end
 
-include_recipe 'php81'
-include_recipe 'php81::module_libapache2'
-include_recipe 'php81::module_mbstring'
-include_recipe 'php81::module_mysql'
-include_recipe 'php81::module_xml'
+include_recipe 'php83'
+include_recipe 'php83::module_libapache2'
+include_recipe 'php83::module_mbstring'
+include_recipe 'php83::module_mysql'
+include_recipe 'php83::module_xml'
 include_recipe 'c2d-config::create-self-signed-certificate'
 
 remote_file '/tmp/wp-cli.phar' do
@@ -73,7 +73,7 @@ execute 'a2enmods' do
 end
 
 execute 'a2enconfs' do
-  command 'a2enconf php8.1-fpm'
+  command 'a2enconf php8.3-fpm'
 end
 
 # Include both configurations to the image
