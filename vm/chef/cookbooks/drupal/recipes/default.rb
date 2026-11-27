@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,8 @@ include_recipe 'php81::module_mysql'
 include_recipe 'php81::module_opcache'
 include_recipe 'php81::module_xml'
 include_recipe 'php81::module_zip'
+
+include_recipe 'drupal::ospo'
 
 remote_file '/tmp/drupal.tar.gz' do
   source 'https://www.drupal.org/download-latest/tar.gz'
